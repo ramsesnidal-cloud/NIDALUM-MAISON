@@ -14,20 +14,14 @@ export default function AuthorPage() {
   const [volume, setVolume] = useState(1);
   const [audioError, setAudioError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioTracksRef = useRef<Map<string, HTMLAudioElement>>(new Map());
 
   useEffect(() => {
     loadMusic();
   }, []);
 
-  // Cleanup all audio elements on unmount
+  // Cleanup audio on unmount
   useEffect(() => {
     return () => {
-      audioTracksRef.current.forEach((audio) => {
-        audio.pause();
-        audio.src = '';
-      });
-      audioTracksRef.current.clear();
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.src = '';
@@ -77,41 +71,31 @@ export default function AuthorPage() {
           audioRef.current.pause();
         }
       } else {
-        // Stop current audio
+        // Stop current audio and play new one
         if (audioRef.current) {
           audioRef.current.pause();
           audioRef.current.currentTime = 0;
         }
 
-        // Create or reuse audio element for this track
-        let audio = audioTracksRef.current.get(track._id);
+        // Create new audio element with proper configuration
+        const audio = new Audio();
+        audio.crossOrigin = 'anonymous';
+        audio.preload = 'auto';
+        audio.volume = volume;
         
-        if (!audio) {
-          audio = new Audio();
-          audio.crossOrigin = 'anonymous';
-          audio.preload = 'auto';
-          audio.volume = volume;
-          
-          // Set up event listeners
-          audio.onended = () => {
-            setPlayingTrackId(null);
-            setAudioError(null);
-          };
+        // Set up event listeners
+        audio.onended = () => {
+          setPlayingTrackId(null);
+          setAudioError(null);
+        };
 
-          audio.onerror = () => {
-            console.error('Audio loading error for:', track.trackTitle);
-            setAudioError('Erreur de chargement audio');
-            setPlayingTrackId(null);
-          };
+        audio.onerror = () => {
+          console.error('Audio loading error for:', track.trackTitle);
+          setAudioError('Erreur de chargement audio');
+          setPlayingTrackId(null);
+        };
 
-          audio.src = track.audioUrl;
-          audioTracksRef.current.set(track._id, audio);
-        } else {
-          // Reset existing audio element
-          audio.currentTime = 0;
-          audio.volume = volume;
-        }
-
+        audio.src = track.audioUrl;
         audioRef.current = audio;
         setPlayingTrackId(track._id);
 
