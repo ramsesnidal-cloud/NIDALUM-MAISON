@@ -65,18 +65,27 @@ export default function ChantsPage() {
     e.stopPropagation();
 
     if (!chant.audioUrl) {
+      setAudioError('Aucun lien audio disponible');
       console.warn('No audio URL available for this chant');
       return;
     }
 
     try {
+      setAudioError(null);
+
       // If clicking the same chant, toggle play/pause
       if (playingChantId === chant._id) {
         if (audioRef.current) {
           if (audioRef.current.paused) {
-            await audioRef.current.play().catch(err => {
-              console.error('Error playing audio:', err);
-            });
+            try {
+              const playPromise = audioRef.current.play();
+              if (playPromise !== undefined) {
+                await playPromise;
+              }
+            } catch (err) {
+              console.error('Error resuming audio:', err);
+              setAudioError('Impossible de reprendre la lecture');
+            }
           } else {
             audioRef.current.pause();
           }
@@ -88,30 +97,66 @@ export default function ChantsPage() {
           audioRef.current.currentTime = 0;
         }
 
-        audioRef.current = new Audio(chant.audioUrl);
-        audioRef.current.crossOrigin = 'anonymous';
-        audioRef.current.volume = isMuted ? 0 : 1;
+        // Create new audio element with proper configuration
+        const audio = new Audio();
+        audio.crossOrigin = 'anonymous';
+        audio.preload = 'auto';
+        audio.volume = isMuted ? 0 : 1;
         
-        // Set up event listeners before playing
-        audioRef.current.onended = () => {
+        // Set up event listeners BEFORE setting src
+        audio.onended = () => {
+          setPlayingChantId(null);
+          setAudioError(null);
+        };
+
+        audio.onerror = (error) => {
+          console.error('Audio loading error:', error);
+          setAudioError('Erreur de chargement audio');
           setPlayingChantId(null);
         };
 
-        audioRef.current.onerror = (error) => {
-          console.error('Audio error:', error);
-          setPlayingChantId(null);
+        audio.onloadstart = () => {
+          console.log('Audio loading started for:', chant.chantTitle);
         };
 
-        try {
-          await audioRef.current.play();
-          setPlayingChantId(chant._id);
-        } catch (playError) {
-          console.error('Failed to play audio:', playError);
-          setPlayingChantId(null);
-        }
+        audio.oncanplay = () => {
+          console.log('Audio ready to play:', chant.chantTitle);
+        };
+
+        // Set the source and attempt to play
+        audio.src = chant.audioUrl;
+        audioRef.current = audio;
+
+        // Force play with retry logic
+        const playAudio = async (retries = 3) => {
+          try {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+              await playPromise;
+              setPlayingChantId(chant._id);
+              console.log('Audio playing successfully:', chant.chantTitle);
+            } else {
+              setPlayingChantId(chant._id);
+            }
+          } catch (playError) {
+            console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
+            
+            if (retries > 0) {
+              // Retry after a short delay
+              await new Promise(resolve => setTimeout(resolve, 100));
+              await playAudio(retries - 1);
+            } else {
+              setAudioError('Impossible de lire l\'audio');
+              setPlayingChantId(null);
+            }
+          }
+        };
+
+        await playAudio();
       }
     } catch (error) {
       console.error('Error in handlePlayPause:', error);
+      setAudioError('Erreur lors de la lecture');
     }
   };
 
