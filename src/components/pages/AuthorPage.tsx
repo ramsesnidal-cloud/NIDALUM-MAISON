@@ -1,18 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { MusicShowcase } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Music, Play, Pause } from 'lucide-react';
+import { Music, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [playingTrackId, setPlayingTrackId] = useState<string | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     loadMusic();
+  }, []);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+        audioRef.current = null;
+      }
+    };
   }, []);
 
   const loadMusic = async () => {
@@ -20,6 +35,114 @@ export default function AuthorPage() {
     const { items } = await BaseCrudService.getAll<MusicShowcase>('musicshowcase');
     setMusicTracks(items);
     setIsLoading(false);
+  };
+
+  const handlePlayPause = async (e: React.MouseEvent, track: MusicShowcase) => {
+    e.stopPropagation();
+
+    if (!track.audioUrl) {
+      setAudioError('Aucun lien audio disponible');
+      console.warn('No audio URL available for this track');
+      return;
+    }
+
+    try {
+      setAudioError(null);
+
+      // If clicking the same track, toggle play/pause
+      if (playingTrackId === track._id) {
+        if (audioRef.current) {
+          if (audioRef.current.paused) {
+            try {
+              const playPromise = audioRef.current.play();
+              if (playPromise !== undefined) {
+                await playPromise;
+              }
+            } catch (err) {
+              console.error('Error resuming audio:', err);
+              setAudioError('Impossible de reprendre la lecture');
+            }
+          } else {
+            audioRef.current.pause();
+          }
+        }
+      } else {
+        // Stop current audio and play new one
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+
+        // Create new audio element with proper configuration
+        const audio = new Audio();
+        audio.crossOrigin = 'anonymous';
+        audio.preload = 'auto';
+        audio.volume = isMuted ? 0 : 1;
+        
+        // Set up event listeners BEFORE setting src
+        audio.onended = () => {
+          setPlayingTrackId(null);
+          setAudioError(null);
+        };
+
+        audio.onerror = (error) => {
+          console.error('Audio loading error:', error);
+          setAudioError('Erreur de chargement audio');
+          setPlayingTrackId(null);
+        };
+
+        audio.onloadstart = () => {
+          console.log('Audio loading started for:', track.trackTitle);
+        };
+
+        audio.oncanplay = () => {
+          console.log('Audio ready to play:', track.trackTitle);
+        };
+
+        // Set the source and attempt to play
+        audio.src = track.audioUrl;
+        audioRef.current = audio;
+
+        // Force play with retry logic
+        const playAudio = async (retries = 3) => {
+          try {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+              await playPromise;
+              setPlayingTrackId(track._id);
+              console.log('Audio playing successfully:', track.trackTitle);
+            } else {
+              setPlayingTrackId(track._id);
+            }
+          } catch (playError) {
+            console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
+            
+            if (retries > 0) {
+              // Retry after a short delay
+              await new Promise(resolve => setTimeout(resolve, 100));
+              await playAudio(retries - 1);
+            } else {
+              setAudioError('Impossible de lire l\'audio');
+              setPlayingTrackId(null);
+            }
+          }
+        };
+
+        await playAudio();
+      }
+    } catch (error) {
+      console.error('Error in handlePlayPause:', error);
+      setAudioError('Erreur lors de la lecture');
+    }
+  };
+
+  const handleToggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newMutedState = !isMuted;
+    setIsMuted(newMutedState);
+    if (audioRef.current) {
+      audioRef.current.volume = newMutedState ? 0 : 1;
+    }
   };
 
   return (
@@ -176,16 +299,35 @@ export default function AuthorPage() {
                   className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
                 >
                   {track.coverImage && (
-                    <div className="aspect-square overflow-hidden relative">
+                    <div className="aspect-square overflow-hidden relative group/image">
                       <Image
                         src={track.coverImage}
                         alt={track.trackTitle || 'Track cover'}
                         width={400}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <Play className="w-16 h-16 text-primary" />
-                      </div>
+                      {/* Play/Pause Button - Center overlay */}
+                      {track.audioUrl && (
+                        <motion.button
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          whileHover={{ scale: 1.15 }}
+                          onClick={(e) => handlePlayPause(e, track)}
+                          className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 z-20"
+                          title={playingTrackId === track._id ? 'Pause' : 'Lecture'}
+                        >
+                          <div className="flex items-center justify-center w-16 h-16 bg-primary text-primary-foreground rounded-full shadow-2xl hover:bg-primary/90 transition-colors">
+                            {playingTrackId === track._id ? (
+                              <Pause className="w-8 h-8" />
+                            ) : (
+                              <Play className="w-8 h-8 ml-1" />
+                            )}
+                          </div>
+                          <p className="font-paragraph text-xs text-white mt-2 font-semibold">
+                            {playingTrackId === track._id ? 'Pause' : 'Écouter'}
+                          </p>
+                        </motion.button>
+                      )}
                     </div>
                   )}
                   
@@ -207,6 +349,44 @@ export default function AuthorPage() {
                       <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
                         {track.description}
                       </p>
+                    )}
+                    
+                    {/* Audio Player */}
+                    {track.audioUrl && (
+                      <div className="mt-4">
+                        <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg">
+                          <button
+                            onClick={(e) => handlePlayPause(e, track)}
+                            className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50"
+                            title={playingTrackId === track._id ? 'Pause' : 'Lecture'}
+                          >
+                            {playingTrackId === track._id ? (
+                              <Pause className="w-4 h-4" />
+                            ) : (
+                              <Play className="w-4 h-4 ml-0.5" />
+                            )}
+                          </button>
+                          <div className="flex-1">
+                            <p className="font-paragraph text-xs text-foreground/60">
+                              {playingTrackId === track._id ? 'En lecture...' : 'Cliquez pour écouter'}
+                            </p>
+                          </div>
+                          <button
+                            onClick={handleToggleMute}
+                            className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors"
+                            title={isMuted ? 'Activer le son' : 'Couper le son'}
+                          >
+                            {isMuted ? (
+                              <VolumeX className="w-4 h-4" />
+                            ) : (
+                              <Volume2 className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                        {audioError && (
+                          <p className="text-xs text-destructive mt-2">Erreur audio: {audioError}</p>
+                        )}
+                      </div>
                     )}
                   </div>
                 </motion.div>
