@@ -11,24 +11,36 @@ export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
   const [audioError, setAudioError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioTracksRef = useRef<Map<string, HTMLAudioElement>>(new Map());
 
   useEffect(() => {
     loadMusic();
   }, []);
 
-  // Cleanup audio on unmount
+  // Cleanup all audio elements on unmount
   useEffect(() => {
     return () => {
+      audioTracksRef.current.forEach((audio) => {
+        audio.pause();
+        audio.src = '';
+      });
+      audioTracksRef.current.clear();
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.src = '';
-        audioRef.current = null;
       }
     };
   }, []);
+
+  // Update volume for current playing track
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   const loadMusic = async () => {
     setIsLoading(true);
@@ -50,75 +62,71 @@ export default function AuthorPage() {
       setAudioError(null);
 
       // If clicking the same track, toggle play/pause
-      if (playingTrackId === track._id) {
-        if (audioRef.current) {
-          if (audioRef.current.paused) {
-            try {
-              const playPromise = audioRef.current.play();
-              if (playPromise !== undefined) {
-                await playPromise;
-              }
-            } catch (err) {
-              console.error('Error resuming audio:', err);
-              setAudioError('Impossible de reprendre la lecture');
+      if (playingTrackId === track._id && audioRef.current) {
+        if (audioRef.current.paused) {
+          try {
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+              await playPromise;
             }
-          } else {
-            audioRef.current.pause();
+          } catch (err) {
+            console.error('Error resuming audio:', err);
+            setAudioError('Impossible de reprendre la lecture');
           }
+        } else {
+          audioRef.current.pause();
         }
       } else {
-        // Stop current audio and play new one
+        // Stop current audio
         if (audioRef.current) {
           audioRef.current.pause();
           audioRef.current.currentTime = 0;
         }
 
-        // Create new audio element with proper configuration
-        const audio = new Audio();
-        audio.crossOrigin = 'anonymous';
-        audio.preload = 'auto';
-        audio.volume = isMuted ? 0 : 1;
+        // Create or reuse audio element for this track
+        let audio = audioTracksRef.current.get(track._id);
         
-        // Set up event listeners BEFORE setting src
-        audio.onended = () => {
-          setPlayingTrackId(null);
-          setAudioError(null);
-        };
+        if (!audio) {
+          audio = new Audio();
+          audio.crossOrigin = 'anonymous';
+          audio.preload = 'auto';
+          audio.volume = volume;
+          
+          // Set up event listeners
+          audio.onended = () => {
+            setPlayingTrackId(null);
+            setAudioError(null);
+          };
 
-        audio.onerror = (error) => {
-          console.error('Audio loading error:', error);
-          setAudioError('Erreur de chargement audio');
-          setPlayingTrackId(null);
-        };
+          audio.onerror = () => {
+            console.error('Audio loading error for:', track.trackTitle);
+            setAudioError('Erreur de chargement audio');
+            setPlayingTrackId(null);
+          };
 
-        audio.onloadstart = () => {
-          console.log('Audio loading started for:', track.trackTitle);
-        };
+          audio.src = track.audioUrl;
+          audioTracksRef.current.set(track._id, audio);
+        } else {
+          // Reset existing audio element
+          audio.currentTime = 0;
+          audio.volume = volume;
+        }
 
-        audio.oncanplay = () => {
-          console.log('Audio ready to play:', track.trackTitle);
-        };
-
-        // Set the source and attempt to play
-        audio.src = track.audioUrl;
         audioRef.current = audio;
+        setPlayingTrackId(track._id);
 
-        // Force play with retry logic
+        // Play with retry logic
         const playAudio = async (retries = 3) => {
           try {
             const playPromise = audio.play();
             if (playPromise !== undefined) {
               await playPromise;
-              setPlayingTrackId(track._id);
               console.log('Audio playing successfully:', track.trackTitle);
-            } else {
-              setPlayingTrackId(track._id);
             }
           } catch (playError) {
             console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
             
             if (retries > 0) {
-              // Retry after a short delay
               await new Promise(resolve => setTimeout(resolve, 100));
               await playAudio(retries - 1);
             } else {
@@ -136,13 +144,10 @@ export default function AuthorPage() {
     }
   };
 
-  const handleToggleMute = (e: React.MouseEvent) => {
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    if (audioRef.current) {
-      audioRef.current.volume = newMutedState ? 0 : 1;
-    }
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
   };
 
   return (
@@ -353,7 +358,7 @@ export default function AuthorPage() {
                     
                     {/* Audio Player */}
                     {track.audioUrl && (
-                      <div className="mt-4">
+                      <div className="mt-4 space-y-3">
                         <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg">
                           <button
                             onClick={(e) => handlePlayPause(e, track)}
@@ -371,20 +376,28 @@ export default function AuthorPage() {
                               {playingTrackId === track._id ? 'En lecture...' : 'Cliquez pour écouter'}
                             </p>
                           </div>
-                          <button
-                            onClick={handleToggleMute}
-                            className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors"
-                            title={isMuted ? 'Activer le son' : 'Couper le son'}
-                          >
-                            {isMuted ? (
-                              <VolumeX className="w-4 h-4" />
-                            ) : (
-                              <Volume2 className="w-4 h-4" />
-                            )}
-                          </button>
                         </div>
+                        
+                        {/* Volume Control */}
+                        <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg">
+                          <Volume2 className="w-4 h-4 text-foreground/60 flex-shrink-0" />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={volume}
+                            onChange={handleVolumeChange}
+                            className="flex-1 h-2 bg-primary/20 rounded-lg appearance-none cursor-pointer accent-primary"
+                            title="Contrôle du volume"
+                          />
+                          <span className="text-xs text-foreground/60 w-8 text-right">
+                            {Math.round(volume * 100)}%
+                          </span>
+                        </div>
+                        
                         {audioError && (
-                          <p className="text-xs text-destructive mt-2">Erreur audio: {audioError}</p>
+                          <p className="text-xs text-destructive">Erreur audio: {audioError}</p>
                         )}
                       </div>
                     )}
