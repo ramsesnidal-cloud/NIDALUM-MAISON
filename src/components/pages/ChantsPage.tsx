@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Edit2, LogOut } from 'lucide-react';
+import { useAdminStore } from '@/lib/admin-store';
+import AdminLoginModal from '@/components/AdminLoginModal';
+import EditChantImageModal from '@/components/EditChantImageModal';
 
 export default function ChantsPage() {
   const [chants, setChants] = useState<RitualChants[]>([]);
   const [selectedChant, setSelectedChant] = useState<RitualChants | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [editingChant, setEditingChant] = useState<RitualChants | null>(null);
+  const { isAdmin, setAdmin } = useAdminStore();
 
   useEffect(() => {
     loadChants();
@@ -23,9 +29,41 @@ export default function ChantsPage() {
     setIsLoading(false);
   };
 
+  const handleEditImage = (chant: RitualChants) => {
+    if (!isAdmin) {
+      setShowAdminLogin(true);
+      return;
+    }
+    setEditingChant(chant);
+  };
+
+  const handleSaveImage = (updatedChant: RitualChants) => {
+    setChants(chants.map(c => c._id === updatedChant._id ? updatedChant : c));
+    setEditingChant(null);
+  };
+
+  const handleLogout = () => {
+    setAdmin(false);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      
+      {/* Admin Badge */}
+      {isAdmin && (
+        <div className="fixed top-24 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-primary/20 border border-primary/50 rounded-lg">
+          <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+          <span className="font-paragraph text-sm text-primary">Mode Admin</span>
+          <button
+            onClick={handleLogout}
+            className="ml-2 text-primary hover:text-primary/80 transition-colors"
+            title="Déconnexion admin"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
+      )}
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
@@ -75,17 +113,35 @@ export default function ChantsPage() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group cursor-pointer"
+                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group cursor-pointer relative"
                   onClick={() => setSelectedChant(selectedChant?._id === chant._id ? null : chant)}
                 >
                   {chant.chantImage && (
-                    <div className="aspect-video overflow-hidden">
+                    <div className="aspect-video overflow-hidden relative">
                       <Image
                         src={chant.chantImage}
                         alt={chant.chantTitle || 'Chant rituel'}
                         width={800}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
+                      
+                      {/* Edit Button - Only visible to admin */}
+                      {isAdmin && (
+                        <motion.button
+                          initial={{ opacity: 0 }}
+                          whileHover={{ opacity: 1 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditImage(chant);
+                          }}
+                          className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        >
+                          <div className="flex flex-col items-center gap-2">
+                            <Edit2 className="w-8 h-8 text-primary" />
+                            <span className="font-paragraph text-sm text-primary">Modifier l'image</span>
+                          </div>
+                        </motion.button>
+                      )}
                     </div>
                   )}
                   
@@ -191,6 +247,20 @@ export default function ChantsPage() {
       </section>
 
       <Footer />
+
+      {/* Modals */}
+      <AnimatePresence>
+        {showAdminLogin && (
+          <AdminLoginModal onClose={() => setShowAdminLogin(false)} />
+        )}
+        {editingChant && (
+          <EditChantImageModal
+            chant={editingChant}
+            onClose={() => setEditingChant(null)}
+            onSave={handleSaveImage}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
