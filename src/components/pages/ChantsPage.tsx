@@ -9,7 +9,7 @@ import { Sparkles, Edit2, LogOut, Play, Pause } from 'lucide-react';
 import { useAdminStore } from '@/lib/admin-store';
 import AdminLoginModal from '@/components/AdminLoginModal';
 import EditChantImageModal from '@/components/EditChantImageModal';
-import AudioPlayer from '@/components/AudioPlayer';
+import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 
 export default function ChantsPage() {
   const [chants, setChants] = useState<RitualChants[]>([]);
@@ -214,8 +214,8 @@ export default function ChantsPage() {
 
                     {/* Audio Player Component */}
                     {chant.audio && (
-                      <div className="mt-4 border-t border-primary/20 pt-4">
-                        <AudioPlayer
+                      <div className="mt-6 border-t border-primary/20 pt-6">
+                        <ModernAudioPlayer
                           audioUrl={chant.audio}
                           title={chant.chantTitle || 'Chant'}
                           onPlayStateChange={(isPlaying) => handlePlayStateChange(chant._id, isPlaying)}
