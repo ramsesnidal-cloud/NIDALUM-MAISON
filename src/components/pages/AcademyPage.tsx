@@ -62,7 +62,6 @@ export default function AcademyPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -86,7 +85,6 @@ export default function AcademyPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Programs Section */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -134,24 +132,23 @@ export default function AcademyPage() {
                 </p>
 
                 <div className="space-y-2 mb-6">
-                  <p className="font-paragraph text-sm text-foreground/50 mb-3">Modules inclus:</p>
-                  {program.modules.map((module, idx) => (
-                    <div key={idx} className="flex items-center">
-                      <CheckCircle className="w-4 h-4 text-secondary mr-2" />
-                      <span className="font-paragraph text-sm text-foreground/70">{module}</span>
-                    </div>
-                  ))}
-                </div>
+                    <p className="font-paragraph text-sm text-foreground/50 mb-3">Modules inclus:</p>
+                    {program.modules.map((module, idx) => (
+                      <div key={idx} className="flex items-center">
+                        <CheckCircle className="w-4 h-4 text-secondary mr-2" />
+                        <span className="font-paragraph text-sm text-foreground/70">{module}</span>
+                      </div>
+                    ))}
+                  </div>
 
                 <button className="w-full bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-3 hover:bg-primary/90 transition-all duration-300">
-                  S'inscrire
-                </button>
+                S'inscrire
+              </button>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
       {/* Benefits Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
         <div className="max-w-[120rem] mx-auto">
@@ -185,7 +182,6 @@ export default function AcademyPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Learning Path Section */}
       <section className="py-24 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -230,7 +226,6 @@ export default function AcademyPage() {
           </motion.div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/10">
         <div className="max-w-4xl mx-auto text-center">
@@ -260,7 +255,6 @@ export default function AcademyPage() {
           </motion.div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
