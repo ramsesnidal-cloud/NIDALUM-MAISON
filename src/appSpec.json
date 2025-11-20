@@ -1,0 +1,1078 @@
+{
+  "id": "7f0bc029-210e-4be5-8855-d2ed67fd1083",
+  "siteName": "NIDALUM – Language Institute & Universe",
+  "domainUrl": "nidalumlearn.com",
+  "brandingPresets": [
+    {
+      "presetId": "00000000-2aef-42bf-960b-692960745216",
+      "brandIdentity": {
+        "designSummary": "**The Sacred Glitch: A Fusion of Ancient Mysticism and Afrofuturist Boldness**\n\nThe Vision: We are building a digital temple—a space where the ancient language of Nidalum meets the boundless possibilities of the future. The design is a deliberate collision of sacred geometry and digital distortion, creating a visual experience that is both awe-inspiring and unsettling. Think less 'corporate website' and more 'portal to another dimension'.\n\n**Execution Blueprint:**\n1. The Broken Monolith Grid: A 6-column grid forms the foundation, but elements will intentionally break free, overlapping and extending beyond its boundaries to evoke a sense of ancient structures crumbling into the digital age.\n2. Typography as Sacred Geometry: Headlines are not just text; they are visual incantations. The vertical Toraé-Shira alphabet will be integrated as a recurring graphic motif, adding a layer of cryptic symbolism.\n3. The Glitch in the System: Introduce subtle 'glitch' effects—a momentary flicker, a distorted line—to remind users that they are traversing a digital space, not a physical one. This can be achieved with CSS animations and transitions.\n4. Light as Revelation: Use light and shadow to guide the eye and create a sense of depth. The ancient gold and astral blue should feel like they are emanating from within the screen, not just applied to its surface.",
+        "toneOfVoice": "Mystical, poetic, and authoritative. Evokes a sense of ancient wisdom and cosmic wonder.",
+        "tones": [
+          "Sacred",
+          "Mystical",
+          "Poetic",
+          "Authoritative",
+          "Cinématographique"
+        ],
+        "designStyle": {
+          "primaryStyle": [
+            "Afrofuturism",
+            "Mysticism",
+            "Cinematic"
+          ],
+          "supportingStyles": [
+            "Ancient Temple",
+            "Avatar",
+            "Dune"
+          ]
+        },
+        "palette": {
+          "colors": {
+            "primary": "#FBBF24",
+            "primaryForeground": "#000000",
+            "secondary": "#00D0FF",
+            "secondaryForeground": "#000000",
+            "background": "#00172E",
+            "foreground": "#FFFFFF",
+            "customColors": [
+              {
+                "name": "darkAmberShadow",
+                "value": "#4A340E"
+              },
+              {
+                "name": "destructive",
+                "value": "#FF4136"
+              },
+              {
+                "name": "destructive-foreground",
+                "value": "#FFFFFF"
+              }
+            ]
+          },
+          "paletteUsageGuide": "Primary color (Ancient Gold) is used for key interactive elements and highlights. Secondary color (Sacred Cyan) is used for accents and calls to action. Background color (Deep Black) provides a strong contrast and cinematic feel. Dark Amber Shadows are used to create depth and dimension.",
+          "paletteAccessibilityNotes": "Ensure sufficient contrast between text and background colors for readability. Use colorblindness simulators to verify accessibility for users with visual impairments."
+        },
+        "typography": {
+          "headings": {
+            "font": {
+              "role": "Titles",
+              "fontFamily": "cinzel",
+              "fontJustification": ""
+            },
+            "headingsSimilarFonts": [],
+            "headingsUsageGuide": "Used for all main titles and section headings. Apply a subtle gold or cyan gradient for a mystical effect.",
+            "headingsAccessibilityNotes": "Ensure sufficient contrast with the background. Use appropriate heading levels for semantic structure."
+          },
+          "paragraphs": {
+            "font": {
+              "role": "Body Text",
+              "fontFamily": "montserrat",
+              "fontJustification": ""
+            },
+            "paragraphsSimilarFonts": [],
+            "paragraphsUsageGuide": "Used for all body text and paragraph content. Maintain a comfortable line height for readability.",
+            "paragraphsAccessibilityNotes": "Ensure sufficient contrast with the background. Use a legible font size for all devices."
+          },
+          "welcomeSectionTypography": {
+            "placement": "",
+            "implementation": ""
+          },
+          "fontSizes": [
+            {
+              "name": "xs",
+              "size": "0.75rem",
+              "lineHeight": "1",
+              "letterSpacing": "0.05em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "sm",
+              "size": "0.875rem",
+              "lineHeight": "1.25",
+              "letterSpacing": "0.025em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "base",
+              "size": "1rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "lg",
+              "size": "1.125rem",
+              "lineHeight": "1.75",
+              "letterSpacing": "-0.025em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "xl",
+              "size": "1.25rem",
+              "lineHeight": "1.75",
+              "letterSpacing": "-0.025em",
+              "fontWeight": "500"
+            },
+            {
+              "name": "2xl",
+              "size": "1.5rem",
+              "lineHeight": "2",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "500"
+            },
+            {
+              "name": "3xl",
+              "size": "1.875rem",
+              "lineHeight": "2.25",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "600"
+            },
+            {
+              "name": "4xl",
+              "size": "2.25rem",
+              "lineHeight": "2.5",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "5xl",
+              "size": "3rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "6xl",
+              "size": "3.75rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "800"
+            },
+            {
+              "name": "7xl",
+              "size": "4.5rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "800"
+            },
+            {
+              "name": "8xl",
+              "size": "6rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "900"
+            },
+            {
+              "name": "9xl",
+              "size": "8rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "900"
+            }
+          ]
+        },
+        "layout": {
+          "layoutDna": {
+            "densitySpectrum": "Dense, with layered elements and overlapping sections.",
+            "contrastSpectrum": "High contrast between text and background for readability and visual impact.",
+            "gridAlignmentSpectrum": "Intentionally Broken, to create visual tension and guide the eye through non-traditional pathways.",
+            "negativeSpaceUsage": "Strategic use of negative space to highlight key elements and create a sense of depth.",
+            "textVsImageEmphasis": "Balanced emphasis on both text and images, with text often used as a graphic element.",
+            "complexitySpectrum": "Complex, with layered elements and subtle animations to create a rich and engaging experience."
+          },
+          "grid": {
+            "compositionApproach": "Broken Grid with Overlapping and Bleeding Elements.",
+            "spacing": {
+              "columns": "6 columns",
+              "rows": "Auto",
+              "gaps": "Base unit: 8px. All grid gaps are multiples of 8px (e.g., 16px, 24px, 32px)."
+            },
+            "margins": "Margins are dynamic and vary based on screen size. Use a base margin of 24px on mobile and increase to 48px on larger screens.",
+            "padding": "Padding is used to create visual separation between elements. Use a base padding of 16px on mobile and increase to 32px on larger screens."
+          },
+          "heroSectionLayout": "**The Cosmic Echo Chamber**\nComposition (Tailwind Spec): Full-screen container (h-screen relative overflow-hidden). Background video (absolute inset-0 object-cover w-full h-full). Headline 'NIDALUM: Language Institute & Universe' (absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl font-bold text-white z-10).\nSignature Hook (Framer Motion Spec): The headline uses `initial={{ opacity: 0, scale: 0.8 }}` and `animate={{ opacity: 1, scale: 1, transition: { duration: 1.2, ease: 'easeInOut' } }}`. A subtle particle effect (using a canvas element) overlays the video, with particles moving randomly and fading in/out."
+        },
+        "components": {
+          "containers": "Method: Whitespace, Style: 60px vertical margin",
+          "images": "Layout Role: Full-bleed background with a fixed position to create a window effect on scroll. | Gallery Type: Horizontal Scroll Filmstrip: A single-row gallery driven by horizontal scroll, where oversized items create a 'peek-a-boo' effect.",
+          "buttons": "Primary: background-color: #FBBF24, color: #000000, border-radius: 0px, padding: 12px 24px. Secondary: background-color: transparent, color: #FBBF24, border: 2px solid #FBBF24, border-radius: 0px."
+        },
+        "graphicElements": {
+          "icons": "Minimalist line icons in gold or cyan.",
+          "illustrations": "Abstract geometric patterns inspired by tribal art and sacred geometry.",
+          "stickers": "N/A"
+        }
+      },
+      "originImagesUrls": []
+    },
+    {
+      "presetId": "be88aaed-58aa-4714-98a6-c868edf6fa7a",
+      "brandIdentity": {
+        "designSummary": "This brand design features a bold, modern, and minimalistic aesthetic with a strong emphasis on high-contrast color blocking and impactful typography. The primary color is a vivid red used prominently for backgrounds, buttons, and key brand elements, paired with stark black and white for text and backgrounds to create a striking visual hierarchy. A muted gray-beige serves as a neutral background to soften and balance the intense color palette. Typography is geometric and sans-serif, with large uppercase headings that convey strength and modernity, complemented by clean, readable body text. The layout is modular and grid-based, balancing text and imagery with generous spacing and asymmetrical compositions to maintain visual interest. Graphic elements such as wireframe globes and minimalistic icons reinforce a futuristic, techno vibe. Overall, the design communicates energy, confidence, and a cutting-edge atmosphere suitable for music events or tech-forward brands.",
+        "toneOfVoice": "Confident, energetic, modern, edgy, and minimalistic with a futuristic undertone.",
+        "tones": [
+          "Bold",
+          "Energetic",
+          "Modern",
+          "Minimalistic",
+          "Futuristic",
+          "Confident",
+          "Edgy",
+          "Clean",
+          "High-Contrast",
+          "Techno"
+        ],
+        "designStyle": {
+          "primaryStyle": [
+            "Minimalism",
+            "Modernism",
+            "Futuristic"
+          ],
+          "supportingStyles": [
+            "Techno",
+            "Geometric",
+            "Modular"
+          ]
+        },
+        "palette": {
+          "colors": {
+            "primary": "#D33422",
+            "primaryForeground": "#FFFFFF",
+            "secondary": "#000000",
+            "secondaryForeground": "#FFFFFF",
+            "background": "#C7BCBC",
+            "customColors": [
+              {
+                "name": "foreground",
+                "value": "#000000"
+              },
+              {
+                "name": "destructive",
+                "value": "#DF3131"
+              },
+              {
+                "name": "destructiveforeground",
+                "value": "#FFFFFF"
+              }
+            ]
+          },
+          "paletteUsageGuide": "Use the 'primary' color as the dominant brand color for backgrounds, call-to-action buttons, and key brand elements to create strong visual impact. Text and icons on 'primary' backgrounds should use 'primaryForeground' for maximum readability. The 'secondary' color provides a contrasting dark tone for backgrounds and text, with 'secondaryForeground' used for text and icons on 'secondary' backgrounds. The 'background' color serves as a neutral, muted base to balance the intensity of 'primary' and 'secondary' colors, ideal for large content areas or sections requiring softer visual weight. Combine 'primary' and 'secondary' colors sparingly to maintain clarity and avoid visual clutter. Maintain high contrast between text and backgrounds to ensure accessibility and legibility across all devices.",
+          "paletteAccessibilityNotes": "The 'primaryForeground' on 'primary' background and 'secondaryForeground' on 'secondary' background combinations meet WCAG AA standards for text contrast, ensuring readability. The 'background' color paired with 'primary' or 'secondary' text also meets accessibility guidelines for body text. Care should be taken when using 'primary' text on 'background' or vice versa to maintain sufficient contrast, especially for smaller font sizes."
+        },
+        "typography": {
+          "headings": {
+            "font": {
+              "role": "Primary Heading Font",
+              "fontFamily": "anton",
+              "fontJustification": ""
+            },
+            "headingsSimilarFonts": [
+              "oswald",
+              "bebas neue",
+              "montserrat-black-new"
+            ],
+            "headingsUsageGuide": "Use the heading font in uppercase with generous letter spacing to emphasize brand strength and modernity. Headings should be large and prominent, contrasting with body text for clear hierarchy. Pair with clean, simple paragraph fonts to maintain readability and balance. Ensure headings use 'primaryForeground' or 'secondaryForeground' colors depending on background for accessibility.",
+            "headingsAccessibilityNotes": "Headings using this font with 'primaryForeground' on 'primary' or 'secondaryForeground' on 'secondary' backgrounds meet WCAG AA contrast standards, ensuring clear readability."
+          },
+          "paragraphs": {
+            "font": {
+              "role": "Main Body Text Font",
+              "fontFamily": "open sans",
+              "fontJustification": ""
+            },
+            "paragraphsSimilarFonts": [
+              "nunito sans",
+              "raleway",
+              "work-sans-v2"
+            ],
+            "paragraphsUsageGuide": "Use the paragraph font for all body text, captions, and smaller informational text. Maintain normal casing and standard letter spacing for readability. Pair with bold heading fonts to create a clear typographic hierarchy. Use 'primaryForeground' or 'secondaryForeground' colors for text depending on background color to ensure accessibility.",
+            "paragraphsAccessibilityNotes": "Body text using this font with 'primaryForeground' on 'primary' or 'secondaryForeground' on 'secondary' backgrounds meets WCAG AA contrast requirements for legibility."
+          },
+          "welcomeSectionTypography": {
+            "placement": "Weighted Quadrant",
+            "implementation": "The welcome section uses a split layout with the brand name and key message occupying the left quadrant in large, bold uppercase typography, balanced by a graphic or image on the right quadrant. This asymmetrical placement creates dynamic visual tension and draws immediate attention to the brand identity. The typography is oversized and tightly kerned to maximize impact, with ample negative space around to maintain clarity and focus."
+          },
+          "fontSizes": [
+            {
+              "name": "xs",
+              "size": "0.75rem",
+              "lineHeight": "1.2",
+              "letterSpacing": "0.02em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "sm",
+              "size": "0.875rem",
+              "lineHeight": "1.3",
+              "letterSpacing": "0.02em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "base",
+              "size": "1rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.025em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "lg",
+              "size": "1.125rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.025em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "xl",
+              "size": "1.25rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.03em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "2xl",
+              "size": "1.5rem",
+              "lineHeight": "1.4",
+              "letterSpacing": "0.04em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "3xl",
+              "size": "1.875rem",
+              "lineHeight": "1.3",
+              "letterSpacing": "0.05em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "4xl",
+              "size": "2.25rem",
+              "lineHeight": "1.2",
+              "letterSpacing": "0.06em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "5xl",
+              "size": "3rem",
+              "lineHeight": "1.1",
+              "letterSpacing": "0.07em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "6xl",
+              "size": "3.75rem",
+              "lineHeight": "1.1",
+              "letterSpacing": "0.08em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "7xl",
+              "size": "4.5rem",
+              "lineHeight": "1",
+              "letterSpacing": "0.09em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "8xl",
+              "size": "6rem",
+              "lineHeight": "1",
+              "letterSpacing": "0.1em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "9xl",
+              "size": "8rem",
+              "lineHeight": "1",
+              "letterSpacing": "0.1em",
+              "fontWeight": "700"
+            }
+          ]
+        },
+        "layout": {
+          "layoutDna": {
+            "densitySpectrum": "Balanced",
+            "contrastSpectrum": "High-Contrast",
+            "gridAlignmentSpectrum": "Modular",
+            "negativeSpaceUsage": "Generous",
+            "textVsImageEmphasis": "Balanced",
+            "complexitySpectrum": "Simple & Clean"
+          },
+          "grid": {
+            "compositionApproach": "Column-based",
+            "spacing": {
+              "columns": "12-column grid",
+              "rows": "Defined content rows",
+              "gaps": "Consistent medium gaps"
+            },
+            "margins": "Generous page margins",
+            "padding": "Consistent padding within containers"
+          }
+        },
+        "components": {
+          "containers": "Containers use solid color backgrounds primarily in 'primary' red or 'secondary' black, with ample padding and clear separation from other sections. They maintain a clean, modular structure with consistent margins and rounded corners on interactive elements.",
+          "images": "Images are used as full or partial backgrounds with overlaying text or graphics, often paired side-by-side with text blocks. They maintain a clean, modern aesthetic with no heavy filters, allowing natural colors to complement the brand palette.",
+          "buttons": "Buttons are rounded rectangles filled with the 'primary' color and use 'primaryForeground' for text. They have a minimalistic style with no shadows or gradients, emphasizing clarity and call-to-action prominence."
+        },
+        "graphicElements": {
+          "icons": "Icons are minimalistic, geometric, and monochromatic, primarily using 'primaryForeground' or 'secondaryForeground' colors to maintain consistency and clarity.",
+          "illustrations": "No prominent illustrations are used; the design relies on photography and geometric graphics like wireframe globes to convey the brand's futuristic and techno vibe.",
+          "stickers": "No sticker or badge elements are present in the design."
+        }
+      },
+      "originImagesUrls": [
+        "https://wixmp-fe53c9ff592a4da924211f23.wixmp.com/uploads/1752422280240-Screenshot%202025-07-13%20at%2018.57.16.png"
+      ]
+    },
+    {
+      "presetId": "fbe22d5c-5801-4bc4-bf10-e211a4ed0cbf",
+      "brandIdentity": {
+        "designSummary": "This design features a vibrant and high-contrast color palette anchored by the 'primary' navy blue and 'secondary' bright orange, set against a warm beige 'background' that balances the intensity. The typography is assertive and condensed for headings, emphasizing uppercase letters to convey strength and adventure, while body text remains clean and legible. The layout is modular and grid-based, with clear divisions and balanced use of imagery and text. Graphic elements such as simple line icons and horizontal borders add structure and guide the user visually. The overall aesthetic is dynamic and approachable, suitable for brands that want to evoke excitement and confidence in an outdoor or active lifestyle context.",
+        "toneOfVoice": "Bold, energetic, confident, and adventurous with a modern yet slightly retro edge.",
+        "tones": [
+          "Energetic",
+          "Adventurous",
+          "Confident",
+          "Bold",
+          "Modern",
+          "Approachable",
+          "Dynamic",
+          "Structured",
+          "Vibrant",
+          "Clear"
+        ],
+        "designStyle": {
+          "primaryStyle": [
+            "Bold",
+            "Modular",
+            "Grid-Based"
+          ],
+          "supportingStyles": [
+            "Retro-Modern",
+            "Minimalist",
+            "Editorial"
+          ]
+        },
+        "palette": {
+          "colors": {
+            "primary": "#1A1A6B",
+            "primaryForeground": "#FFFFFF",
+            "secondary": "#FF5A00",
+            "secondaryForeground": "#1A1A6B",
+            "background": "#F0E6D2",
+            "customColors": [
+              {
+                "name": "accentteal",
+                "value": "#3E6B66"
+              },
+              {
+                "name": "foreground",
+                "value": "#1A1A6B"
+              },
+              {
+                "name": "destructiveforeground",
+                "value": "#FFFFFF"
+              },
+              {
+                "name": "destructive",
+                "value": "#DF3131"
+              }
+            ]
+          },
+          "paletteUsageGuide": "Use the 'primary' color predominantly for headings, navigation text, and key interactive elements to convey strength and focus. The 'secondary' color is ideal for call-to-action buttons, highlights, and important accents; always pair 'secondary' backgrounds with 'primary' (#1A1A6B) text/icons for accessibility. The 'background' color provides a warm, neutral canvas. The 'accentTeal' color is best used for banners/decor, not essential text. Text on 'primary' backgrounds uses 'primaryForeground' (#FFFFFF), and text on 'secondary' backgrounds uses 'primary' (#1A1A6B) for maximum contrast and accessibility.",
+          "paletteAccessibilityNotes": "The 'primary' color (#1A1A6B) on 'background' (#F0E6D2) is fully accessible for all text. The 'secondary' color (#FF5A00) on 'background' is accessible for large text. On 'secondary' (#FF5A00) backgrounds, always use 'primary' (#1A1A6B) for text and icons—never white."
+        },
+        "typography": {
+          "headings": {
+            "font": {
+              "role": "Primary Heading Font",
+              "fontFamily": "oswald-medium",
+              "fontJustification": ""
+            },
+            "headingsSimilarFonts": [
+              "oswald",
+              "anton",
+              "bebas neue"
+            ],
+            "headingsUsageGuide": "Use the heading font in uppercase for all major titles and navigation links to convey energy and confidence. Pair with the paragraph font for contrast, ensuring headings stand out clearly. Maintain consistent letter spacing and line height to preserve readability. Use 'primary' color for headings on light backgrounds and 'primaryForeground' on dark backgrounds to ensure accessibility.",
+            "headingsAccessibilityNotes": "Headings in 'primary' on 'background' meet WCAG AA contrast standards. When placed on 'secondary' or 'primary' backgrounds, use 'primary' (#1A1A6B) text for accessibility."
+          },
+          "paragraphs": {
+            "font": {
+              "role": "Main Body Text Font",
+              "fontFamily": "azeret-mono",
+              "fontJustification": ""
+            },
+            "paragraphsSimilarFonts": [
+              "raleway",
+              "nunito sans",
+              "poppins-v2"
+            ],
+            "paragraphsUsageGuide": "Use the paragraph font for all body text, descriptions, and secondary information. Maintain a comfortable line height and letter spacing for readability. Paragraph text should primarily use 'primary' color on 'background' for optimal contrast. Avoid using paragraph fonts in all uppercase to preserve legibility.",
+            "paragraphsAccessibilityNotes": "Paragraph text in 'primary' on 'background' meets WCAG AA contrast requirements for body text. On 'secondary' background, always use 'primary' text for accessibility."
+          },
+          "welcomeSectionTypography": {
+            "placement": "Centered",
+            "implementation": "The welcome section uses a large, bold heading centered horizontally and vertically over a full-width background image. The heading is uppercase and spaced tightly to create a strong visual impact. A call-to-action button is placed directly below the heading, aligned center, maintaining balance and focus. The background image is slightly darkened to ensure text legibility, and the typography contrasts sharply with the background using the 'primaryForeground' color."
+          },
+          "fontSizes": [
+            {
+              "name": "xs",
+              "size": "0.75rem",
+              "lineHeight": "1.2",
+              "letterSpacing": "0.05em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "sm",
+              "size": "0.875rem",
+              "lineHeight": "1.3",
+              "letterSpacing": "0.04em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "base",
+              "size": "1rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.03em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "lg",
+              "size": "1.125rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.02em",
+              "fontWeight": "600"
+            },
+            {
+              "name": "xl",
+              "size": "1.25rem",
+              "lineHeight": "1.4",
+              "letterSpacing": "0.02em",
+              "fontWeight": "600"
+            },
+            {
+              "name": "2xl",
+              "size": "1.5rem",
+              "lineHeight": "1.3",
+              "letterSpacing": "0.01em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "3xl",
+              "size": "1.875rem",
+              "lineHeight": "1.2",
+              "letterSpacing": "0em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "4xl",
+              "size": "2.25rem",
+              "lineHeight": "1.1",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "800"
+            },
+            {
+              "name": "5xl",
+              "size": "3rem",
+              "lineHeight": "1.1",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "800"
+            },
+            {
+              "name": "6xl",
+              "size": "3.75rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.03em",
+              "fontWeight": "900"
+            },
+            {
+              "name": "7xl",
+              "size": "4.5rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.04em",
+              "fontWeight": "900"
+            },
+            {
+              "name": "8xl",
+              "size": "6rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.05em",
+              "fontWeight": "900"
+            },
+            {
+              "name": "9xl",
+              "size": "8rem",
+              "lineHeight": "1",
+              "letterSpacing": "-0.06em",
+              "fontWeight": "900"
+            }
+          ]
+        },
+        "layout": {
+          "layoutDna": {
+            "densitySpectrum": "Balanced",
+            "contrastSpectrum": "High-Contrast",
+            "gridAlignmentSpectrum": "Strict Grid",
+            "negativeSpaceUsage": "Functional",
+            "textVsImageEmphasis": "Balanced",
+            "complexitySpectrum": "Moderately Complex"
+          },
+          "grid": {
+            "compositionApproach": "Column-based",
+            "spacing": {
+              "columns": "12-column grid",
+              "rows": "Defined content rows",
+              "gaps": "Consistent medium gaps"
+            },
+            "margins": "Generous page margins",
+            "padding": "Consistent padding within containers"
+          }
+        },
+        "components": {
+          "containers": "Containers use solid 'background' color with clear borders or shadows in 'accentTeal' or 'primary' to separate content blocks. They maintain consistent padding and margin to ensure content clarity and visual hierarchy.",
+          "images": "Images are framed with subtle borders or shadows in 'accentTeal' or 'primary' to integrate them into the layout. They maintain consistent aspect ratios and spacing, supporting the modular grid structure.",
+          "buttons": "Buttons use 'secondary' color backgrounds with 'primary' text for calls-to-action (never white). Secondary buttons may use 'primary' color outlines with 'primary' text. Hover states invert colors or add subtle shadows to enhance interactivity."
+        },
+        "graphicElements": {
+          "icons": "Icons are simple, line-based, and use the 'primary' color for consistency. They are sized proportionally to text and used to visually represent activities or actions without overwhelming the layout.",
+          "illustrations": "No prominent illustrations are used; the design relies on photography and minimal graphic elements to maintain a clean, modern look.",
+          "stickers": "Stickers or badges use 'secondary' color backgrounds with 'primary' text and simple borders or lines in 'primary' to highlight special offers or categories."
+        }
+      },
+      "originImagesUrls": [
+        "https://wixmp-fe53c9ff592a4da924211f23.wixmp.com/uploads/1752422904154-Screenshot%202025-07-13%20at%2019.07.26.png"
+      ]
+    },
+    {
+      "presetId": "0dcb068f-c67e-4584-9159-c11e15718388",
+      "brandIdentity": {
+        "designSummary": "This design features a modern, high-contrast aesthetic with a minimalistic yet bold approach. The primary color palette revolves around a vivid orange accent paired with deep charcoal black and clean white backgrounds, creating a dynamic and professional atmosphere. Typography is geometric and sans-serif, emphasizing clarity and technical sophistication. The layout is grid-based and modular, with generous spacing and clear hierarchical numbering to guide users through content logically. UI components such as buttons and cards are minimalistic with subtle shadows and rounded corners, reinforcing a sleek and contemporary feel. The overall visual personality is that of a cutting-edge technology brand, conveying trustworthiness, innovation, and expertise.",
+        "toneOfVoice": "Authoritative, innovative, and professional with a focus on precision and clarity.",
+        "tones": [
+          "Professional",
+          "Innovative",
+          "Bold",
+          "Technical",
+          "Clean",
+          "Authoritative",
+          "Dynamic",
+          "Precise",
+          "Modern",
+          "Minimalistic"
+        ],
+        "designStyle": {
+          "primaryStyle": [
+            "Modern",
+            "Minimalism",
+            "Tech-Industrial"
+          ],
+          "supportingStyles": [
+            "Modular",
+            "High-Contrast",
+            "Corporate"
+          ]
+        },
+        "palette": {
+          "colors": {
+            "primary": "#FF5700",
+            "primaryForeground": "#FFFFFF",
+            "secondary": "#0A0A0A",
+            "secondaryForeground": "#FFFFFF",
+            "background": "#F9F9F9",
+            "customColors": [
+              {
+                "name": "foreground",
+                "value": "#0A0A0A"
+              },
+              {
+                "name": "destructive",
+                "value": "#DF3131"
+              },
+              {
+                "name": "destructiveforeground",
+                "value": "#FFFFFF"
+              }
+            ]
+          },
+          "paletteUsageGuide": "Use the 'primary' color for key interactive elements such as buttons, numbering badges, and highlights to draw user attention and reinforce brand identity. The 'secondary' color serves as the main background for dark sections and should be paired with 'secondaryForeground' for text and icons to ensure readability. The 'background' color is used for light sections and content areas, providing a clean and neutral canvas for text and UI components. Text colors should always maintain high contrast by using 'secondary' on 'primary' backgrounds and 'secondaryForeground' on 'secondary' backgrounds. The palette balances boldness and clarity, with the 'primary' orange used sparingly but consistently to create visual hierarchy and emphasis without overwhelming the user.",
+          "paletteAccessibilityNotes": "The 'secondary' (#0A0A0A) and 'secondaryForeground' (#FFFFFF) pairing meets WCAG AAA contrast ratios, ensuring readability in dark mode sections. The 'background' (#F9F9F9) with black or dark gray text maintains strong contrast for accessibility. When using 'primary' as a background with 'primaryForeground' for text, this combination is ideal for card elements, ensuring visual consistency and clarity. If this combination is used for buttons, the button should include a black border for additional definition and accessibility. Overall, the palette supports accessible design across all text and interactive elements."
+        },
+        "typography": {
+          "headings": {
+            "font": {
+              "role": "Primary Heading Font",
+              "fontFamily": "Sora",
+              "fontJustification": ""
+            },
+            "headingsSimilarFonts": [
+              "work-sans-v2",
+              "poppins-v2",
+              "raleway"
+            ],
+            "headingsUsageGuide": "Use the heading font for all major titles and section headers to establish hierarchy and clarity. Headings should be bold and sized prominently to contrast with body text. Pair headings with the paragraph font to maintain a cohesive and professional look. Adequate spacing above and below headings ensures readability and visual separation. Use the 'primary' color for numbering and accent elements near headings to reinforce brand identity.",
+            "headingsAccessibilityNotes": "Headings use high contrast colors such as 'secondaryForeground' on 'secondary' backgrounds or black on 'background' to meet WCAG AA standards for large text, ensuring clear readability."
+          },
+          "paragraphs": {
+            "font": {
+              "role": "Main Body Text Font",
+              "fontFamily": "Sora",
+              "fontJustification": ""
+            },
+            "paragraphsSimilarFonts": [
+              "work-sans-v2",
+              "open sans",
+              "poppins-v2"
+            ],
+            "paragraphsUsageGuide": "Use the paragraph font for all body text, descriptions, and smaller informational content. Maintain sufficient line height and letter spacing for comfortable reading. Paragraph text should contrast strongly with the background, using 'secondaryForeground' on dark backgrounds and black or dark gray on light backgrounds. Avoid using the 'primary' color for large blocks of text to preserve readability and focus the accent color on interactive or key elements.",
+            "paragraphsAccessibilityNotes": "Paragraph text colors maintain WCAG AA contrast ratios against their backgrounds, ensuring accessibility for all users."
+          },
+          "welcomeSectionTypography": {
+            "placement": "Top-Third Anchor",
+            "implementation": "The welcome section uses a large, bold heading anchored in the top third of the viewport, overlaying a full-width hero image. The heading is left-aligned with ample padding, creating a strong focal point. Supporting text is placed nearby with smaller font size and lighter weight, maintaining hierarchy. The placement balances visual impact with readability, leveraging negative space around the text to avoid clutter and emphasize the brand message."
+          },
+          "fontSizes": [
+            {
+              "name": "xs",
+              "size": "0.75rem",
+              "lineHeight": "1.2",
+              "letterSpacing": "0.02em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "sm",
+              "size": "0.875rem",
+              "lineHeight": "1.3",
+              "letterSpacing": "0.02em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "base",
+              "size": "1rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.025em",
+              "fontWeight": "400"
+            },
+            {
+              "name": "lg",
+              "size": "1.125rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.025em",
+              "fontWeight": "500"
+            },
+            {
+              "name": "xl",
+              "size": "1.25rem",
+              "lineHeight": "1.5",
+              "letterSpacing": "0.03em",
+              "fontWeight": "600"
+            },
+            {
+              "name": "2xl",
+              "size": "1.5rem",
+              "lineHeight": "1.4",
+              "letterSpacing": "0.03em",
+              "fontWeight": "600"
+            },
+            {
+              "name": "3xl",
+              "size": "1.875rem",
+              "lineHeight": "1.3",
+              "letterSpacing": "0.035em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "4xl",
+              "size": "2.25rem",
+              "lineHeight": "1.2",
+              "letterSpacing": "0.04em",
+              "fontWeight": "700"
+            },
+            {
+              "name": "5xl",
+              "size": "3rem",
+              "lineHeight": "1.1",
+              "letterSpacing": "0.045em",
+              "fontWeight": "800"
+            },
+            {
+              "name": "6xl",
+              "size": "3.75rem",
+              "lineHeight": "1.1",
+              "letterSpacing": "0.05em",
+              "fontWeight": "800"
+            },
+            {
+              "name": "7xl",
+              "size": "4.5rem",
+              "lineHeight": "1",
+              "letterSpacing": "0.05em",
+              "fontWeight": "900"
+            },
+            {
+              "name": "8xl",
+              "size": "6rem",
+              "lineHeight": "1",
+              "letterSpacing": "0.06em",
+              "fontWeight": "900"
+            },
+            {
+              "name": "9xl",
+              "size": "8rem",
+              "lineHeight": "1",
+              "letterSpacing": "0.07em",
+              "fontWeight": "900"
+            }
+          ]
+        },
+        "layout": {
+          "layoutDna": {
+            "densitySpectrum": "Balanced",
+            "contrastSpectrum": "High-Contrast",
+            "gridAlignmentSpectrum": "Strict Grid",
+            "negativeSpaceUsage": "Generous",
+            "textVsImageEmphasis": "Balanced",
+            "complexitySpectrum": "Simple & Clean"
+          },
+          "grid": {
+            "compositionApproach": "Modular",
+            "spacing": {
+              "columns": "12-column grid",
+              "rows": "Defined content rows",
+              "gaps": "Consistent medium gaps"
+            },
+            "margins": "Generous page margins",
+            "padding": "Consistent padding within containers"
+          }
+        },
+        "components": {
+          "containers": "Containers use solid backgrounds of either 'background' or 'secondary' colors with subtle shadows and rounded corners to create separation and depth. Content is well padded and spaced to maintain clarity and hierarchy. Number badges in 'primary' color are used to label sections and items, adding visual interest and aiding navigation.",
+          "images": "Images are used prominently in hero sections with full-width layouts and overlay text. They are industrial and technical in tone but do not influence the core color palette. Images have no borders and are integrated seamlessly into the layout.",
+          "buttons": "Buttons are minimalistic with a solid 'primary' background and 'primaryForeground' text for primary actions. Secondary buttons use transparent backgrounds with 'primary' colored borders and text. Buttons have subtle rounded corners and consistent padding, maintaining a clean and modern look."
+        },
+        "graphicElements": {
+          "icons": "Icons are simple, line-based, and use the 'primary' color for emphasis. They maintain a consistent stroke weight and style, supporting the technical and modern aesthetic.",
+          "illustrations": "No illustrations are present; the design relies on photography and clean UI elements.",
+          "stickers": "Number badges and small labels use the 'primary' color with white text, featuring rounded corners and consistent sizing to create a cohesive visual language."
+        }
+      },
+      "originImagesUrls": [
+        "https://wixmp-fe53c9ff592a4da924211f23.wixmp.com/uploads/1752412000140-Screenshot%202025-06-04%20at%2011.01.34.jpg"
+      ]
+    }
+  ],
+  "brandBook": {
+    "tones": [
+      "Sacred",
+      "Mystical",
+      "Poetic",
+      "Authoritative",
+      "Cinématographique"
+    ],
+    "designStyle": {
+      "primaryStyle": [
+        "Afrofuturism",
+        "Mysticism",
+        "Cinematic"
+      ],
+      "supportingStyles": [
+        "Ancient Temple",
+        "Avatar",
+        "Dune"
+      ]
+    },
+    "toneOfVoice": "Mystical, poetic, and authoritative. Evokes a sense of ancient wisdom and cosmic wonder.",
+    "components": {
+      "images": "Layout Role: Full-bleed background with a fixed position to create a window effect on scroll. | Gallery Type: Horizontal Scroll Filmstrip: A single-row gallery driven by horizontal scroll, where oversized items create a 'peek-a-boo' effect.",
+      "buttons": "Primary: background-color: #FBBF24, color: #000000, border-radius: 0px, padding: 12px 24px. Secondary: background-color: transparent, color: #FBBF24, border: 2px solid #FBBF24, border-radius: 0px.",
+      "containers": "Method: Whitespace, Style: 60px vertical margin"
+    },
+    "typography": {
+      "headings": {
+        "font": {
+          "role": "Titles",
+          "fontFamily": "cinzel",
+          "fontJustification": ""
+        },
+        "headingsUsageGuide": "Used for all main titles and section headings. Apply a subtle gold or cyan gradient for a mystical effect.",
+        "headingsSimilarFonts": [],
+        "headingsAccessibilityNotes": "Ensure sufficient contrast with the background. Use appropriate heading levels for semantic structure."
+      },
+      "fontSizes": [
+        {
+          "name": "xs",
+          "size": "0.75rem",
+          "letterSpacing": "0.05em",
+          "lineHeight": "1",
+          "fontWeight": "400"
+        },
+        {
+          "name": "sm",
+          "size": "0.875rem",
+          "letterSpacing": "0.025em",
+          "lineHeight": "1.25",
+          "fontWeight": "400"
+        },
+        {
+          "name": "base",
+          "size": "1rem",
+          "letterSpacing": "0em",
+          "lineHeight": "1.5",
+          "fontWeight": "400"
+        },
+        {
+          "name": "lg",
+          "size": "1.125rem",
+          "letterSpacing": "-0.025em",
+          "lineHeight": "1.75",
+          "fontWeight": "400"
+        },
+        {
+          "name": "xl",
+          "size": "1.25rem",
+          "letterSpacing": "-0.025em",
+          "lineHeight": "1.75",
+          "fontWeight": "500"
+        },
+        {
+          "name": "2xl",
+          "size": "1.5rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "2",
+          "fontWeight": "500"
+        },
+        {
+          "name": "3xl",
+          "size": "1.875rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "2.25",
+          "fontWeight": "600"
+        },
+        {
+          "name": "4xl",
+          "size": "2.25rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "2.5",
+          "fontWeight": "700"
+        },
+        {
+          "name": "5xl",
+          "size": "3rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "1",
+          "fontWeight": "700"
+        },
+        {
+          "name": "6xl",
+          "size": "3.75rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "1",
+          "fontWeight": "800"
+        },
+        {
+          "name": "7xl",
+          "size": "4.5rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "1",
+          "fontWeight": "800"
+        },
+        {
+          "name": "8xl",
+          "size": "6rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "1",
+          "fontWeight": "900"
+        },
+        {
+          "name": "9xl",
+          "size": "8rem",
+          "letterSpacing": "-0.05em",
+          "lineHeight": "1",
+          "fontWeight": "900"
+        }
+      ],
+      "paragraphs": {
+        "font": {
+          "role": "Body Text",
+          "fontFamily": "montserrat",
+          "fontJustification": ""
+        },
+        "paragraphsUsageGuide": "Used for all body text and paragraph content. Maintain a comfortable line height for readability.",
+        "paragraphsSimilarFonts": [],
+        "paragraphsAccessibilityNotes": "Ensure sufficient contrast with the background. Use a legible font size for all devices."
+      },
+      "welcomeSectionTypography": {
+        "placement": "",
+        "implementation": ""
+      }
+    },
+    "originImagesUrls": [],
+    "layout": {
+      "grid": {
+        "margins": "Margins are dynamic and vary based on screen size. Use a base margin of 24px on mobile and increase to 48px on larger screens.",
+        "padding": "Padding is used to create visual separation between elements. Use a base padding of 16px on mobile and increase to 32px on larger screens.",
+        "spacing": {
+          "gaps": "Base unit: 8px. All grid gaps are multiples of 8px (e.g., 16px, 24px, 32px).",
+          "rows": "Auto",
+          "columns": "6 columns"
+        },
+        "compositionApproach": "Broken Grid with Overlapping and Bleeding Elements."
+      },
+      "layoutDna": {
+        "contrastSpectrum": "High contrast between text and background for readability and visual impact.",
+        "densitySpectrum": "Dense, with layered elements and overlapping sections.",
+        "textVsImageEmphasis": "Balanced emphasis on both text and images, with text often used as a graphic element.",
+        "complexitySpectrum": "Complex, with layered elements and subtle animations to create a rich and engaging experience.",
+        "gridAlignmentSpectrum": "Intentionally Broken, to create visual tension and guide the eye through non-traditional pathways.",
+        "negativeSpaceUsage": "Strategic use of negative space to highlight key elements and create a sense of depth."
+      },
+      "heroSectionLayout": "**The Cosmic Echo Chamber**\nComposition (Tailwind Spec): Full-screen container (h-screen relative overflow-hidden). Background video (absolute inset-0 object-cover w-full h-full). Headline 'NIDALUM: Language Institute & Universe' (absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl font-bold text-white z-10).\nSignature Hook (Framer Motion Spec): The headline uses `initial={{ opacity: 0, scale: 0.8 }}` and `animate={{ opacity: 1, scale: 1, transition: { duration: 1.2, ease: 'easeInOut' } }}`. A subtle particle effect (using a canvas element) overlays the video, with particles moving randomly and fading in/out."
+    },
+    "graphicElements": {
+      "icons": "Minimalist line icons in gold or cyan.",
+      "stickers": "N/A",
+      "illustrations": "Abstract geometric patterns inspired by tribal art and sacred geometry."
+    },
+    "designSummary": "**The Sacred Glitch: A Fusion of Ancient Mysticism and Afrofuturist Boldness**\n\nThe Vision: We are building a digital temple—a space where the ancient language of Nidalum meets the boundless possibilities of the future. The design is a deliberate collision of sacred geometry and digital distortion, creating a visual experience that is both awe-inspiring and unsettling. Think less 'corporate website' and more 'portal to another dimension'.\n\n**Execution Blueprint:**\n1. The Broken Monolith Grid: A 6-column grid forms the foundation, but elements will intentionally break free, overlapping and extending beyond its boundaries to evoke a sense of ancient structures crumbling into the digital age.\n2. Typography as Sacred Geometry: Headlines are not just text; they are visual incantations. The vertical Toraé-Shira alphabet will be integrated as a recurring graphic motif, adding a layer of cryptic symbolism.\n3. The Glitch in the System: Introduce subtle 'glitch' effects—a momentary flicker, a distorted line—to remind users that they are traversing a digital space, not a physical one. This can be achieved with CSS animations and transitions.\n4. Light as Revelation: Use light and shadow to guide the eye and create a sense of depth. The ancient gold and astral blue should feel like they are emanating from within the screen, not just applied to its surface.",
+    "palette": {
+      "colors": {
+        "background": "#00172E",
+        "secondary": "#00D0FF",
+        "customColors": [
+          {
+            "name": "darkAmberShadow",
+            "value": "#4A340E"
+          },
+          {
+            "name": "destructive",
+            "value": "#FF4136"
+          },
+          {
+            "name": "destructive-foreground",
+            "value": "#FFFFFF"
+          }
+        ],
+        "foreground": "#FFFFFF",
+        "secondaryForeground": "#000000",
+        "primaryForeground": "#000000",
+        "primary": "#FBBF24"
+      },
+      "paletteUsageGuide": "Primary color (Ancient Gold) is used for key interactive elements and highlights. Secondary color (Sacred Cyan) is used for accents and calls to action. Background color (Deep Black) provides a strong contrast and cinematic feel. Dark Amber Shadows are used to create depth and dimension.",
+      "paletteAccessibilityNotes": "Ensure sufficient contrast between text and background colors for readability. Use colorblindness simulators to verify accessibility for users with visual impairments."
+    }
+  },
+  "initialPrompt": "Je veux créer un site web professionnel appelé “NIDALUM – Language Institute & Universe”, dédié à la langue Nidalum (langue créée, structurée, avec alphabet, grammaire, lexique), à la spiritualité et aux chants rituels, à l’univers narratif Souma-Ra / Nidar, à mon identité artistique Ramses Nidal (Aboudramane Doumbia), à la musique épique afro-cinématographique que je crée, à la publication d’un dictionnaire, d’un livre, et aux ressources officielles. Le site doit être mystique, cinématographique, épuré, sacré. Style visuel : noir profond, bleu astral #00172E, or ancien #FBBF24, cyan sacré #00D0FF, ombres chaudes (ambre sombre). Graphisme épique, mythologique, atmosphère Avatar / Dune / Afrofuturisme / Temple ancien, effets de lumière sacrée, textures tribales légères, icônes minimalistes, sections cinématiques en plein écran. Typographie : Cinzel (titres dorés ou cyan), Montserrat / Inter (texte), style vertical pour l’alphabet Toraé-Shira. Structure : menu clair, sections complètes, pages détaillées. Pages : Accueil, Alphabet, Grammaire, Phonétique, Lexique (filtres), Chants, Origines, Academy, Auteur, Téléchargements. Fonctionnalités : mode sombre, navigation fluide, scroll animé, boutons dorés animés, icônes sobres, responsive mobile/tablette, multilingue FR/EN/DE, ton sacré, mots poétiques, style mythologique, ambiance mystique, effet “Institute of Language & Universe”.",
+  "status": "READY",
+  "revision": "11",
+  "createdDate": "2025-11-20T12:45:31.872Z",
+  "updatedDate": "2025-11-20T12:46:36.246Z",
+  "attachments": {
+    "contentImagesUrls": [],
+    "inspirationImagesUrls": []
+  },
+  "selectedBrandingPresetId": "00000000-2aef-42bf-960b-692960745216",
+  "plan": "{\n  \"sections\": [\n    {\n      \"id\": \"overview\",\n      \"title\": \"## Overview\",\n      \"content\": \"This plan outlines a professional website for the NIDALUM – Language Institute & Universe, dedicated to the Nidalum language, spirituality, narrative universe, artistic identity, music, and official publications. The site will feature a mystical, cinematic, and clean design with detailed sections for each aspect.\"\n    },\n    {\n      \"id\": \"key-features\",\n      \"title\": \"## Key features\",\n      \"content\": \"- **View Homepage Content**: Displays introductory information about NIDALUM, its universe, and the artist.\\n- **View Alphabet Details**: Presents the Nidalum language alphabet, including its structure and vertical typography.\\n- **View Grammar Details**: Explains the grammar rules of the Nidalum language.\\n- **View Phonetics Details**: Details the phonetic system of the Nidalum language.\\n- **View Lexicon Listing**: Shows the vocabulary of the Nidalum language.\\n- **Filter Lexicon**: Allows users to filter the lexicon by category or theme.\\n- **View Lexicon Item Details**: Provides detailed information for specific lexicon entries.\\n- **View Chants Listing**: Showcases the ritual chants with their spiritual context.\\n- **View Origins Details**: Explores the narrative universe Souma-Ra / Nidar.\\n- **View Academy Content**: Presents information about the language institute's offerings.\\n- **View Author Profile**: Details the artistic identity of Ramses Nidal (Aboudramane Doumbia).\\n- **View Music Showcase**: Features the epic Afro-cinematic music created by the artist.\\n- **View Publication Details**: Information about the published dictionary and book.\\n- **View Official Resources**: Provides access to official documents and materials.\\n- **Submit Contact Form**: Allows visitors to send inquiries.\",\n      \"metadata\": [\n        { \"id\": \"view-homepage-content\", \"name\": \"View Homepage Content\" },\n        { \"id\": \"view-alphabet-details\", \"name\": \"View Alphabet Details\" },\n        { \"id\": \"view-grammar-details\", \"name\": \"View Grammar Details\" },\n        { \"id\": \"view-phonetics-details\", \"name\": \"View Phonetics Details\" },\n        { \"id\": \"view-lexicon-listing\", \"name\": \"View Lexicon Listing\" },\n        { \"id\": \"filter-lexicon\", \"name\": \"Filter Lexicon\" },\n        { \"id\": \"view-lexicon-item-details\", \"name\": \"View Lexicon Item Details\" },\n        { \"id\": \"view-chants-listing\", \"name\": \"View Chants Listing\" },\n        { \"id\": \"view-origins-details\", \"name\": \"View Origins Details\" },\n        { \"id\": \"view-academy-content\", \"name\": \"View Academy Content\" },\n        { \"id\": \"view-author-profile\", \"name\": \"View Author Profile\" },\n        { \"id\": \"view-music-showcase\", \"name\": \"View Music Showcase\" },\n        { \"id\": \"view-publication-details\", \"name\": \"View Publication Details\" },\n        { \"id\": \"view-official-resources\", \"name\": \"View Official Resources\" },\n        { \"id\": \"submit-contact-form\", \"name\": \"Submit Contact Form\" }\n      ]\n    },\n    {\n      \"id\": \"structure\",\n      \"title\": \"## Structure\",\n      \"content\": \"- **Homepage**: Introduces NIDALUM, its universe, and the artist.\\n- **Language Section**: Houses Alphabet, Grammar, Phonetics, and Lexicon pages.\\n- **Universe & Spirituality**: Contains Origins and Chants pages.\\n- **Academy**: Details the institute's educational offerings.\\n- **Publications**: Showcases the Dictionary and Book.\\n- **Resources**: Provides Official Resources and Downloads.\\n- **About Author**: Dedicated page for Ramses Nidal's artistic identity and music.\\n- **Contact Page**: Features the contact form.\"\n    }\n  ],\n  \"apps\": [\n    {\n      \"id\": \"wix-cms\",\n      \"keyFeatures\": [\n        { \"id\": \"view-homepage-content\", \"name\": \"View Homepage Content\" },\n        { \"id\": \"view-alphabet-details\", \"name\": \"View Alphabet Details\" },\n        { \"id\": \"view-grammar-details\", \"name\": \"View Grammar Details\" },\n        { \"id\": \"view-phonetics-details\", \"name\": \"View Phonetics Details\" },\n        { \"id\": \"view-lexicon-listing\", \"name\": \"View Lexicon Listing\" },\n        { \"id\": \"filter-lexicon\", \"name\": \"Filter Lexicon\" },\n        { \"id\": \"view-lexicon-item-details\", \"name\": \"View Lexicon Item Details\" },\n        { \"id\": \"view-chants-listing\", \"name\": \"View Chants Listing\" },\n        { \"id\": \"view-origins-details\", \"name\": \"View Origins Details\" },\n        { \"id\": \"view-academy-content\", \"name\": \"View Academy Content\" },\n        { \"id\": \"view-author-profile\", \"name\": \"View Author Profile\" },\n        { \"id\": \"view-music-showcase\", \"name\": \"View Music Showcase\" },\n        { \"id\": \"view-publication-details\", \"name\": \"View Publication Details\" },\n        { \"id\": \"view-official-resources\", \"name\": \"View Official Resources\" },\n        { \"id\": \"submit-contact-form\", \"name\": \"Submit Contact Form\" }\n      ]\n    }\n  ],\n  \"version\": \"2.5\"\n}",
+  "designerData": {
+    "designerId": "9dcf58b6-5fdc-4458-a378-9f01648cc995",
+    "designerName": "Knox",
+    "selectionMethod": "UNSELECTED"
+  }
+}

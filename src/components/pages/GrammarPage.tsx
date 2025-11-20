@@ -1,0 +1,260 @@
+import { motion } from 'framer-motion';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import { BookOpen, Layers, Link2, Zap } from 'lucide-react';
+
+export default function GrammarPage() {
+  const grammarRules = [
+    {
+      icon: Layers,
+      title: 'Structure des Phrases',
+      description: 'L\'ordre des mots en Nidalum suit le schéma Sujet-Objet-Verbe (SOV), reflétant une logique cosmique où l\'action vient après la contemplation.',
+      example: 'Nidar souma-ra kēla (Nidar le monde voit)',
+      color: 'primary'
+    },
+    {
+      icon: Link2,
+      title: 'Système de Cas',
+      description: 'Nidalum utilise quatre cas grammaticaux: Nominatif (sujet), Accusatif (objet direct), Génitif (possession), et Locatif (lieu).',
+      example: 'Nidar-um (de Nidar), Souma-ra-en (dans Souma-Ra)',
+      color: 'secondary'
+    },
+    {
+      icon: Zap,
+      title: 'Conjugaison Temporelle',
+      description: 'Les verbes se conjuguent selon trois temps principaux: Passé Ancestral, Présent Éternel, et Futur Cosmique, avec des suffixes spécifiques.',
+      example: 'Kēla (voir-présent), Kēla-shi (voir-passé), Kēla-ren (voir-futur)',
+      color: 'primary'
+    },
+    {
+      icon: BookOpen,
+      title: 'Modificateurs Spirituels',
+      description: 'Des particules spéciales ajoutent des nuances spirituelles ou émotionnelles aux mots, transformant leur signification profonde.',
+      example: 'Nidar-tō (Nidar sacré), Souma-ra-sha (Souma-Ra mystique)',
+      color: 'secondary'
+    }
+  ];
+
+  const verbConjugation = [
+    { tense: 'Présent Éternel', suffix: '-∅', example: 'kēla (voit)' },
+    { tense: 'Passé Ancestral', suffix: '-shi', example: 'kēla-shi (a vu)' },
+    { tense: 'Futur Cosmique', suffix: '-ren', example: 'kēla-ren (verra)' },
+    { tense: 'Impératif Sacré', suffix: '-tē', example: 'kēla-tē (vois!)' },
+  ];
+
+  const cases = [
+    { name: 'Nominatif', marker: '-∅', usage: 'Sujet de la phrase', example: 'Nidar kēla' },
+    { name: 'Accusatif', marker: '-an', usage: 'Objet direct', example: 'Souma-ra-an kēla' },
+    { name: 'Génitif', marker: '-um', usage: 'Possession', example: 'Nidar-um souma' },
+    { name: 'Locatif', marker: '-en', usage: 'Lieu, position', example: 'Souma-ra-en' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-secondary/30 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary mb-6">
+              Grammaire Nidalum
+            </h1>
+            <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
+              La structure grammaticale de Nidalum reflète une vision cosmique du langage, où chaque règle porte une signification spirituelle profonde.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Grammar Rules Section */}
+      <section className="py-16 px-6 lg:px-12">
+        <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-4 text-center">
+              Règles Fondamentales
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {grammarRules.map((rule, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
+              >
+                <rule.icon className={`w-12 h-12 text-${rule.color} mb-4`} />
+                <h3 className="font-heading text-2xl text-primary mb-4">{rule.title}</h3>
+                <p className="font-paragraph text-foreground/70 leading-relaxed mb-4">
+                  {rule.description}
+                </p>
+                <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-4">
+                  <p className="font-paragraph text-sm text-foreground/60 mb-1">Exemple:</p>
+                  <p className="font-paragraph text-secondary italic">{rule.example}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Verb Conjugation Section */}
+      <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
+        <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-12 text-center">
+              Conjugaison des Verbes
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div className="space-y-6">
+                <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
+                  Les verbes en Nidalum se conjuguent par l'ajout de suffixes temporels. Le radical du verbe reste inchangé, symbolisant l'essence éternelle de l'action.
+                </p>
+                <div className="bg-background/50 border border-primary/20 p-6 backdrop-blur-sm">
+                  <h3 className="font-heading text-xl text-secondary mb-4">Verbe Modèle: Kēla (Voir)</h3>
+                  <div className="space-y-3">
+                    {verbConjugation.map((item, index) => (
+                      <div key={index} className="flex justify-between items-center border-b border-primary/10 pb-2">
+                        <span className="font-paragraph text-foreground/70">{item.tense}</span>
+                        <div className="text-right">
+                          <span className="font-paragraph text-sm text-foreground/50 mr-2">{item.suffix}</span>
+                          <span className="font-paragraph text-primary">{item.example}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 p-8">
+                <h3 className="font-heading text-2xl text-primary mb-6">Temps Spirituels</h3>
+                <div className="space-y-4">
+                  <div className="border-l-4 border-primary pl-4">
+                    <h4 className="font-heading text-lg text-secondary mb-2">Passé Ancestral</h4>
+                    <p className="font-paragraph text-sm text-foreground/70">
+                      Évoque les actions des ancêtres et les événements mythologiques
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-secondary pl-4">
+                    <h4 className="font-heading text-lg text-primary mb-2">Présent Éternel</h4>
+                    <p className="font-paragraph text-sm text-foreground/70">
+                      Décrit les vérités cosmiques et les actions continues
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-primary pl-4">
+                    <h4 className="font-heading text-lg text-secondary mb-2">Futur Cosmique</h4>
+                    <p className="font-paragraph text-sm text-foreground/70">
+                      Projette vers les destinées futures et les prophéties
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Case System Section */}
+      <section className="py-24 px-6 lg:px-12">
+        <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-12 text-center">
+              Système de Cas
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full border border-primary/20">
+                <thead className="bg-primary/10">
+                  <tr>
+                    <th className="font-heading text-lg text-primary p-4 text-left border-b border-primary/20">Cas</th>
+                    <th className="font-heading text-lg text-primary p-4 text-left border-b border-primary/20">Marqueur</th>
+                    <th className="font-heading text-lg text-primary p-4 text-left border-b border-primary/20">Usage</th>
+                    <th className="font-heading text-lg text-primary p-4 text-left border-b border-primary/20">Exemple</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cases.map((caseItem, index) => (
+                    <tr key={index} className="border-b border-primary/10 hover:bg-primary/5 transition-colors">
+                      <td className="font-paragraph text-foreground/80 p-4">{caseItem.name}</td>
+                      <td className="font-paragraph text-secondary p-4">{caseItem.marker}</td>
+                      <td className="font-paragraph text-foreground/70 p-4">{caseItem.usage}</td>
+                      <td className="font-paragraph text-primary italic p-4">{caseItem.example}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Sentence Structure Section */}
+      <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/10">
+        <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-12 text-center">
+              Construction des Phrases
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
+                <h3 className="font-heading text-2xl text-secondary mb-6">Phrase Simple</h3>
+                <div className="space-y-4">
+                  <div className="bg-dark-amber-shadow/20 p-4 border-l-4 border-primary">
+                    <p className="font-paragraph text-sm text-foreground/60 mb-2">Structure: S-O-V</p>
+                    <p className="font-paragraph text-lg text-primary mb-2">Nidar souma-ra-an kēla</p>
+                    <p className="font-paragraph text-sm text-foreground/70 italic">Nidar le-monde voit</p>
+                    <p className="font-paragraph text-sm text-secondary mt-2">"Nidar voit le monde"</p>
+                  </div>
+                </div>
+              </div>
+              <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
+                <h3 className="font-heading text-2xl text-secondary mb-6">Phrase Complexe</h3>
+                <div className="space-y-4">
+                  <div className="bg-dark-amber-shadow/20 p-4 border-l-4 border-secondary">
+                    <p className="font-paragraph text-sm text-foreground/60 mb-2">Avec modificateurs</p>
+                    <p className="font-paragraph text-lg text-primary mb-2">Nidar-tō souma-ra-sha-an kēla-ren</p>
+                    <p className="font-paragraph text-sm text-foreground/70 italic">Nidar-sacré monde-mystique verra-futur</p>
+                    <p className="font-paragraph text-sm text-secondary mt-2">"Le Nidar sacré verra le monde mystique"</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
