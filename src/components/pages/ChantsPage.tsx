@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -18,6 +18,7 @@ export default function ChantsPage() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [editingChant, setEditingChant] = useState<RitualChants | null>(null);
   const [playingChantId, setPlayingChantId] = useState<string | null>(null);
+  const audioRefs = useRef<{ [key: string]: HTMLAudioElement | null }>({});
   const { isAdmin, setAdmin } = useAdminStore();
 
   useEffect(() => {
@@ -50,9 +51,41 @@ export default function ChantsPage() {
 
   const handlePlayStateChange = (chantId: string, isPlaying: boolean) => {
     if (isPlaying) {
+      // Stop all other audio players
+      Object.keys(audioRefs.current).forEach(id => {
+        if (id !== chantId && audioRefs.current[id]) {
+          audioRefs.current[id]?.pause();
+        }
+      });
       setPlayingChantId(chantId);
     } else if (playingChantId === chantId) {
       setPlayingChantId(null);
+    }
+  };
+
+  const handleImagePlayClick = (chantId: string) => {
+    const audio = audioRefs.current[chantId];
+    if (!audio) return;
+
+    if (playingChantId === chantId) {
+      // Pause
+      audio.pause();
+      setPlayingChantId(null);
+    } else {
+      // Play - stop other audio players first
+      Object.keys(audioRefs.current).forEach(id => {
+        if (id !== chantId && audioRefs.current[id]) {
+          audioRefs.current[id]?.pause();
+        }
+      });
+      audio.play().catch(err => console.error('Play error:', err));
+      setPlayingChantId(chantId);
+    }
+  };
+
+  const registerAudioRef = (chantId: string, audio: HTMLAudioElement | null) => {
+    if (audio) {
+      audioRefs.current[chantId] = audio;
     }
   };
 
@@ -153,7 +186,7 @@ export default function ChantsPage() {
                           whileHover={{ scale: 1.15 }}
                           onClick={(e) => {
                             e.stopPropagation();
-                            // Trigger play through AudioPlayer
+                            handleImagePlayClick(chant._id);
                           }}
                           className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 z-20"
                           title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
@@ -212,9 +245,18 @@ export default function ChantsPage() {
                       </div>
                     )}
 
-                    {/* Audio Player Component */}
+                    {/* Audio Player Component with hidden audio element for direct play */}
                     {chant.audio && (
                       <div className="mt-6 border-t border-primary/20 pt-6">
+                        {/* Hidden audio element for direct playback from image button */}
+                        <audio
+                          ref={(el) => registerAudioRef(chant._id, el)}
+                          src={chant.audio}
+                          onPlay={() => handlePlayStateChange(chant._id, true)}
+                          onPause={() => handlePlayStateChange(chant._id, false)}
+                          onEnded={() => setPlayingChantId(null)}
+                        />
+                        
                         <ModernAudioPlayer
                           audioUrl={chant.audio}
                           title={chant.chantTitle || 'Chant'}
