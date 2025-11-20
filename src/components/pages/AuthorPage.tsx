@@ -122,7 +122,7 @@ export default function AuthorPage() {
               await new Promise(resolve => setTimeout(resolve, 100));
               await playAudio(retries - 1);
             } else {
-              setAudioError('Impossible de lire l\\'audio');
+              setAudioError("Impossible de lire l'audio");
               setPlayingTrackId(null);
             }
           }
