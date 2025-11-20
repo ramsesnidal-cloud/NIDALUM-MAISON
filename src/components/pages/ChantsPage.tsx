@@ -238,13 +238,22 @@ export default function ChantsPage() {
                 >
                   {chant.chantImage && (
                     <div className="aspect-video overflow-hidden relative">
-                      <Image
-                        src={chant.chantImage}
-                        alt={chant.chantTitle || 'Chant rituel'}
-                        width={800}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        focalPointX={47.59036144578313}
-                        focalPointY={56.024096385542165} />
+                      {chant.chantImage.startsWith('data:') || chant.chantImage.startsWith('http') ? (
+                        <img
+                          src={chant.chantImage}
+                          alt={chant.chantTitle || 'Chant rituel'}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <Image
+                          src={chant.chantImage}
+                          alt={chant.chantTitle || 'Chant rituel'}
+                          width={800}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          focalPointX={47.59036144578313}
+                          focalPointY={56.024096385542165}
+                        />
+                      )}
                       
                       {/* Edit Button - Only visible to admin */}
                       {isAdmin && (
