@@ -4,13 +4,11 @@ import { BookOpen, Languages, Music, Sparkles, Globe, Library } from 'lucide-rea
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
-import SiteAuditReport from '@/components/SiteAuditReport';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <SiteAuditReport />
       {/* Hero Section - Full Screen Cosmic Echo Chamber */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         {/* Background with gradient overlay */}
