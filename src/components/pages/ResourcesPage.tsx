@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { OfficialResources } from '@/entities';
+import { OfficialResources, NidalumLexicon } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Download, FileText, Calendar, X, CheckCircle, BookOpen, Scroll } from 'lucide-react';
+import { Download, FileText, Calendar, X, CheckCircle, BookOpen, Scroll, Plus, Save, Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<OfficialResources[]>([]);
@@ -21,6 +25,18 @@ export default function ResourcesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedResource, setSelectedResource] = useState<OfficialResources | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  // Dictionary management states
+  const [userWords, setUserWords] = useState<NidalumLexicon[]>([]);
+  const [newWord, setNewWord] = useState({
+    nidalumWord: '',
+    definition: '',
+    category: '',
+    theme: '',
+    pronunciationGuide: '',
+    exampleSentence: '',
+    etymology: ''
+  });
 
   useEffect(() => {
     loadResources();
@@ -61,6 +77,68 @@ export default function ResourcesPage() {
   const handleCancelDownload = () => {
     setIsDialogOpen(false);
     setSelectedResource(null);
+  };
+
+  const handleAddWord = async () => {
+    if (!newWord.nidalumWord || !newWord.definition) {
+      alert('Veuillez remplir au minimum le mot Nidalum et sa définition');
+      return;
+    }
+
+    const wordToAdd: NidalumLexicon = {
+      _id: crypto.randomUUID(),
+      ...newWord
+    };
+
+    await BaseCrudService.create('nidalumlexicon', wordToAdd);
+    setUserWords([...userWords, wordToAdd]);
+    
+    // Reset form
+    setNewWord({
+      nidalumWord: '',
+      definition: '',
+      category: '',
+      theme: '',
+      pronunciationGuide: '',
+      exampleSentence: '',
+      etymology: ''
+    });
+  };
+
+  const handleDeleteWord = async (wordId: string) => {
+    await BaseCrudService.delete('nidalumlexicon', wordId);
+    setUserWords(userWords.filter(w => w._id !== wordId));
+  };
+
+  const handleDownloadWithWords = () => {
+    if (selectedResource?.fileUrl) {
+      // Create a text file with user's dictionary words
+      if (userWords.length > 0) {
+        const wordsText = userWords.map(word => 
+          `${word.nidalumWord}\n` +
+          `Définition: ${word.definition}\n` +
+          (word.category ? `Catégorie: ${word.category}\n` : '') +
+          (word.theme ? `Thème: ${word.theme}\n` : '') +
+          (word.pronunciationGuide ? `Prononciation: ${word.pronunciationGuide}\n` : '') +
+          (word.exampleSentence ? `Exemple: ${word.exampleSentence}\n` : '') +
+          (word.etymology ? `Étymologie: ${word.etymology}\n` : '') +
+          '\n---\n\n'
+        ).join('');
+
+        const blob = new Blob([`MES MOTS NIDALUM\n\n${wordsText}`], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'mon-dictionnaire-nidalum.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      // Open the original resource
+      window.open(selectedResource.fileUrl, '_blank');
+      setIsDialogOpen(false);
+      setSelectedResource(null);
+    }
   };
 
   return (
@@ -262,48 +340,61 @@ export default function ResourcesPage() {
           {selectedResource && (
             <ScrollArea className="h-[calc(90vh-120px)] pr-4">
               <div className="space-y-6">
-                {/* Resource Preview */}
-                {selectedResource.thumbnailImage && (
-                  <div className="aspect-video overflow-hidden border border-primary/20">
-                    <Image
-                      src={selectedResource.thumbnailImage}
-                      alt={selectedResource.resourceName || 'Ressource'}
-                      width={800}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
+                <Tabs defaultValue="info" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-6">
+                    <TabsTrigger value="info" className="font-paragraph">
+                      Informations
+                    </TabsTrigger>
+                    <TabsTrigger value="dictionary" className="font-paragraph">
+                      Mon Dictionnaire
+                    </TabsTrigger>
+                  </TabsList>
 
-                {/* Resource Information */}
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-heading text-2xl text-secondary mb-2">
-                      {selectedResource.resourceName}
-                    </h3>
-                    {selectedResource.resourceType && (
-                      <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
-                        {selectedResource.resourceType}
-                      </span>
+                  <TabsContent value="info" className="space-y-6">
+                    {/* Resource Preview */}
+                    {selectedResource.thumbnailImage && (
+                      <div className="aspect-video overflow-hidden border border-primary/20">
+                        <Image
+                          src={selectedResource.thumbnailImage}
+                          alt={selectedResource.resourceName || 'Ressource'}
+                          width={800}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     )}
-                  </div>
 
-                  {selectedResource.description && (
-                    <div className="bg-dark-amber-shadow/20 border-l-4 border-primary p-4">
-                      <p className="font-paragraph text-sm text-foreground/50 mb-2">Description:</p>
-                      <p className="font-paragraph text-foreground/80 leading-relaxed">
-                        {selectedResource.description}
-                      </p>
-                    </div>
-                  )}
+                    {/* Resource Information */}
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="font-heading text-2xl text-secondary mb-2">
+                          {selectedResource.resourceName}
+                        </h3>
+                        {selectedResource.resourceType && (
+                          <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
+                            {selectedResource.resourceType}
+                          </span>
+                        )}
+                      </div>
 
-                  {selectedResource.publicationDate && (
-                    <div className="flex items-center text-foreground/70">
-                      <Calendar className="w-4 h-4 mr-2 text-secondary" />
-                      <span className="font-paragraph text-sm">
-                        Publié le {formatDate(selectedResource.publicationDate)}
-                      </span>
-                    </div>
-                  )}
+                      {selectedResource.description && (
+                        <div className="bg-dark-amber-shadow/20 border-l-4 border-primary p-4">
+                          <p className="font-paragraph text-sm text-foreground/50 mb-2">Description:</p>
+                          <p className="font-paragraph text-foreground/80 leading-relaxed">
+                            {selectedResource.description}
+                          </p>
+                        </div>
+                      )}
+
+                      {selectedResource.publicationDate && (
+                        <div className="flex items-center text-foreground/70">
+                          <Calendar className="w-4 h-4 mr-2 text-secondary" />
+                          <span className="font-paragraph text-sm">
+                            Publié le {formatDate(selectedResource.publicationDate)}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* ... keep existing code (Extended Content section) */}
 
                   {/* Extended Content - Nidalum Language Information */}
                   <div className="border-2 border-primary/30 bg-gradient-to-br from-dark-amber-shadow/30 to-background p-8 space-y-6">
@@ -588,37 +679,227 @@ export default function ResourcesPage() {
                     </div>
                   </div>
 
-                  {/* Download Information */}
-                  <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 p-6 space-y-3">
-                    <div className="flex items-start">
-                      <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                      <p className="font-paragraph text-sm text-foreground/80">
-                        Cette ressource est gratuite et fait partie des documents officiels de l'Institut Nidalum
-                      </p>
+                      {/* Download Information */}
+                      <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 p-6 space-y-3">
+                        <div className="flex items-start">
+                          <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                          <p className="font-paragraph text-sm text-foreground/80">
+                            Cette ressource est gratuite et fait partie des documents officiels de l'Institut Nidalum
+                          </p>
+                        </div>
+                        <div className="flex items-start">
+                          <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                          <p className="font-paragraph text-sm text-foreground/80">
+                            Le téléchargement s'ouvrira dans un nouvel onglet
+                          </p>
+                        </div>
+                        <div className="flex items-start">
+                          <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                          <p className="font-paragraph text-sm text-foreground/80">
+                            Vous pouvez utiliser cette ressource pour votre apprentissage personnel de Nidalum
+                          </p>
+                        </div>
+                        {userWords.length > 0 && (
+                          <div className="flex items-start">
+                            <CheckCircle className="w-5 h-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                            <p className="font-paragraph text-sm text-foreground/80">
+                              Votre dictionnaire personnel ({userWords.length} mot{userWords.length > 1 ? 's' : ''}) sera téléchargé avec la ressource
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-start">
-                      <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                      <p className="font-paragraph text-sm text-foreground/80">
-                        Le téléchargement s'ouvrira dans un nouvel onglet
-                      </p>
+                  </TabsContent>
+
+                  <TabsContent value="dictionary" className="space-y-6">
+                    {/* Add New Word Form */}
+                    <div className="border-2 border-primary/30 bg-gradient-to-br from-dark-amber-shadow/30 to-background p-6 space-y-4">
+                      <div className="flex items-center gap-3 mb-4">
+                        <Plus className="w-6 h-6 text-primary" />
+                        <h4 className="font-heading text-xl text-primary">
+                          Ajouter un Mot au Dictionnaire
+                        </h4>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="nidalumWord" className="font-paragraph text-foreground/80">
+                            Mot Nidalum *
+                          </Label>
+                          <Input
+                            id="nidalumWord"
+                            value={newWord.nidalumWord}
+                            onChange={(e) => setNewWord({ ...newWord, nidalumWord: e.target.value })}
+                            placeholder="Ex: Thalamir"
+                            className="bg-background/50 border-primary/30 text-foreground"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="category" className="font-paragraph text-foreground/80">
+                            Catégorie
+                          </Label>
+                          <Input
+                            id="category"
+                            value={newWord.category}
+                            onChange={(e) => setNewWord({ ...newWord, category: e.target.value })}
+                            placeholder="Ex: Nom, Verbe, Adjectif"
+                            className="bg-background/50 border-primary/30 text-foreground"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="theme" className="font-paragraph text-foreground/80">
+                            Thème
+                          </Label>
+                          <Input
+                            id="theme"
+                            value={newWord.theme}
+                            onChange={(e) => setNewWord({ ...newWord, theme: e.target.value })}
+                            placeholder="Ex: Spiritualité, Nature"
+                            className="bg-background/50 border-primary/30 text-foreground"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="pronunciationGuide" className="font-paragraph text-foreground/80">
+                            Prononciation
+                          </Label>
+                          <Input
+                            id="pronunciationGuide"
+                            value={newWord.pronunciationGuide}
+                            onChange={(e) => setNewWord({ ...newWord, pronunciationGuide: e.target.value })}
+                            placeholder="Ex: ta-la-mir"
+                            className="bg-background/50 border-primary/30 text-foreground"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="definition" className="font-paragraph text-foreground/80">
+                          Définition *
+                        </Label>
+                        <Textarea
+                          id="definition"
+                          value={newWord.definition}
+                          onChange={(e) => setNewWord({ ...newWord, definition: e.target.value })}
+                          placeholder="Définition du mot..."
+                          className="bg-background/50 border-primary/30 text-foreground min-h-[80px]"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="exampleSentence" className="font-paragraph text-foreground/80">
+                          Exemple de Phrase
+                        </Label>
+                        <Textarea
+                          id="exampleSentence"
+                          value={newWord.exampleSentence}
+                          onChange={(e) => setNewWord({ ...newWord, exampleSentence: e.target.value })}
+                          placeholder="Exemple d'utilisation..."
+                          className="bg-background/50 border-primary/30 text-foreground min-h-[60px]"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="etymology" className="font-paragraph text-foreground/80">
+                          Étymologie
+                        </Label>
+                        <Textarea
+                          id="etymology"
+                          value={newWord.etymology}
+                          onChange={(e) => setNewWord({ ...newWord, etymology: e.target.value })}
+                          placeholder="Origine et histoire du mot..."
+                          className="bg-background/50 border-primary/30 text-foreground min-h-[60px]"
+                        />
+                      </div>
+
+                      <button
+                        onClick={handleAddWord}
+                        className="w-full inline-flex items-center justify-center bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-3 hover:bg-primary/90 transition-all duration-300"
+                      >
+                        <Save className="w-4 h-4 mr-2" />
+                        Ajouter au Dictionnaire
+                      </button>
                     </div>
-                    <div className="flex items-start">
-                      <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                      <p className="font-paragraph text-sm text-foreground/80">
-                        Vous pouvez utiliser cette ressource pour votre apprentissage personnel de Nidalum
-                      </p>
+
+                    {/* User's Dictionary Words */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <BookOpen className="w-6 h-6 text-secondary" />
+                        <h4 className="font-heading text-xl text-secondary">
+                          Mes Mots ({userWords.length})
+                        </h4>
+                      </div>
+
+                      {userWords.length === 0 ? (
+                        <div className="border border-primary/20 p-8 text-center">
+                          <p className="font-paragraph text-foreground/60">
+                            Aucun mot ajouté pour le moment. Commencez à construire votre dictionnaire personnel !
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {userWords.map((word) => (
+                            <div
+                              key={word._id}
+                              className="border border-primary/20 bg-background/50 p-4 space-y-2 hover:border-primary/40 transition-colors"
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <h5 className="font-heading text-lg text-primary mb-1">
+                                    {word.nidalumWord}
+                                  </h5>
+                                  {word.pronunciationGuide && (
+                                    <p className="font-paragraph text-xs text-secondary/80 mb-2">
+                                      [{word.pronunciationGuide}]
+                                    </p>
+                                  )}
+                                  <p className="font-paragraph text-sm text-foreground/80 mb-2">
+                                    {word.definition}
+                                  </p>
+                                  <div className="flex flex-wrap gap-2">
+                                    {word.category && (
+                                      <span className="inline-block px-2 py-1 bg-primary/10 border border-primary/30 font-paragraph text-xs text-primary">
+                                        {word.category}
+                                      </span>
+                                    )}
+                                    {word.theme && (
+                                      <span className="inline-block px-2 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
+                                        {word.theme}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {word.exampleSentence && (
+                                    <p className="font-paragraph text-xs text-foreground/60 italic mt-2">
+                                      Ex: {word.exampleSentence}
+                                    </p>
+                                  )}
+                                </div>
+                                <button
+                                  onClick={() => handleDeleteWord(word._id)}
+                                  className="ml-4 p-2 text-destructive hover:bg-destructive/10 transition-colors"
+                                  title="Supprimer"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </div>
+                  </TabsContent>
+                </Tabs>
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-4 sticky bottom-0 bg-background pb-4">
                   <button
-                    onClick={handleConfirmDownload}
+                    onClick={handleDownloadWithWords}
                     className="flex-1 inline-flex items-center justify-center bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-4 hover:bg-primary/90 transition-all duration-300"
                   >
                     <Download className="w-5 h-5 mr-2" />
-                    Confirmer le Téléchargement
+                    Télécharger {userWords.length > 0 && `(+ ${userWords.length} mot${userWords.length > 1 ? 's' : ''})`}
                   </button>
                   <button
                     onClick={handleCancelDownload}
