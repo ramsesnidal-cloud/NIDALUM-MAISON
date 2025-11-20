@@ -237,7 +237,7 @@ export default function ChantsPage() {
                   onClick={() => setSelectedChant(selectedChant?._id === chant._id ? null : chant)}
                 >
                   {chant.chantImage && (
-                    <div className="aspect-video overflow-hidden relative">
+                    <div className="aspect-video overflow-hidden relative group/image">
                       {chant.chantImage.startsWith('data:') || chant.chantImage.startsWith('http') ? (
                         <img
                           src={chant.chantImage}
@@ -253,6 +253,29 @@ export default function ChantsPage() {
                           focalPointX={47.59036144578313}
                           focalPointY={56.024096385542165}
                         />
+                      )}
+                      
+                      {/* Play/Pause Button - Center overlay */}
+                      {chant.audioUrl && (
+                        <motion.button
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          whileHover={{ scale: 1.15 }}
+                          onClick={(e) => handlePlayPause(e, chant)}
+                          className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 z-20"
+                          title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
+                        >
+                          <div className="flex items-center justify-center w-20 h-20 bg-primary text-primary-foreground rounded-full shadow-2xl hover:bg-primary/90 transition-colors">
+                            {playingChantId === chant._id ? (
+                              <Pause className="w-10 h-10" />
+                            ) : (
+                              <Play className="w-10 h-10 ml-1" />
+                            )}
+                          </div>
+                          <p className="font-paragraph text-sm text-white mt-3 font-semibold">
+                            {playingChantId === chant._id ? 'Pause' : 'Écouter'}
+                          </p>
+                        </motion.button>
                       )}
                       
                       {/* Replace Button - Always visible to admin */}
