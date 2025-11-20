@@ -172,7 +172,6 @@ export default function ChantsPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
       {/* Admin Badge */}
       {isAdmin && (
         <div className="fixed top-24 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-primary/20 border border-primary/50 rounded-lg">
@@ -187,7 +186,6 @@ export default function ChantsPage() {
           </button>
         </div>
       )}
-      
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -215,7 +213,6 @@ export default function ChantsPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Chants Grid */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -246,7 +243,8 @@ export default function ChantsPage() {
                         alt={chant.chantTitle || 'Chant rituel'}
                         width={800}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                        focalPointX={47.59036144578313}
+                        focalPointY={56.024096385542165} />
                       
                       {/* Edit Button - Only visible to admin */}
                       {isAdmin && (
@@ -370,7 +368,6 @@ export default function ChantsPage() {
           )}
         </div>
       </section>
-
       {/* Spiritual Practice Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
         <div className="max-w-[120rem] mx-auto">
@@ -406,9 +403,7 @@ export default function ChantsPage() {
           </motion.div>
         </div>
       </section>
-
       <Footer />
-
       {/* Modals */}
       <AnimatePresence>
         {showAdminLogin && (
