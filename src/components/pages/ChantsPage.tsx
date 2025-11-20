@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Sparkles, Edit2, LogOut, Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Sparkles, Edit2, LogOut, Play, Pause, Volume2 } from 'lucide-react';
 import { useAdminStore } from '@/lib/admin-store';
 import AdminLoginModal from '@/components/AdminLoginModal';
 import EditChantImageModal from '@/components/EditChantImageModal';
@@ -17,8 +17,8 @@ export default function ChantsPage() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [editingChant, setEditingChant] = useState<RitualChants | null>(null);
   const [playingChantId, setPlayingChantId] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
+  const [chantVolumes, setChantVolumes] = useState<Record<string, number>>({});
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { isAdmin, setAdmin } = useAdminStore();
 
@@ -101,7 +101,7 @@ export default function ChantsPage() {
         const audio = new Audio();
         audio.crossOrigin = 'anonymous';
         audio.preload = 'auto';
-        audio.volume = isMuted ? 0 : 1;
+        audio.volume = chantVolumes[chant._id] || 1;
         
         // Set up event listeners BEFORE setting src
         audio.onended = () => {
@@ -160,12 +160,13 @@ export default function ChantsPage() {
     }
   };
 
-  const handleToggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    if (audioRef.current) {
-      audioRef.current.volume = newMutedState ? 0 : 1;
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>, chantId: string) => {
+    const volume = parseFloat(e.currentTarget.value);
+    setChantVolumes(prev => ({ ...prev, [chantId]: volume }));
+    
+    // Update current audio volume if it's the playing chant
+    if (audioRef.current && playingChantId === chantId) {
+      audioRef.current.volume = volume;
     }
   };
 
@@ -321,12 +322,18 @@ export default function ChantsPage() {
 
                     {/* Audio Player */}
                     {chant.audioUrl && (
-                      <div className="mb-6">
-                        <div className="flex items-center gap-3 p-4 bg-primary/10 border border-primary/30 rounded-lg">
+                      <div className="mt-4 space-y-3 border-t border-primary/20 pt-4">
+                        <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors">
                           <button
-                            onClick={(e) => handlePlayPause(e, chant)}
-                            className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50"
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handlePlayPause(e, chant);
+                            }}
+                            className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 active:scale-95 transition-all duration-200"
                             title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
+                            aria-label={playingChantId === chant._id ? 'Pause' : 'Lecture'}
                           >
                             {playingChantId === chant._id ? (
                               <Pause className="w-5 h-5" />
@@ -335,24 +342,39 @@ export default function ChantsPage() {
                             )}
                           </button>
                           <div className="flex-1">
-                            <p className="font-paragraph text-xs text-foreground/60">
-                              {playingChantId === chant._id ? 'En lecture...' : 'Cliquez pour écouter'}
+                            <p className="font-paragraph text-xs text-foreground/70 font-medium">
+                              {playingChantId === chant._id ? '▶ En lecture...' : '▷ Cliquez pour écouter'}
                             </p>
                           </div>
-                          <button
-                            onClick={handleToggleMute}
-                            className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors"
-                            title={isMuted ? 'Activer le son' : 'Couper le son'}
-                          >
-                            {isMuted ? (
-                              <VolumeX className="w-5 h-5" />
-                            ) : (
-                              <Volume2 className="w-5 h-5" />
-                            )}
-                          </button>
                         </div>
-                        {audioError && (
-                          <p className="text-xs text-destructive mt-2">Erreur audio: {audioError}</p>
+                        
+                        {/* Volume Control */}
+                        <div className="flex items-center gap-3 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors">
+                          <Volume2 className="w-5 h-5 text-primary flex-shrink-0" />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={chantVolumes[chant._id] || 1}
+                            onChange={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleVolumeChange(e, chant._id);
+                            }}
+                            className="flex-1 h-2 bg-primary/30 rounded-full appearance-none cursor-pointer accent-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0"
+                            title="Contrôle du volume"
+                            aria-label="Contrôle du volume"
+                          />
+                          <span className="text-xs text-foreground/70 font-semibold w-10 text-right">
+                            {Math.round((chantVolumes[chant._id] || 1) * 100)}%
+                          </span>
+                        </div>
+                        
+                        {audioError && playingChantId === chant._id && (
+                          <div className="p-2 bg-destructive/20 border border-destructive/50 rounded-lg">
+                            <p className="text-xs text-destructive font-medium">⚠ {audioError}</p>
+                          </div>
                         )}
                       </div>
                     )}
