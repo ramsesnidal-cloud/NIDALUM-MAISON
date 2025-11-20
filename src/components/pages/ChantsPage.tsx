@@ -64,9 +64,9 @@ export default function ChantsPage() {
   const handlePlayPause = async (e: React.MouseEvent, chant: RitualChants) => {
     e.stopPropagation();
 
-    if (!chant.audioUrl) {
-      setAudioError('Aucun lien audio disponible');
-      console.warn('No audio URL available for this chant');
+    if (!chant.audio) {
+      setAudioError('Aucun fichier audio disponible');
+      console.warn('No audio file available for this chant');
       return;
     }
 
@@ -124,7 +124,7 @@ export default function ChantsPage() {
         };
 
         // Set the source and attempt to play
-        audio.src = chant.audioUrl;
+        audio.src = chant.audio;
         audioRef.current = audio;
 
         // Force play with retry logic
@@ -257,7 +257,7 @@ export default function ChantsPage() {
                       )}
                       
                       {/* Play/Pause Button - Center overlay */}
-                      {chant.audioUrl && (
+                      {chant.audio && (
                         <motion.button
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
@@ -321,7 +321,7 @@ export default function ChantsPage() {
                     )}
 
                     {/* Audio Player */}
-                    {chant.audioUrl && (
+                    {chant.audio && (
                       <div className="mt-4 space-y-3 border-t border-primary/20 pt-4">
                         <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors">
                           <button
