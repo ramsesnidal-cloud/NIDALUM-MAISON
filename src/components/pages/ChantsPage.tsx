@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Sparkles, Edit2, LogOut } from 'lucide-react';
+import { Sparkles, Edit2, LogOut, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { useAdminStore } from '@/lib/admin-store';
 import AdminLoginModal from '@/components/AdminLoginModal';
 import EditChantImageModal from '@/components/EditChantImageModal';
@@ -16,10 +16,23 @@ export default function ChantsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [editingChant, setEditingChant] = useState<RitualChants | null>(null);
+  const [playingChantId, setPlayingChantId] = useState<string | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const { isAdmin, setAdmin } = useAdminStore();
 
   useEffect(() => {
     loadChants();
+  }, []);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
   }, []);
 
   const loadChants = async () => {
@@ -44,6 +57,49 @@ export default function ChantsPage() {
 
   const handleLogout = () => {
     setAdmin(false);
+  };
+
+  const handlePlayPause = (e: React.MouseEvent, chant: RitualChants) => {
+    e.stopPropagation();
+
+    if (!chant.audioUrl) {
+      return;
+    }
+
+    // If clicking the same chant, toggle play/pause
+    if (playingChantId === chant._id) {
+      if (audioRef.current) {
+        if (audioRef.current.paused) {
+          audioRef.current.play();
+        } else {
+          audioRef.current.pause();
+        }
+      }
+    } else {
+      // Stop current audio and play new one
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+
+      audioRef.current = new Audio(chant.audioUrl);
+      audioRef.current.volume = isMuted ? 0 : 1;
+      audioRef.current.play();
+      setPlayingChantId(chant._id);
+
+      // Handle audio end
+      audioRef.current.onended = () => {
+        setPlayingChantId(null);
+      };
+    }
+  };
+
+  const handleToggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMuted(!isMuted);
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 1 : 0;
+    }
   };
 
   return (
@@ -163,6 +219,39 @@ export default function ChantsPage() {
                         <p className="font-paragraph text-foreground/80 leading-relaxed">
                           {chant.spiritualContext}
                         </p>
+                      </div>
+                    )}
+
+                    {/* Audio Player */}
+                    {chant.audioUrl && (
+                      <div className="mb-6 flex items-center gap-3 p-4 bg-primary/10 border border-primary/30 rounded-lg">
+                        <button
+                          onClick={(e) => handlePlayPause(e, chant)}
+                          className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
+                          title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
+                        >
+                          {playingChantId === chant._id ? (
+                            <Pause className="w-5 h-5" />
+                          ) : (
+                            <Play className="w-5 h-5 ml-0.5" />
+                          )}
+                        </button>
+                        <div className="flex-1">
+                          <p className="font-paragraph text-xs text-foreground/60">
+                            {playingChantId === chant._id ? 'En lecture...' : 'Cliquez pour écouter'}
+                          </p>
+                        </div>
+                        <button
+                          onClick={handleToggleMute}
+                          className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors"
+                          title={isMuted ? 'Activer le son' : 'Couper le son'}
+                        >
+                          {isMuted ? (
+                            <VolumeX className="w-5 h-5" />
+                          ) : (
+                            <Volume2 className="w-5 h-5" />
+                          )}
+                        </button>
                       </div>
                     )}
 
