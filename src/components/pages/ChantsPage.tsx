@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Sparkles, Edit2, LogOut, Play, Pause, Volume2 } from 'lucide-react';
+import { Sparkles, Edit2, LogOut, Play, Pause } from 'lucide-react';
 import { useAdminStore } from '@/lib/admin-store';
 import AdminLoginModal from '@/components/AdminLoginModal';
 import EditChantImageModal from '@/components/EditChantImageModal';
+import AudioPlayer from '@/components/AudioPlayer';
 
 export default function ChantsPage() {
   const [chants, setChants] = useState<RitualChants[]>([]);
@@ -17,24 +18,10 @@ export default function ChantsPage() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [editingChant, setEditingChant] = useState<RitualChants | null>(null);
   const [playingChantId, setPlayingChantId] = useState<string | null>(null);
-  const [audioError, setAudioError] = useState<string | null>(null);
-  const [chantVolumes, setChantVolumes] = useState<Record<string, number>>({});
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const { isAdmin, setAdmin } = useAdminStore();
 
   useEffect(() => {
     loadChants();
-  }, []);
-
-  // Cleanup audio on unmount
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-        audioRef.current = null;
-      }
-    };
   }, []);
 
   const loadChants = async () => {
@@ -61,118 +48,18 @@ export default function ChantsPage() {
     setAdmin(false);
   };
 
-  const handlePlayPause = async (e: React.MouseEvent, chant: RitualChants) => {
-    e.stopPropagation();
-
-    if (!chant.audio) {
-      setAudioError('Aucun fichier audio disponible');
-      console.warn('No audio file available for this chant');
-      return;
-    }
-
-    try {
-      setAudioError(null);
-
-      // If clicking the same chant, toggle play/pause
-      if (playingChantId === chant._id) {
-        if (audioRef.current) {
-          if (audioRef.current.paused) {
-            try {
-              const playPromise = audioRef.current.play();
-              if (playPromise !== undefined) {
-                await playPromise;
-              }
-            } catch (err) {
-              console.error('Error resuming audio:', err);
-              setAudioError('Impossible de reprendre la lecture');
-            }
-          } else {
-            audioRef.current.pause();
-          }
-        }
-      } else {
-        // Stop current audio and play new one
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-        }
-
-        // Create new audio element with proper configuration
-        const audio = new Audio();
-        audio.crossOrigin = 'anonymous';
-        audio.preload = 'auto';
-        audio.volume = chantVolumes[chant._id] || 1;
-        
-        // Set up event listeners BEFORE setting src
-        audio.onended = () => {
-          setPlayingChantId(null);
-          setAudioError(null);
-        };
-
-        audio.onerror = (error) => {
-          console.error('Audio loading error:', error);
-          setAudioError('Erreur de chargement audio');
-          setPlayingChantId(null);
-        };
-
-        audio.onloadstart = () => {
-          console.log('Audio loading started for:', chant.chantTitle);
-        };
-
-        audio.oncanplay = () => {
-          console.log('Audio ready to play:', chant.chantTitle);
-        };
-
-        // Set the source and attempt to play
-        audio.src = chant.audio;
-        audioRef.current = audio;
-
-        // Force play with retry logic
-        const playAudio = async (retries = 3) => {
-          try {
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-              await playPromise;
-              setPlayingChantId(chant._id);
-              console.log('Audio playing successfully:', chant.chantTitle);
-            } else {
-              setPlayingChantId(chant._id);
-            }
-          } catch (playError) {
-            console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
-            
-            if (retries > 0) {
-              // Retry after a short delay
-              await new Promise(resolve => setTimeout(resolve, 100));
-              await playAudio(retries - 1);
-            } else {
-              setAudioError('Impossible de lire l\'audio');
-              setPlayingChantId(null);
-            }
-          }
-        };
-
-        await playAudio();
-      }
-    } catch (error) {
-      console.error('Error in handlePlayPause:', error);
-      setAudioError('Erreur lors de la lecture');
-    }
-  };
-
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>, chantId: string) => {
-    const volume = parseFloat(e.currentTarget.value);
-    setChantVolumes(prev => ({ ...prev, [chantId]: volume }));
-    
-    // Update current audio volume if it's the playing chant
-    if (audioRef.current && playingChantId === chantId) {
-      audioRef.current.volume = volume;
+  const handlePlayStateChange = (chantId: string, isPlaying: boolean) => {
+    if (isPlaying) {
+      setPlayingChantId(chantId);
+    } else if (playingChantId === chantId) {
+      setPlayingChantId(null);
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      
       {/* Admin Badge */}
       {isAdmin && (
         <div className="fixed top-24 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-primary/20 border border-primary/50 rounded-lg">
@@ -187,6 +74,7 @@ export default function ChantsPage() {
           </button>
         </div>
       )}
+
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -214,6 +102,7 @@ export default function ChantsPage() {
           </motion.div>
         </div>
       </section>
+
       {/* Chants Grid */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -262,7 +151,10 @@ export default function ChantsPage() {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           whileHover={{ scale: 1.15 }}
-                          onClick={(e) => handlePlayPause(e, chant)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Trigger play through AudioPlayer
+                          }}
                           className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 z-20"
                           title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
                         >
@@ -320,62 +212,14 @@ export default function ChantsPage() {
                       </div>
                     )}
 
-                    {/* Audio Player */}
+                    {/* Audio Player Component */}
                     {chant.audio && (
-                      <div className="mt-4 space-y-3 border-t border-primary/20 pt-4">
-                        <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handlePlayPause(e, chant);
-                            }}
-                            className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 active:scale-95 transition-all duration-200"
-                            title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
-                            aria-label={playingChantId === chant._id ? 'Pause' : 'Lecture'}
-                          >
-                            {playingChantId === chant._id ? (
-                              <Pause className="w-5 h-5" />
-                            ) : (
-                              <Play className="w-5 h-5 ml-0.5" />
-                            )}
-                          </button>
-                          <div className="flex-1">
-                            <p className="font-paragraph text-xs text-foreground/70 font-medium">
-                              {playingChantId === chant._id ? '▶ En lecture...' : '▷ Cliquez pour écouter'}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        {/* Volume Control */}
-                        <div className="flex items-center gap-3 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors">
-                          <Volume2 className="w-5 h-5 text-primary flex-shrink-0" />
-                          <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                            value={chantVolumes[chant._id] || 1}
-                            onChange={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handleVolumeChange(e, chant._id);
-                            }}
-                            className="flex-1 h-2 bg-primary/30 rounded-full appearance-none cursor-pointer accent-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0"
-                            title="Contrôle du volume"
-                            aria-label="Contrôle du volume"
-                          />
-                          <span className="text-xs text-foreground/70 font-semibold w-10 text-right">
-                            {Math.round((chantVolumes[chant._id] || 1) * 100)}%
-                          </span>
-                        </div>
-                        
-                        {audioError && playingChantId === chant._id && (
-                          <div className="p-2 bg-destructive/20 border border-destructive/50 rounded-lg">
-                            <p className="text-xs text-destructive font-medium">⚠ {audioError}</p>
-                          </div>
-                        )}
+                      <div className="mt-4 border-t border-primary/20 pt-4">
+                        <AudioPlayer
+                          audioUrl={chant.audio}
+                          title={chant.chantTitle || 'Chant'}
+                          onPlayStateChange={(isPlaying) => handlePlayStateChange(chant._id, isPlaying)}
+                        />
                       </div>
                     )}
 
@@ -422,6 +266,7 @@ export default function ChantsPage() {
           )}
         </div>
       </section>
+
       {/* Spiritual Practice Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
         <div className="max-w-[120rem] mx-auto">
@@ -457,7 +302,9 @@ export default function ChantsPage() {
           </motion.div>
         </div>
       </section>
+
       <Footer />
+
       {/* Modals */}
       <AnimatePresence>
         {showAdminLogin && (
