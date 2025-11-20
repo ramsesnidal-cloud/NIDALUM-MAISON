@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, Pause, Volume2, AlertCircle, Loader } from 'lucide-react';
+import { Play, Pause, Volume2, AlertCircle, Loader, SkipBack, SkipForward } from 'lucide-react';
 
 interface AudioPlayerProps {
   audioUrl?: string;
@@ -10,15 +10,17 @@ interface AudioPlayerProps {
 }
 
 /**
- * AudioPlayer - Composant audio universel et robuste
+ * AudioPlayer - Composant audio universel et robuste (v2.0)
  * 
  * Fonctionnalités:
  * - Play/Pause avec gestion d'état
  * - Contrôle de volume
+ * - Barre de progression
  * - Gestion d'erreurs complète
  * - Support CORS
  * - Cleanup automatique
  * - Mode compact optionnel
+ * - Support des deux formats (audioUrl et audio)
  * 
  * Usage:
  * <AudioPlayer audioUrl={url} title="Mon audio" />
@@ -58,6 +60,18 @@ export default function AudioPlayer({
   useEffect(() => {
     onPlayStateChange?.(isPlaying);
   }, [isPlaying, onPlayStateChange]);
+
+  // Update current time
+  useEffect(() => {
+    if (!isPlaying || !audioRef.current) return;
+
+    const updateTime = () => {
+      setCurrentTime(audioRef.current?.currentTime || 0);
+    };
+
+    const interval = setInterval(updateTime, 100);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
 
   // Initialize audio element
   const initializeAudio = useCallback(() => {
@@ -162,6 +176,16 @@ export default function AudioPlayer({
     }
   }, []);
 
+  // Handle progress bar click
+  const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!audioRef.current || duration === 0) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    const newTime = percent * duration;
+    audioRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  }, [duration]);
+
   // Format time
   const formatTime = (seconds: number) => {
     if (!seconds || !isFinite(seconds)) return '0:00';
@@ -257,6 +281,24 @@ export default function AudioPlayer({
           {Math.round(volume * 100)}%
         </span>
       </div>
+
+      {/* Progress Bar */}
+      {duration > 0 && (
+        <div 
+          onClick={handleProgressClick}
+          className="flex items-center gap-3 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors cursor-pointer group"
+        >
+          <div className="flex-1 h-2 bg-primary/30 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-primary transition-all duration-100"
+              style={{ width: `${(currentTime / duration) * 100}%` }}
+            />
+          </div>
+          <span className="text-xs text-foreground/70 font-semibold w-12 text-right">
+            {formatTime(duration)}
+          </span>
+        </div>
+      )}
 
       {/* Error Message */}
       {error && (
