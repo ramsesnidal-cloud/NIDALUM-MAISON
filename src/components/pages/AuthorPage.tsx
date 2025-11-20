@@ -6,7 +6,7 @@ import { BaseCrudService } from '@/integrations';
 import { MusicShowcase, NidalumLexicon } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Music, Play, Search } from 'lucide-react';
-import AudioPlayer from '@/components/AudioPlayer';
+import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 import AudioDiagnostics from '@/components/AudioDiagnostics';
 import AudioDebugger from '@/components/AudioDebugger';
 
@@ -276,11 +276,10 @@ export default function AuthorPage() {
                     
                     {/* Audio Player Component */}
                     {track.audioUrl && (
-                      <div className="mt-4 border-t border-primary/20 pt-4">
-                        <AudioPlayer
+                      <div className="mt-6 border-t border-primary/20 pt-6">
+                        <ModernAudioPlayer
                           audioUrl={track.audioUrl}
                           title={track.trackTitle || 'Musique'}
-                          compact={false}
                           onPlayStateChange={(isPlaying) => handlePlayStateChange(track._id, isPlaying)}
                         />
                       </div>
