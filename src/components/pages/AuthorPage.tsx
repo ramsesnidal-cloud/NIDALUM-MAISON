@@ -5,15 +5,15 @@ import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { MusicShowcase } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Music, Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Music, Play, Pause, Volume2 } from 'lucide-react';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null);
-  const [volume, setVolume] = useState(1);
+  const [trackVolumes, setTrackVolumes] = useState<Record<string, number>>({});
   const [audioError, setAudioError] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRefsMap = useRef<Map<string, HTMLAudioElement>>(new Map());
 
   useEffect(() => {
     loadMusic();
@@ -22,24 +22,24 @@ export default function AuthorPage() {
   // Cleanup audio on unmount
   useEffect(() => {
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-      }
+      audioRefsMap.current.forEach((audio) => {
+        audio.pause();
+        audio.src = '';
+      });
+      audioRefsMap.current.clear();
     };
   }, []);
-
-  // Update volume for current playing track
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
 
   const loadMusic = async () => {
     setIsLoading(true);
     const { items } = await BaseCrudService.getAll<MusicShowcase>('musicshowcase');
     setMusicTracks(items);
+    // Initialize volume for each track
+    const initialVolumes: Record<string, number> = {};
+    items.forEach(track => {
+      initialVolumes[track._id] = 1;
+    });
+    setTrackVolumes(initialVolumes);
     setIsLoading(false);
   };
 
@@ -54,12 +54,13 @@ export default function AuthorPage() {
 
     try {
       setAudioError(null);
+      const existingAudio = audioRefsMap.current.get(track._id);
 
       // If clicking the same track, toggle play/pause
-      if (playingTrackId === track._id && audioRef.current) {
-        if (audioRef.current.paused) {
+      if (playingTrackId === track._id && existingAudio) {
+        if (existingAudio.paused) {
           try {
-            const playPromise = audioRef.current.play();
+            const playPromise = existingAudio.play();
             if (playPromise !== undefined) {
               await playPromise;
             }
@@ -68,35 +69,42 @@ export default function AuthorPage() {
             setAudioError('Impossible de reprendre la lecture');
           }
         } else {
-          audioRef.current.pause();
+          existingAudio.pause();
         }
       } else {
-        // Stop current audio and play new one
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
+        // Stop all other audio tracks
+        audioRefsMap.current.forEach((audio, trackId) => {
+          if (trackId !== track._id) {
+            audio.pause();
+            audio.currentTime = 0;
+          }
+        });
+
+        // Create or reuse audio element for this track
+        let audio = audioRefsMap.current.get(track._id);
+        if (!audio) {
+          audio = new Audio();
+          audio.crossOrigin = 'anonymous';
+          audio.preload = 'auto';
+          audioRefsMap.current.set(track._id, audio);
+
+          // Set up event listeners
+          audio.onended = () => {
+            setPlayingTrackId(null);
+            setAudioError(null);
+          };
+
+          audio.onerror = () => {
+            console.error('Audio loading error for:', track.trackTitle);
+            setAudioError('Erreur de chargement audio');
+            setPlayingTrackId(null);
+          };
+
+          audio.src = track.audioUrl;
         }
 
-        // Create new audio element with proper configuration
-        const audio = new Audio();
-        audio.crossOrigin = 'anonymous';
-        audio.preload = 'auto';
-        audio.volume = volume;
-        
-        // Set up event listeners
-        audio.onended = () => {
-          setPlayingTrackId(null);
-          setAudioError(null);
-        };
-
-        audio.onerror = () => {
-          console.error('Audio loading error for:', track.trackTitle);
-          setAudioError('Erreur de chargement audio');
-          setPlayingTrackId(null);
-        };
-
-        audio.src = track.audioUrl;
-        audioRef.current = audio;
+        // Set volume for this track
+        audio.volume = trackVolumes[track._id] || 1;
         setPlayingTrackId(track._id);
 
         // Play with retry logic
@@ -109,12 +117,12 @@ export default function AuthorPage() {
             }
           } catch (playError) {
             console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
-            
+
             if (retries > 0) {
               await new Promise(resolve => setTimeout(resolve, 100));
               await playAudio(retries - 1);
             } else {
-              setAudioError('Impossible de lire l\'audio');
+              setAudioError('Impossible de lire l\\'audio');
               setPlayingTrackId(null);
             }
           }
@@ -128,10 +136,21 @@ export default function AuthorPage() {
     }
   };
 
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>, trackId: string) => {
     e.stopPropagation();
     const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
+    
+    // Update volume state
+    setTrackVolumes(prev => ({
+      ...prev,
+      [trackId]: newVolume
+    }));
+
+    // Update audio element volume if it exists and is playing
+    const audio = audioRefsMap.current.get(trackId);
+    if (audio) {
+      audio.volume = newVolume;
+    }
   };
 
   return (
@@ -370,13 +389,13 @@ export default function AuthorPage() {
                             min="0"
                             max="1"
                             step="0.1"
-                            value={volume}
-                            onChange={handleVolumeChange}
+                            value={trackVolumes[track._id] || 1}
+                            onChange={(e) => handleVolumeChange(e, track._id)}
                             className="flex-1 h-2 bg-primary/20 rounded-lg appearance-none cursor-pointer accent-primary"
                             title="Contrôle du volume"
                           />
                           <span className="text-xs text-foreground/60 w-8 text-right">
-                            {Math.round(volume * 100)}%
+                            {Math.round((trackVolumes[track._id] || 1) * 100)}%
                           </span>
                         </div>
                         
