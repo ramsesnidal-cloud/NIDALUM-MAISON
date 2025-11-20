@@ -18,6 +18,7 @@ export default function ChantsPage() {
   const [editingChant, setEditingChant] = useState<RitualChants | null>(null);
   const [playingChantId, setPlayingChantId] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { isAdmin, setAdmin } = useAdminStore();
 
@@ -30,6 +31,7 @@ export default function ChantsPage() {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.src = '';
         audioRef.current = null;
       }
     };
@@ -59,46 +61,66 @@ export default function ChantsPage() {
     setAdmin(false);
   };
 
-  const handlePlayPause = (e: React.MouseEvent, chant: RitualChants) => {
+  const handlePlayPause = async (e: React.MouseEvent, chant: RitualChants) => {
     e.stopPropagation();
 
     if (!chant.audioUrl) {
+      console.warn('No audio URL available for this chant');
       return;
     }
 
-    // If clicking the same chant, toggle play/pause
-    if (playingChantId === chant._id) {
-      if (audioRef.current) {
-        if (audioRef.current.paused) {
-          audioRef.current.play();
-        } else {
+    try {
+      // If clicking the same chant, toggle play/pause
+      if (playingChantId === chant._id) {
+        if (audioRef.current) {
+          if (audioRef.current.paused) {
+            await audioRef.current.play().catch(err => {
+              console.error('Error playing audio:', err);
+            });
+          } else {
+            audioRef.current.pause();
+          }
+        }
+      } else {
+        // Stop current audio and play new one
+        if (audioRef.current) {
           audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+
+        audioRef.current = new Audio(chant.audioUrl);
+        audioRef.current.crossOrigin = 'anonymous';
+        audioRef.current.volume = isMuted ? 0 : 1;
+        
+        // Set up event listeners before playing
+        audioRef.current.onended = () => {
+          setPlayingChantId(null);
+        };
+
+        audioRef.current.onerror = (error) => {
+          console.error('Audio error:', error);
+          setPlayingChantId(null);
+        };
+
+        try {
+          await audioRef.current.play();
+          setPlayingChantId(chant._id);
+        } catch (playError) {
+          console.error('Failed to play audio:', playError);
+          setPlayingChantId(null);
         }
       }
-    } else {
-      // Stop current audio and play new one
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-
-      audioRef.current = new Audio(chant.audioUrl);
-      audioRef.current.volume = isMuted ? 0 : 1;
-      audioRef.current.play();
-      setPlayingChantId(chant._id);
-
-      // Handle audio end
-      audioRef.current.onended = () => {
-        setPlayingChantId(null);
-      };
+    } catch (error) {
+      console.error('Error in handlePlayPause:', error);
     }
   };
 
   const handleToggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsMuted(!isMuted);
+    const newMutedState = !isMuted;
+    setIsMuted(newMutedState);
     if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 1 : 0;
+      audioRef.current.volume = newMutedState ? 0 : 1;
     }
   };
 
@@ -224,34 +246,39 @@ export default function ChantsPage() {
 
                     {/* Audio Player */}
                     {chant.audioUrl && (
-                      <div className="mb-6 flex items-center gap-3 p-4 bg-primary/10 border border-primary/30 rounded-lg">
-                        <button
-                          onClick={(e) => handlePlayPause(e, chant)}
-                          className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
-                          title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
-                        >
-                          {playingChantId === chant._id ? (
-                            <Pause className="w-5 h-5" />
-                          ) : (
-                            <Play className="w-5 h-5 ml-0.5" />
-                          )}
-                        </button>
-                        <div className="flex-1">
-                          <p className="font-paragraph text-xs text-foreground/60">
-                            {playingChantId === chant._id ? 'En lecture...' : 'Cliquez pour écouter'}
-                          </p>
+                      <div className="mb-6">
+                        <div className="flex items-center gap-3 p-4 bg-primary/10 border border-primary/30 rounded-lg">
+                          <button
+                            onClick={(e) => handlePlayPause(e, chant)}
+                            className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50"
+                            title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
+                          >
+                            {playingChantId === chant._id ? (
+                              <Pause className="w-5 h-5" />
+                            ) : (
+                              <Play className="w-5 h-5 ml-0.5" />
+                            )}
+                          </button>
+                          <div className="flex-1">
+                            <p className="font-paragraph text-xs text-foreground/60">
+                              {playingChantId === chant._id ? 'En lecture...' : 'Cliquez pour écouter'}
+                            </p>
+                          </div>
+                          <button
+                            onClick={handleToggleMute}
+                            className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors"
+                            title={isMuted ? 'Activer le son' : 'Couper le son'}
+                          >
+                            {isMuted ? (
+                              <VolumeX className="w-5 h-5" />
+                            ) : (
+                              <Volume2 className="w-5 h-5" />
+                            )}
+                          </button>
                         </div>
-                        <button
-                          onClick={handleToggleMute}
-                          className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors"
-                          title={isMuted ? 'Activer le son' : 'Couper le son'}
-                        >
-                          {isMuted ? (
-                            <VolumeX className="w-5 h-5" />
-                          ) : (
-                            <Volume2 className="w-5 h-5" />
-                          )}
-                        </button>
+                        {audioError && (
+                          <p className="text-xs text-destructive mt-2">Erreur audio: {audioError}</p>
+                        )}
                       </div>
                     )}
 
