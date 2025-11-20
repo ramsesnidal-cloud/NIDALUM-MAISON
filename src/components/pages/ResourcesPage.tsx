@@ -5,12 +5,21 @@ import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { OfficialResources } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Download, FileText, Calendar } from 'lucide-react';
+import { Download, FileText, Calendar, X, CheckCircle } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<OfficialResources[]>([]);
   const [selectedType, setSelectedType] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedResource, setSelectedResource] = useState<OfficialResources | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     loadResources();
@@ -34,6 +43,24 @@ export default function ResourcesPage() {
   const filteredResources = selectedType === 'all' 
     ? resources 
     : resources.filter(r => r.resourceType === selectedType);
+
+  const handleDownloadClick = (resource: OfficialResources) => {
+    setSelectedResource(resource);
+    setIsDialogOpen(true);
+  };
+
+  const handleConfirmDownload = () => {
+    if (selectedResource?.fileUrl) {
+      window.open(selectedResource.fileUrl, '_blank');
+      setIsDialogOpen(false);
+      setSelectedResource(null);
+    }
+  };
+
+  const handleCancelDownload = () => {
+    setIsDialogOpen(false);
+    setSelectedResource(null);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -155,15 +182,13 @@ export default function ResourcesPage() {
                     )}
 
                     {resource.fileUrl && (
-                      <a
-                        href={resource.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => handleDownloadClick(resource)}
                         className="inline-flex items-center bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-3 hover:bg-primary/90 transition-all duration-300 w-full justify-center"
                       >
                         <Download className="w-4 h-4 mr-2" />
                         Télécharger
-                      </a>
+                      </button>
                     )}
                   </div>
                 </motion.div>
@@ -220,6 +245,108 @@ export default function ResourcesPage() {
       </section>
 
       <Footer />
+
+      {/* Download Confirmation Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-background border-2 border-primary/30 max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-heading text-3xl text-primary mb-4">
+              Confirmation de Téléchargement
+            </DialogTitle>
+            <DialogDescription className="sr-only">
+              Confirmez le téléchargement de la ressource
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedResource && (
+            <div className="space-y-6">
+              {/* Resource Preview */}
+              {selectedResource.thumbnailImage && (
+                <div className="aspect-video overflow-hidden border border-primary/20">
+                  <Image
+                    src={selectedResource.thumbnailImage}
+                    alt={selectedResource.resourceName || 'Ressource'}
+                    width={800}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Resource Information */}
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-heading text-2xl text-secondary mb-2">
+                    {selectedResource.resourceName}
+                  </h3>
+                  {selectedResource.resourceType && (
+                    <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
+                      {selectedResource.resourceType}
+                    </span>
+                  )}
+                </div>
+
+                {selectedResource.description && (
+                  <div className="bg-dark-amber-shadow/20 border-l-4 border-primary p-4">
+                    <p className="font-paragraph text-sm text-foreground/50 mb-2">Description:</p>
+                    <p className="font-paragraph text-foreground/80 leading-relaxed">
+                      {selectedResource.description}
+                    </p>
+                  </div>
+                )}
+
+                {selectedResource.publicationDate && (
+                  <div className="flex items-center text-foreground/70">
+                    <Calendar className="w-4 h-4 mr-2 text-secondary" />
+                    <span className="font-paragraph text-sm">
+                      Publié le {formatDate(selectedResource.publicationDate)}
+                    </span>
+                  </div>
+                )}
+
+                {/* Download Information */}
+                <div className="bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 p-6 space-y-3">
+                  <div className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                    <p className="font-paragraph text-sm text-foreground/80">
+                      Cette ressource est gratuite et fait partie des documents officiels de l'Institut Nidalum
+                    </p>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                    <p className="font-paragraph text-sm text-foreground/80">
+                      Le téléchargement s'ouvrira dans un nouvel onglet
+                    </p>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                    <p className="font-paragraph text-sm text-foreground/80">
+                      Vous pouvez utiliser cette ressource pour votre apprentissage personnel de Nidalum
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button
+                  onClick={handleConfirmDownload}
+                  className="flex-1 inline-flex items-center justify-center bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-4 hover:bg-primary/90 transition-all duration-300"
+                >
+                  <Download className="w-5 h-5 mr-2" />
+                  Confirmer le Téléchargement
+                </button>
+                <button
+                  onClick={handleCancelDownload}
+                  className="flex-1 inline-flex items-center justify-center bg-transparent border-2 border-secondary text-secondary font-paragraph font-semibold px-6 py-4 hover:bg-secondary/10 transition-all duration-300"
+                >
+                  <X className="w-5 h-5 mr-2" />
+                  Annuler
+                </button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
