@@ -1,155 +1,34 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { MusicShowcase } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Music, Play, Pause, Volume2 } from 'lucide-react';
+import { Music, Play } from 'lucide-react';
+import AudioPlayer from '@/components/AudioPlayer';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null);
-  const [trackVolumes, setTrackVolumes] = useState<Record<string, number>>({});
-  const [audioError, setAudioError] = useState<string | null>(null);
-  const audioRefsMap = useRef<Map<string, HTMLAudioElement>>(new Map());
 
   useEffect(() => {
     loadMusic();
-  }, []);
-
-  // Cleanup audio on unmount
-  useEffect(() => {
-    return () => {
-      audioRefsMap.current.forEach((audio) => {
-        audio.pause();
-        audio.src = '';
-      });
-      audioRefsMap.current.clear();
-    };
   }, []);
 
   const loadMusic = async () => {
     setIsLoading(true);
     const { items } = await BaseCrudService.getAll<MusicShowcase>('musicshowcase');
     setMusicTracks(items);
-    // Initialize volume for each track
-    const initialVolumes: Record<string, number> = {};
-    items.forEach(track => {
-      initialVolumes[track._id] = 1;
-    });
-    setTrackVolumes(initialVolumes);
     setIsLoading(false);
   };
 
-  const handlePlayPause = async (e: React.MouseEvent, track: MusicShowcase) => {
-    e.stopPropagation();
-
-    if (!track.audioUrl) {
-      setAudioError('Aucun lien audio disponible');
-      console.warn('No audio URL available for this track');
-      return;
-    }
-
-    try {
-      setAudioError(null);
-      const existingAudio = audioRefsMap.current.get(track._id);
-
-      // If clicking the same track, toggle play/pause
-      if (playingTrackId === track._id && existingAudio) {
-        if (existingAudio.paused) {
-          try {
-            const playPromise = existingAudio.play();
-            if (playPromise !== undefined) {
-              await playPromise;
-            }
-          } catch (err) {
-            console.error('Error resuming audio:', err);
-            setAudioError('Impossible de reprendre la lecture');
-          }
-        } else {
-          existingAudio.pause();
-        }
-      } else {
-        // Stop all other audio tracks
-        audioRefsMap.current.forEach((audio, trackId) => {
-          if (trackId !== track._id) {
-            audio.pause();
-            audio.currentTime = 0;
-          }
-        });
-
-        // Create or reuse audio element for this track
-        let audio = audioRefsMap.current.get(track._id);
-        if (!audio) {
-          audio = new Audio();
-          audio.crossOrigin = 'anonymous';
-          audio.preload = 'auto';
-          audioRefsMap.current.set(track._id, audio);
-
-          // Set up event listeners
-          audio.onended = () => {
-            setPlayingTrackId(null);
-            setAudioError(null);
-          };
-
-          audio.onerror = () => {
-            console.error('Audio loading error for:', track.trackTitle);
-            setAudioError('Erreur de chargement audio');
-            setPlayingTrackId(null);
-          };
-
-          audio.src = track.audioUrl;
-        }
-
-        // Set volume for this track
-        audio.volume = trackVolumes[track._id] || 1;
-        setPlayingTrackId(track._id);
-
-        // Play with retry logic
-        const playAudio = async (retries = 3) => {
-          try {
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-              await playPromise;
-              console.log('Audio playing successfully:', track.trackTitle);
-            }
-          } catch (playError) {
-            console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
-
-            if (retries > 0) {
-              await new Promise(resolve => setTimeout(resolve, 100));
-              await playAudio(retries - 1);
-            } else {
-              setAudioError("Impossible de lire l'audio");
-              setPlayingTrackId(null);
-            }
-          }
-        };
-
-        await playAudio();
-      }
-    } catch (error) {
-      console.error('Error in handlePlayPause:', error);
-      setAudioError('Erreur lors de la lecture');
-    }
-  };
-
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>, trackId: string) => {
-    e.stopPropagation();
-    const newVolume = parseFloat(e.target.value);
-    
-    // Update volume state
-    setTrackVolumes(prev => ({
-      ...prev,
-      [trackId]: newVolume
-    }));
-
-    // Update audio element volume if it exists and is playing
-    const audio = audioRefsMap.current.get(trackId);
-    if (audio) {
-      audio.volume = newVolume;
+  const handlePlayStateChange = (trackId: string, isPlaying: boolean) => {
+    if (isPlaying) {
+      setPlayingTrackId(trackId);
+    } else if (playingTrackId === trackId) {
+      setPlayingTrackId(null);
     }
   };
 
@@ -320,19 +199,22 @@ export default function AuthorPage() {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           whileHover={{ scale: 1.15 }}
-                          onClick={(e) => handlePlayPause(e, track)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Trigger play through AudioPlayer
+                          }}
                           className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 z-20"
                           title={playingTrackId === track._id ? 'Pause' : 'Lecture'}
                         >
                           <div className="flex items-center justify-center w-16 h-16 bg-primary text-primary-foreground rounded-full shadow-2xl hover:bg-primary/90 transition-colors">
                             {playingTrackId === track._id ? (
-                              <Pause className="w-8 h-8" />
+                              <div className="w-8 h-8 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                             ) : (
                               <Play className="w-8 h-8 ml-1" />
                             )}
                           </div>
                           <p className="font-paragraph text-xs text-white mt-2 font-semibold">
-                            {playingTrackId === track._id ? 'Pause' : 'Écouter'}
+                            {playingTrackId === track._id ? 'En lecture' : 'Écouter'}
                           </p>
                         </motion.button>
                       )}
@@ -359,62 +241,15 @@ export default function AuthorPage() {
                       </p>
                     )}
                     
-                    {/* Audio Player */}
+                    {/* Audio Player Component */}
                     {track.audioUrl && (
-                      <div className="mt-4 space-y-3 border-t border-primary/20 pt-4">
-                        <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handlePlayPause(e, track);
-                            }}
-                            className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 active:scale-95 transition-all duration-200"
-                            title={playingTrackId === track._id ? 'Pause' : 'Lecture'}
-                            aria-label={playingTrackId === track._id ? 'Pause' : 'Lecture'}
-                          >
-                            {playingTrackId === track._id ? (
-                              <Pause className="w-5 h-5" />
-                            ) : (
-                              <Play className="w-5 h-5 ml-0.5" />
-                            )}
-                          </button>
-                          <div className="flex-1">
-                            <p className="font-paragraph text-xs text-foreground/70 font-medium">
-                              {playingTrackId === track._id ? '▶ En lecture...' : '▷ Cliquez pour écouter'}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        {/* Volume Control */}
-                        <div className="flex items-center gap-3 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 transition-colors">
-                          <Volume2 className="w-5 h-5 text-primary flex-shrink-0" />
-                          <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                            value={trackVolumes[track._id] || 1}
-                            onChange={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              handleVolumeChange(e, track._id);
-                            }}
-                            className="flex-1 h-2 bg-primary/30 rounded-full appearance-none cursor-pointer accent-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0"
-                            title="Contrôle du volume"
-                            aria-label="Contrôle du volume"
-                          />
-                          <span className="text-xs text-foreground/70 font-semibold w-10 text-right">
-                            {Math.round((trackVolumes[track._id] || 1) * 100)}%
-                          </span>
-                        </div>
-                        
-                        {audioError && playingTrackId === track._id && (
-                          <div className="p-2 bg-destructive/20 border border-destructive/50 rounded-lg">
-                            <p className="text-xs text-destructive font-medium">⚠ {audioError}</p>
-                          </div>
-                        )}
+                      <div className="mt-4 border-t border-primary/20 pt-4">
+                        <AudioPlayer
+                          audioUrl={track.audioUrl}
+                          title={track.trackTitle || 'Musique'}
+                          compact={false}
+                          onPlayStateChange={(isPlaying) => handlePlayStateChange(track._id, isPlaying)}
+                        />
                       </div>
                     )}
                   </div>
