@@ -3,27 +3,56 @@ import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { MusicShowcase } from '@/entities';
+import { MusicShowcase, NidalumLexicon } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Music, Play } from 'lucide-react';
+import { Music, Play, Search } from 'lucide-react';
 import AudioPlayer from '@/components/AudioPlayer';
 import AudioDiagnostics from '@/components/AudioDiagnostics';
 import AudioDebugger from '@/components/AudioDebugger';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
+  const [lexiconItems, setLexiconItems] = useState<NidalumLexicon[]>([]);
+  const [filteredLexicon, setFilteredLexicon] = useState<NidalumLexicon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLexiconLoading, setIsLexiconLoading] = useState(true);
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     loadMusic();
+    loadLexicon();
   }, []);
+
+  useEffect(() => {
+    // Filter lexicon based on search query
+    if (searchQuery.trim() === '') {
+      setFilteredLexicon(lexiconItems);
+    } else {
+      const query = searchQuery.toLowerCase();
+      const filtered = lexiconItems.filter(item =>
+        (item.nidalumWord?.toLowerCase().includes(query)) ||
+        (item.definition?.toLowerCase().includes(query)) ||
+        (item.category?.toLowerCase().includes(query)) ||
+        (item.traduction_fr?.toLowerCase().includes(query))
+      );
+      setFilteredLexicon(filtered);
+    }
+  }, [searchQuery, lexiconItems]);
 
   const loadMusic = async () => {
     setIsLoading(true);
     const { items } = await BaseCrudService.getAll<MusicShowcase>('musicshowcase');
     setMusicTracks(items);
     setIsLoading(false);
+  };
+
+  const loadLexicon = async () => {
+    setIsLexiconLoading(true);
+    const { items } = await BaseCrudService.getAll<NidalumLexicon>('nidalumlexicon');
+    setLexiconItems(items);
+    setFilteredLexicon(items);
+    setIsLexiconLoading(false);
   };
 
   const handlePlayStateChange = (trackId: string, isPlaying: boolean) => {
@@ -263,6 +292,116 @@ export default function AuthorPage() {
           )}
         </div>
       </section>
+
+      {/* Nidalum Dictionary Section */}
+      <section className="py-24 px-6 lg:px-12">
+        <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="font-heading text-4xl md:text-5xl text-primary mb-6 text-center">
+              Dictionnaire Nidalum
+            </h2>
+            <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto">
+              Explorez le lexique complet de la langue Nidalum, avec traductions, catégories et notes contextuelles.
+            </p>
+          </motion.div>
+
+          {/* Search Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mb-8"
+          >
+            <div className="relative max-w-2xl mx-auto">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary/60" />
+              <input
+                type="text"
+                placeholder="Rechercher par mot Nidalum, traduction, catégorie..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-background border border-primary/30 text-foreground placeholder-foreground/50 focus:outline-none focus:border-primary/80 transition-colors font-paragraph"
+              />
+            </div>
+          </motion.div>
+
+          {/* Dictionary Table */}
+          {isLexiconLoading ? (
+            <div className="text-center py-20">
+              <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+              <p className="font-paragraph text-foreground/70 mt-4">Chargement du dictionnaire...</p>
+            </div>
+          ) : filteredLexicon.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="font-paragraph text-xl text-foreground/70">
+                {searchQuery ? 'Aucun résultat trouvé' : 'Aucune entrée disponible'}
+              </p>
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="overflow-x-auto border border-primary/20 bg-background/50 backdrop-blur-sm"
+            >
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-primary/20 bg-background/80">
+                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Nidalum</th>
+                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Français</th>
+                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Catégorie</th>
+                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Note</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredLexicon.map((item, index) => (
+                    <motion.tr
+                      key={item._id}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      viewport={{ once: true }}
+                      className="border-b border-primary/10 hover:bg-primary/5 transition-colors"
+                    >
+                      <td className="px-6 py-4 font-heading text-secondary text-sm md:text-base">
+                        {item.nidalumWord || '-'}
+                      </td>
+                      <td className="px-6 py-4 font-paragraph text-foreground/80 text-sm md:text-base">
+                        {item.traduction_fr || item.definition || '-'}
+                      </td>
+                      <td className="px-6 py-4 font-paragraph text-foreground/70 text-sm md:text-base">
+                        {item.category ? (
+                          <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 text-secondary text-xs rounded">
+                            {item.category}
+                          </span>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
+                      <td className="px-6 py-4 font-paragraph text-foreground/60 text-sm md:text-base max-w-xs">
+                        {item.etymology || item.exampleSentence || item.theme || '-'}
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="px-6 py-4 border-t border-primary/20 bg-background/50 text-center">
+                <p className="font-paragraph text-sm text-foreground/60">
+                  {filteredLexicon.length} entrée{filteredLexicon.length > 1 ? 's' : ''} affichée{filteredLexicon.length > 1 ? 's' : ''}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </section>
+
       {/* Creative Process Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/10">
         <div className="max-w-[120rem] mx-auto">
