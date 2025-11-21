@@ -108,6 +108,12 @@ export interface Publications {
   coverImage?: string;
   /** @wixFieldType url */
   purchaseLink?: string;
+  /** @wixFieldType text */
+  excerpt?: string;
+  /** @wixFieldType url */
+  pdfUrl?: string;
+  /** @wixFieldType text */
+  bookGenre?: string;
 }
 
 
