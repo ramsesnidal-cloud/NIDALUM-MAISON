@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Filter, BookOpen, Sparkles, Volume2, Globe, Lightbulb } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { NidalumLexicon } from '@/entities';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function LexiconPage() {
   const [lexiconItems, setLexiconItems] = useState<NidalumLexicon[]>([]);
@@ -14,6 +15,8 @@ export default function LexiconPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTheme, setSelectedTheme] = useState<string>('all');
+  const [selectedWord, setSelectedWord] = useState<NidalumLexicon | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -167,7 +170,7 @@ export default function LexiconPage() {
         </div>
       </section>
 
-      {/* Lexicon Grid */}
+      {/* Lexicon Display */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
           {isLoading ? (
@@ -190,7 +193,8 @@ export default function LexiconPage() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
+                  onClick={() => setSelectedWord(item)}
+                  className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group cursor-pointer hover:shadow-lg hover:shadow-primary/10"
                 >
                   <div className="mb-4">
                     <h3 className="font-heading text-3xl text-primary mb-2 group-hover:text-secondary transition-colors">
@@ -205,7 +209,7 @@ export default function LexiconPage() {
 
                   <div className="space-y-3">
                     <div>
-                      <p className="font-paragraph text-foreground/80 leading-relaxed">
+                      <p className="font-paragraph text-foreground/80 leading-relaxed line-clamp-2">
                         {item.definition}
                       </p>
                     </div>
@@ -213,17 +217,8 @@ export default function LexiconPage() {
                     {item.exampleSentence && (
                       <div className="bg-dark-amber-shadow/20 p-3 border-l-2 border-secondary">
                         <p className="font-paragraph text-xs text-foreground/50 mb-1">Exemple:</p>
-                        <p className="font-paragraph text-sm text-foreground/70 italic">
+                        <p className="font-paragraph text-sm text-foreground/70 italic line-clamp-2">
                           {item.exampleSentence}
-                        </p>
-                      </div>
-                    )}
-
-                    {item.etymology && (
-                      <div className="pt-3 border-t border-primary/10">
-                        <p className="font-paragraph text-xs text-foreground/50 mb-1">Étymologie:</p>
-                        <p className="font-paragraph text-sm text-foreground/60">
-                          {item.etymology}
                         </p>
                       </div>
                     )}
@@ -241,12 +236,163 @@ export default function LexiconPage() {
                       )}
                     </div>
                   </div>
+
+                  <div className="mt-4 pt-4 border-t border-primary/10 flex items-center text-primary/60 group-hover:text-primary transition-colors">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    <span className="font-paragraph text-xs">Cliquez pour plus de détails</span>
+                  </div>
                 </motion.div>
               ))}
             </div>
           )}
         </div>
       </section>
+
+      {/* Word Detail Modal */}
+      <AnimatePresence>
+        {selectedWord && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedWord(null)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-background border-2 border-primary/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            >
+              {/* Header */}
+              <div className="sticky top-0 bg-gradient-to-b from-background to-background/80 border-b border-primary/20 p-8 backdrop-blur-sm">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="font-heading text-5xl text-primary mb-2">
+                      {selectedWord.nidalumWord}
+                    </h2>
+                    {selectedWord.pronunciationGuide && (
+                      <p className="font-paragraph text-lg text-secondary">
+                        [{selectedWord.pronunciationGuide}]
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => setSelectedWord(null)}
+                    className="text-foreground/60 hover:text-foreground transition-colors text-2xl leading-none"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-8 space-y-8">
+                {/* Definition */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 mb-4">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    <h3 className="font-heading text-2xl text-primary">Définition</h3>
+                  </div>
+                  <p className="font-paragraph text-lg text-foreground/80 leading-relaxed bg-dark-amber-shadow/20 p-6 border-l-4 border-primary">
+                    {selectedWord.definition}
+                  </p>
+                </div>
+
+                {/* Pronunciation */}
+                {selectedWord.pronunciationGuide && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Volume2 className="w-5 h-5 text-secondary" />
+                      <h3 className="font-heading text-2xl text-secondary">Prononciation</h3>
+                    </div>
+                    <div className="bg-background/50 border border-secondary/20 p-6 font-paragraph text-lg text-foreground/80">
+                      {selectedWord.pronunciationGuide}
+                    </div>
+                  </div>
+                )}
+
+                {/* Example */}
+                {selectedWord.exampleSentence && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Lightbulb className="w-5 h-5 text-primary" />
+                      <h3 className="font-heading text-2xl text-primary">Exemple d'Utilisation</h3>
+                    </div>
+                    <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-6 italic font-paragraph text-foreground/80">
+                      "{selectedWord.exampleSentence}"
+                    </div>
+                  </div>
+                )}
+
+                {/* Etymology */}
+                {selectedWord.etymology && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Globe className="w-5 h-5 text-secondary" />
+                      <h3 className="font-heading text-2xl text-secondary">Étymologie</h3>
+                    </div>
+                    <p className="font-paragraph text-foreground/80 leading-relaxed bg-background/50 border border-secondary/20 p-6">
+                      {selectedWord.etymology}
+                    </p>
+                  </div>
+                )}
+
+                {/* Category & Theme */}
+                <div className="grid grid-cols-2 gap-4">
+                  {selectedWord.category && (
+                    <div className="space-y-2">
+                      <p className="font-paragraph text-sm text-foreground/60">Catégorie</p>
+                      <div className="px-4 py-3 bg-primary/10 border border-primary/30 font-paragraph text-primary font-semibold">
+                        {selectedWord.category}
+                      </div>
+                    </div>
+                  )}
+                  {selectedWord.theme && (
+                    <div className="space-y-2">
+                      <p className="font-paragraph text-sm text-foreground/60">Thème</p>
+                      <div className="px-4 py-3 bg-secondary/10 border border-secondary/30 font-paragraph text-secondary font-semibold">
+                        {selectedWord.theme}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* French Translation */}
+                {selectedWord.traduction_fr && (
+                  <div className="space-y-3 bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 p-6">
+                    <p className="font-paragraph text-sm text-foreground/60">Traduction Française</p>
+                    <p className="font-paragraph text-lg text-foreground/80">
+                      {selectedWord.traduction_fr}
+                    </p>
+                  </div>
+                )}
+
+                {/* Expression */}
+                {selectedWord.expression_nidalum && (
+                  <div className="space-y-3 bg-gradient-to-br from-secondary/10 to-primary/10 border border-secondary/20 p-6">
+                    <p className="font-paragraph text-sm text-foreground/60">Expression Nidalum</p>
+                    <p className="font-paragraph text-lg text-foreground/80 italic">
+                      {selectedWord.expression_nidalum}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="border-t border-primary/20 p-6 bg-dark-amber-shadow/10 flex gap-3">
+                <Button
+                  onClick={() => setSelectedWord(null)}
+                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-paragraph"
+                >
+                  Fermer
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { OfficialResources, NidalumLexicon } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Download, FileText, Calendar, X, CheckCircle, BookOpen, Scroll, Plus, Save, Trash2 } from 'lucide-react';
+import { Download, FileText, Calendar, X, CheckCircle, BookOpen, Scroll, Plus, Save, Trash2, Sparkles, Lightbulb, Globe, Volume2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -28,6 +28,7 @@ export default function ResourcesPage() {
   
   // Dictionary management states
   const [userWords, setUserWords] = useState<NidalumLexicon[]>([]);
+  const [selectedWordDetail, setSelectedWordDetail] = useState<NidalumLexicon | null>(null);
   const [newWord, setNewWord] = useState({
     nidalumWord: '',
     definition: '',
@@ -35,7 +36,9 @@ export default function ResourcesPage() {
     theme: '',
     pronunciationGuide: '',
     exampleSentence: '',
-    etymology: ''
+    etymology: '',
+    traduction_fr: '',
+    expression_nidalum: ''
   });
 
   useEffect(() => {
@@ -66,14 +69,6 @@ export default function ResourcesPage() {
     setIsDialogOpen(true);
   };
 
-  const handleConfirmDownload = () => {
-    if (selectedResource?.fileUrl) {
-      window.open(selectedResource.fileUrl, '_blank');
-      setIsDialogOpen(false);
-      setSelectedResource(null);
-    }
-  };
-
   const handleCancelDownload = () => {
     setIsDialogOpen(false);
     setSelectedResource(null);
@@ -101,7 +96,9 @@ export default function ResourcesPage() {
       theme: '',
       pronunciationGuide: '',
       exampleSentence: '',
-      etymology: ''
+      etymology: '',
+      traduction_fr: '',
+      expression_nidalum: ''
     });
   };
 
@@ -122,6 +119,8 @@ export default function ResourcesPage() {
           (word.pronunciationGuide ? `Prononciation: ${word.pronunciationGuide}\n` : '') +
           (word.exampleSentence ? `Exemple: ${word.exampleSentence}\n` : '') +
           (word.etymology ? `Étymologie: ${word.etymology}\n` : '') +
+          (word.traduction_fr ? `Traduction FR: ${word.traduction_fr}\n` : '') +
+          (word.expression_nidalum ? `Expression: ${word.expression_nidalum}\n` : '') +
           '\n---\n\n'
         ).join('');
 
@@ -536,6 +535,34 @@ export default function ResourcesPage() {
                               onChange={(e) => setNewWord({ ...newWord, etymology: e.target.value })}
                               placeholder="Origine et histoire du mot..."
                               className="bg-background/80 border-primary/30 text-foreground min-h-[60px] focus:border-primary"
+                            />
+                          </div>
+
+                          {/* French Translation */}
+                          <div className="space-y-2">
+                            <Label htmlFor="traduction_fr" className="font-paragraph text-sm font-semibold text-foreground/90">
+                              Traduction Française
+                            </Label>
+                            <Input
+                              id="traduction_fr"
+                              value={newWord.traduction_fr}
+                              onChange={(e) => setNewWord({ ...newWord, traduction_fr: e.target.value })}
+                              placeholder="Traduction en français..."
+                              className="bg-background/80 border-primary/30 text-foreground focus:border-primary"
+                            />
+                          </div>
+
+                          {/* Nidalum Expression */}
+                          <div className="space-y-2">
+                            <Label htmlFor="expression_nidalum" className="font-paragraph text-sm font-semibold text-foreground/90">
+                              Expression Nidalum
+                            </Label>
+                            <Input
+                              id="expression_nidalum"
+                              value={newWord.expression_nidalum}
+                              onChange={(e) => setNewWord({ ...newWord, expression_nidalum: e.target.value })}
+                              placeholder="Expression ou tournure idiomatique..."
+                              className="bg-background/80 border-primary/30 text-foreground focus:border-primary"
                             />
                           </div>
 
