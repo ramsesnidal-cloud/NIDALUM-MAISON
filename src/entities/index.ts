@@ -92,6 +92,12 @@ export interface Publications {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType url */
+  pdfUrl?: string;
+  /** @wixFieldType text */
+  bookGenre?: string;
+  /** @wixFieldType text */
+  excerpt?: string;
   /** @wixFieldType text */
   title?: string;
   /** @wixFieldType text */
@@ -108,12 +114,6 @@ export interface Publications {
   coverImage?: string;
   /** @wixFieldType url */
   purchaseLink?: string;
-  /** @wixFieldType text */
-  excerpt?: string;
-  /** @wixFieldType url */
-  pdfUrl?: string;
-  /** @wixFieldType text */
-  bookGenre?: string;
 }
 
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, UserPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Header() {
@@ -85,6 +85,15 @@ export default function Header() {
                 )}
               </div>
             ))}
+            
+            {/* Sign Up Button */}
+            <Link
+              to="/signup"
+              className="flex items-center gap-2 bg-secondary text-background font-paragraph font-semibold px-4 py-2 hover:bg-secondary/90 transition-all duration-300"
+            >
+              <UserPlus className="w-4 h-4" />
+              S'inscrire
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -139,6 +148,16 @@ export default function Header() {
                     )}
                   </div>
                 ))}
+                
+                {/* Mobile Sign Up Button */}
+                <Link
+                  to="/signup"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2 mx-4 mt-4 bg-secondary text-background font-paragraph font-semibold px-4 py-3 hover:bg-secondary/90 transition-all duration-300"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  S'inscrire
+                </Link>
               </div>
             </motion.div>
           )}
