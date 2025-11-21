@@ -27,8 +27,6 @@ export interface MusicShowcase {
   audio?: string;
   /** @wixFieldType audio */
   audio1?: string;
-  /** @wixFieldType rich_content */
-  richcontent?: any;
 }
 
 

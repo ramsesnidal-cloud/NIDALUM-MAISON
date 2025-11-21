@@ -1,42 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { MusicShowcase, NidalumLexicon } from '@/entities';
+import { MusicShowcase } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Music, Play, Search } from 'lucide-react';
-import ModernAudioPlayer from '@/components/ModernAudioPlayer';
+import { Music, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
-  const [lexiconItems, setLexiconItems] = useState<NidalumLexicon[]>([]);
-  const [filteredLexicon, setFilteredLexicon] = useState<NidalumLexicon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLexiconLoading, setIsLexiconLoading] = useState(true);
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [volume, setVolume] = useState(1);
+  const [audioError, setAudioError] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     loadMusic();
-    loadLexicon();
   }, []);
 
+  // Cleanup audio on unmount
   useEffect(() => {
-    // Filter lexicon based on search query
-    if (searchQuery.trim() === '') {
-      setFilteredLexicon(lexiconItems);
-    } else {
-      const query = searchQuery.toLowerCase();
-      const filtered = lexiconItems.filter(item =>
-        (item.nidalumWord?.toLowerCase().includes(query)) ||
-        (item.definition?.toLowerCase().includes(query)) ||
-        (item.category?.toLowerCase().includes(query)) ||
-        (item.traduction_fr?.toLowerCase().includes(query))
-      );
-      setFilteredLexicon(filtered);
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      }
+    };
+  }, []);
+
+  // Update volume for current playing track
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
     }
-  }, [searchQuery, lexiconItems]);
+  }, [volume]);
 
   const loadMusic = async () => {
     setIsLoading(true);
@@ -45,20 +43,95 @@ export default function AuthorPage() {
     setIsLoading(false);
   };
 
-  const loadLexicon = async () => {
-    setIsLexiconLoading(true);
-    const { items } = await BaseCrudService.getAll<NidalumLexicon>('nidalumlexicon');
-    setLexiconItems(items);
-    setFilteredLexicon(items);
-    setIsLexiconLoading(false);
+  const handlePlayPause = async (e: React.MouseEvent, track: MusicShowcase) => {
+    e.stopPropagation();
+
+    if (!track.audioUrl) {
+      setAudioError('Aucun lien audio disponible');
+      console.warn('No audio URL available for this track');
+      return;
+    }
+
+    try {
+      setAudioError(null);
+
+      // If clicking the same track, toggle play/pause
+      if (playingTrackId === track._id && audioRef.current) {
+        if (audioRef.current.paused) {
+          try {
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+              await playPromise;
+            }
+          } catch (err) {
+            console.error('Error resuming audio:', err);
+            setAudioError('Impossible de reprendre la lecture');
+          }
+        } else {
+          audioRef.current.pause();
+        }
+      } else {
+        // Stop current audio and play new one
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+
+        // Create new audio element with proper configuration
+        const audio = new Audio();
+        audio.crossOrigin = 'anonymous';
+        audio.preload = 'auto';
+        audio.volume = volume;
+        
+        // Set up event listeners
+        audio.onended = () => {
+          setPlayingTrackId(null);
+          setAudioError(null);
+        };
+
+        audio.onerror = () => {
+          console.error('Audio loading error for:', track.trackTitle);
+          setAudioError('Erreur de chargement audio');
+          setPlayingTrackId(null);
+        };
+
+        audio.src = track.audioUrl;
+        audioRef.current = audio;
+        setPlayingTrackId(track._id);
+
+        // Play with retry logic
+        const playAudio = async (retries = 3) => {
+          try {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+              await playPromise;
+              console.log('Audio playing successfully:', track.trackTitle);
+            }
+          } catch (playError) {
+            console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
+            
+            if (retries > 0) {
+              await new Promise(resolve => setTimeout(resolve, 100));
+              await playAudio(retries - 1);
+            } else {
+              setAudioError('Impossible de lire l\'audio');
+              setPlayingTrackId(null);
+            }
+          }
+        };
+
+        await playAudio();
+      }
+    } catch (error) {
+      console.error('Error in handlePlayPause:', error);
+      setAudioError('Erreur lors de la lecture');
+    }
   };
 
-  const handlePlayStateChange = (trackId: string, isPlaying: boolean) => {
-    if (isPlaying) {
-      setPlayingTrackId(trackId);
-    } else if (playingTrackId === trackId) {
-      setPlayingTrackId(null);
-    }
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
   };
 
   return (
@@ -228,22 +301,19 @@ export default function AuthorPage() {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           whileHover={{ scale: 1.15 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            // Trigger play through AudioPlayer
-                          }}
+                          onClick={(e) => handlePlayPause(e, track)}
                           className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 z-20"
                           title={playingTrackId === track._id ? 'Pause' : 'Lecture'}
                         >
                           <div className="flex items-center justify-center w-16 h-16 bg-primary text-primary-foreground rounded-full shadow-2xl hover:bg-primary/90 transition-colors">
                             {playingTrackId === track._id ? (
-                              <div className="w-8 h-8 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                              <Pause className="w-8 h-8" />
                             ) : (
                               <Play className="w-8 h-8 ml-1" />
                             )}
                           </div>
                           <p className="font-paragraph text-xs text-white mt-2 font-semibold">
-                            {playingTrackId === track._id ? 'En lecture' : 'Écouter'}
+                            {playingTrackId === track._id ? 'Pause' : 'Écouter'}
                           </p>
                         </motion.button>
                       )}
@@ -270,14 +340,49 @@ export default function AuthorPage() {
                       </p>
                     )}
                     
-                    {/* Audio Player Component */}
+                    {/* Audio Player */}
                     {track.audioUrl && (
-                      <div className="mt-6 border-t border-primary/20 pt-6">
-                        <ModernAudioPlayer
-                          audioUrl={track.audioUrl}
-                          title={track.trackTitle || 'Musique'}
-                          onPlayStateChange={(isPlaying) => handlePlayStateChange(track._id, isPlaying)}
-                        />
+                      <div className="mt-4 space-y-3">
+                        <div className="flex items-center gap-3 p-3 bg-primary/10 border border-primary/30 rounded-lg">
+                          <button
+                            onClick={(e) => handlePlayPause(e, track)}
+                            className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50"
+                            title={playingTrackId === track._id ? 'Pause' : 'Lecture'}
+                          >
+                            {playingTrackId === track._id ? (
+                              <Pause className="w-4 h-4" />
+                            ) : (
+                              <Play className="w-4 h-4 ml-0.5" />
+                            )}
+                          </button>
+                          <div className="flex-1">
+                            <p className="font-paragraph text-xs text-foreground/60">
+                              {playingTrackId === track._id ? 'En lecture...' : 'Cliquez pour écouter'}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Volume Control */}
+                        <div className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary/30 rounded-lg">
+                          <Volume2 className="w-4 h-4 text-foreground/60 flex-shrink-0" />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={volume}
+                            onChange={handleVolumeChange}
+                            className="flex-1 h-2 bg-primary/20 rounded-lg appearance-none cursor-pointer accent-primary"
+                            title="Contrôle du volume"
+                          />
+                          <span className="text-xs text-foreground/60 w-8 text-right">
+                            {Math.round(volume * 100)}%
+                          </span>
+                        </div>
+                        
+                        {audioError && (
+                          <p className="text-xs text-destructive">Erreur audio: {audioError}</p>
+                        )}
                       </div>
                     )}
                   </div>
@@ -287,116 +392,6 @@ export default function AuthorPage() {
           )}
         </div>
       </section>
-
-      {/* Nidalum Dictionary Section */}
-      <section className="py-24 px-6 lg:px-12">
-        <div className="max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h2 className="font-heading text-4xl md:text-5xl text-primary mb-6 text-center">
-              Dictionnaire Nidalum
-            </h2>
-            <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto">
-              Explorez le lexique complet de la langue Nidalum, avec traductions, catégories et notes contextuelles.
-            </p>
-          </motion.div>
-
-          {/* Search Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-8"
-          >
-            <div className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary/60" />
-              <input
-                type="text"
-                placeholder="Rechercher par mot Nidalum, traduction, catégorie..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-background border border-primary/30 text-foreground placeholder-foreground/50 focus:outline-none focus:border-primary/80 transition-colors font-paragraph"
-              />
-            </div>
-          </motion.div>
-
-          {/* Dictionary Table */}
-          {isLexiconLoading ? (
-            <div className="text-center py-20">
-              <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-              <p className="font-paragraph text-foreground/70 mt-4">Chargement du dictionnaire...</p>
-            </div>
-          ) : filteredLexicon.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="font-paragraph text-xl text-foreground/70">
-                {searchQuery ? 'Aucun résultat trouvé' : 'Aucune entrée disponible'}
-              </p>
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="overflow-x-auto border border-primary/20 bg-background/50 backdrop-blur-sm"
-            >
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-primary/20 bg-background/80">
-                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Nidalum</th>
-                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Français</th>
-                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Catégorie</th>
-                    <th className="px-6 py-4 text-left font-heading text-primary text-sm md:text-base">Note</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredLexicon.map((item, index) => (
-                    <motion.tr
-                      key={item._id}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      viewport={{ once: true }}
-                      className="border-b border-primary/10 hover:bg-primary/5 transition-colors"
-                    >
-                      <td className="px-6 py-4 font-heading text-secondary text-sm md:text-base">
-                        {item.nidalumWord || '-'}
-                      </td>
-                      <td className="px-6 py-4 font-paragraph text-foreground/80 text-sm md:text-base">
-                        {item.traduction_fr || item.definition || '-'}
-                      </td>
-                      <td className="px-6 py-4 font-paragraph text-foreground/70 text-sm md:text-base">
-                        {item.category ? (
-                          <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 text-secondary text-xs rounded">
-                            {item.category}
-                          </span>
-                        ) : (
-                          '-'
-                        )}
-                      </td>
-                      <td className="px-6 py-4 font-paragraph text-foreground/60 text-sm md:text-base max-w-xs">
-                        {item.etymology || item.exampleSentence || item.theme || '-'}
-                      </td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="px-6 py-4 border-t border-primary/20 bg-background/50 text-center">
-                <p className="font-paragraph text-sm text-foreground/60">
-                  {filteredLexicon.length} entrée{filteredLexicon.length > 1 ? 's' : ''} affichée{filteredLexicon.length > 1 ? 's' : ''}
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </div>
-      </section>
-
       {/* Creative Process Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/10">
         <div className="max-w-[120rem] mx-auto">
