@@ -10,6 +10,119 @@ import { Download, FileText, Calendar, BookOpen, Zap, CheckCircle, AlertCircle, 
 const MAX_RETRIES = 3;
 const DOWNLOAD_TIMEOUT = 30000;
 
+// Resource Card Component
+interface ResourceCardProps {
+  resource: OfficialResources;
+  index: number;
+  downloadingId: string | null;
+  downloadProgress: { [key: string]: number };
+  handleDownload: (fileUrl: string | null, fileName: string, resourceId: string, content?: string) => Promise<void>;
+  cancelDownload: (resourceId: string) => void;
+  formatDate: (date: Date | string | undefined) => string;
+}
+
+const ResourceCard = ({
+  resource,
+  index,
+  downloadingId,
+  downloadProgress,
+  handleDownload,
+  cancelDownload,
+  formatDate,
+}: ResourceCardProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: index * 0.05 }}
+    className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group flex flex-col h-full"
+  >
+    {resource.thumbnailImage && (
+      <div className="aspect-video overflow-hidden">
+        <Image
+          src={resource.thumbnailImage}
+          alt={resource.resourceName || 'Ressource'}
+          width={600}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+    )}
+    
+    <div className="p-6 flex-1 flex flex-col">
+      <div className="mb-4">
+        {resource.resourceType && (
+          <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
+            {resource.resourceType}
+          </span>
+        )}
+        <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors line-clamp-2">
+          {resource.resourceName}
+        </h3>
+      </div>
+
+      {resource.description && (
+        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed mb-4 flex-1 line-clamp-3">
+          {resource.description}
+        </p>
+      )}
+
+      {resource.publicationDate && (
+        <div className="flex items-center text-foreground/60 mb-4">
+          <Calendar className="w-4 h-4 mr-2 text-secondary flex-shrink-0" />
+          <span className="font-paragraph text-xs">{formatDate(resource.publicationDate)}</span>
+        </div>
+      )}
+
+      <div className="space-y-2 mt-auto">
+        <button
+          onClick={() => handleDownload(
+            resource.fileUrl || null, 
+            `${resource.resourceName || 'ressource'}.pdf`, 
+            resource._id,
+            resource.description
+          )}
+          disabled={downloadingId === resource._id}
+          className={`inline-flex items-center justify-center font-paragraph font-semibold px-4 py-2 text-sm transition-all duration-300 w-full ${
+            downloadingId === resource._id
+              ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
+              : 'bg-primary text-primary-foreground hover:bg-primary/90'
+          }`}
+          aria-busy={downloadingId === resource._id}
+        >
+          <Download className="w-4 h-4 mr-2" />
+          {downloadingId === resource._id ? 'Téléchargement...' : 'Télécharger'}
+        </button>
+        
+        {/* Progress Bar */}
+        {downloadProgress[resource._id] !== undefined && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="w-full bg-background/50 border border-primary/20 rounded overflow-hidden"
+          >
+            <motion.div
+              className="h-2 bg-gradient-to-r from-primary to-secondary"
+              initial={{ width: 0 }}
+              animate={{ width: `${downloadProgress[resource._id]}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </motion.div>
+        )}
+
+        {/* Cancel Button */}
+        {downloadingId === resource._id && (
+          <button
+            onClick={() => cancelDownload(resource._id)}
+            className="w-full text-xs text-foreground/60 hover:text-foreground transition-colors flex items-center justify-center gap-1"
+          >
+            <X className="w-3 h-3" />
+            Annuler
+          </button>
+        )}
+      </div>
+    </div>
+  </motion.div>
+);
+
 // PDF Generation utility
 const generatePDF = (title: string, content: string): Blob => {
   const pdfContent = `%PDF-1.4
@@ -255,6 +368,19 @@ export default function ResourcesPage() {
   const featuredChants = chants.slice(0, 3);
   const displayChants = activeChantTab === 'featured' ? featuredChants : chants;
 
+  // Organize resources by category for better display
+  const resourcesByCategory = {
+    'Fondamentaux': resources.filter(r => r.resourceType === 'Fondamentaux'),
+    'Vocabulaire': resources.filter(r => r.resourceType === 'Vocabulaire'),
+    'Prononciation': resources.filter(r => r.resourceType === 'Prononciation'),
+    'Conseils Pratiques': resources.filter(r => r.resourceType === 'Conseils Pratiques'),
+  };
+
+  // Get unique categories for display
+  const categoriesWithContent = Object.entries(resourcesByCategory)
+    .filter(([_, items]) => items.length > 0)
+    .map(([name, items]) => ({ name, items }));
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -395,42 +521,7 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* Filter Section */}
-      <section className="py-12 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
-        <div className="max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-background/50 border border-primary/20 p-6 backdrop-blur-sm"
-          >
-            <div className="flex flex-wrap gap-4 items-center justify-center mb-4">
-              <span className="font-paragraph text-foreground/70">Type de ressource:</span>
-              {resourceTypes.map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setSelectedType(type)}
-                  aria-pressed={selectedType === type}
-                  className={`px-4 py-2 font-paragraph text-sm transition-all duration-300 ${
-                    selectedType === type
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-transparent border border-primary/30 text-foreground hover:border-primary'
-                  }`}
-                >
-                  {type === 'all' ? 'Toutes' : type}
-                </button>
-              ))}
-            </div>
-            <div className="text-center">
-              <p className="font-paragraph text-sm text-foreground/60">
-                {filteredResources.length} ressource{filteredResources.length !== 1 ? 's' : ''} disponible{filteredResources.length !== 1 ? 's' : ''}
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Resources Grid */}
+      {/* Resources by Category Section */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
           {isLoading ? (
@@ -438,106 +529,139 @@ export default function ResourcesPage() {
               <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
               <p className="font-paragraph text-foreground/70 mt-4">Chargement des ressources...</p>
             </div>
-          ) : filteredResources.length === 0 ? (
+          ) : resources.length === 0 ? (
             <div className="text-center py-20">
               <p className="font-paragraph text-xl text-foreground/70">Aucune ressource trouvée</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredResources.map((resource, index) => (
+            <div className="space-y-20">
+              {/* Fondamentaux Section */}
+              {resourcesByCategory['Fondamentaux'].length > 0 && (
                 <motion.div
-                  key={resource._id}
                   initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group flex flex-col"
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
                 >
-                  {resource.thumbnailImage && (
-                    <div className="aspect-video overflow-hidden">
-                      <Image
-                        src={resource.thumbnailImage}
-                        alt={resource.resourceName || 'Ressource'}
-                        width={600}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary"></div>
+                    <h2 className="font-heading text-3xl text-primary">Fondamentaux du Nidalum</h2>
+                  </div>
+                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                    Commencez votre voyage avec les bases essentielles : alphabet, phonétique, grammaire et premiers pas pour maîtriser les fondamentaux de la langue Nidalum.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {resourcesByCategory['Fondamentaux'].map((resource, index) => (
+                      <ResourceCard
+                        key={resource._id}
+                        resource={resource}
+                        index={index}
+                        downloadingId={downloadingId}
+                        downloadProgress={downloadProgress}
+                        handleDownload={handleDownload}
+                        cancelDownload={cancelDownload}
+                        formatDate={formatDate}
                       />
-                    </div>
-                  )}
-                  
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="mb-4">
-                      {resource.resourceType && (
-                        <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
-                          {resource.resourceType}
-                        </span>
-                      )}
-                      <h3 className="font-heading text-2xl text-primary mb-2 group-hover:text-secondary transition-colors">
-                        {resource.resourceName}
-                      </h3>
-                    </div>
-
-                    {resource.description && (
-                      <p className="font-paragraph text-foreground/70 leading-relaxed mb-4 flex-1">
-                        {resource.description}
-                      </p>
-                    )}
-
-                    {resource.publicationDate && (
-                      <div className="flex items-center text-foreground/60 mb-4">
-                        <Calendar className="w-4 h-4 mr-2 text-secondary" />
-                        <span className="font-paragraph text-sm">{formatDate(resource.publicationDate)}</span>
-                      </div>
-                    )}
-
-                    <div className="space-y-2">
-                      <button
-                        onClick={() => handleDownload(
-                          resource.fileUrl || null, 
-                          `${resource.resourceName || 'ressource'}.pdf`, 
-                          resource._id,
-                          resource.description
-                        )}
-                        disabled={downloadingId === resource._id}
-                        className={`inline-flex items-center justify-center font-paragraph font-semibold px-6 py-3 transition-all duration-300 w-full ${
-                          downloadingId === resource._id
-                            ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
-                            : 'bg-primary text-primary-foreground hover:bg-primary/90'
-                        }`}
-                        aria-busy={downloadingId === resource._id}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        {downloadingId === resource._id ? 'Téléchargement...' : 'Télécharger'}
-                      </button>
-                      
-                      {/* Progress Bar */}
-                      {downloadProgress[resource._id] !== undefined && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="w-full bg-background/50 border border-primary/20 rounded overflow-hidden"
-                        >
-                          <motion.div
-                            className="h-2 bg-gradient-to-r from-primary to-secondary"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${downloadProgress[resource._id]}%` }}
-                            transition={{ duration: 0.3 }}
-                          />
-                        </motion.div>
-                      )}
-
-                      {/* Cancel Button */}
-                      {downloadingId === resource._id && (
-                        <button
-                          onClick={() => cancelDownload(resource._id)}
-                          className="w-full text-xs text-foreground/60 hover:text-foreground transition-colors flex items-center justify-center gap-1"
-                        >
-                          <X className="w-3 h-3" />
-                          Annuler
-                        </button>
-                      )}
-                    </div>
+                    ))}
                   </div>
                 </motion.div>
-              ))}
+              )}
+
+              {/* Vocabulaire Section */}
+              {resourcesByCategory['Vocabulaire'].length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-1 h-8 bg-gradient-to-b from-secondary to-primary"></div>
+                    <h2 className="font-heading text-3xl text-secondary">Enrichir Votre Vocabulaire</h2>
+                  </div>
+                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                    Développez votre lexique avec des dictionnaires thématiques, expressions courantes et mots essentiels pour communiquer efficacement en Nidalum.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {resourcesByCategory['Vocabulaire'].map((resource, index) => (
+                      <ResourceCard
+                        key={resource._id}
+                        resource={resource}
+                        index={index}
+                        downloadingId={downloadingId}
+                        downloadProgress={downloadProgress}
+                        handleDownload={handleDownload}
+                        cancelDownload={cancelDownload}
+                        formatDate={formatDate}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Prononciation Section */}
+              {resourcesByCategory['Prononciation'].length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary"></div>
+                    <h2 className="font-heading text-3xl text-primary">Maîtriser la Prononciation</h2>
+                  </div>
+                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                    Perfectionnez votre accent avec des guides détaillés, documents audio et exercices phonétiques pour une prononciation authentique du Nidalum.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {resourcesByCategory['Prononciation'].map((resource, index) => (
+                      <ResourceCard
+                        key={resource._id}
+                        resource={resource}
+                        index={index}
+                        downloadingId={downloadingId}
+                        downloadProgress={downloadProgress}
+                        handleDownload={handleDownload}
+                        cancelDownload={cancelDownload}
+                        formatDate={formatDate}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Conseils Pratiques Section */}
+              {resourcesByCategory['Conseils Pratiques'].length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-1 h-8 bg-gradient-to-b from-secondary to-primary"></div>
+                    <h2 className="font-heading text-3xl text-secondary">Conseils Pratiques pour Apprendre</h2>
+                  </div>
+                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                    Découvrez des stratégies d'apprentissage éprouvées, astuces quotidiennes et ressources complémentaires pour optimiser votre progression en Nidalum.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {resourcesByCategory['Conseils Pratiques'].map((resource, index) => (
+                      <ResourceCard
+                        key={resource._id}
+                        resource={resource}
+                        index={index}
+                        downloadingId={downloadingId}
+                        downloadProgress={downloadProgress}
+                        handleDownload={handleDownload}
+                        cancelDownload={cancelDownload}
+                        formatDate={formatDate}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
             </div>
           )}
         </div>
