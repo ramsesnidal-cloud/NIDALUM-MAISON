@@ -41,7 +41,7 @@ export default function TextToSpeechPlayer({
   const [speed, setSpeed] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
-  const [showSpeedControl, setShowSpeedControl] = useState(false);
+  const [isSpeedControlOpen, setIsSpeedControlOpen] = useState(false);
   const [isSupported, setIsSupported] = useState(true);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
