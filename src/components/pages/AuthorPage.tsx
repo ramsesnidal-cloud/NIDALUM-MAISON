@@ -7,8 +7,6 @@ import { MusicShowcase, NidalumLexicon } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Music, Play, Search } from 'lucide-react';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
-import AudioDiagnostics from '@/components/AudioDiagnostics';
-import AudioDebugger from '@/components/AudioDebugger';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
@@ -66,8 +64,6 @@ export default function AuthorPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <AudioDiagnostics />
-      <AudioDebugger />
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background">
