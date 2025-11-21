@@ -5,14 +5,16 @@ import { Play, Pause, Volume2, VolumeX, AlertCircle, Loader } from 'lucide-react
 interface ModernAudioPlayerProps {
   audioUrl?: string;
   title?: string;
+  audioRef?: React.MutableRefObject<HTMLAudioElement | null>;
   onPlayStateChange?: (isPlaying: boolean) => void;
   className?: string;
 }
 
 /**
- * ModernAudioPlayer - Lecteur audio nouvelle génération
+ * ModernAudioPlayer - Lecteur audio robuste et synchronisé
  * 
  * Fonctionnalités:
+ * - Synchronisation avec audioRef externe
  * - Design ultra-moderne avec gradients
  * - Barre de progression interactive
  * - Contrôle du volume avec slider
@@ -27,6 +29,7 @@ interface ModernAudioPlayerProps {
 export default function ModernAudioPlayer({
   audioUrl,
   title = 'Audio',
+  audioRef: externalAudioRef,
   onPlayStateChange,
   className = ''
 }: ModernAudioPlayerProps) {
@@ -37,18 +40,19 @@ export default function ModernAudioPlayer({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const internalAudioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = externalAudioRef || internalAudioRef;
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (audioRef.current) {
+      if (audioRef.current && !externalAudioRef) {
         audioRef.current.pause();
         audioRef.current.src = '';
         audioRef.current = null;
       }
     };
-  }, []);
+  }, [externalAudioRef]);
 
   // Notify parent of play state changes
   useEffect(() => {
@@ -67,43 +71,62 @@ export default function ModernAudioPlayer({
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  // Initialize audio element
-  const initializeAudio = useCallback(() => {
-    if (audioRef.current) return;
+  // Setup audio element event listeners
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    const audio = new Audio();
-    audio.crossOrigin = 'anonymous';
-    audio.preload = 'metadata';
-    audio.volume = volume;
-
-    // Event handlers
-    audio.onloadstart = () => {
+    const handleLoadStart = () => {
       setIsLoading(true);
       setError(null);
     };
 
-    audio.oncanplay = () => {
+    const handleCanPlay = () => {
       setIsLoading(false);
     };
 
-    audio.onended = () => {
+    const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
     };
 
-    audio.onerror = (e) => {
+    const handleError = (e: Event) => {
       console.error('Audio error:', e);
       setError('Erreur de chargement audio');
       setIsPlaying(false);
       setIsLoading(false);
     };
 
-    audio.ondurationchange = () => {
+    const handleDurationChange = () => {
       setDuration(audio.duration || 0);
     };
 
-    audioRef.current = audio;
-  }, [volume]);
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
+    };
+
+    audio.addEventListener('loadstart', handleLoadStart);
+    audio.addEventListener('canplay', handleCanPlay);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('durationchange', handleDurationChange);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+
+    return () => {
+      audio.removeEventListener('loadstart', handleLoadStart);
+      audio.removeEventListener('canplay', handleCanPlay);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('durationchange', handleDurationChange);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+    };
+  }, []);
 
   // Handle play/pause
   const handlePlayPause = useCallback(async () => {
@@ -117,10 +140,14 @@ export default function ModernAudioPlayer({
 
       // Initialize if needed
       if (!audioRef.current) {
-        initializeAudio();
+        const audio = new Audio();
+        audio.crossOrigin = 'anonymous';
+        audio.preload = 'metadata';
+        audio.volume = volume;
+        audioRef.current = audio;
       }
 
-      const audio = audioRef.current!;
+      const audio = audioRef.current;
 
       if (isPlaying) {
         // Pause
@@ -159,7 +186,7 @@ export default function ModernAudioPlayer({
       console.error('Unexpected error:', err);
       setError('Erreur lors de la lecture');
     }
-  }, [audioUrl, isPlaying, initializeAudio]);
+  }, [audioUrl, isPlaying, volume]);
 
   // Handle volume change
   const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

@@ -78,6 +78,8 @@ export default function ChantsPage() {
           audioRefs.current[id]?.pause();
         }
       });
+      // Set volume to 1 before playing
+      audio.volume = 1;
       audio.play().catch(err => console.error('Play error:', err));
       setPlayingChantId(chantId);
     }
@@ -245,21 +247,25 @@ export default function ChantsPage() {
                       </div>
                     )}
 
-                    {/* Audio Player Component with hidden audio element for direct play */}
+                    {/* Audio Player Component with shared audio element */}
                     {chant.audio && (
                       <div className="mt-6 border-t border-primary/20 pt-6">
-                        {/* Hidden audio element for direct playback from image button */}
+                        {/* Shared audio element for direct playback from image button */}
                         <audio
                           ref={(el) => registerAudioRef(chant._id, el)}
                           src={chant.audio}
+                          crossOrigin="anonymous"
+                          preload="metadata"
                           onPlay={() => handlePlayStateChange(chant._id, true)}
                           onPause={() => handlePlayStateChange(chant._id, false)}
                           onEnded={() => setPlayingChantId(null)}
+                          onError={(e) => console.error('Audio error:', e)}
                         />
                         
                         <ModernAudioPlayer
                           audioUrl={chant.audio}
                           title={chant.chantTitle || 'Chant'}
+                          audioRef={audioRefs.current[chant._id] ? { current: audioRefs.current[chant._id] } : undefined}
                           onPlayStateChange={(isPlaying) => handlePlayStateChange(chant._id, isPlaying)}
                         />
                       </div>
