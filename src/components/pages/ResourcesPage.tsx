@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { OfficialResources, NidalumLexicon } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Download, FileText, Calendar, BookOpen, Zap, CheckCircle, AlertCircle } from 'lucide-react';
+import { Download, FileText, Calendar, BookOpen, Zap, CheckCircle, AlertCircle, Lightbulb, Target, X } from 'lucide-react';
+
+const MAX_RETRIES = 3;
+const DOWNLOAD_TIMEOUT = 30000; // 30 seconds
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<OfficialResources[]>([]);
@@ -15,6 +18,8 @@ export default function ResourcesPage() {
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [downloadSuccess, setDownloadSuccess] = useState<string | null>(null);
+  const [downloadProgress, setDownloadProgress] = useState<{ [key: string]: number }>({});
+  const downloadAbortControllers = useRef<{ [key: string]: AbortController }>({});
 
   useEffect(() => {
     loadData();
@@ -37,26 +42,61 @@ export default function ResourcesPage() {
     return d.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
-  const handleDownload = async (fileUrl: string, fileName: string, resourceId: string) => {
-    setDownloadingId(resourceId);
-    setDownloadError(null);
-    setDownloadSuccess(null);
+  const downloadWithRetry = async (
+    fileUrl: string,
+    fileName: string,
+    resourceId: string,
+    retryCount = 0
+  ): Promise<void> => {
+    const controller = new AbortController();
+    downloadAbortControllers.current[resourceId] = controller;
+
+    const timeoutId = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT);
 
     try {
       if (!fileUrl) {
         throw new Error('URL du fichier non disponible');
       }
 
-      const response = await fetch(fileUrl);
+      const response = await fetch(fileUrl, { signal: controller.signal });
+      
       if (!response.ok) {
+        if (response.status === 429 && retryCount < MAX_RETRIES) {
+          // Rate limited, retry after delay
+          await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+          return downloadWithRetry(fileUrl, fileName, resourceId, retryCount + 1);
+        }
         throw new Error(`Erreur ${response.status}: Impossible de télécharger le fichier`);
       }
 
-      const blob = await response.blob();
+      const contentLength = response.headers.get('content-length');
+      const total = parseInt(contentLength || '0', 10);
+      let loaded = 0;
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('Impossible de lire le fichier');
+
+      const chunks: Uint8Array[] = [];
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        chunks.push(value);
+        loaded += value.length;
+
+        if (total > 0) {
+          const progress = Math.round((loaded / total) * 100);
+          setDownloadProgress(prev => ({ ...prev, [resourceId]: progress }));
+        }
+      }
+
+      const blob = new Blob(chunks);
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       link.download = fileName || 'ressource';
+      link.setAttribute('aria-label', `Télécharger ${fileName}`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -65,12 +105,46 @@ export default function ResourcesPage() {
       setDownloadSuccess(`${fileName} téléchargé avec succès!`);
       setTimeout(() => setDownloadSuccess(null), 3000);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erreur lors du téléchargement';
-      setDownloadError(errorMessage);
+      if (error instanceof Error && error.name === 'AbortError') {
+        const errorMessage = 'Téléchargement annulé ou délai dépassé';
+        setDownloadError(errorMessage);
+      } else {
+        const errorMessage = error instanceof Error ? error.message : 'Erreur lors du téléchargement';
+        setDownloadError(errorMessage);
+      }
       setTimeout(() => setDownloadError(null), 5000);
     } finally {
+      clearTimeout(timeoutId);
+      setDownloadProgress(prev => {
+        const newProgress = { ...prev };
+        delete newProgress[resourceId];
+        return newProgress;
+      });
+      delete downloadAbortControllers.current[resourceId];
       setDownloadingId(null);
     }
+  };
+
+  const handleDownload = async (fileUrl: string, fileName: string, resourceId: string) => {
+    setDownloadingId(resourceId);
+    setDownloadError(null);
+    setDownloadSuccess(null);
+    setDownloadProgress({});
+    await downloadWithRetry(fileUrl, fileName, resourceId);
+  };
+
+  const cancelDownload = (resourceId: string) => {
+    const controller = downloadAbortControllers.current[resourceId];
+    if (controller) {
+      controller.abort();
+      delete downloadAbortControllers.current[resourceId];
+    }
+    setDownloadingId(null);
+    setDownloadProgress(prev => {
+      const newProgress = { ...prev };
+      delete newProgress[resourceId];
+      return newProgress;
+    });
   };
 
   const downloadPersonalDictionary = async () => {
@@ -153,31 +227,37 @@ export default function ResourcesPage() {
       </section>
 
       {/* Notification Messages */}
-      {downloadSuccess && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed top-24 left-1/2 transform -translate-x-1/2 z-40 bg-green-500/20 border border-green-500/50 text-green-100 px-6 py-3 rounded flex items-center gap-3"
-        >
-          <CheckCircle className="w-5 h-5" />
-          <span className="font-paragraph text-sm">{downloadSuccess}</span>
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {downloadSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-24 left-1/2 transform -translate-x-1/2 z-40 bg-green-500/20 border border-green-500/50 text-green-100 px-6 py-3 rounded flex items-center gap-3"
+            role="alert"
+            aria-live="polite"
+          >
+            <CheckCircle className="w-5 h-5 flex-shrink-0" />
+            <span className="font-paragraph text-sm">{downloadSuccess}</span>
+          </motion.div>
+        )}
 
-      {downloadError && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed top-24 left-1/2 transform -translate-x-1/2 z-40 bg-red-500/20 border border-red-500/50 text-red-100 px-6 py-3 rounded flex items-center gap-3"
-        >
-          <AlertCircle className="w-5 h-5" />
-          <span className="font-paragraph text-sm">{downloadError}</span>
-        </motion.div>
-      )}
+        {downloadError && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-24 left-1/2 transform -translate-x-1/2 z-40 bg-red-500/20 border border-red-500/50 text-red-100 px-6 py-3 rounded flex items-center gap-3"
+            role="alert"
+            aria-live="assertive"
+          >
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <span className="font-paragraph text-sm">{downloadError}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Quick Start Guide */}
+      {/* Quick Start Guide - Enhanced */}
       <section className="py-16 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/5 to-transparent">
         <div className="max-w-[120rem] mx-auto">
           <motion.div
@@ -187,20 +267,20 @@ export default function ResourcesPage() {
             viewport={{ once: true }}
             className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/30 p-8 rounded-lg"
           >
-            <div className="flex items-start gap-4 mb-6">
-              <Zap className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+            <div className="flex items-start gap-4 mb-8">
+              <Target className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
               <div>
-                <h2 className="font-heading text-2xl text-primary mb-2">Guide Rapide</h2>
-                <p className="font-paragraph text-foreground/80">Voici comment utiliser efficacement nos ressources :</p>
+                <h2 className="font-heading text-2xl text-primary mb-2">Guide Complet d'Utilisation</h2>
+                <p className="font-paragraph text-foreground/80">Découvrez comment exploiter au maximum nos ressources pour votre apprentissage du Nidalum :</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold">1</div>
                 <div>
                   <h3 className="font-heading text-lg text-secondary mb-1">Choisir votre ressource</h3>
-                  <p className="font-paragraph text-sm text-foreground/70">Filtrez par type : guides PDF, fiches pratiques, documents audio ou matériel visuel.</p>
+                  <p className="font-paragraph text-sm text-foreground/70">Filtrez par type : guides PDF, fiches pratiques, documents audio ou matériel visuel. Chaque ressource est conçue pour un objectif d'apprentissage spécifique.</p>
                 </div>
               </div>
 
@@ -208,7 +288,7 @@ export default function ResourcesPage() {
                 <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold">2</div>
                 <div>
                   <h3 className="font-heading text-lg text-secondary mb-1">Télécharger</h3>
-                  <p className="font-paragraph text-sm text-foreground/70">Cliquez sur le bouton « Télécharger » pour obtenir le fichier directement sur votre appareil.</p>
+                  <p className="font-paragraph text-sm text-foreground/70">Cliquez sur le bouton « Télécharger » pour obtenir le fichier directement sur votre appareil. Vous verrez la progression du téléchargement en temps réel.</p>
                 </div>
               </div>
 
@@ -216,9 +296,35 @@ export default function ResourcesPage() {
                 <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold">3</div>
                 <div>
                   <h3 className="font-heading text-lg text-secondary mb-1">Apprendre & Pratiquer</h3>
-                  <p className="font-paragraph text-sm text-foreground/70">Utilisez les ressources pour approfondir vos connaissances du Nidalum.</p>
+                  <p className="font-paragraph text-sm text-foreground/70">Utilisez les ressources pour approfondir vos connaissances. Combinez plusieurs types de ressources pour une meilleure compréhension.</p>
                 </div>
               </div>
+            </div>
+
+            {/* Tips Section */}
+            <div className="bg-background/30 border border-primary/20 p-6 rounded">
+              <div className="flex items-start gap-3 mb-4">
+                <Lightbulb className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+                <h3 className="font-heading text-lg text-secondary">Conseils pour une meilleure expérience</h3>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li className="flex gap-2 text-foreground/80">
+                  <span className="text-secondary">•</span>
+                  <span className="font-paragraph">Commencez par les guides PDF pour une compréhension globale</span>
+                </li>
+                <li className="flex gap-2 text-foreground/80">
+                  <span className="text-secondary">•</span>
+                  <span className="font-paragraph">Utilisez les fiches pratiques comme aide-mémoire pendant vos études</span>
+                </li>
+                <li className="flex gap-2 text-foreground/80">
+                  <span className="text-secondary">•</span>
+                  <span className="font-paragraph">Écoutez les documents audio pour améliorer votre prononciation</span>
+                </li>
+                <li className="flex gap-2 text-foreground/80">
+                  <span className="text-secondary">•</span>
+                  <span className="font-paragraph">Téléchargez votre dictionnaire personnel pour une référence rapide</span>
+                </li>
+              </ul>
             </div>
           </motion.div>
         </div>
@@ -239,6 +345,7 @@ export default function ResourcesPage() {
                 <button
                   key={type}
                   onClick={() => setSelectedType(type)}
+                  aria-pressed={selectedType === type}
                   className={`px-4 py-2 font-paragraph text-sm transition-all duration-300 ${
                     selectedType === type
                       ? 'bg-primary text-primary-foreground'
@@ -317,18 +424,48 @@ export default function ResourcesPage() {
                     )}
 
                     {resource.fileUrl && (
-                      <button
-                        onClick={() => handleDownload(resource.fileUrl!, resource.resourceName || 'ressource', resource._id)}
-                        disabled={downloadingId === resource._id}
-                        className={`inline-flex items-center justify-center font-paragraph font-semibold px-6 py-3 transition-all duration-300 w-full ${
-                          downloadingId === resource._id
-                            ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
-                            : 'bg-primary text-primary-foreground hover:bg-primary/90'
-                        }`}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        {downloadingId === resource._id ? 'Téléchargement...' : 'Télécharger'}
-                      </button>
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => handleDownload(resource.fileUrl!, resource.resourceName || 'ressource', resource._id)}
+                          disabled={downloadingId === resource._id}
+                          className={`inline-flex items-center justify-center font-paragraph font-semibold px-6 py-3 transition-all duration-300 w-full ${
+                            downloadingId === resource._id
+                              ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
+                              : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                          }`}
+                          aria-busy={downloadingId === resource._id}
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          {downloadingId === resource._id ? 'Téléchargement...' : 'Télécharger'}
+                        </button>
+                        
+                        {/* Progress Bar */}
+                        {downloadProgress[resource._id] !== undefined && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="w-full bg-background/50 border border-primary/20 rounded overflow-hidden"
+                          >
+                            <motion.div
+                              className="h-2 bg-gradient-to-r from-primary to-secondary"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${downloadProgress[resource._id]}%` }}
+                              transition={{ duration: 0.3 }}
+                            />
+                          </motion.div>
+                        )}
+
+                        {/* Cancel Button */}
+                        {downloadingId === resource._id && (
+                          <button
+                            onClick={() => cancelDownload(resource._id)}
+                            className="w-full text-xs text-foreground/60 hover:text-foreground transition-colors flex items-center justify-center gap-1"
+                          >
+                            <X className="w-3 h-3" />
+                            Annuler
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </motion.div>
@@ -383,6 +520,7 @@ export default function ResourcesPage() {
                         ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
                         : 'bg-primary text-primary-foreground hover:bg-primary/90'
                     }`}
+                    aria-busy={downloadingId === 'personal-dict'}
                   >
                     <Download className="w-5 h-5 mr-2" />
                     {downloadingId === 'personal-dict' ? 'Téléchargement en cours...' : 'Télécharger Mon Dictionnaire'}
@@ -447,28 +585,28 @@ export default function ResourcesPage() {
               Types de Ressources
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm">
+              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
                 <FileText className="w-10 h-10 text-primary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Guides PDF</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
                   Guides d'apprentissage complets et structurés
                 </p>
               </div>
-              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm">
+              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
                 <FileText className="w-10 h-10 text-secondary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Fiches Pratiques</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
                   Résumés et aide-mémoires pour la pratique
                 </p>
               </div>
-              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm">
+              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
                 <FileText className="w-10 h-10 text-primary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Documents Audio</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
                   Prononciation et chants rituels enregistrés
                 </p>
               </div>
-              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm">
+              <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
                 <FileText className="w-10 h-10 text-secondary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Matériel Visuel</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
