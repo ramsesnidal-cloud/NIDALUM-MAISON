@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Filter, BookOpen, Sparkles, Volume2, Globe, Lightbulb } from 'lucide-react';
+import { Search, Filter, BookOpen, Sparkles, Volume2, Globe, Lightbulb, Zap } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
@@ -8,6 +8,7 @@ import { NidalumLexicon } from '@/entities';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import TextToSpeechPlayer from '@/components/TextToSpeechPlayer';
 
 export default function LexiconPage() {
   const [lexiconItems, setLexiconItems] = useState<NidalumLexicon[]>([]);
@@ -289,6 +290,21 @@ export default function LexiconPage() {
 
               {/* Content */}
               <div className="p-8 space-y-8">
+                {/* Text-to-Speech Player for Word */}
+                <div className="bg-gradient-to-br from-secondary/20 to-primary/20 border border-secondary/30 p-6 rounded-lg">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Zap className="w-5 h-5 text-secondary" />
+                    <h3 className="font-heading text-lg text-secondary">Écouter la Prononciation</h3>
+                  </div>
+                  <TextToSpeechPlayer
+                    text={selectedWord.nidalumWord}
+                    title={`Prononciation: ${selectedWord.nidalumWord}`}
+                    language="fr-FR"
+                    showSpeedControl={true}
+                    showRepeatButton={true}
+                  />
+                </div>
+
                 {/* Definition */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 mb-4">
@@ -298,6 +314,15 @@ export default function LexiconPage() {
                   <p className="font-paragraph text-lg text-foreground/80 leading-relaxed bg-dark-amber-shadow/20 p-6 border-l-4 border-primary">
                     {selectedWord.definition}
                   </p>
+                  {/* Definition Audio */}
+                  <TextToSpeechPlayer
+                    text={selectedWord.definition}
+                    title="Écouter la définition"
+                    language="fr-FR"
+                    showSpeedControl={false}
+                    showRepeatButton={true}
+                    className="mt-3"
+                  />
                 </div>
 
                 {/* Pronunciation */}
@@ -323,6 +348,15 @@ export default function LexiconPage() {
                     <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-6 italic font-paragraph text-foreground/80">
                       "{selectedWord.exampleSentence}"
                     </div>
+                    {/* Example Audio */}
+                    <TextToSpeechPlayer
+                      text={selectedWord.exampleSentence}
+                      title="Écouter l'exemple"
+                      language="fr-FR"
+                      showSpeedControl={false}
+                      showRepeatButton={true}
+                      className="mt-3"
+                    />
                   </div>
                 )}
 
