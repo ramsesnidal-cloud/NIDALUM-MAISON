@@ -3,16 +3,61 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { OfficialResources, NidalumLexicon } from '@/entities';
+import { OfficialResources, NidalumLexicon, RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Download, FileText, Calendar, BookOpen, Zap, CheckCircle, AlertCircle, Lightbulb, Target, X } from 'lucide-react';
+import { Download, FileText, Calendar, BookOpen, Zap, CheckCircle, AlertCircle, Lightbulb, Target, X, Music, Scroll } from 'lucide-react';
 
 const MAX_RETRIES = 3;
-const DOWNLOAD_TIMEOUT = 30000; // 30 seconds
+const DOWNLOAD_TIMEOUT = 30000;
+
+// PDF Generation utility
+const generatePDF = (title: string, content: string): Blob => {
+  const pdfContent = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> /MediaBox [0 0 612 792] /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length ${content.length + 100} >>
+stream
+BT
+/F1 12 Tf
+50 750 Td
+(${title}) Tj
+0 -20 Td
+(${content.substring(0, 500)}) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+0000000333 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+${content.length + 433}
+%%EOF`;
+
+  return new Blob([pdfContent], { type: 'application/pdf' });
+};
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<OfficialResources[]>([]);
   const [lexicon, setLexicon] = useState<NidalumLexicon[]>([]);
+  const [chants, setChants] = useState<RitualChants[]>([]);
   const [selectedType, setSelectedType] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
@@ -20,6 +65,7 @@ export default function ResourcesPage() {
   const [downloadSuccess, setDownloadSuccess] = useState<string | null>(null);
   const [downloadProgress, setDownloadProgress] = useState<{ [key: string]: number }>({});
   const downloadAbortControllers = useRef<{ [key: string]: AbortController }>({});
+  const [activeChantTab, setActiveChantTab] = useState<'all' | 'featured'>('featured');
 
   useEffect(() => {
     loadData();
@@ -27,12 +73,14 @@ export default function ResourcesPage() {
 
   const loadData = async () => {
     setIsLoading(true);
-    const [resourcesData, lexiconData] = await Promise.all([
+    const [resourcesData, lexiconData, chantsData] = await Promise.all([
       BaseCrudService.getAll<OfficialResources>('officialresources'),
-      BaseCrudService.getAll<NidalumLexicon>('nidalumlexicon')
+      BaseCrudService.getAll<NidalumLexicon>('nidalumlexicon'),
+      BaseCrudService.getAll<RitualChants>('ritualchants')
     ]);
     setResources(resourcesData.items);
     setLexicon(lexiconData.items);
+    setChants(chantsData.items);
     setIsLoading(false);
   };
 
@@ -43,9 +91,10 @@ export default function ResourcesPage() {
   };
 
   const downloadWithRetry = async (
-    fileUrl: string,
+    fileUrl: string | null,
     fileName: string,
     resourceId: string,
+    content?: string,
     retryCount = 0
   ): Promise<void> => {
     const controller = new AbortController();
@@ -54,44 +103,49 @@ export default function ResourcesPage() {
     const timeoutId = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT);
 
     try {
-      if (!fileUrl) {
+      let blob: Blob;
+
+      // If no URL but content provided, generate PDF
+      if (!fileUrl && content) {
+        blob = generatePDF(fileName, content);
+      } else if (fileUrl) {
+        const response = await fetch(fileUrl, { signal: controller.signal });
+        
+        if (!response.ok) {
+          if (response.status === 429 && retryCount < MAX_RETRIES) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+            return downloadWithRetry(fileUrl, fileName, resourceId, content, retryCount + 1);
+          }
+          throw new Error(`Erreur ${response.status}: Impossible de télécharger le fichier`);
+        }
+
+        const contentLength = response.headers.get('content-length');
+        const total = parseInt(contentLength || '0', 10);
+        let loaded = 0;
+
+        const reader = response.body?.getReader();
+        if (!reader) throw new Error('Impossible de lire le fichier');
+
+        const chunks: Uint8Array[] = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          chunks.push(value);
+          loaded += value.length;
+
+          if (total > 0) {
+            const progress = Math.round((loaded / total) * 100);
+            setDownloadProgress(prev => ({ ...prev, [resourceId]: progress }));
+          }
+        }
+
+        blob = new Blob(chunks);
+      } else {
         throw new Error('URL du fichier non disponible');
       }
 
-      const response = await fetch(fileUrl, { signal: controller.signal });
-      
-      if (!response.ok) {
-        if (response.status === 429 && retryCount < MAX_RETRIES) {
-          // Rate limited, retry after delay
-          await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
-          return downloadWithRetry(fileUrl, fileName, resourceId, retryCount + 1);
-        }
-        throw new Error(`Erreur ${response.status}: Impossible de télécharger le fichier`);
-      }
-
-      const contentLength = response.headers.get('content-length');
-      const total = parseInt(contentLength || '0', 10);
-      let loaded = 0;
-
-      const reader = response.body?.getReader();
-      if (!reader) throw new Error('Impossible de lire le fichier');
-
-      const chunks: Uint8Array[] = [];
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        chunks.push(value);
-        loaded += value.length;
-
-        if (total > 0) {
-          const progress = Math.round((loaded / total) * 100);
-          setDownloadProgress(prev => ({ ...prev, [resourceId]: progress }));
-        }
-      }
-
-      const blob = new Blob(chunks);
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -125,12 +179,12 @@ export default function ResourcesPage() {
     }
   };
 
-  const handleDownload = async (fileUrl: string, fileName: string, resourceId: string) => {
+  const handleDownload = async (fileUrl: string | null, fileName: string, resourceId: string, content?: string) => {
     setDownloadingId(resourceId);
     setDownloadError(null);
     setDownloadSuccess(null);
     setDownloadProgress({});
-    await downloadWithRetry(fileUrl, fileName, resourceId);
+    await downloadWithRetry(fileUrl, fileName, resourceId, content);
   };
 
   const cancelDownload = (resourceId: string) => {
@@ -194,10 +248,12 @@ export default function ResourcesPage() {
   };
 
   const resourceTypes = ['all', ...Array.from(new Set(resources.map(item => item.resourceType).filter(Boolean)))];
-
   const filteredResources = selectedType === 'all' 
     ? resources 
     : resources.filter(r => r.resourceType === selectedType);
+
+  const featuredChants = chants.slice(0, 3);
+  const displayChants = activeChantTab === 'featured' ? featuredChants : chants;
 
   return (
     <div className="min-h-screen bg-background">
@@ -207,6 +263,7 @@ export default function ResourcesPage() {
       <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/30 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
         </div>
 
         <div className="relative max-w-[120rem] mx-auto">
@@ -217,10 +274,10 @@ export default function ResourcesPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary mb-6">
-              Ressources Officielles
+              Ressources Officielles Nidalum
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              Téléchargez des documents officiels, guides d'apprentissage, et ressources pour approfondir votre maîtrise de Nidalum.
+              Explorez notre collection complète de guides d'apprentissage, dictionnaire vivant, et chants rituels sacrés pour maîtriser la langue et la culture Nidalum.
             </p>
           </motion.div>
         </div>
@@ -257,7 +314,7 @@ export default function ResourcesPage() {
         )}
       </AnimatePresence>
 
-      {/* Quick Start Guide - Enhanced */}
+      {/* Narrative Guide Section */}
       <section className="py-16 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/5 to-transparent">
         <div className="max-w-[120rem] mx-auto">
           <motion.div
@@ -270,33 +327,41 @@ export default function ResourcesPage() {
             <div className="flex items-start gap-4 mb-8">
               <Target className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
               <div>
-                <h2 className="font-heading text-2xl text-primary mb-2">Guide Complet d'Utilisation</h2>
-                <p className="font-paragraph text-foreground/80">Découvrez comment exploiter au maximum nos ressources pour votre apprentissage du Nidalum :</p>
+                <h2 className="font-heading text-2xl text-primary mb-2">Votre Parcours d'Apprentissage Nidalum</h2>
+                <p className="font-paragraph text-foreground/80">Suivez ce guide structuré pour progresser dans votre maîtrise de la langue et culture Nidalum :</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold">1</div>
+                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold text-sm">1</div>
                 <div>
-                  <h3 className="font-heading text-lg text-secondary mb-1">Choisir votre ressource</h3>
-                  <p className="font-paragraph text-sm text-foreground/70">Filtrez par type : guides PDF, fiches pratiques, documents audio ou matériel visuel. Chaque ressource est conçue pour un objectif d'apprentissage spécifique.</p>
+                  <h3 className="font-heading text-lg text-secondary mb-1">Fondamentaux</h3>
+                  <p className="font-paragraph text-xs text-foreground/70">Commencez par les guides d'introduction et l'alphabet Nidalum</p>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold">2</div>
+                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold text-sm">2</div>
                 <div>
-                  <h3 className="font-heading text-lg text-secondary mb-1">Télécharger</h3>
-                  <p className="font-paragraph text-sm text-foreground/70">Cliquez sur le bouton « Télécharger » pour obtenir le fichier directement sur votre appareil. Vous verrez la progression du téléchargement en temps réel.</p>
+                  <h3 className="font-heading text-lg text-secondary mb-1">Vocabulaire</h3>
+                  <p className="font-paragraph text-xs text-foreground/70">Enrichissez votre lexique avec notre dictionnaire complet</p>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold">3</div>
+                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold text-sm">3</div>
                 <div>
-                  <h3 className="font-heading text-lg text-secondary mb-1">Apprendre & Pratiquer</h3>
-                  <p className="font-paragraph text-sm text-foreground/70">Utilisez les ressources pour approfondir vos connaissances. Combinez plusieurs types de ressources pour une meilleure compréhension.</p>
+                  <h3 className="font-heading text-lg text-secondary mb-1">Prononciation</h3>
+                  <p className="font-paragraph text-xs text-foreground/70">Écoutez les documents audio pour perfectionner votre accent</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-heading font-bold text-sm">4</div>
+                <div>
+                  <h3 className="font-heading text-lg text-secondary mb-1">Spiritualité</h3>
+                  <p className="font-paragraph text-xs text-foreground/70">Explorez les chants rituels et la sagesse Nidalum</p>
                 </div>
               </div>
             </div>
@@ -305,20 +370,20 @@ export default function ResourcesPage() {
             <div className="bg-background/30 border border-primary/20 p-6 rounded">
               <div className="flex items-start gap-3 mb-4">
                 <Lightbulb className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                <h3 className="font-heading text-lg text-secondary">Conseils pour une meilleure expérience</h3>
+                <h3 className="font-heading text-lg text-secondary">Conseils pour une apprentissage optimal</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
-                  <span className="font-paragraph">Commencez par les guides PDF pour une compréhension globale</span>
+                  <span className="font-paragraph">Pratiquez la prononciation quotidiennement avec les documents audio</span>
                 </li>
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
-                  <span className="font-paragraph">Utilisez les fiches pratiques comme aide-mémoire pendant vos études</span>
+                  <span className="font-paragraph">Mémorisez les expressions courantes avant d'explorer la grammaire avancée</span>
                 </li>
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
-                  <span className="font-paragraph">Écoutez les documents audio pour améliorer votre prononciation</span>
+                  <span className="font-paragraph">Écoutez les chants rituels pour comprendre le contexte culturel</span>
                 </li>
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
@@ -423,55 +488,184 @@ export default function ResourcesPage() {
                       </div>
                     )}
 
-                    {resource.fileUrl && (
-                      <div className="space-y-2">
-                        <button
-                          onClick={() => handleDownload(resource.fileUrl!, resource.resourceName || 'ressource', resource._id)}
-                          disabled={downloadingId === resource._id}
-                          className={`inline-flex items-center justify-center font-paragraph font-semibold px-6 py-3 transition-all duration-300 w-full ${
-                            downloadingId === resource._id
-                              ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
-                              : 'bg-primary text-primary-foreground hover:bg-primary/90'
-                          }`}
-                          aria-busy={downloadingId === resource._id}
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => handleDownload(
+                          resource.fileUrl || null, 
+                          `${resource.resourceName || 'ressource'}.pdf`, 
+                          resource._id,
+                          resource.description
+                        )}
+                        disabled={downloadingId === resource._id}
+                        className={`inline-flex items-center justify-center font-paragraph font-semibold px-6 py-3 transition-all duration-300 w-full ${
+                          downloadingId === resource._id
+                            ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
+                            : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                        }`}
+                        aria-busy={downloadingId === resource._id}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        {downloadingId === resource._id ? 'Téléchargement...' : 'Télécharger'}
+                      </button>
+                      
+                      {/* Progress Bar */}
+                      {downloadProgress[resource._id] !== undefined && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="w-full bg-background/50 border border-primary/20 rounded overflow-hidden"
                         >
-                          <Download className="w-4 h-4 mr-2" />
-                          {downloadingId === resource._id ? 'Téléchargement...' : 'Télécharger'}
-                        </button>
-                        
-                        {/* Progress Bar */}
-                        {downloadProgress[resource._id] !== undefined && (
                           <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="w-full bg-background/50 border border-primary/20 rounded overflow-hidden"
-                          >
-                            <motion.div
-                              className="h-2 bg-gradient-to-r from-primary to-secondary"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${downloadProgress[resource._id]}%` }}
-                              transition={{ duration: 0.3 }}
-                            />
-                          </motion.div>
-                        )}
+                            className="h-2 bg-gradient-to-r from-primary to-secondary"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${downloadProgress[resource._id]}%` }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        </motion.div>
+                      )}
 
-                        {/* Cancel Button */}
-                        {downloadingId === resource._id && (
-                          <button
-                            onClick={() => cancelDownload(resource._id)}
-                            className="w-full text-xs text-foreground/60 hover:text-foreground transition-colors flex items-center justify-center gap-1"
-                          >
-                            <X className="w-3 h-3" />
-                            Annuler
-                          </button>
-                        )}
-                      </div>
-                    )}
+                      {/* Cancel Button */}
+                      {downloadingId === resource._id && (
+                        <button
+                          onClick={() => cancelDownload(resource._id)}
+                          className="w-full text-xs text-foreground/60 hover:text-foreground transition-colors flex items-center justify-center gap-1"
+                        >
+                          <X className="w-3 h-3" />
+                          Annuler
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Ritual Chants Section */}
+      <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
+        <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center gap-4 mb-12">
+              <Music className="w-8 h-8 text-primary" />
+              <h2 className="font-heading text-4xl md:text-5xl text-primary">Chants Rituels Sacrés</h2>
+            </div>
+
+            {/* Tabs */}
+            <div className="flex gap-4 mb-8">
+              <button
+                onClick={() => setActiveChantTab('featured')}
+                aria-pressed={activeChantTab === 'featured'}
+                className={`px-6 py-3 font-paragraph font-semibold transition-all duration-300 ${
+                  activeChantTab === 'featured'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-background/50 border border-primary/30 text-foreground hover:border-primary'
+                }`}
+              >
+                Chants en Vedette ({featuredChants.length})
+              </button>
+              <button
+                onClick={() => setActiveChantTab('all')}
+                aria-pressed={activeChantTab === 'all'}
+                className={`px-6 py-3 font-paragraph font-semibold transition-all duration-300 ${
+                  activeChantTab === 'all'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-background/50 border border-primary/30 text-foreground hover:border-primary'
+                }`}
+              >
+                Tous les Chants ({chants.length})
+              </button>
+            </div>
+
+            {/* Chants Grid */}
+            {chants.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="font-paragraph text-xl text-foreground/70">Aucun chant disponible</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {displayChants.map((chant, index) => (
+                  <motion.div
+                    key={chant._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
+                  >
+                    {chant.chantImage && (
+                      <div className="aspect-video overflow-hidden">
+                        <Image
+                          src={chant.chantImage}
+                          alt={chant.chantTitle || 'Chant'}
+                          width={600}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    )}
+
+                    <div className="p-8">
+                      {chant.theme && (
+                        <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-4">
+                          {chant.theme}
+                        </span>
+                      )}
+
+                      <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">
+                        {chant.chantTitle}
+                      </h3>
+
+                      {chant.spiritualContext && (
+                        <div className="mb-6">
+                          <p className="font-paragraph text-sm text-secondary mb-2 font-semibold">Contexte Spirituel</p>
+                          <p className="font-paragraph text-foreground/80 leading-relaxed">
+                            {chant.spiritualContext}
+                          </p>
+                        </div>
+                      )}
+
+                      {chant.originalText && (
+                        <div className="mb-6 bg-background/30 border border-primary/20 p-4 rounded">
+                          <p className="font-paragraph text-sm text-secondary mb-2 font-semibold">Texte Original Nidalum</p>
+                          <p className="font-paragraph text-foreground/80 italic leading-relaxed">
+                            {chant.originalText}
+                          </p>
+                        </div>
+                      )}
+
+                      {chant.translation && (
+                        <div className="mb-6 bg-background/30 border border-secondary/20 p-4 rounded">
+                          <p className="font-paragraph text-sm text-primary mb-2 font-semibold">Traduction Française</p>
+                          <p className="font-paragraph text-foreground/80 leading-relaxed">
+                            {chant.translation}
+                          </p>
+                        </div>
+                      )}
+
+                      {chant.audio && (
+                        <div className="mt-6 pt-6 border-t border-primary/20">
+                          <p className="font-paragraph text-sm text-secondary mb-3 font-semibold">Écoutez le Chant</p>
+                          <audio
+                            controls
+                            className="w-full"
+                            aria-label={`Écouter ${chant.chantTitle}`}
+                          >
+                            <source src={chant.audio} type="audio/mpeg" />
+                            Votre navigateur ne supporte pas la lecture audio.
+                          </audio>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </motion.div>
         </div>
       </section>
 
@@ -492,12 +686,12 @@ export default function ResourcesPage() {
                 <div>
                   <h2 className="font-heading text-4xl md:text-5xl text-primary mb-4">Mon Dictionnaire Personnel</h2>
                   <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
-                    Téléchargez un dictionnaire complet contenant tous les mots du Nidalum avec leurs définitions, catégories, thèmes, guides de prononciation, exemples et étymologies.
+                    Téléchargez un dictionnaire complet contenant tous les mots et expressions du Nidalum avec leurs définitions, catégories, thèmes, guides de prononciation, exemples et étymologies.
                   </p>
                   <ul className="space-y-3 mb-8">
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                      <span className="font-paragraph text-foreground/80">{lexicon.length} mots du Nidalum</span>
+                      <span className="font-paragraph text-foreground/80">{lexicon.length} mots et expressions du Nidalum</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
@@ -582,35 +776,35 @@ export default function ResourcesPage() {
             viewport={{ once: true }}
           >
             <h2 className="font-heading text-3xl md:text-4xl text-primary mb-12 text-center">
-              Types de Ressources
+              Types de Ressources Disponibles
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
                 <FileText className="w-10 h-10 text-primary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Guides PDF</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
-                  Guides d'apprentissage complets et structurés
+                  Guides d'apprentissage complets et structurés pour maîtriser les fondamentaux
                 </p>
               </div>
               <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
-                <FileText className="w-10 h-10 text-secondary mx-auto mb-4" />
+                <Scroll className="w-10 h-10 text-secondary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Fiches Pratiques</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
-                  Résumés et aide-mémoires pour la pratique
+                  Résumés et aide-mémoires pour la pratique quotidienne
                 </p>
               </div>
               <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
-                <FileText className="w-10 h-10 text-primary mx-auto mb-4" />
+                <Music className="w-10 h-10 text-primary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Documents Audio</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
-                  Prononciation et chants rituels enregistrés
+                  Prononciation et chants rituels enregistrés par des experts
                 </p>
               </div>
               <div className="border border-primary/20 p-6 text-center bg-background/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
                 <FileText className="w-10 h-10 text-secondary mx-auto mb-4" />
                 <h3 className="font-heading text-xl text-secondary mb-2">Matériel Visuel</h3>
                 <p className="font-paragraph text-sm text-foreground/70">
-                  Posters, infographies, et supports visuels
+                  Posters, infographies, et supports visuels pour l'apprentissage
                 </p>
               </div>
             </div>
