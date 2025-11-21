@@ -179,6 +179,12 @@ export default function ResourcesPage() {
   const [downloadProgress, setDownloadProgress] = useState<{ [key: string]: number }>({});
   const downloadAbortControllers = useRef<{ [key: string]: AbortController }>({});
   const [activeChantTab, setActiveChantTab] = useState<'all' | 'featured'>('featured');
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
+    'Fondamentaux': true,
+    'Vocabulaire': true,
+    'Prononciation': true,
+    'Conseils Pratiques': true,
+  });
 
   useEffect(() => {
     loadData();
@@ -381,6 +387,14 @@ export default function ResourcesPage() {
     .filter(([_, items]) => items.length > 0)
     .map(([name, items]) => ({ name, items }));
 
+  // Toggle section expansion
+  const toggleSection = (sectionName: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionName]: !prev[sectionName]
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -543,27 +557,53 @@ export default function ResourcesPage() {
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary"></div>
-                    <h2 className="font-heading text-3xl text-primary">Fondamentaux du Nidalum</h2>
-                  </div>
-                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
-                    Commencez votre voyage avec les bases essentielles : alphabet, phonétique, grammaire et premiers pas pour maîtriser les fondamentaux de la langue Nidalum.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {resourcesByCategory['Fondamentaux'].map((resource, index) => (
-                      <ResourceCard
-                        key={resource._id}
-                        resource={resource}
-                        index={index}
-                        downloadingId={downloadingId}
-                        downloadProgress={downloadProgress}
-                        handleDownload={handleDownload}
-                        cancelDownload={cancelDownload}
-                        formatDate={formatDate}
-                      />
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => toggleSection('Fondamentaux')}
+                    className="w-full text-left group"
+                    aria-expanded={expandedSections['Fondamentaux']}
+                  >
+                    <div className="flex items-center gap-3 mb-8 cursor-pointer hover:opacity-80 transition-opacity">
+                      <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary"></div>
+                      <h2 className="font-heading text-3xl text-primary flex-1">Fondamentaux du Nidalum</h2>
+                      <motion.div
+                        animate={{ rotate: expandedSections['Fondamentaux'] ? 0 : -90 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex-shrink-0"
+                      >
+                        <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                      </motion.div>
+                    </div>
+                  </button>
+                  <AnimatePresence>
+                    {expandedSections['Fondamentaux'] && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                          Commencez votre voyage avec les bases essentielles : alphabet, phonétique, grammaire et premiers pas pour maîtriser les fondamentaux de la langue Nidalum.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {resourcesByCategory['Fondamentaux'].map((resource, index) => (
+                            <ResourceCard
+                              key={resource._id}
+                              resource={resource}
+                              index={index}
+                              downloadingId={downloadingId}
+                              downloadProgress={downloadProgress}
+                              handleDownload={handleDownload}
+                              cancelDownload={cancelDownload}
+                              formatDate={formatDate}
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
 
@@ -575,27 +615,53 @@ export default function ResourcesPage() {
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1 h-8 bg-gradient-to-b from-secondary to-primary"></div>
-                    <h2 className="font-heading text-3xl text-secondary">Enrichir Votre Vocabulaire</h2>
-                  </div>
-                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
-                    Développez votre lexique avec des dictionnaires thématiques, expressions courantes et mots essentiels pour communiquer efficacement en Nidalum.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {resourcesByCategory['Vocabulaire'].map((resource, index) => (
-                      <ResourceCard
-                        key={resource._id}
-                        resource={resource}
-                        index={index}
-                        downloadingId={downloadingId}
-                        downloadProgress={downloadProgress}
-                        handleDownload={handleDownload}
-                        cancelDownload={cancelDownload}
-                        formatDate={formatDate}
-                      />
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => toggleSection('Vocabulaire')}
+                    className="w-full text-left group"
+                    aria-expanded={expandedSections['Vocabulaire']}
+                  >
+                    <div className="flex items-center gap-3 mb-8 cursor-pointer hover:opacity-80 transition-opacity">
+                      <div className="w-1 h-8 bg-gradient-to-b from-secondary to-primary"></div>
+                      <h2 className="font-heading text-3xl text-secondary flex-1">Enrichir Votre Vocabulaire</h2>
+                      <motion.div
+                        animate={{ rotate: expandedSections['Vocabulaire'] ? 0 : -90 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex-shrink-0"
+                      >
+                        <svg className="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                      </motion.div>
+                    </div>
+                  </button>
+                  <AnimatePresence>
+                    {expandedSections['Vocabulaire'] && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                          Développez votre lexique avec des dictionnaires thématiques, expressions courantes et mots essentiels pour communiquer efficacement en Nidalum.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {resourcesByCategory['Vocabulaire'].map((resource, index) => (
+                            <ResourceCard
+                              key={resource._id}
+                              resource={resource}
+                              index={index}
+                              downloadingId={downloadingId}
+                              downloadProgress={downloadProgress}
+                              handleDownload={handleDownload}
+                              cancelDownload={cancelDownload}
+                              formatDate={formatDate}
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
 
@@ -607,27 +673,53 @@ export default function ResourcesPage() {
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary"></div>
-                    <h2 className="font-heading text-3xl text-primary">Maîtriser la Prononciation</h2>
-                  </div>
-                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
-                    Perfectionnez votre accent avec des guides détaillés, documents audio et exercices phonétiques pour une prononciation authentique du Nidalum.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {resourcesByCategory['Prononciation'].map((resource, index) => (
-                      <ResourceCard
-                        key={resource._id}
-                        resource={resource}
-                        index={index}
-                        downloadingId={downloadingId}
-                        downloadProgress={downloadProgress}
-                        handleDownload={handleDownload}
-                        cancelDownload={cancelDownload}
-                        formatDate={formatDate}
-                      />
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => toggleSection('Prononciation')}
+                    className="w-full text-left group"
+                    aria-expanded={expandedSections['Prononciation']}
+                  >
+                    <div className="flex items-center gap-3 mb-8 cursor-pointer hover:opacity-80 transition-opacity">
+                      <div className="w-1 h-8 bg-gradient-to-b from-primary to-secondary"></div>
+                      <h2 className="font-heading text-3xl text-primary flex-1">Maîtriser la Prononciation</h2>
+                      <motion.div
+                        animate={{ rotate: expandedSections['Prononciation'] ? 0 : -90 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex-shrink-0"
+                      >
+                        <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                      </motion.div>
+                    </div>
+                  </button>
+                  <AnimatePresence>
+                    {expandedSections['Prononciation'] && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                          Perfectionnez votre accent avec des guides détaillés, documents audio et exercices phonétiques pour une prononciation authentique du Nidalum.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {resourcesByCategory['Prononciation'].map((resource, index) => (
+                            <ResourceCard
+                              key={resource._id}
+                              resource={resource}
+                              index={index}
+                              downloadingId={downloadingId}
+                              downloadProgress={downloadProgress}
+                              handleDownload={handleDownload}
+                              cancelDownload={cancelDownload}
+                              formatDate={formatDate}
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
 
@@ -639,27 +731,53 @@ export default function ResourcesPage() {
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-1 h-8 bg-gradient-to-b from-secondary to-primary"></div>
-                    <h2 className="font-heading text-3xl text-secondary">Conseils Pratiques pour Apprendre</h2>
-                  </div>
-                  <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
-                    Découvrez des stratégies d'apprentissage éprouvées, astuces quotidiennes et ressources complémentaires pour optimiser votre progression en Nidalum.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {resourcesByCategory['Conseils Pratiques'].map((resource, index) => (
-                      <ResourceCard
-                        key={resource._id}
-                        resource={resource}
-                        index={index}
-                        downloadingId={downloadingId}
-                        downloadProgress={downloadProgress}
-                        handleDownload={handleDownload}
-                        cancelDownload={cancelDownload}
-                        formatDate={formatDate}
-                      />
-                    ))}
-                  </div>
+                  <button
+                    onClick={() => toggleSection('Conseils Pratiques')}
+                    className="w-full text-left group"
+                    aria-expanded={expandedSections['Conseils Pratiques']}
+                  >
+                    <div className="flex items-center gap-3 mb-8 cursor-pointer hover:opacity-80 transition-opacity">
+                      <div className="w-1 h-8 bg-gradient-to-b from-secondary to-primary"></div>
+                      <h2 className="font-heading text-3xl text-secondary flex-1">Conseils Pratiques pour Apprendre</h2>
+                      <motion.div
+                        animate={{ rotate: expandedSections['Conseils Pratiques'] ? 0 : -90 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex-shrink-0"
+                      >
+                        <svg className="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                      </motion.div>
+                    </div>
+                  </button>
+                  <AnimatePresence>
+                    {expandedSections['Conseils Pratiques'] && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
+                          Découvrez des stratégies d'apprentissage éprouvées, astuces quotidiennes et ressources complémentaires pour optimiser votre progression en Nidalum.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {resourcesByCategory['Conseils Pratiques'].map((resource, index) => (
+                            <ResourceCard
+                              key={resource._id}
+                              resource={resource}
+                              index={index}
+                              downloadingId={downloadingId}
+                              downloadProgress={downloadProgress}
+                              handleDownload={handleDownload}
+                              cancelDownload={cancelDownload}
+                              formatDate={formatDate}
+                            />
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
             </div>
