@@ -60,23 +60,15 @@ export default function EditChantImageModal({ chant, onClose, onSave }: EditChan
 
     try {
       setIsSaving(true);
-      const updatedChant: RitualChants = {
-        _id: chant._id,
-        chantTitle: chant.chantTitle,
-        originalText: chant.originalText,
-        translation: chant.translation,
-        spiritualContext: chant.spiritualContext,
+      const updatedChant = {
+        ...chant,
         chantImage: imageUrl,
-        theme: chant.theme,
       };
 
-      console.log('Saving chant with image:', updatedChant);
       await BaseCrudService.update<RitualChants>('ritualchants', updatedChant);
-      console.log('Chant saved successfully');
       onSave(updatedChant);
       onClose();
     } catch (err) {
-      console.error('Error saving image:', err);
       setError('Erreur lors de la sauvegarde de l\'image');
     } finally {
       setIsSaving(false);

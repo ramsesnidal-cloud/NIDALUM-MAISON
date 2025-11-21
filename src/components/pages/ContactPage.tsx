@@ -43,6 +43,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -66,6 +67,7 @@ export default function ContactPage() {
           </motion.div>
         </div>
       </section>
+
       {/* Contact Form Section */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -84,8 +86,8 @@ export default function ContactPage() {
                   <Mail className="w-6 h-6 text-secondary mr-4 mt-1" />
                   <div>
                     <h3 className="font-heading text-xl text-secondary mb-2">Email</h3>
-                    <p className="font-paragraph text-foreground/70">{"ramsesnidal@gmail.com"}</p>
-                    <p className="font-paragraph text-foreground/70">{"(+49) 15563655924"}</p>
+                    <p className="font-paragraph text-foreground/70">contact@nidalum.com</p>
+                    <p className="font-paragraph text-foreground/70">academy@nidalum.com</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -216,6 +218,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
       {/* FAQ Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
         <div className="max-w-[120rem] mx-auto">
@@ -265,6 +268,7 @@ export default function ContactPage() {
           </motion.div>
         </div>
       </section>
+
       <Footer />
     </div>
   );
