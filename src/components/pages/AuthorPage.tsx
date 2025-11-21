@@ -25,6 +25,7 @@ export default function AuthorPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background">
@@ -52,6 +53,7 @@ export default function AuthorPage() {
           </motion.div>
         </div>
       </section>
+
       {/* Biography Section */}
       <section className="py-24 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -65,13 +67,11 @@ export default function AuthorPage() {
             >
               <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
                 <Image
-                  src="https://static.wixstatic.com/media/9c8aea_83af5dca6fc34c339b7ad142ca365f92~mv2.jpeg"
+                  src="https://static.wixstatic.com/media/9c8aea_215ac204a09e4190b97896b460869e56~mv2.png?originWidth=576&originHeight=576"
+                  alt="Ramses Nidal - Aboudramane Doumbia"
                   width={600}
                   className="w-full h-full object-cover"
-                  originWidth={864}
-                  originHeight={1184}
-                  focalPointX={43.63425925925926}
-                  focalPointY={31.08108108108108} />
+                />
               </div>
             </motion.div>
 
@@ -99,6 +99,7 @@ export default function AuthorPage() {
           </div>
         </div>
       </section>
+
       {/* Artistic Vision Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
         <div className="max-w-[120rem] mx-auto">
@@ -134,6 +135,7 @@ export default function AuthorPage() {
           </motion.div>
         </div>
       </section>
+
       {/* Music Showcase Section */}
       <section className="py-24 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -215,6 +217,7 @@ export default function AuthorPage() {
           )}
         </div>
       </section>
+
       {/* Creative Process Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/10">
         <div className="max-w-[120rem] mx-auto">
@@ -250,6 +253,7 @@ export default function AuthorPage() {
           </motion.div>
         </div>
       </section>
+
       <Footer />
     </div>
   );

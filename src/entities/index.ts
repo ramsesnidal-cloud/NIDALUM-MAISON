@@ -23,12 +23,6 @@ export interface MusicShowcase {
   artistName?: string;
   /** @wixFieldType text */
   genre?: string;
-  /** @wixFieldType audio */
-  audio?: string;
-  /** @wixFieldType audio */
-  audio1?: string;
-  /** @wixFieldType rich_content */
-  richcontent?: any;
 }
 
 
@@ -54,10 +48,6 @@ export interface NidalumLexicon {
   exampleSentence?: string;
   /** @wixFieldType text */
   etymology?: string;
-  /** @wixFieldType text */
-  expression_nidalum?: string;
-  /** @wixFieldType text */
-  traduction_fr?: string;
 }
 
 
@@ -131,8 +121,4 @@ export interface RitualChants {
   chantImage?: string;
   /** @wixFieldType text */
   theme?: string;
-  /** @wixFieldType audio */
-  audio?: string;
-  /** @wixFieldType text */
-  text?: string;
 }

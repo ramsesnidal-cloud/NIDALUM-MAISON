@@ -1,40 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Sparkles, Edit2, LogOut, Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { useAdminStore } from '@/lib/admin-store';
-import AdminLoginModal from '@/components/AdminLoginModal';
-import EditChantImageModal from '@/components/EditChantImageModal';
+import { Sparkles } from 'lucide-react';
 
 export default function ChantsPage() {
   const [chants, setChants] = useState<RitualChants[]>([]);
   const [selectedChant, setSelectedChant] = useState<RitualChants | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
-  const [editingChant, setEditingChant] = useState<RitualChants | null>(null);
-  const [playingChantId, setPlayingChantId] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
-  const [audioError, setAudioError] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const { isAdmin, setAdmin } = useAdminStore();
 
   useEffect(() => {
     loadChants();
-  }, []);
-
-  // Cleanup audio on unmount
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-        audioRef.current = null;
-      }
-    };
   }, []);
 
   const loadChants = async () => {
@@ -44,148 +23,10 @@ export default function ChantsPage() {
     setIsLoading(false);
   };
 
-  const handleEditImage = (chant: RitualChants) => {
-    if (!isAdmin) {
-      setShowAdminLogin(true);
-      return;
-    }
-    setEditingChant(chant);
-  };
-
-  const handleSaveImage = (updatedChant: RitualChants) => {
-    setChants(chants.map(c => c._id === updatedChant._id ? updatedChant : c));
-    setEditingChant(null);
-  };
-
-  const handleLogout = () => {
-    setAdmin(false);
-  };
-
-  const handlePlayPause = async (e: React.MouseEvent, chant: RitualChants) => {
-    e.stopPropagation();
-
-    if (!chant.audioUrl) {
-      setAudioError('Aucun lien audio disponible');
-      console.warn('No audio URL available for this chant');
-      return;
-    }
-
-    try {
-      setAudioError(null);
-
-      // If clicking the same chant, toggle play/pause
-      if (playingChantId === chant._id) {
-        if (audioRef.current) {
-          if (audioRef.current.paused) {
-            try {
-              const playPromise = audioRef.current.play();
-              if (playPromise !== undefined) {
-                await playPromise;
-              }
-            } catch (err) {
-              console.error('Error resuming audio:', err);
-              setAudioError('Impossible de reprendre la lecture');
-            }
-          } else {
-            audioRef.current.pause();
-          }
-        }
-      } else {
-        // Stop current audio and play new one
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-        }
-
-        // Create new audio element with proper configuration
-        const audio = new Audio();
-        audio.crossOrigin = 'anonymous';
-        audio.preload = 'auto';
-        audio.volume = isMuted ? 0 : 1;
-        
-        // Set up event listeners BEFORE setting src
-        audio.onended = () => {
-          setPlayingChantId(null);
-          setAudioError(null);
-        };
-
-        audio.onerror = (error) => {
-          console.error('Audio loading error:', error);
-          setAudioError('Erreur de chargement audio');
-          setPlayingChantId(null);
-        };
-
-        audio.onloadstart = () => {
-          console.log('Audio loading started for:', chant.chantTitle);
-        };
-
-        audio.oncanplay = () => {
-          console.log('Audio ready to play:', chant.chantTitle);
-        };
-
-        // Set the source and attempt to play
-        audio.src = chant.audioUrl;
-        audioRef.current = audio;
-
-        // Force play with retry logic
-        const playAudio = async (retries = 3) => {
-          try {
-            const playPromise = audio.play();
-            if (playPromise !== undefined) {
-              await playPromise;
-              setPlayingChantId(chant._id);
-              console.log('Audio playing successfully:', chant.chantTitle);
-            } else {
-              setPlayingChantId(chant._id);
-            }
-          } catch (playError) {
-            console.error(`Failed to play audio (attempt ${4 - retries}):`, playError);
-            
-            if (retries > 0) {
-              // Retry after a short delay
-              await new Promise(resolve => setTimeout(resolve, 100));
-              await playAudio(retries - 1);
-            } else {
-              setAudioError('Impossible de lire l\'audio');
-              setPlayingChantId(null);
-            }
-          }
-        };
-
-        await playAudio();
-      }
-    } catch (error) {
-      console.error('Error in handlePlayPause:', error);
-      setAudioError('Erreur lors de la lecture');
-    }
-  };
-
-  const handleToggleMute = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    if (audioRef.current) {
-      audioRef.current.volume = newMutedState ? 0 : 1;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      {/* Admin Badge */}
-      {isAdmin && (
-        <div className="fixed top-24 right-6 z-40 flex items-center gap-2 px-4 py-2 bg-primary/20 border border-primary/50 rounded-lg">
-          <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-          <span className="font-paragraph text-sm text-primary">Mode Admin</span>
-          <button
-            onClick={handleLogout}
-            className="ml-2 text-primary hover:text-primary/80 transition-colors"
-            title="Déconnexion admin"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+      
       {/* Hero Section */}
       <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
@@ -213,6 +54,7 @@ export default function ChantsPage() {
           </motion.div>
         </div>
       </section>
+
       {/* Chants Grid */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -233,45 +75,17 @@ export default function ChantsPage() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group cursor-pointer relative"
+                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group cursor-pointer"
                   onClick={() => setSelectedChant(selectedChant?._id === chant._id ? null : chant)}
                 >
                   {chant.chantImage && (
-                    <div className="aspect-video overflow-hidden relative">
-                      {chant.chantImage.startsWith('data:') || chant.chantImage.startsWith('http') ? (
-                        <img
-                          src={chant.chantImage}
-                          alt={chant.chantTitle || 'Chant rituel'}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <Image
-                          src={chant.chantImage}
-                          alt={chant.chantTitle || 'Chant rituel'}
-                          width={800}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          focalPointX={47.59036144578313}
-                          focalPointY={56.024096385542165}
-                        />
-                      )}
-                      
-                      {/* Edit Button - Only visible to admin */}
-                      {isAdmin && (
-                        <motion.button
-                          initial={{ opacity: 0 }}
-                          whileHover={{ opacity: 1 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditImage(chant);
-                          }}
-                          className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        >
-                          <div className="flex flex-col items-center gap-2">
-                            <Edit2 className="w-8 h-8 text-primary" />
-                            <span className="font-paragraph text-sm text-primary">Modifier l'image</span>
-                          </div>
-                        </motion.button>
-                      )}
+                    <div className="aspect-video overflow-hidden">
+                      <Image
+                        src={chant.chantImage}
+                        alt={chant.chantTitle || 'Chant rituel'}
+                        width={800}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
                   )}
                   
@@ -293,44 +107,6 @@ export default function ChantsPage() {
                         <p className="font-paragraph text-foreground/80 leading-relaxed">
                           {chant.spiritualContext}
                         </p>
-                      </div>
-                    )}
-
-                    {/* Audio Player */}
-                    {chant.audioUrl && (
-                      <div className="mb-6">
-                        <div className="flex items-center gap-3 p-4 bg-primary/10 border border-primary/30 rounded-lg">
-                          <button
-                            onClick={(e) => handlePlayPause(e, chant)}
-                            className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50"
-                            title={playingChantId === chant._id ? 'Pause' : 'Lecture'}
-                          >
-                            {playingChantId === chant._id ? (
-                              <Pause className="w-5 h-5" />
-                            ) : (
-                              <Play className="w-5 h-5 ml-0.5" />
-                            )}
-                          </button>
-                          <div className="flex-1">
-                            <p className="font-paragraph text-xs text-foreground/60">
-                              {playingChantId === chant._id ? 'En lecture...' : 'Cliquez pour écouter'}
-                            </p>
-                          </div>
-                          <button
-                            onClick={handleToggleMute}
-                            className="flex-shrink-0 text-foreground/60 hover:text-foreground transition-colors"
-                            title={isMuted ? 'Activer le son' : 'Couper le son'}
-                          >
-                            {isMuted ? (
-                              <VolumeX className="w-5 h-5" />
-                            ) : (
-                              <Volume2 className="w-5 h-5" />
-                            )}
-                          </button>
-                        </div>
-                        {audioError && (
-                          <p className="text-xs text-destructive mt-2">Erreur audio: {audioError}</p>
-                        )}
                       </div>
                     )}
 
@@ -377,6 +153,7 @@ export default function ChantsPage() {
           )}
         </div>
       </section>
+
       {/* Spiritual Practice Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
         <div className="max-w-[120rem] mx-auto">
@@ -412,20 +189,8 @@ export default function ChantsPage() {
           </motion.div>
         </div>
       </section>
+
       <Footer />
-      {/* Modals */}
-      <AnimatePresence>
-        {showAdminLogin && (
-          <AdminLoginModal onClose={() => setShowAdminLogin(false)} />
-        )}
-        {editingChant && (
-          <EditChantImageModal
-            chant={editingChant}
-            onClose={() => setEditingChant(null)}
-            onSave={handleSaveImage}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
