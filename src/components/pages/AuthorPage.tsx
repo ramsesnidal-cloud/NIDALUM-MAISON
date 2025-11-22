@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
@@ -12,11 +13,32 @@ export default function AuthorPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [epicVideo, setEpicVideo] = useState<AuthorVideoManagement | null>(null);
   const [isVideoLoading, setIsVideoLoading] = useState(true);
+  const [items, setItems] = useState<Array<{ id: string; type: 'video' | 'track'; data: MusicShowcase | AuthorVideoManagement }>>([]);
 
   useEffect(() => {
     loadMusic();
     loadEpicVideo();
   }, []);
+
+  useEffect(() => {
+    // Combine video and tracks into a single array
+    const combined = [];
+    if (epicVideo) {
+      combined.push({
+        id: epicVideo._id,
+        type: 'video' as const,
+        data: epicVideo,
+      });
+    }
+    musicTracks.forEach((track) => {
+      combined.push({
+        id: track._id,
+        type: 'track' as const,
+        data: track,
+      });
+    });
+    setItems(combined);
+  }, [epicVideo, musicTracks]);
 
   const loadMusic = async () => {
     setIsLoading(true);
@@ -31,6 +53,29 @@ export default function AuthorPage() {
     const activeVideo = items.find(video => video.isActive);
     setEpicVideo(activeVideo || null);
     setIsVideoLoading(false);
+  };
+
+  const handleDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+
+    // If dropped outside the list, do nothing
+    if (!destination) {
+      return;
+    }
+
+    // If dropped in the same position, do nothing
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+
+    // Reorder items
+    const newItems = Array.from(items);
+    const [movedItem] = newItems.splice(source.index, 1);
+    newItems.splice(destination.index, 0, movedItem);
+    setItems(newItems);
   };
 
   return (
@@ -177,94 +222,117 @@ export default function AuthorPage() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {/* Epic Video Card */}
-                {epicVideo && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0 }}
-                    viewport={{ once: true }}
-                    className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
-                  >
-                    <div className="aspect-square overflow-hidden relative bg-gradient-to-br from-primary/10 to-secondary/10">
-                      {epicVideo.thumbnailImage ? (
-                        <Image
-                          src={epicVideo.thumbnailImage}
-                          alt={epicVideo.videoTitle || 'Epic Video'}
-                          width={400}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Play className="w-16 h-16 text-primary/50" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <Play className="w-16 h-16 text-primary" />
-                      </div>
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId="music-grid" type="MUSIC_GRID">
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 transition-colors duration-200 ${
+                        snapshot.isDraggingOver ? 'bg-primary/5 p-6 rounded-lg' : ''
+                      }`}
+                    >
+                      {items.map((item, index) => (
+                        <Draggable key={item.id} draggableId={item.id} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className={`transition-all duration-200 ${
+                                snapshot.isDragging ? 'opacity-50 scale-95' : ''
+                              }`}
+                            >
+                              {item.type === 'video' ? (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 30 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.5, delay: 0 }}
+                                  viewport={{ once: true }}
+                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full"
+                                >
+                                  <div className="aspect-square overflow-hidden relative bg-gradient-to-br from-primary/10 to-secondary/10">
+                                    {(item.data as AuthorVideoManagement).thumbnailImage ? (
+                                      <Image
+                                        src={(item.data as AuthorVideoManagement).thumbnailImage!}
+                                        alt={(item.data as AuthorVideoManagement).videoTitle || 'Epic Video'}
+                                        width={400}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center">
+                                        <Play className="w-16 h-16 text-primary/50" />
+                                      </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                      <Play className="w-16 h-16 text-primary" />
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="p-6">
+                                    <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                                      {(item.data as AuthorVideoManagement).videoTitle || 'Musique Épique'}
+                                    </h3>
+                                    {(item.data as AuthorVideoManagement).videoDescription && (
+                                      <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
+                                        {(item.data as AuthorVideoManagement).videoDescription}
+                                      </p>
+                                    )}
+                                  </div>
+                                </motion.div>
+                              ) : (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 30 }}
+                                  whileInView={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
+                                  viewport={{ once: true }}
+                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full"
+                                >
+                                  {(item.data as MusicShowcase).coverImage && (
+                                    <div className="aspect-square overflow-hidden relative">
+                                      <Image
+                                        src={(item.data as MusicShowcase).coverImage!}
+                                        alt={(item.data as MusicShowcase).trackTitle || 'Track cover'}
+                                        width={400}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                      />
+                                      <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <Play className="w-16 h-16 text-primary" />
+                                      </div>
+                                    </div>
+                                  )}
+                                  
+                                  <div className="p-6">
+                                    <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                                      {(item.data as MusicShowcase).trackTitle}
+                                    </h3>
+                                    {(item.data as MusicShowcase).artistName && (
+                                      <p className="font-paragraph text-sm text-foreground/60 mb-3">
+                                        {(item.data as MusicShowcase).artistName}
+                                      </p>
+                                    )}
+                                    {(item.data as MusicShowcase).genre && (
+                                      <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
+                                        {(item.data as MusicShowcase).genre}
+                                      </span>
+                                    )}
+                                    {(item.data as MusicShowcase).description && (
+                                      <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
+                                        {(item.data as MusicShowcase).description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
                     </div>
-                    
-                    <div className="p-6">
-                      <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
-                        {epicVideo.videoTitle || 'Musique Épique'}
-                      </h3>
-                      {epicVideo.videoDescription && (
-                        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
-                          {epicVideo.videoDescription}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-                
-                {/* Music Tracks */}
-                {musicTracks.map((track, index) => (
-                  <motion.div
-                    key={track._id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
-                    viewport={{ once: true }}
-                    className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
-                  >
-                    {track.coverImage && (
-                      <div className="aspect-square overflow-hidden relative">
-                        <Image
-                          src={track.coverImage}
-                          alt={track.trackTitle || 'Track cover'}
-                          width={400}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                          <Play className="w-16 h-16 text-primary" />
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="p-6">
-                      <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
-                        {track.trackTitle}
-                      </h3>
-                      {track.artistName && (
-                        <p className="font-paragraph text-sm text-foreground/60 mb-3">
-                          {track.artistName}
-                        </p>
-                      )}
-                      {track.genre && (
-                        <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
-                          {track.genre}
-                        </span>
-                      )}
-                      {track.description && (
-                        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
-                          {track.description}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
               
               {/* Explanatory Text */}
               {epicVideo && (
