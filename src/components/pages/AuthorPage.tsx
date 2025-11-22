@@ -250,6 +250,66 @@ export default function AuthorPage() {
           </motion.div>
         </div>
       </section>
+      {/* Epic Music Video Section */}
+      <section className="py-24 px-6 lg:px-12">
+        <div className="max-w-[100rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="text-center mb-12">
+              <h2 className="font-heading text-4xl md:text-5xl text-primary mb-4">
+                Musique Épique
+              </h2>
+              <p className="font-heading text-xl md:text-2xl text-secondary tracking-wide">
+                L'Essence Sonore de Souma-Ra
+              </p>
+            </div>
+
+            {/* Video Container */}
+            <div className="flex justify-center mb-12">
+              <div className="w-full max-w-4xl">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="relative w-full aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl overflow-hidden shadow-2xl hover:border-primary/60 transition-all duration-300"
+                >
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="Musique Épique - Ramses Nidal"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  ></iframe>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Explanatory Text */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="max-w-3xl mx-auto text-center"
+            >
+              <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
+                Plongez dans l'univers sonore de Ramses Nidal, où chaque note résonne avec la spiritualité de Souma-Ra. Cette composition épique fusionne les traditions musicales africaines avec des orchestrations cinématographiques modernes, créant une expérience immersive qui transcende les frontières du temps et de l'espace.
+              </p>
+              <p className="font-paragraph text-base text-foreground/70 leading-relaxed">
+                La musique accompagne les chants rituels en Nidalum, amplifiant leur pouvoir mystique et révélant les paysages cachés de l'univers narratif. Écoutez et laissez-vous transporter dans les royaumes éternels de Souma-Ra.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
       <Footer />
     </div>
   );
