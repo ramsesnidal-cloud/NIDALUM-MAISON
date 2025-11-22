@@ -166,63 +166,124 @@ export default function AuthorPage() {
             </p>
           </motion.div>
 
-          {isLoading ? (
+          {isLoading || isVideoLoading ? (
             <div className="text-center py-20">
               <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-              <p className="font-paragraph text-foreground/70 mt-4">Chargement de la musique...</p>
+              <p className="font-paragraph text-foreground/70 mt-4">Chargement du contenu...</p>
             </div>
-          ) : musicTracks.length === 0 ? (
+          ) : musicTracks.length === 0 && !epicVideo ? (
             <div className="text-center py-20">
-              <p className="font-paragraph text-xl text-foreground/70">Aucune musique disponible</p>
+              <p className="font-paragraph text-xl text-foreground/70">Aucun contenu disponible</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {musicTracks.map((track, index) => (
-                <motion.div
-                  key={track._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
-                >
-                  {track.coverImage && (
-                    <div className="aspect-square overflow-hidden relative">
-                      <Image
-                        src={track.coverImage}
-                        alt={track.trackTitle || 'Track cover'}
-                        width={400}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                {/* Epic Video Card */}
+                {epicVideo && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0 }}
+                    viewport={{ once: true }}
+                    className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
+                  >
+                    <div className="aspect-square overflow-hidden relative bg-gradient-to-br from-primary/10 to-secondary/10">
+                      {epicVideo.thumbnailImage ? (
+                        <Image
+                          src={epicVideo.thumbnailImage}
+                          alt={epicVideo.videoTitle || 'Epic Video'}
+                          width={400}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Play className="w-16 h-16 text-primary/50" />
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <Play className="w-16 h-16 text-primary" />
                       </div>
                     </div>
-                  )}
-                  
-                  <div className="p-6">
-                    <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
-                      {track.trackTitle}
-                    </h3>
-                    {track.artistName && (
-                      <p className="font-paragraph text-sm text-foreground/60 mb-3">
-                        {track.artistName}
-                      </p>
+                    
+                    <div className="p-6">
+                      <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                        {epicVideo.videoTitle || 'Musique Épique'}
+                      </h3>
+                      {epicVideo.videoDescription && (
+                        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
+                          {epicVideo.videoDescription}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+                
+                {/* Music Tracks */}
+                {musicTracks.map((track, index) => (
+                  <motion.div
+                    key={track._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
+                    viewport={{ once: true }}
+                    className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
+                  >
+                    {track.coverImage && (
+                      <div className="aspect-square overflow-hidden relative">
+                        <Image
+                          src={track.coverImage}
+                          alt={track.trackTitle || 'Track cover'}
+                          width={400}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                          <Play className="w-16 h-16 text-primary" />
+                        </div>
+                      </div>
                     )}
-                    {track.genre && (
-                      <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
-                        {track.genre}
-                      </span>
-                    )}
-                    {track.description && (
-                      <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
-                        {track.description}
-                      </p>
-                    )}
-                  </div>
+                    
+                    <div className="p-6">
+                      <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                        {track.trackTitle}
+                      </h3>
+                      {track.artistName && (
+                        <p className="font-paragraph text-sm text-foreground/60 mb-3">
+                          {track.artistName}
+                        </p>
+                      )}
+                      {track.genre && (
+                        <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
+                          {track.genre}
+                        </span>
+                      )}
+                      {track.description && (
+                        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
+                          {track.description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Explanatory Text */}
+              {epicVideo && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  viewport={{ once: true }}
+                  className="max-w-3xl mx-auto text-center"
+                >
+                  <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
+                    Plongez dans l'univers sonore de Ramses Nidal, où chaque note résonne avec la spiritualité de Souma-Ra. Cette composition épique fusionne les traditions musicales africaines avec des orchestrations cinématographiques modernes, créant une expérience immersive qui transcende les frontières du temps et de l'espace.
+                  </p>
+                  <p className="font-paragraph text-base text-foreground/70 leading-relaxed">
+                    La musique accompagne les chants rituels en Nidalum, amplifiant leur pouvoir mystique et révélant les paysages cachés de l'univers narratif. Écoutez et laissez-vous transporter dans les royaumes éternels de Souma-Ra.
+                  </p>
                 </motion.div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -258,101 +319,6 @@ export default function AuthorPage() {
                 </p>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
-      {/* Epic Music Video Section */}
-      <section className="py-24 px-6 lg:px-12">
-        <div className="max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="text-center mb-16">
-              <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl text-primary mb-4">
-                Musique Épique
-              </h2>
-              <p className="font-heading text-xl md:text-2xl text-secondary tracking-wide">
-                L'Essence Sonore de Souma-Ra
-              </p>
-            </div>
-
-            {/* Video Container */}
-            <div className="flex justify-center mb-16">
-              <div className="w-full max-w-5xl px-4 sm:px-0">
-                {isVideoLoading ? (
-                  <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
-                      <p className="font-paragraph text-foreground/70">Chargement de la vidéo...</p>
-                    </div>
-                  </div>
-                ) : epicVideo ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    viewport={{ once: true }}
-                    className="relative w-full aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl overflow-hidden shadow-2xl hover:border-primary/60 transition-all duration-300"
-                  >
-                    {epicVideo.videoType === 'YouTube' ? (
-                      <iframe
-                        width="100%"
-                        height="100%"
-                        src={epicVideo.videoUrl}
-                        title={epicVideo.videoTitle || 'Musique Épique - Ramses Nidal'}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full h-full"
-                      ></iframe>
-                    ) : (
-                      <video
-                        width="100%"
-                        height="100%"
-                        controls
-                        className="w-full h-full object-cover"
-                      >
-                        <source src={epicVideo.videoUrl} type="video/mp4" />
-                        Votre navigateur ne supporte pas la lecture vidéo.
-                      </video>
-                    )}
-                  </motion.div>
-                ) : (
-                  <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl flex items-center justify-center">
-                    <p className="font-paragraph text-foreground/70">Aucune vidéo disponible</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Explanatory Text */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="max-w-3xl mx-auto text-center"
-            >
-              {epicVideo?.videoDescription ? (
-                <>
-                  <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
-                    {epicVideo.videoDescription}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
-                    Plongez dans l'univers sonore de Ramses Nidal, où chaque note résonne avec la spiritualité de Souma-Ra. Cette composition épique fusionne les traditions musicales africaines avec des orchestrations cinématographiques modernes, créant une expérience immersive qui transcende les frontières du temps et de l'espace.
-                  </p>
-                  <p className="font-paragraph text-base text-foreground/70 leading-relaxed">
-                    La musique accompagne les chants rituels en Nidalum, amplifiant leur pouvoir mystique et révélant les paysages cachés de l'univers narratif. Écoutez et laissez-vous transporter dans les royaumes éternels de Souma-Ra.
-                  </p>
-                </>
-              )}
-            </motion.div>
           </motion.div>
         </div>
       </section>
