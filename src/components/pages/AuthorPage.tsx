@@ -3,16 +3,19 @@ import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { MusicShowcase } from '@/entities';
+import { MusicShowcase, AuthorVideoManagement } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Music, Play, Pause } from 'lucide-react';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [epicVideo, setEpicVideo] = useState<AuthorVideoManagement | null>(null);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
 
   useEffect(() => {
     loadMusic();
+    loadEpicVideo();
   }, []);
 
   const loadMusic = async () => {
@@ -20,6 +23,14 @@ export default function AuthorPage() {
     const { items } = await BaseCrudService.getAll<MusicShowcase>('musicshowcase');
     setMusicTracks(items);
     setIsLoading(false);
+  };
+
+  const loadEpicVideo = async () => {
+    setIsVideoLoading(true);
+    const { items } = await BaseCrudService.getAll<AuthorVideoManagement>('gestionvideoauteur');
+    const activeVideo = items.find(video => video.isActive);
+    setEpicVideo(activeVideo || null);
+    setIsVideoLoading(false);
   };
 
   return (
@@ -271,24 +282,49 @@ export default function AuthorPage() {
             {/* Video Container */}
             <div className="flex justify-center mb-12">
               <div className="w-full max-w-4xl">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="relative w-full aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl overflow-hidden shadow-2xl hover:border-primary/60 transition-all duration-300"
-                >
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                    title="Musique Épique - Ramses Nidal"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  ></iframe>
-                </motion.div>
+                {isVideoLoading ? (
+                  <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+                      <p className="font-paragraph text-foreground/70">Chargement de la vidéo...</p>
+                    </div>
+                  </div>
+                ) : epicVideo ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="relative w-full aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl overflow-hidden shadow-2xl hover:border-primary/60 transition-all duration-300"
+                  >
+                    {epicVideo.videoType === 'YouTube' ? (
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src={epicVideo.videoUrl}
+                        title={epicVideo.videoTitle || 'Musique Épique - Ramses Nidal'}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      ></iframe>
+                    ) : (
+                      <video
+                        width="100%"
+                        height="100%"
+                        controls
+                        className="w-full h-full object-cover"
+                      >
+                        <source src={epicVideo.videoUrl} type="video/mp4" />
+                        Votre navigateur ne supporte pas la lecture vidéo.
+                      </video>
+                    )}
+                  </motion.div>
+                ) : (
+                  <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl flex items-center justify-center">
+                    <p className="font-paragraph text-foreground/70">Aucune vidéo disponible</p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -300,12 +336,22 @@ export default function AuthorPage() {
               viewport={{ once: true }}
               className="max-w-3xl mx-auto text-center"
             >
-              <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
-                Plongez dans l'univers sonore de Ramses Nidal, où chaque note résonne avec la spiritualité de Souma-Ra. Cette composition épique fusionne les traditions musicales africaines avec des orchestrations cinématographiques modernes, créant une expérience immersive qui transcende les frontières du temps et de l'espace.
-              </p>
-              <p className="font-paragraph text-base text-foreground/70 leading-relaxed">
-                La musique accompagne les chants rituels en Nidalum, amplifiant leur pouvoir mystique et révélant les paysages cachés de l'univers narratif. Écoutez et laissez-vous transporter dans les royaumes éternels de Souma-Ra.
-              </p>
+              {epicVideo?.videoDescription ? (
+                <>
+                  <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
+                    {epicVideo.videoDescription}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
+                    Plongez dans l'univers sonore de Ramses Nidal, où chaque note résonne avec la spiritualité de Souma-Ra. Cette composition épique fusionne les traditions musicales africaines avec des orchestrations cinématographiques modernes, créant une expérience immersive qui transcende les frontières du temps et de l'espace.
+                  </p>
+                  <p className="font-paragraph text-base text-foreground/70 leading-relaxed">
+                    La musique accompagne les chants rituels en Nidalum, amplifiant leur pouvoir mystique et révélant les paysages cachés de l'univers narratif. Écoutez et laissez-vous transporter dans les royaumes éternels de Souma-Ra.
+                  </p>
+                </>
+              )}
             </motion.div>
           </motion.div>
         </div>

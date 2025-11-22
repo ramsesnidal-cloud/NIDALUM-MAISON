@@ -4,6 +4,29 @@
  */
 
 /**
+ * Collection ID: gestionvideoauteur
+ * Interface for AuthorVideoManagement
+ */
+export interface AuthorVideoManagement {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  videoTitle?: string;
+  /** @wixFieldType text */
+  videoDescription?: string;
+  /** @wixFieldType text */
+  videoType?: string;
+  /** @wixFieldType url */
+  videoUrl?: string;
+  /** @wixFieldType image */
+  thumbnailImage?: string;
+  /** @wixFieldType boolean */
+  isActive?: boolean;
+}
+
+
+/**
  * Collection ID: musicshowcase
  * Interface for MusicShowcase
  */
@@ -141,4 +164,27 @@ export interface RitualChants {
   audio?: string;
   /** @wixFieldType text */
   text?: string;
+}
+
+
+/**
+ * Collection ID: gestionvideoauteur
+ * Interface for Author Video Management
+ */
+export interface AuthorVideoManagement {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  videoTitle?: string;
+  /** @wixFieldType text */
+  videoDescription?: string;
+  /** @wixFieldType text */
+  videoType?: string;
+  /** @wixFieldType url */
+  videoUrl?: string;
+  /** @wixFieldType image */
+  thumbnailImage?: string;
+  /** @wixFieldType boolean */
+  isActive?: boolean;
 }
