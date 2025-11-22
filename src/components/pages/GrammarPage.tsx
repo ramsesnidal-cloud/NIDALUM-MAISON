@@ -1,37 +1,47 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { BookOpen, Layers, Link2, Zap } from 'lucide-react';
+import { BookOpen, Layers, Link2, Zap, ChevronDown, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 export default function GrammarPage() {
+  const [expandedRule, setExpandedRule] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'rules' | 'verbs' | 'cases' | 'sentences'>('all');
+
   const grammarRules = [
     {
       icon: Layers,
       title: 'Structure des Phrases',
       description: 'L\'ordre des mots en Nidalum suit le schéma Sujet-Objet-Verbe (SOV), reflétant une logique cosmique où l\'action vient après la contemplation.',
       example: 'Nidar souma-ra kēla (Nidar le monde voit)',
-      color: 'primary'
+      color: 'primary',
+      category: 'rules'
     },
     {
       icon: Link2,
       title: 'Système de Cas',
       description: 'Nidalum utilise quatre cas grammaticaux: Nominatif (sujet), Accusatif (objet direct), Génitif (possession), et Locatif (lieu).',
       example: 'Nidar-um (de Nidar), Souma-ra-en (dans Souma-Ra)',
-      color: 'secondary'
+      color: 'secondary',
+      category: 'cases'
     },
     {
       icon: Zap,
       title: 'Conjugaison Temporelle',
       description: 'Les verbes se conjuguent selon trois temps principaux: Passé Ancestral, Présent Éternel, et Futur Cosmique, avec des suffixes spécifiques.',
       example: 'Kēla (voir-présent), Kēla-shi (voir-passé), Kēla-ren (voir-futur)',
-      color: 'primary'
+      color: 'primary',
+      category: 'verbs'
     },
     {
       icon: BookOpen,
       title: 'Modificateurs Spirituels',
       description: 'Des particules spéciales ajoutent des nuances spirituelles ou émotionnelles aux mots, transformant leur signification profonde.',
       example: 'Nidar-tō (Nidar sacré), Souma-ra-sha (Souma-Ra mystique)',
-      color: 'secondary'
+      color: 'secondary',
+      category: 'rules'
     }
   ];
 
@@ -48,6 +58,13 @@ export default function GrammarPage() {
     { name: 'Génitif', marker: '-um', usage: 'Possession', example: 'Nidar-um souma' },
     { name: 'Locatif', marker: '-en', usage: 'Lieu, position', example: 'Souma-ra-en' },
   ];
+
+  const filteredRules = grammarRules.filter(rule => {
+    const matchesSearch = rule.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         rule.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || rule.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -76,6 +93,53 @@ export default function GrammarPage() {
         </div>
       </section>
 
+      {/* Search and Filter Section */}
+      <section className="py-12 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
+        <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-background/50 border border-primary/20 p-8 backdrop-blur-sm"
+          >
+            {/* Search Bar */}
+            <div className="mb-6">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
+                <Input
+                  type="text"
+                  placeholder="Rechercher une règle grammaticale..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 bg-background border-primary/20 text-foreground font-paragraph h-12"
+                />
+              </div>
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-3">
+              {(['all', 'rules', 'verbs', 'cases', 'sentences'] as const).map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 text-sm font-paragraph transition-colors ${
+                    selectedCategory === cat
+                      ? 'bg-primary text-primary-foreground border border-primary'
+                      : 'bg-background border border-primary/20 text-foreground/70 hover:border-primary/50'
+                  }`}
+                >
+                  {cat === 'all' && 'Tous'}
+                  {cat === 'rules' && 'Règles'}
+                  {cat === 'verbs' && 'Verbes'}
+                  {cat === 'cases' && 'Cas'}
+                  {cat === 'sentences' && 'Phrases'}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Grammar Rules Section */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -92,27 +156,50 @@ export default function GrammarPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {grammarRules.map((rule, index) => (
+            {filteredRules.map((rule, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
+                onClick={() => setExpandedRule(expandedRule === index ? null : index)}
+                className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm cursor-pointer group"
               >
-                <rule.icon className={`w-12 h-12 text-${rule.color} mb-4`} />
-                <h3 className="font-heading text-2xl text-primary mb-4">{rule.title}</h3>
-                <p className="font-paragraph text-foreground/70 leading-relaxed mb-4">
-                  {rule.description}
-                </p>
-                <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-4">
-                  <p className="font-paragraph text-sm text-foreground/60 mb-1">Exemple:</p>
-                  <p className="font-paragraph text-secondary italic">{rule.example}</p>
+                <div className="flex items-start justify-between mb-4">
+                  <rule.icon className={`w-12 h-12 text-${rule.color} flex-shrink-0`} />
+                  <ChevronDown className={`w-5 h-5 text-primary transition-transform ${expandedRule === index ? 'rotate-180' : ''}`} />
                 </div>
+                <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">{rule.title}</h3>
+                
+                {expandedRule === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-4"
+                  >
+                    <p className="font-paragraph text-foreground/70 leading-relaxed">
+                      {rule.description}
+                    </p>
+                    <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-4">
+                      <p className="font-paragraph text-sm text-foreground/60 mb-1">Exemple:</p>
+                      <p className="font-paragraph text-secondary italic">{rule.example}</p>
+                    </div>
+                  </motion.div>
+                )}
               </motion.div>
             ))}
           </div>
+
+          {filteredRules.length === 0 && (
+            <div className="text-center py-12">
+              <p className="font-paragraph text-xl text-foreground/70">Aucune règle trouvée</p>
+              <p className="font-paragraph text-sm text-foreground/50 mt-2">
+                Essayez de modifier votre recherche
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

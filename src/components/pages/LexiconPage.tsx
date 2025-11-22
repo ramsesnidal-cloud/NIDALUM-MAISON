@@ -1,20 +1,25 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Wand2, ChevronDown } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { NidalumLexicon } from '@/entities';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { generateCompleteWord } from '@/lib/nidalum-generator';
 
 export default function LexiconPage() {
   const [lexiconItems, setLexiconItems] = useState<NidalumLexicon[]>([]);
   const [filteredItems, setFilteredItems] = useState<NidalumLexicon[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchField, setSearchField] = useState<'all' | 'word' | 'definition' | 'etymology'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedTheme, setSelectedTheme] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
 
   useEffect(() => {
     loadLexicon();
@@ -22,7 +27,7 @@ export default function LexiconPage() {
 
   useEffect(() => {
     filterItems();
-  }, [searchTerm, selectedCategory, selectedTheme, lexiconItems]);
+  }, [searchTerm, searchField, selectedCategory, selectedTheme, lexiconItems]);
 
   const loadLexicon = async () => {
     setIsLoading(true);
@@ -35,10 +40,24 @@ export default function LexiconPage() {
     let filtered = [...lexiconItems];
 
     if (searchTerm) {
-      filtered = filtered.filter(item =>
-        item.nidalumWord?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.definition?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const lowerSearch = searchTerm.toLowerCase();
+      filtered = filtered.filter(item => {
+        if (searchField === 'all') {
+          return (
+            item.nidalumWord?.toLowerCase().includes(lowerSearch) ||
+            item.definition?.toLowerCase().includes(lowerSearch) ||
+            item.etymology?.toLowerCase().includes(lowerSearch) ||
+            item.exampleSentence?.toLowerCase().includes(lowerSearch)
+          );
+        } else if (searchField === 'word') {
+          return item.nidalumWord?.toLowerCase().includes(lowerSearch);
+        } else if (searchField === 'definition') {
+          return item.definition?.toLowerCase().includes(lowerSearch);
+        } else if (searchField === 'etymology') {
+          return item.etymology?.toLowerCase().includes(lowerSearch);
+        }
+        return true;
+      });
     }
 
     if (selectedCategory !== 'all') {
@@ -50,6 +69,26 @@ export default function LexiconPage() {
     }
 
     setFilteredItems(filtered);
+  };
+
+  const generateNewWord = async () => {
+    setIsGenerating(true);
+    try {
+      const newWord = generateCompleteWord();
+      const wordWithId = {
+        ...newWord,
+        _id: crypto.randomUUID(),
+        _createdDate: new Date(),
+        _updatedDate: new Date()
+      };
+      
+      await BaseCrudService.create('nidalumlexicon', wordWithId);
+      setLexiconItems([...lexiconItems, wordWithId]);
+    } catch (error) {
+      console.error('Erreur lors de la génération du mot:', error);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const categories = ['all', ...Array.from(new Set(lexiconItems.map(item => item.category).filter(Boolean)))];
@@ -92,75 +131,152 @@ export default function LexiconPage() {
             transition={{ duration: 0.6 }}
             className="bg-background/50 border border-primary/20 p-8 backdrop-blur-sm"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Search */}
-              <div className="lg:col-span-3">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
-                  <Input
-                    type="text"
-                    placeholder="Rechercher un mot ou une définition..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-12 bg-background border-primary/20 text-foreground font-paragraph h-12"
-                  />
-                </div>
-              </div>
-
-              {/* Category Filter */}
-              <div>
-                <label className="font-paragraph text-sm text-foreground/70 mb-2 block">
-                  Catégorie
-                </label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full bg-background border border-primary/20 text-foreground font-paragraph p-3 focus:outline-none focus:border-primary"
-                >
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat === 'all' ? 'Toutes les catégories' : cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Theme Filter */}
-              <div>
-                <label className="font-paragraph text-sm text-foreground/70 mb-2 block">
-                  Thème
-                </label>
-                <select
-                  value={selectedTheme}
-                  onChange={(e) => setSelectedTheme(e.target.value)}
-                  className="w-full bg-background border border-primary/20 text-foreground font-paragraph p-3 focus:outline-none focus:border-primary"
-                >
-                  {themes.map((theme) => (
-                    <option key={theme} value={theme}>
-                      {theme === 'all' ? 'Tous les thèmes' : theme}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Reset Button */}
-              <div className="flex items-end">
-                <Button
-                  onClick={() => {
-                    setSearchTerm('');
-                    setSelectedCategory('all');
-                    setSelectedTheme('all');
-                  }}
-                  className="w-full bg-transparent border-2 border-primary text-primary hover:bg-primary/10 font-paragraph"
-                >
-                  Réinitialiser
-                </Button>
+            {/* Search Bar */}
+            <div className="mb-6">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
+                <Input
+                  type="text"
+                  placeholder="Rechercher un mot, une définition, une étymologie..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 bg-background border-primary/20 text-foreground font-paragraph h-12"
+                />
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between">
+            {/* Advanced Search Toggle */}
+            <div className="mb-6 flex flex-wrap gap-3 items-center">
+              <button
+                onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
+                className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 transition-colors font-paragraph text-sm"
+              >
+                <Wand2 className="w-4 h-4" />
+                Recherche avancée
+                <ChevronDown className={`w-4 h-4 transition-transform ${showAdvancedSearch ? 'rotate-180' : ''}`} />
+              </button>
+
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2 px-4 py-2 bg-secondary/10 border border-secondary/30 text-secondary hover:bg-secondary/20 transition-colors font-paragraph text-sm"
+              >
+                <Filter className="w-4 h-4" />
+                Filtres
+                <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+              </button>
+
+              <Button
+                onClick={generateNewWord}
+                disabled={isGenerating}
+                className="flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 font-paragraph"
+              >
+                <Wand2 className="w-4 h-4" />
+                {isGenerating ? 'Génération...' : 'Générer un mot'}
+              </Button>
+            </div>
+
+            {/* Advanced Search Options */}
+            {showAdvancedSearch && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mb-6 p-4 bg-dark-amber-shadow/20 border border-primary/20"
+              >
+                <label className="font-paragraph text-sm text-foreground/70 mb-3 block">
+                  Rechercher dans:
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {(['all', 'word', 'definition', 'etymology'] as const).map((field) => (
+                    <button
+                      key={field}
+                      onClick={() => setSearchField(field)}
+                      className={`px-3 py-2 text-sm font-paragraph transition-colors ${
+                        searchField === field
+                          ? 'bg-primary text-primary-foreground border border-primary'
+                          : 'bg-background border border-primary/20 text-foreground/70 hover:border-primary/50'
+                      }`}
+                    >
+                      {field === 'all' && 'Tous les champs'}
+                      {field === 'word' && 'Mots'}
+                      {field === 'definition' && 'Définitions'}
+                      {field === 'etymology' && 'Étymologies'}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Filters */}
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mb-6"
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Category Filter */}
+                  <div>
+                    <label className="font-paragraph text-sm text-foreground/70 mb-2 block">
+                      Catégorie
+                    </label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="w-full bg-background border border-primary/20 text-foreground font-paragraph p-3 focus:outline-none focus:border-primary"
+                    >
+                      {categories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat === 'all' ? 'Toutes les catégories' : cat}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Theme Filter */}
+                  <div>
+                    <label className="font-paragraph text-sm text-foreground/70 mb-2 block">
+                      Thème
+                    </label>
+                    <select
+                      value={selectedTheme}
+                      onChange={(e) => setSelectedTheme(e.target.value)}
+                      className="w-full bg-background border border-primary/20 text-foreground font-paragraph p-3 focus:outline-none focus:border-primary"
+                    >
+                      {themes.map((theme) => (
+                        <option key={theme} value={theme}>
+                          {theme === 'all' ? 'Tous les thèmes' : theme}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Reset Button */}
+                  <div className="flex items-end">
+                    <Button
+                      onClick={() => {
+                        setSearchTerm('');
+                        setSearchField('all');
+                        setSelectedCategory('all');
+                        setSelectedTheme('all');
+                      }}
+                      className="w-full bg-transparent border-2 border-primary text-primary hover:bg-primary/10 font-paragraph"
+                    >
+                      Réinitialiser
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Results Count */}
+            <div className="flex items-center justify-between pt-4 border-t border-primary/10">
               <p className="font-paragraph text-sm text-foreground/60">
                 {filteredItems.length} mot{filteredItems.length !== 1 ? 's' : ''} trouvé{filteredItems.length !== 1 ? 's' : ''}
+              </p>
+              <p className="font-paragraph text-xs text-foreground/50">
+                Total: {lexiconItems.length} mots
               </p>
             </div>
           </motion.div>
