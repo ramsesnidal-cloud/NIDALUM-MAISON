@@ -44,7 +44,6 @@ export default function OriginsPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background">
@@ -72,7 +71,6 @@ export default function OriginsPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Cosmic Elements Section */}
       <section className="py-24 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -111,7 +109,6 @@ export default function OriginsPage() {
           </div>
         </div>
       </section>
-
       {/* Timeline Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
         <div className="max-w-[120rem] mx-auto">
@@ -153,7 +150,6 @@ export default function OriginsPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Mythology Section */}
       <section className="py-24 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
@@ -189,17 +185,18 @@ export default function OriginsPage() {
             >
               <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
                 <Image
-                  src="https://static.wixstatic.com/media/9c8aea_230efb3a7a304eee99f28d6bbc83657a~mv2.png?originWidth=576&originHeight=576"
-                  alt="Nidar, le Premier Gardien"
+                  src="https://static.wixstatic.com/media/9c8aea_bc2fee18935f4c26807024d062ba00a6~mv2.png"
                   width={600}
                   className="w-full h-full object-cover"
-                />
+                  originWidth={1024}
+                  originHeight={1024}
+                  focalPointX={50.68359375}
+                  focalPointY={22.36328125} />
               </div>
             </motion.div>
           </div>
         </div>
       </section>
-
       {/* Seven Pillars Section */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/10">
         <div className="max-w-[120rem] mx-auto">
@@ -241,7 +238,6 @@ export default function OriginsPage() {
           </motion.div>
         </div>
       </section>
-
       <Footer />
     </div>
   );

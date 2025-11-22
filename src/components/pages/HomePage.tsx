@@ -9,7 +9,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
       {/* Hero Section - Full Screen Cosmic Echo Chamber */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         {/* Background with gradient overlay */}
@@ -64,7 +63,6 @@ export default function HomePage() {
           </div>
         </motion.div>
       </section>
-
       {/* Features Section - Asymmetric Grid */}
       <section className="py-24 px-6 lg:px-12 max-w-[120rem] mx-auto">
         <motion.div
@@ -150,7 +148,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
       {/* About Section - Split Layout */}
       <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/20">
         <div className="max-w-[120rem] mx-auto">
@@ -187,17 +184,18 @@ export default function HomePage() {
             >
               <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
                 <Image
-                  src="https://static.wixstatic.com/media/9c8aea_006ec9df1dc542aba31f30c26e313ee2~mv2.png?originWidth=576&originHeight=576"
-                  alt="Ramses Nidal - Créateur de Nidalum"
+                  src="https://static.wixstatic.com/media/9c8aea_d92e61748c39422fa5218c0d1ce84928~mv2.png"
                   width={600}
                   className="w-full h-full object-cover"
-                />
+                  originWidth={522}
+                  originHeight={660}
+                  focalPointX={34.099616858237546}
+                  focalPointY={31.287878787878785} />
               </div>
             </motion.div>
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-24 px-6 lg:px-12">
         <div className="max-w-4xl mx-auto text-center">
@@ -230,7 +228,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
