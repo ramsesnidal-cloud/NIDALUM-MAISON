@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { BaseCrudService } from '@/integrations';
 import { MusicShowcase, RitualChants } from '@/entities';
 import { ChevronDown, ChevronUp, Copy, ExternalLink } from 'lucide-react';
@@ -21,10 +22,16 @@ export default function AudioDebugger() {
   const [audioItems, setAudioItems] = useState<AudioItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     loadAudioItems();
   }, []);
+
+  // Hide on Author page
+  if (location.pathname === '/author') {
+    return null;
+  }
 
   const loadAudioItems = async () => {
     setIsLoading(true);

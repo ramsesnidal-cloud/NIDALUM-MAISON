@@ -10,6 +10,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { BaseCrudService } from '@/integrations';
 import { MusicShowcase, RitualChants } from '@/entities';
 import { AlertCircle, CheckCircle, XCircle, Loader } from 'lucide-react';
@@ -24,10 +25,16 @@ interface DiagnosticResult {
 export default function AudioDiagnostics() {
   const [results, setResults] = useState<DiagnosticResult[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     runDiagnostics();
   }, []);
+
+  // Hide on Author page
+  if (location.pathname === '/author') {
+    return null;
+  }
 
   const runDiagnostics = async () => {
     setIsRunning(true);
