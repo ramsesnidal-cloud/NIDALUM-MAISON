@@ -263,15 +263,15 @@ export default function AuthorPage() {
       </section>
       {/* Epic Music Video Section */}
       <section className="py-24 px-6 lg:px-12">
-        <div className="max-w-[100rem] mx-auto">
+        <div className="max-w-[120rem] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="text-center mb-12">
-              <h2 className="font-heading text-4xl md:text-5xl text-primary mb-4">
+            <div className="text-center mb-16">
+              <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl text-primary mb-4">
                 Musique Épique
               </h2>
               <p className="font-heading text-xl md:text-2xl text-secondary tracking-wide">
@@ -280,8 +280,8 @@ export default function AuthorPage() {
             </div>
 
             {/* Video Container */}
-            <div className="flex justify-center mb-12">
-              <div className="w-full max-w-4xl">
+            <div className="flex justify-center mb-16">
+              <div className="w-full max-w-5xl px-4 sm:px-0">
                 {isVideoLoading ? (
                   <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/30 rounded-2xl flex items-center justify-center">
                     <div className="text-center">

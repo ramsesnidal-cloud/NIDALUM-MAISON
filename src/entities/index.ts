@@ -23,6 +23,8 @@ export interface AuthorVideoManagement {
   thumbnailImage?: string;
   /** @wixFieldType boolean */
   isActive?: boolean;
+  /** @wixFieldType video */
+  video?: string;
 }
 
 
