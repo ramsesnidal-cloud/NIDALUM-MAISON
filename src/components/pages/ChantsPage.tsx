@@ -64,11 +64,11 @@ export default function ChantsPage() {
           {isLoading ? (
             <div className="text-center py-20">
               <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-              <p className="font-paragraph text-foreground/70 mt-4">Chargement des chants...</p>
+              <p className="font-paragraph text-foreground/70 mt-4">{t('pages.chants.loading')}</p>
             </div>
           ) : chants.length === 0 ? (
             <div className="text-center py-20">
-              <p className="font-paragraph text-xl text-foreground/70">Aucun chant disponible</p>
+              <p className="font-paragraph text-xl text-foreground/70">{t('pages.chants.noContent')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -106,7 +106,7 @@ export default function ChantsPage() {
 
                     {chant.spiritualContext && (
                       <div className="mb-6">
-                        <p className="font-paragraph text-sm text-foreground/50 mb-2">Contexte Spirituel:</p>
+                        <p className="font-paragraph text-sm text-foreground/50 mb-2">{t('pages.chants.spiritualContext')}:</p>
                         <p className="font-paragraph text-foreground/80 leading-relaxed">
                           {chant.spiritualContext}
                         </p>
@@ -133,7 +133,7 @@ export default function ChantsPage() {
 
                         {chant.originalText && (
                           <div className="bg-gradient-to-br from-primary/10 to-secondary/10 p-6 border-l-4 border-primary">
-                            <p className="font-paragraph text-sm text-foreground/50 mb-3">Texte Original (Nidalum):</p>
+                            <p className="font-paragraph text-sm text-foreground/50 mb-3">{t('pages.chants.originalText')} (Nidalum):</p>
                             <p className="font-heading text-lg text-primary leading-relaxed whitespace-pre-line">
                               {chant.originalText}
                             </p>
@@ -142,7 +142,7 @@ export default function ChantsPage() {
 
                         {chant.translation && (
                           <div className="bg-dark-amber-shadow/20 p-6 border-l-4 border-secondary">
-                            <p className="font-paragraph text-sm text-foreground/50 mb-3">Traduction:</p>
+                            <p className="font-paragraph text-sm text-foreground/50 mb-3">{t('pages.chants.translation')}:</p>
                             <p className="font-paragraph text-foreground/80 leading-relaxed whitespace-pre-line">
                               {chant.translation}
                             </p>

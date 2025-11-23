@@ -64,30 +64,30 @@ export default function AlphabetPage() {
             className="mb-16"
           >
             <h2 className="font-heading text-3xl md:text-4xl text-primary mb-6 text-center">
-              Structure de l'Alphabet
+              {t('pages.alphabet.structure')}
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
-                  L'alphabet Toraé-Shira se compose de 16 lettres fondamentales, chacune représentant un concept cosmique ou spirituel. Ces lettres sont écrites verticalement, de haut en bas, symbolisant la connexion entre le ciel et la terre.
+                  {t('pages.alphabet.structureDesc')}
                 </p>
                 <div className="space-y-4">
                   <div className="border-l-4 border-primary pl-6">
-                    <h3 className="font-heading text-xl text-secondary mb-2">Voyelles Sacrées</h3>
+                    <h3 className="font-heading text-xl text-secondary mb-2">{t('pages.alphabet.sacredVowels')}</h3>
                     <p className="font-paragraph text-foreground/70">
-                      Les cinq voyelles (Ā, Ē, Ī, Ō, Ū) représentent les éléments fondamentaux de l'existence et de la création.
+                      {t('pages.alphabet.sacredVowelsDesc')}
                     </p>
                   </div>
                   <div className="border-l-4 border-secondary pl-6">
-                    <h3 className="font-heading text-xl text-primary mb-2">Consonnes Mystiques</h3>
+                    <h3 className="font-heading text-xl text-primary mb-2">{t('pages.alphabet.mysticConsonants')}</h3>
                     <p className="font-paragraph text-foreground/70">
-                      Les onze consonnes forment les piliers de la langue, chacune portant une énergie spécifique et un pouvoir spirituel.
+                      {t('pages.alphabet.mysticConsonantsDesc')}
                     </p>
                   </div>
                 </div>
               </div>
               <div className="bg-background/50 border border-primary/20 p-8 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-primary mb-6 text-center">Écriture Verticale</h3>
+                <h3 className="font-heading text-2xl text-primary mb-6 text-center">{t('pages.alphabet.verticalWriting')}</h3>
                 <div className="flex justify-center space-x-8">
                   <div className="flex flex-col items-center space-y-4">
                     {['Ṇ', 'Ī', 'Ḍ', 'Ā', 'Ḷ', 'Ū', 'Ṃ'].map((letter, index) => (
@@ -98,7 +98,7 @@ export default function AlphabetPage() {
                   </div>
                   <div className="flex items-center">
                     <p className="font-paragraph text-foreground/70 writing-mode-vertical-rl transform rotate-180">
-                      Exemple d'écriture verticale
+                      {t('pages.alphabet.verticalWritingExample')}
                     </p>
                   </div>
                 </div>
@@ -119,10 +119,10 @@ export default function AlphabetPage() {
             className="mb-12"
           >
             <h2 className="font-heading text-3xl md:text-4xl text-primary mb-4 text-center">
-              Les 16 Lettres Sacrées
+              {t('pages.alphabet.sixteenLetters')}
             </h2>
             <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto">
-              Chaque lettre de l'alphabet Toraé-Shira possède une signification profonde et une prononciation spécifique
+              {t('pages.alphabet.sixteenLettersDesc')}
             </p>
           </motion.div>
 
@@ -143,12 +143,12 @@ export default function AlphabetPage() {
                     </span>
                   </div>
                   <p className="font-paragraph text-sm text-foreground/50">
-                    Latin: {item.letter}
+                    {t('pages.alphabet.latin')}: {item.letter}
                   </p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="font-paragraph text-xs text-foreground/50">Prononciation:</span>
+                    <span className="font-paragraph text-xs text-foreground/50">{t('pages.alphabet.pronunciation')}:</span>
                     <span className="font-paragraph text-sm text-secondary">[{item.pronunciation}]</span>
                   </div>
                   <div className="pt-2 border-t border-primary/10">
@@ -173,25 +173,25 @@ export default function AlphabetPage() {
             viewport={{ once: true }}
           >
             <h2 className="font-heading text-3xl md:text-4xl text-primary mb-12 text-center">
-              Utilisation et Calligraphie
+              {t('pages.alphabet.usage')}
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Direction</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.alphabet.direction')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  L'écriture Toraé-Shira se lit de haut en bas, puis de droite à gauche, symbolisant la descente de la sagesse céleste vers la terre.
+                  {t('pages.alphabet.directionDesc')}
                 </p>
               </div>
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Calligraphie</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.alphabet.calligraphy')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Chaque lettre peut être ornée de motifs géométriques sacrés, reflétant l'importance spirituelle du texte écrit.
+                  {t('pages.alphabet.calligraphyDesc')}
                 </p>
               </div>
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Combinaisons</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.alphabet.combinations')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Les lettres peuvent se combiner pour former des ligatures spéciales, créant des symboles complexes chargés de sens.
+                  {t('pages.alphabet.combinationsDesc')}
                 </p>
               </div>
             </div>

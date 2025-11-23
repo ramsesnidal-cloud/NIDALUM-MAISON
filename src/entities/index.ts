@@ -139,6 +139,18 @@ export interface Publications {
   coverImage?: string;
   /** @wixFieldType url */
   purchaseLink?: string;
+  /** @wixFieldType text */
+  titleEn?: string;
+  /** @wixFieldType text */
+  titleDe?: string;
+  /** @wixFieldType text */
+  excerptEn?: string;
+  /** @wixFieldType text */
+  excerptDe?: string;
+  /** @wixFieldType text */
+  descriptionEn?: string;
+  /** @wixFieldType text */
+  descriptionDe?: string;
 }
 
 
