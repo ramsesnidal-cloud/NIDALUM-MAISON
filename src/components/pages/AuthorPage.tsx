@@ -7,6 +7,7 @@ import { BaseCrudService } from '@/integrations';
 import { MusicShowcase, AuthorVideoManagement } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Music, Play, Pause } from 'lucide-react';
+import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 
 export default function AuthorPage() {
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
@@ -286,7 +287,7 @@ export default function AuthorPage() {
                                   whileInView={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
                                   viewport={{ once: true }}
-                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full"
+                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full flex flex-col"
                                 >
                                   {(item.data as MusicShowcase).coverImage && (
                                     <div className="aspect-square overflow-hidden relative">
@@ -302,24 +303,35 @@ export default function AuthorPage() {
                                     </div>
                                   )}
                                   
-                                  <div className="p-6">
-                                    <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
-                                      {(item.data as MusicShowcase).trackTitle}
-                                    </h3>
-                                    {(item.data as MusicShowcase).artistName && (
-                                      <p className="font-paragraph text-sm text-foreground/60 mb-3">
-                                        {(item.data as MusicShowcase).artistName}
-                                      </p>
-                                    )}
-                                    {(item.data as MusicShowcase).genre && (
-                                      <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
-                                        {(item.data as MusicShowcase).genre}
-                                      </span>
-                                    )}
-                                    {(item.data as MusicShowcase).description && (
-                                      <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
-                                        {(item.data as MusicShowcase).description}
-                                      </p>
+                                  <div className="p-6 flex-1 flex flex-col">
+                                    <div className="flex-1">
+                                      <h3 className="font-heading text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                                        {(item.data as MusicShowcase).trackTitle}
+                                      </h3>
+                                      {(item.data as MusicShowcase).artistName && (
+                                        <p className="font-paragraph text-sm text-foreground/60 mb-3">
+                                          {(item.data as MusicShowcase).artistName}
+                                        </p>
+                                      )}
+                                      {(item.data as MusicShowcase).genre && (
+                                        <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
+                                          {(item.data as MusicShowcase).genre}
+                                        </span>
+                                      )}
+                                      {(item.data as MusicShowcase).description && (
+                                        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
+                                          {(item.data as MusicShowcase).description}
+                                        </p>
+                                      )}
+                                    </div>
+                                    {(item.data as MusicShowcase).audio && (
+                                      <div className="mt-4 pt-4 border-t border-primary/20">
+                                        <ModernAudioPlayer
+                                          audioUrl={(item.data as MusicShowcase).audio!}
+                                          title={(item.data as MusicShowcase).trackTitle || 'Musique'}
+                                          className="mt-2"
+                                        />
+                                      </div>
                                     )}
                                   </div>
                                 </motion.div>

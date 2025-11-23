@@ -6,6 +6,7 @@ import { BaseCrudService } from '@/integrations';
 import { RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Sparkles } from 'lucide-react';
+import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 
 export default function ChantsPage() {
   const [chants, setChants] = useState<RitualChants[]>([]);

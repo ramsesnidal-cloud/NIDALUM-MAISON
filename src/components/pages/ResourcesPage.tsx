@@ -6,6 +6,7 @@ import { BaseCrudService } from '@/integrations';
 import { OfficialResources, NidalumLexicon, RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Download, FileText, Calendar, BookOpen, Zap, CheckCircle, AlertCircle, Lightbulb, Target, X, Music, Scroll } from 'lucide-react';
+import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 
 const MAX_RETRIES = 3;
 const DOWNLOAD_TIMEOUT = 30000;
