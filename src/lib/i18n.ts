@@ -90,6 +90,33 @@ export const translations = {
         description: 'Rejoignez notre communauté d\'apprenants',
       },
     },
+    // Features
+    features: {
+      language: {
+        title: 'Langue Sacrée',
+        description: 'Alphabet Toraé-Shira, grammaire structurée, phonétique unique, et lexique complet',
+      },
+      spirituality: {
+        title: 'Spiritualité',
+        description: 'Chants rituels, contextes spirituels, et connexion avec l\'univers Souma-Ra',
+      },
+      universe: {
+        title: 'Univers Narratif',
+        description: 'Découvrez les origines de Souma-Ra et Nidar, un monde mythologique épique',
+      },
+      music: {
+        title: 'Musique Épique',
+        description: 'Compositions afro-cinématographiques par Ramses Nidal, fusion mystique et moderne',
+      },
+      publications: {
+        title: 'Publications',
+        description: 'Dictionnaire Nidalum, livres, et ressources officielles pour approfondir',
+      },
+      academy: {
+        title: 'Academy',
+        description: 'Institut d\'apprentissage de la langue Nidalum et de sa culture',
+      },
+    },
   },
   en: {
     // Navigation
@@ -181,6 +208,33 @@ export const translations = {
         description: 'Join our community of learners',
       },
     },
+    // Features
+    features: {
+      language: {
+        title: 'Sacred Language',
+        description: 'Toraé-Shira alphabet, structured grammar, unique phonetics, and complete lexicon',
+      },
+      spirituality: {
+        title: 'Spirituality',
+        description: 'Ritual chants, spiritual contexts, and connection with the Souma-Ra universe',
+      },
+      universe: {
+        title: 'Narrative Universe',
+        description: 'Discover the origins of Souma-Ra and Nidar, an epic mythological world',
+      },
+      music: {
+        title: 'Epic Music',
+        description: 'Afro-cinematic compositions by Ramses Nidal, mystical and modern fusion',
+      },
+      publications: {
+        title: 'Publications',
+        description: 'Nidalum dictionary, books, and official resources to deepen your knowledge',
+      },
+      academy: {
+        title: 'Academy',
+        description: 'Learning institute for the Nidalum language and its culture',
+      },
+    },
   },
   de: {
     // Navigation
@@ -270,6 +324,33 @@ export const translations = {
       signup: {
         title: 'Anmelden',
         description: 'Treten Sie unserer Lerngemeinschaft bei',
+      },
+    },
+    // Features
+    features: {
+      language: {
+        title: 'Heilige Sprache',
+        description: 'Toraé-Shira-Alphabet, strukturierte Grammatik, einzigartige Phonetik und vollständiges Lexikon',
+      },
+      spirituality: {
+        title: 'Spiritualität',
+        description: 'Rituelle Gesänge, spirituelle Kontexte und Verbindung mit dem Souma-Ra-Universum',
+      },
+      universe: {
+        title: 'Narratives Universum',
+        description: 'Entdecken Sie die Ursprünge von Souma-Ra und Nidar, eine epische mythologische Welt',
+      },
+      music: {
+        title: 'Epische Musik',
+        description: 'Afro-kinematografische Kompositionen von Ramses Nidal, mystische und moderne Fusion',
+      },
+      publications: {
+        title: 'Veröffentlichungen',
+        description: 'Nidalum-Wörterbuch, Bücher und offizielle Ressourcen zum Vertiefen',
+      },
+      academy: {
+        title: 'Akademie',
+        description: 'Lerneinrichtung für die Nidalum-Sprache und ihre Kultur',
       },
     },
   },

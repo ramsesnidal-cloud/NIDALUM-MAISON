@@ -86,43 +86,43 @@ export default function HomePage() {
           {[
             {
               icon: Languages,
-              title: 'Langue Sacrée',
-              description: 'Alphabet Toraé-Shira, grammaire structurée, phonétique unique, et lexique complet',
+              titleKey: 'features.language.title',
+              descriptionKey: 'features.language.description',
               link: '/alphabet',
               color: 'primary'
             },
             {
               icon: Sparkles,
-              title: 'Spiritualité',
-              description: 'Chants rituels, contextes spirituels, et connexion avec l\'univers Souma-Ra',
+              titleKey: 'features.spirituality.title',
+              descriptionKey: 'features.spirituality.description',
               link: '/chants',
               color: 'secondary'
             },
             {
               icon: Globe,
-              title: 'Univers Narratif',
-              description: 'Découvrez les origines de Souma-Ra et Nidar, un monde mythologique épique',
+              titleKey: 'features.universe.title',
+              descriptionKey: 'features.universe.description',
               link: '/origins',
               color: 'primary'
             },
             {
               icon: Music,
-              title: 'Musique Épique',
-              description: 'Compositions afro-cinématographiques par Ramses Nidal, fusion mystique et moderne',
+              titleKey: 'features.music.title',
+              descriptionKey: 'features.music.description',
               link: '/author',
               color: 'secondary'
             },
             {
               icon: BookOpen,
-              title: 'Publications',
-              description: 'Dictionnaire Nidalum, livres, et ressources officielles pour approfondir',
+              titleKey: 'features.publications.title',
+              descriptionKey: 'features.publications.description',
               link: '/publications',
               color: 'primary'
             },
             {
               icon: Library,
-              title: 'Academy',
-              description: 'Institut d\'apprentissage de la langue Nidalum et de sa culture',
+              titleKey: 'features.academy.title',
+              descriptionKey: 'features.academy.description',
               link: '/academy',
               color: 'secondary'
             }
@@ -140,10 +140,10 @@ export default function HomePage() {
               >
                 <feature.icon className={`w-12 h-12 text-${feature.color} mb-6 group-hover:scale-110 transition-transform duration-300`} />
                 <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">
-                  {feature.title}
+                  {t(feature.titleKey)}
                 </h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  {feature.description}
+                  {t(feature.descriptionKey)}
                 </p>
               </Link>
             </motion.div>

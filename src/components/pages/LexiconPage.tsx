@@ -115,10 +115,10 @@ export default function LexiconPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary mb-6">
-              Lexique Nidalum
+              {t('pages.lexicon.title')}
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              Explorez le vocabulaire sacré de Nidalum. Chaque mot porte une signification profonde, connectée à l'univers Souma-Ra et à la spiritualité cosmique.
+              {t('pages.lexicon.description')}
             </p>
           </motion.div>
         </div>

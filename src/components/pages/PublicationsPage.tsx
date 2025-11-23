@@ -98,12 +98,12 @@ export default function PublicationsPage() {
             <div className="flex items-center justify-center gap-3 mb-6">
               <BookOpen className="w-8 h-8 text-secondary" />
               <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-                Univers Littéraire Nidalum
+                {t('pages.publications.title')}
               </h1>
               <Sparkles className="w-8 h-8 text-primary" />
             </div>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              Explorez les ouvrages fictifs de l'univers Nidalum. Dictionnaires, épopées mythologiques, guides spirituels et bien plus. Téléchargez les extraits et découvrez les mondes cachés de Souma-Ra.
+              {t('pages.publications.description')}
             </p>
           </motion.div>
         </div>

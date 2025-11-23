@@ -416,10 +416,10 @@ export default function ResourcesPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary mb-6">
-              Ressources Officielles Nidalum
+              {t('pages.resources.title')}
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              Explorez notre collection complète de guides d'apprentissage, dictionnaire vivant, et chants rituels sacrés pour maîtriser la langue et la culture Nidalum.
+              {t('pages.resources.description')}
             </p>
           </motion.div>
         </div>

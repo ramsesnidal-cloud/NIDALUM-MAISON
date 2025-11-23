@@ -106,7 +106,7 @@ export default function AuthorPage() {
               ABOUDRAMANE DOUMBIA
             </p>
             <p className="font-paragraph text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              Créateur de la langue Nidalum, compositeur de musique épique afro-cinématographique, et architecte de l'univers narratif Souma-Ra.
+              {t('pages.author.description')}
             </p>
           </motion.div>
         </div>

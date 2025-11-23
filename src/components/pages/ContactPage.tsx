@@ -61,10 +61,10 @@ export default function ContactPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6">
-              Contactez-Nous
+              {t('pages.contact.title')}
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              Vous avez des questions sur la langue Nidalum, l'Academy, ou l'univers Souma-Ra? Nous sommes là pour vous répondre.
+              {t('pages.contact.description')}
             </p>
           </motion.div>
         </div>

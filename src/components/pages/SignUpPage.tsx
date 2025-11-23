@@ -178,10 +178,10 @@ export default function SignUpPage() {
             className="text-center mb-12"
           >
             <h1 className="font-heading text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6">
-              Rejoignez l'Institut Nidalum
+              {t('pages.signup.title')}
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-2xl mx-auto">
-              Créez votre compte pour accéder à tous les contenus exclusifs et progresser dans votre apprentissage de la langue Nidalum.
+              {t('pages.signup.description')}
             </p>
           </motion.div>
         </div>

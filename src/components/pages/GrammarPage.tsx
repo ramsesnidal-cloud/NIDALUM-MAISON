@@ -86,10 +86,10 @@ export default function GrammarPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary mb-6">
-              Grammaire Nidalum
+              {t('pages.grammar.title')}
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              La structure grammaticale de Nidalum reflète une vision cosmique du langage, où chaque règle porte une signification spirituelle profonde.
+              {t('pages.grammar.description')}
             </p>
           </motion.div>
         </div>

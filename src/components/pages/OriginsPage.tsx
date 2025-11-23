@@ -65,10 +65,10 @@ export default function OriginsPage() {
               SOUMA-RA
             </h1>
             <p className="font-heading text-2xl md:text-3xl text-secondary mb-8 tracking-widest">
-              L'UNIVERS ORIGINEL
+              {t('pages.origins.title')}
             </p>
             <p className="font-paragraph text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              Découvrez les origines mystiques de Souma-Ra et Nidar, l'univers narratif qui a donné naissance à la langue sacrée Nidalum.
+              {t('pages.origins.description')}
             </p>
           </motion.div>
         </div>

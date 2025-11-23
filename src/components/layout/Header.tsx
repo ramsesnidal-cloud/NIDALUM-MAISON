@@ -10,9 +10,22 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { language } = useLanguageStore();
+  const [, setRenderTrigger] = useState(0);
 
   useEffect(() => {
     useLanguageStore.getState().initializeLanguage();
+  }, []);
+
+  // Subscribe to language changes
+  useEffect(() => {
+    const unsubscribe = useLanguageStore.subscribe(
+      (state) => state.language,
+      () => {
+        setRenderTrigger((prev) => prev + 1);
+      }
+    );
+
+    return () => unsubscribe();
   }, []);
 
   const isActive = (path: string) => location.pathname === path;
