@@ -15,55 +15,57 @@ export default function GrammarPage() {
   const grammarRules = [
     {
       icon: Layers,
-      title: 'Structure des Phrases',
-      description: 'L\'ordre des mots en Nidalum suit le schéma Sujet-Objet-Verbe (SOV), reflétant une logique cosmique où l\'action vient après la contemplation.',
-      example: 'Nidar souma-ra kēla (Nidar le monde voit)',
+      titleKey: 'pages.grammar.sentenceStructure',
+      descriptionKey: 'pages.grammar.sentenceStructureDesc',
+      exampleKey: 'pages.grammar.sentenceExample',
       color: 'primary',
       category: 'rules'
     },
     {
       icon: Link2,
-      title: 'Système de Cas',
-      description: 'Nidalum utilise quatre cas grammaticaux: Nominatif (sujet), Accusatif (objet direct), Génitif (possession), et Locatif (lieu).',
-      example: 'Nidar-um (de Nidar), Souma-ra-en (dans Souma-Ra)',
+      titleKey: 'pages.grammar.caseSystem',
+      descriptionKey: 'pages.grammar.caseSystemDesc',
+      exampleKey: 'pages.grammar.caseExample',
       color: 'secondary',
       category: 'cases'
     },
     {
       icon: Zap,
-      title: 'Conjugaison Temporelle',
-      description: 'Les verbes se conjuguent selon trois temps principaux: Passé Ancestral, Présent Éternel, et Futur Cosmique, avec des suffixes spécifiques.',
-      example: 'Kēla (voir-présent), Kēla-shi (voir-passé), Kēla-ren (voir-futur)',
+      titleKey: 'pages.grammar.temporalConjugation',
+      descriptionKey: 'pages.grammar.temporalConjugationDesc',
+      exampleKey: 'pages.grammar.temporalExample',
       color: 'primary',
       category: 'verbs'
     },
     {
       icon: BookOpen,
-      title: 'Modificateurs Spirituels',
-      description: 'Des particules spéciales ajoutent des nuances spirituelles ou émotionnelles aux mots, transformant leur signification profonde.',
-      example: 'Nidar-tō (Nidar sacré), Souma-ra-sha (Souma-Ra mystique)',
+      titleKey: 'pages.grammar.spiritualModifiers',
+      descriptionKey: 'pages.grammar.spiritualModifiersDesc',
+      exampleKey: 'pages.grammar.spiritualExample',
       color: 'secondary',
       category: 'rules'
     }
   ];
 
   const verbConjugation = [
-    { tense: 'Présent Éternel', suffix: '-∅', example: 'kēla (voit)' },
-    { tense: 'Passé Ancestral', suffix: '-shi', example: 'kēla-shi (a vu)' },
-    { tense: 'Futur Cosmique', suffix: '-ren', example: 'kēla-ren (verra)' },
-    { tense: 'Impératif Sacré', suffix: '-tē', example: 'kēla-tē (vois!)' },
+    { tenseKey: 'pages.grammar.eternalPresent', suffix: '-∅', exampleKey: 'pages.grammar.eternalPresent' },
+    { tenseKey: 'pages.grammar.ancestralPast', suffix: '-shi', exampleKey: 'pages.grammar.ancestralPast' },
+    { tenseKey: 'pages.grammar.cosmicFuture', suffix: '-ren', exampleKey: 'pages.grammar.cosmicFuture' },
+    { tenseKey: 'pages.grammar.sacredImperative', suffix: '-tē', exampleKey: 'pages.grammar.sacredImperative' },
   ];
 
   const cases = [
-    { name: 'Nominatif', marker: '-∅', usage: 'Sujet de la phrase', example: 'Nidar kēla' },
-    { name: 'Accusatif', marker: '-an', usage: 'Objet direct', example: 'Souma-ra-an kēla' },
-    { name: 'Génitif', marker: '-um', usage: 'Possession', example: 'Nidar-um souma' },
-    { name: 'Locatif', marker: '-en', usage: 'Lieu, position', example: 'Souma-ra-en' },
+    { nameKey: 'pages.grammar.nominative', marker: '-∅', usageKey: 'pages.grammar.nominativeUsage', exampleKey: 'pages.grammar.nominativeExample' },
+    { nameKey: 'pages.grammar.accusative', marker: '-an', usageKey: 'pages.grammar.accusativeUsage', exampleKey: 'pages.grammar.accusativeExample' },
+    { nameKey: 'pages.grammar.genitive', marker: '-um', usageKey: 'pages.grammar.genitiveUsage', exampleKey: 'pages.grammar.genitiveExample' },
+    { nameKey: 'pages.grammar.locative', marker: '-en', usageKey: 'pages.grammar.locativeUsage', exampleKey: 'pages.grammar.locativeExample' },
   ];
 
   const filteredRules = grammarRules.filter(rule => {
-    const matchesSearch = rule.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         rule.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const ruleTitle = t(rule.titleKey).toLowerCase();
+    const ruleDesc = t(rule.descriptionKey).toLowerCase();
+    const matchesSearch = ruleTitle.includes(searchTerm.toLowerCase()) ||
+                         ruleDesc.includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || rule.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -110,7 +112,7 @@ export default function GrammarPage() {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/50 w-5 h-5" />
                 <Input
                   type="text"
-                  placeholder="Rechercher une règle grammaticale..."
+                  placeholder={t('common.search')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-12 bg-background border-primary/20 text-foreground font-paragraph h-12"
@@ -130,11 +132,11 @@ export default function GrammarPage() {
                       : 'bg-background border border-primary/20 text-foreground/70 hover:border-primary/50'
                   }`}
                 >
-                  {cat === 'all' && 'Tous'}
-                  {cat === 'rules' && 'Règles'}
-                  {cat === 'verbs' && 'Verbes'}
-                  {cat === 'cases' && 'Cas'}
-                  {cat === 'sentences' && 'Phrases'}
+                  {cat === 'all' && t('pages.grammar.allRules')}
+                  {cat === 'rules' && t('pages.grammar.rules')}
+                  {cat === 'verbs' && t('pages.grammar.verbs')}
+                  {cat === 'cases' && t('pages.grammar.cases')}
+                  {cat === 'sentences' && t('pages.grammar.sentences')}
                 </button>
               ))}
             </div>
@@ -172,7 +174,7 @@ export default function GrammarPage() {
                   <rule.icon className={`w-12 h-12 text-${rule.color} flex-shrink-0`} />
                   <ChevronDown className={`w-5 h-5 text-primary transition-transform ${expandedRule === index ? 'rotate-180' : ''}`} />
                 </div>
-                <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">{rule.title}</h3>
+                <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">{t(rule.titleKey)}</h3>
                 
                 {expandedRule === index && (
                   <motion.div
@@ -182,11 +184,11 @@ export default function GrammarPage() {
                     className="space-y-4"
                   >
                     <p className="font-paragraph text-foreground/70 leading-relaxed">
-                      {rule.description}
+                      {t(rule.descriptionKey)}
                     </p>
                     <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-4">
-                      <p className="font-paragraph text-sm text-foreground/60 mb-1">Exemple:</p>
-                      <p className="font-paragraph text-secondary italic">{rule.example}</p>
+                      <p className="font-paragraph text-sm text-foreground/60 mb-1">{t('common.search')}:</p>
+                      <p className="font-paragraph text-secondary italic">{t(rule.exampleKey)}</p>
                     </div>
                   </motion.div>
                 )}
@@ -227,10 +229,10 @@ export default function GrammarPage() {
                   <div className="space-y-3">
                     {verbConjugation.map((item, index) => (
                       <div key={index} className="flex justify-between items-center border-b border-primary/10 pb-2">
-                        <span className="font-paragraph text-foreground/70">{item.tense}</span>
+                        <span className="font-paragraph text-foreground/70">{t(item.tenseKey)}</span>
                         <div className="text-right">
                           <span className="font-paragraph text-sm text-foreground/50 mr-2">{item.suffix}</span>
-                          <span className="font-paragraph text-primary">{item.example}</span>
+                          <span className="font-paragraph text-primary">{t(item.exampleKey)}</span>
                         </div>
                       </div>
                     ))}
@@ -241,19 +243,19 @@ export default function GrammarPage() {
                 <h3 className="font-heading text-2xl text-primary mb-6">Temps Spirituels</h3>
                 <div className="space-y-4">
                   <div className="border-l-4 border-primary pl-4">
-                    <h4 className="font-heading text-lg text-secondary mb-2">Passé Ancestral</h4>
+                    <h4 className="font-heading text-lg text-secondary mb-2">{t('pages.grammar.ancestralPast')}</h4>
                     <p className="font-paragraph text-sm text-foreground/70">
                       Évoque les actions des ancêtres et les événements mythologiques
                     </p>
                   </div>
                   <div className="border-l-4 border-secondary pl-4">
-                    <h4 className="font-heading text-lg text-primary mb-2">Présent Éternel</h4>
+                    <h4 className="font-heading text-lg text-primary mb-2">{t('pages.grammar.eternalPresent')}</h4>
                     <p className="font-paragraph text-sm text-foreground/70">
                       Décrit les vérités cosmiques et les actions continues
                     </p>
                   </div>
                   <div className="border-l-4 border-primary pl-4">
-                    <h4 className="font-heading text-lg text-secondary mb-2">Futur Cosmique</h4>
+                    <h4 className="font-heading text-lg text-secondary mb-2">{t('pages.grammar.cosmicFuture')}</h4>
                     <p className="font-paragraph text-sm text-foreground/70">
                       Projette vers les destinées futures et les prophéties
                     </p>
@@ -290,10 +292,10 @@ export default function GrammarPage() {
                 <tbody>
                   {cases.map((caseItem, index) => (
                     <tr key={index} className="border-b border-primary/10 hover:bg-primary/5 transition-colors">
-                      <td className="font-paragraph text-foreground/80 p-4">{caseItem.name}</td>
+                      <td className="font-paragraph text-foreground/80 p-4">{t(caseItem.nameKey)}</td>
                       <td className="font-paragraph text-secondary p-4">{caseItem.marker}</td>
-                      <td className="font-paragraph text-foreground/70 p-4">{caseItem.usage}</td>
-                      <td className="font-paragraph text-primary italic p-4">{caseItem.example}</td>
+                      <td className="font-paragraph text-foreground/70 p-4">{t(caseItem.usageKey)}</td>
+                      <td className="font-paragraph text-primary italic p-4">{t(caseItem.exampleKey)}</td>
                     </tr>
                   ))}
                 </tbody>
