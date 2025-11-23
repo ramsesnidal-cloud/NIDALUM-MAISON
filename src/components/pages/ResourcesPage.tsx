@@ -893,14 +893,11 @@ export default function ResourcesPage() {
                       {chant.audio && (
                         <div className="mt-6 pt-6 border-t border-primary/20">
                           <p className="font-paragraph text-sm text-secondary mb-3 font-semibold">Écoutez le Chant</p>
-                          <audio
-                            controls
-                            className="w-full"
-                            aria-label={`Écouter ${chant.chantTitle}`}
-                          >
-                            <source src={chant.audio} type="audio/mpeg" />
-                            Votre navigateur ne supporte pas la lecture audio.
-                          </audio>
+                          <ModernAudioPlayer
+                            audioUrl={chant.audio}
+                            title={chant.chantTitle || 'Chant Rituel'}
+                            className="mt-2"
+                          />
                         </div>
                       )}
                     </div>

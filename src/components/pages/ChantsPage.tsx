@@ -118,6 +118,17 @@ export default function ChantsPage() {
                         exit={{ opacity: 0, height: 0 }}
                         className="space-y-6 pt-6 border-t border-primary/20"
                       >
+                        {chant.audio && (
+                          <div>
+                            <p className="font-paragraph text-sm text-secondary mb-3 font-semibold">Écoutez le Chant Rituel</p>
+                            <ModernAudioPlayer
+                              audioUrl={chant.audio}
+                              title={chant.chantTitle || 'Chant Rituel'}
+                              className="mt-2"
+                            />
+                          </div>
+                        )}
+
                         {chant.originalText && (
                           <div className="bg-gradient-to-br from-primary/10 to-secondary/10 p-6 border-l-4 border-primary">
                             <p className="font-paragraph text-sm text-foreground/50 mb-3">Texte Original (Nidalum):</p>
