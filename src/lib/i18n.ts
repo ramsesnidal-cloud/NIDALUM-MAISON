@@ -246,16 +246,7 @@ export const translations = {
         combinations: 'Combinations',
         combinationsDesc: 'Letters can combine to form special ligatures, creating complex symbols charged with meaning.',
       },
-      chants: {
-        title: 'Ritual Chants',
-        description: 'Discover sacred chants and their spiritual significance',
-        loading: 'Loading chants...',
-        noContent: 'No chants available',
-        originalText: 'Original Text',
-        translation: 'Translation',
-        spiritualContext: 'Spiritual Context',
-        theme: 'Theme',
-      },
+      grammar: {
         title: 'Nidalum Grammar',
         description: 'The grammatical structure of Nidalum reflects a cosmic vision of language, where each rule carries profound spiritual significance.',
         sentenceStructure: 'Sentence Structure',
@@ -303,6 +294,12 @@ export const translations = {
       chants: {
         title: 'Ritual Chants',
         description: 'Discover sacred chants and their spiritual significance',
+        loading: 'Loading chants...',
+        noContent: 'No chants available',
+        originalText: 'Original Text',
+        translation: 'Translation',
+        spiritualContext: 'Spiritual Context',
+        theme: 'Theme',
       },
       origins: {
         title: 'Origins of Nidalum',
@@ -450,16 +447,7 @@ export const translations = {
         combinations: 'Kombinationen',
         combinationsDesc: 'Buchstaben können sich zu speziellen Ligaturen verbinden und komplexe, bedeutungsvolle Symbole schaffen.',
       },
-      chants: {
-        title: 'Rituelle Gesänge',
-        description: 'Entdecken Sie heilige Gesänge und ihre spirituelle Bedeutung',
-        loading: 'Gesänge werden geladen...',
-        noContent: 'Keine Gesänge verfügbar',
-        originalText: 'Originaltext',
-        translation: 'Übersetzung',
-        spiritualContext: 'Spiritueller Kontext',
-        theme: 'Thema',
-      },
+      grammar: {
         title: 'Nidalum-Grammatik',
         description: 'Die Grammatikstruktur von Nidalum spiegelt eine kosmische Sprachvision wider, in der jede Regel tiefe spirituelle Bedeutung trägt.',
         sentenceStructure: 'Satzstruktur',
@@ -507,6 +495,12 @@ export const translations = {
       chants: {
         title: 'Rituelle Gesänge',
         description: 'Entdecken Sie heilige Gesänge und ihre spirituelle Bedeutung',
+        loading: 'Gesänge werden geladen...',
+        noContent: 'Keine Gesänge verfügbar',
+        originalText: 'Originaltext',
+        translation: 'Übersetzung',
+        spiritualContext: 'Spiritueller Kontext',
+        theme: 'Thema',
       },
       origins: {
         title: 'Ursprünge von Nidalum',

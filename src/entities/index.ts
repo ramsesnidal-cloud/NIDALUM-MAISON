@@ -12,6 +12,14 @@ export interface AuthorVideoManagement {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  videoTitleDe?: string;
+  /** @wixFieldType text */
+  videoDescriptionDe?: string;
+  /** @wixFieldType text */
+  videoDescriptionEn?: string;
+  /** @wixFieldType text */
+  videoTitleEn?: string;
+  /** @wixFieldType text */
   videoTitle?: string;
   /** @wixFieldType text */
   videoDescription?: string;
@@ -36,6 +44,14 @@ export interface MusicShowcase {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType text */
+  descriptionDe?: string;
+  /** @wixFieldType text */
+  trackTitleEn?: string;
+  /** @wixFieldType text */
+  descriptionEn?: string;
+  /** @wixFieldType text */
+  trackTitleDe?: string;
   /** @wixFieldType text */
   trackTitle?: string;
   /** @wixFieldType text */
@@ -66,6 +82,18 @@ export interface NidalumLexicon {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  exampleSentenceEn?: string;
+  /** @wixFieldType text */
+  traductionDe?: string;
+  /** @wixFieldType text */
+  traductionEn?: string;
+  /** @wixFieldType text */
+  exampleSentenceDe?: string;
+  /** @wixFieldType text */
+  definitionEn?: string;
+  /** @wixFieldType text */
+  definitionDe?: string;
+  /** @wixFieldType text */
   nidalumWord?: string;
   /** @wixFieldType text */
   definition?: string;
@@ -95,7 +123,15 @@ export interface OfficialResources {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  descriptionDe?: string;
+  /** @wixFieldType text */
   resourceName?: string;
+  /** @wixFieldType text */
+  descriptionEn?: string;
+  /** @wixFieldType text */
+  resourceNameDe?: string;
+  /** @wixFieldType text */
+  resourceNameEn?: string;
   /** @wixFieldType text */
   description?: string;
   /** @wixFieldType url */
@@ -117,8 +153,20 @@ export interface Publications {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType text */
+  descriptionDe?: string;
   /** @wixFieldType url */
   pdfUrl?: string;
+  /** @wixFieldType text */
+  descriptionEn?: string;
+  /** @wixFieldType text */
+  excerptDe?: string;
+  /** @wixFieldType text */
+  excerptEn?: string;
+  /** @wixFieldType text */
+  titleDe?: string;
+  /** @wixFieldType text */
+  titleEn?: string;
   /** @wixFieldType text */
   bookGenre?: string;
   /** @wixFieldType text */
@@ -139,18 +187,6 @@ export interface Publications {
   coverImage?: string;
   /** @wixFieldType url */
   purchaseLink?: string;
-  /** @wixFieldType text */
-  titleEn?: string;
-  /** @wixFieldType text */
-  titleDe?: string;
-  /** @wixFieldType text */
-  excerptEn?: string;
-  /** @wixFieldType text */
-  excerptDe?: string;
-  /** @wixFieldType text */
-  descriptionEn?: string;
-  /** @wixFieldType text */
-  descriptionDe?: string;
 }
 
 
@@ -162,6 +198,18 @@ export interface RitualChants {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType text */
+  spiritualContextDe?: string;
+  /** @wixFieldType text */
+  chantTitleEn?: string;
+  /** @wixFieldType text */
+  spiritualContextEn?: string;
+  /** @wixFieldType text */
+  translationDe?: string;
+  /** @wixFieldType text */
+  translationEn?: string;
+  /** @wixFieldType text */
+  chantTitleDe?: string;
   /** @wixFieldType text */
   chantTitle?: string;
   /** @wixFieldType text */
