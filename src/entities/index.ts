@@ -138,8 +138,8 @@ export interface OfficialResources {
   fileUrl?: string;
   /** @wixFieldType text */
   resourceType?: string;
-  /** @wixFieldType date */
-  publicationDate?: Date | string;
+  /** @wixFieldType date @format YYYY-MM-DD */
+  publicationDate?: string;
   /** @wixFieldType image */
   thumbnailImage?: string;
 }
@@ -179,8 +179,8 @@ export interface Publications {
   author?: string;
   /** @wixFieldType text */
   description?: string;
-  /** @wixFieldType date */
-  publicationDate?: Date | string;
+  /** @wixFieldType date @format YYYY-MM-DD */
+  publicationDate?: string;
   /** @wixFieldType text */
   isbn?: string;
   /** @wixFieldType image */
