@@ -106,7 +106,7 @@ export default function AuthorPage() {
               ABOUDRAMANE DOUMBIA
             </p>
             <p className="font-paragraph text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              {t('pages.author.description')}
+              {t('pages.author.heroSubtitle')}
             </p>
           </motion.div>
         </div>
@@ -141,17 +141,17 @@ export default function AuthorPage() {
               viewport={{ once: true }}
             >
               <h2 className="font-heading text-4xl md:text-5xl text-primary mb-6">
-                L'Artiste Visionnaire
+                {t('pages.author.visionaryTitle')}
               </h2>
               <div className="space-y-4">
                 <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
-                  Ramses Nidal, né Aboudramane Doumbia, est un artiste multidisciplinaire dont l'œuvre transcende les frontières entre linguistique, musique, et mythologie. Son travail s'inscrit dans une vision afrofuturiste où l'ancien et le futur se rencontrent.
+                  {t('pages.author.visionaryPara1')}
                 </p>
                 <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
-                  Créateur de la langue Nidalum, il a développé un système linguistique complet avec son propre alphabet (Toraé-Shira), sa grammaire, et son lexique. Cette langue n'est pas qu'un outil de communication, mais un pont spirituel vers l'univers narratif de Souma-Ra.
+                  {t('pages.author.visionaryPara2')}
                 </p>
                 <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
-                  En tant que compositeur, Ramses Nidal crée une musique épique et cinématographique qui fusionne les traditions africaines avec des sonorités modernes et cosmiques. Ses compositions accompagnent les chants rituels en Nidalum et évoquent les paysages mystiques de Souma-Ra.
+                  {t('pages.author.visionaryPara3')}
                 </p>
               </div>
             </motion.div>
@@ -168,25 +168,25 @@ export default function AuthorPage() {
             viewport={{ once: true }}
           >
             <h2 className="font-heading text-4xl md:text-5xl text-primary mb-12 text-center">
-              Vision Artistique
+              {t('pages.author.artisticVision')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Afrofuturisme</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.author.afrofuturism')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Une fusion entre héritage africain et vision futuriste, créant un espace où la tradition ancestrale rencontre l'innovation cosmique.
+                  {t('pages.author.afrofuturismDesc')}
                 </p>
               </div>
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Mysticisme</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.author.mysticism')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Chaque création est imprégnée de spiritualité, transformant l'art en rituel et la langue en invocation sacrée.
+                  {t('pages.author.mysticismDesc')}
                 </p>
               </div>
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Cinématique</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.author.cinematic')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Une approche épique et visuelle, où chaque mot, chaque note, évoque des paysages grandioses et des récits mythologiques.
+                  {t('pages.author.cinematicDesc')}
                 </p>
               </div>
             </div>
@@ -206,22 +206,22 @@ export default function AuthorPage() {
             <div className="flex items-center justify-center mb-6">
               <Music className="w-10 h-10 text-primary mr-4" />
               <h2 className="font-heading text-4xl md:text-5xl text-primary">
-                Musique Épique
+                {t('pages.author.epicMusic')}
               </h2>
             </div>
             <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto">
-              Découvrez les compositions afro-cinématographiques de Ramses Nidal, une fusion mystique de traditions et de modernité.
+              {t('pages.author.epicMusicDesc')}
             </p>
           </motion.div>
 
           {isLoading || isVideoLoading ? (
             <div className="text-center py-20">
               <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-              <p className="font-paragraph text-foreground/70 mt-4">Chargement du contenu...</p>
+              <p className="font-paragraph text-foreground/70 mt-4">{t('pages.author.loading')}</p>
             </div>
           ) : musicTracks.length === 0 && !epicVideo ? (
             <div className="text-center py-20">
-              <p className="font-paragraph text-xl text-foreground/70">Aucun contenu disponible</p>
+              <p className="font-paragraph text-xl text-foreground/70">{t('pages.author.noContent')}</p>
             </div>
           ) : (
             <>
@@ -358,10 +358,10 @@ export default function AuthorPage() {
                   className="max-w-3xl mx-auto text-center"
                 >
                   <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
-                    Plongez dans l'univers sonore de Ramses Nidal, où chaque note résonne avec la spiritualité de Souma-Ra. Cette composition épique fusionne les traditions musicales africaines avec des orchestrations cinématographiques modernes, créant une expérience immersive qui transcende les frontières du temps et de l'espace.
+                    {t('pages.author.musicExplanation')}
                   </p>
                   <p className="font-paragraph text-base text-foreground/70 leading-relaxed">
-                    La musique accompagne les chants rituels en Nidalum, amplifiant leur pouvoir mystique et révélant les paysages cachés de l'univers narratif. Écoutez et laissez-vous transporter dans les royaumes éternels de Souma-Ra.
+                    {t('pages.author.musicExplanation2')}
                   </p>
                 </motion.div>
               )}
@@ -379,25 +379,25 @@ export default function AuthorPage() {
             viewport={{ once: true }}
           >
             <h2 className="font-heading text-4xl md:text-5xl text-primary mb-12 text-center">
-              Processus Créatif
+              {t('pages.author.creativeProcess')}
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Création Linguistique</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.author.linguisticCreation')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed mb-4">
-                  La langue Nidalum a été développée sur plusieurs années, avec une attention méticuleuse portée à la cohérence phonétique, grammaticale, et sémantique. Chaque mot est choisi pour sa résonance spirituelle autant que pour sa fonction linguistique.
+                  {t('pages.author.linguisticCreationDesc1')}
                 </p>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  L'alphabet Toraé-Shira, écrit verticalement, symbolise la connexion entre le ciel et la terre, reflétant la cosmologie de Souma-Ra.
+                  {t('pages.author.linguisticCreationDesc2')}
                 </p>
               </div>
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-secondary mb-4">Composition Musicale</h3>
+                <h3 className="font-heading text-2xl text-secondary mb-4">{t('pages.author.musicalComposition')}</h3>
                 <p className="font-paragraph text-foreground/70 leading-relaxed mb-4">
-                  La musique de Ramses Nidal naît de l'intersection entre rythmes africains traditionnels et orchestrations cinématographiques modernes. Chaque composition est conçue pour évoquer les paysages mystiques de Souma-Ra.
+                  {t('pages.author.musicalCompositionDesc1')}
                 </p>
                 <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Les chants rituels en Nidalum sont accompagnés de mélodies qui amplifient leur pouvoir spirituel et leur beauté poétique.
+                  {t('pages.author.musicalCompositionDesc2')}
                 </p>
               </div>
             </div>
