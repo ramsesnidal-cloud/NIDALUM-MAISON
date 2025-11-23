@@ -100,7 +100,7 @@ export default function Footer() {
               <a href="https://Facebook.com/share/17TQzqWwzM" className="text-foreground/70 hover:text-primary transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="https://wwww.Instagram.com/nidalumuniverseofficial?igsh=MTVsc2Jhem9renhoNQ==" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="https://wwww.instagram.com/nidalumuniverseofficial?igsh=MTVsc2Jhem9renhoNQ==" className="text-foreground/70 hover:text-primary transition-colors">
                 <Instagram size={20} />
               </a>
               <a href="https://www.youtube.com/channel/UCOUh1sSDFaMgr24SNVLj4Nw" className="text-foreground/70 hover:text-primary transition-colors">
