@@ -8,8 +8,10 @@ import { MusicShowcase, AuthorVideoManagement } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Music, Play, Pause } from 'lucide-react';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function AuthorPage() {
+  const { t } = useTranslation();
   const [musicTracks, setMusicTracks] = useState<MusicShowcase[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [epicVideo, setEpicVideo] = useState<AuthorVideoManagement | null>(null);

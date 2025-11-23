@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Volume2, Mic, Waves } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function PhoneticsPage() {
+  const { t } = useTranslation();
   const vowels = [
     { symbol: 'ā', ipa: '/aː/', description: 'Voyelle ouverte longue, comme "ah" prolongé', example: 'Nidar' },
     { symbol: 'ē', ipa: '/eː/', description: 'Voyelle mi-fermée longue, comme "é" français', example: 'Kēla' },

@@ -3,8 +3,10 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
 import { Globe, Star, Zap, Moon } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function OriginsPage() {
+  const { t } = useTranslation();
   const cosmicElements = [
     {
       icon: Star,

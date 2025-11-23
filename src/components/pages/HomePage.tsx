@@ -4,8 +4,10 @@ import { BookOpen, Languages, Music, Sparkles, Globe, Library } from 'lucide-rea
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function HomePage() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -30,23 +32,23 @@ export default function HomePage() {
               NIDALUM
             </h1>
             <p className="font-heading text-2xl md:text-3xl lg:text-4xl text-secondary mb-8 tracking-widest">
-              LANGUAGE INSTITUTE & UNIVERSE
+              {t('pages.home.subtitle')}
             </p>
             <p className="font-paragraph text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Un voyage mystique à travers une langue sacrée, un univers narratif épique, et une expression artistique afrofuturiste. Découvrez Nidalum, la langue de Souma-Ra.
+              {t('pages.home.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link
                 to="/alphabet"
                 className="bg-primary text-primary-foreground font-paragraph font-semibold px-8 py-4 hover:bg-primary/90 transition-all duration-300 transform hover:scale-105"
               >
-                Découvrir l'Alphabet
+                {t('nav.alphabet')}
               </Link>
               <Link
                 to="/academy"
                 className="bg-transparent text-primary border-2 border-primary font-paragraph font-semibold px-8 py-4 hover:bg-primary/10 transition-all duration-300"
               >
-                Rejoindre l'Academy
+                {t('nav.academy')}
               </Link>
             </div>
           </motion.div>
@@ -73,10 +75,10 @@ export default function HomePage() {
           className="text-center mb-16"
         >
           <h2 className="font-heading text-4xl md:text-5xl text-primary mb-4">
-            L'Univers Nidalum
+            {t('pages.home.title')}
           </h2>
           <p className="font-paragraph text-lg text-foreground/70 max-w-3xl mx-auto">
-            Une exploration complète de la langue, de la spiritualité, et de l'art
+            {t('pages.home.description')}
           </p>
         </motion.div>
 

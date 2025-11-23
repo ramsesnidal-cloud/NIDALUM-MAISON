@@ -1,40 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, UserPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguageStore } from '@/lib/language-store';
+import { getTranslation } from '@/lib/i18n';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [languageOpen, setLanguageOpen] = useState(false);
   const location = useLocation();
+  const { language } = useLanguageStore();
+
+  useEffect(() => {
+    useLanguageStore.getState().initializeLanguage();
+  }, []);
 
   const isActive = (path: string) => location.pathname === path;
 
   const navigation = [
-    { name: 'Accueil', href: '/' },
+    { name: getTranslation(language, 'nav.home'), href: '/' },
     { 
-      name: 'Langue', 
+      name: getTranslation(language, 'nav.language'), 
       href: '/alphabet',
       submenu: [
-        { name: 'Alphabet', href: '/alphabet' },
-        { name: 'Grammaire', href: '/grammar' },
-        { name: 'Phonétique', href: '/phonetics' },
-        { name: 'Lexique', href: '/lexicon' },
+        { name: getTranslation(language, 'nav.alphabet'), href: '/alphabet' },
+        { name: getTranslation(language, 'nav.grammar'), href: '/grammar' },
+        { name: getTranslation(language, 'nav.phonetics'), href: '/phonetics' },
+        { name: getTranslation(language, 'nav.lexicon'), href: '/lexicon' },
       ]
     },
     { 
-      name: 'Spiritualité', 
+      name: getTranslation(language, 'nav.spirituality'), 
       href: '/chants',
       submenu: [
-        { name: 'Chants Rituels', href: '/chants' },
-        { name: 'Origines', href: '/origins' },
+        { name: getTranslation(language, 'nav.chants'), href: '/chants' },
+        { name: getTranslation(language, 'nav.origins'), href: '/origins' },
       ]
     },
-    { name: 'Academy', href: '/academy' },
-    { name: 'Publications', href: '/publications' },
-    { name: 'Ressources', href: '/resources' },
-    { name: 'Auteur', href: '/author' },
-    { name: 'Contact', href: '/contact' },
+    { name: getTranslation(language, 'nav.academy'), href: '/academy' },
+    { name: getTranslation(language, 'nav.publications'), href: '/publications' },
+    { name: getTranslation(language, 'nav.resources'), href: '/resources' },
+    { name: getTranslation(language, 'nav.author'), href: '/author' },
+    { name: getTranslation(language, 'nav.contact'), href: '/contact' },
   ];
 
   return (
@@ -86,13 +93,16 @@ export default function Header() {
               </div>
             ))}
             
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+
             {/* Sign Up Button */}
             <Link
               to="/signup"
               className="flex items-center gap-2 bg-secondary text-background font-paragraph font-semibold px-4 py-2 hover:bg-secondary/90 transition-all duration-300"
             >
               <UserPlus className="w-4 h-4" />
-              S'inscrire
+              {getTranslation(language, 'nav.signup')}
             </Link>
           </div>
 
@@ -156,8 +166,13 @@ export default function Header() {
                   className="flex items-center gap-2 mx-4 mt-4 bg-secondary text-background font-paragraph font-semibold px-4 py-3 hover:bg-secondary/90 transition-all duration-300"
                 >
                   <UserPlus className="w-4 h-4" />
-                  S'inscrire
+                  {getTranslation(language, 'nav.signup')}
                 </Link>
+
+                {/* Mobile Language Switcher */}
+                <div className="mx-4 mt-4 pt-4 border-t border-primary/20">
+                  <LanguageSwitcher />
+                </div>
               </div>
             </motion.div>
           )}

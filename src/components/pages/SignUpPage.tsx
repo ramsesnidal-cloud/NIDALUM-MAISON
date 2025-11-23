@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Mail, Lock, User, AlertCircle, CheckCircle, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface FormData {
   firstName: string;
@@ -26,6 +27,7 @@ interface FormErrors {
 
 export default function SignUpPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',

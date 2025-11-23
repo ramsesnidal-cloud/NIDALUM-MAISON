@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function AlphabetPage() {
+  const { t } = useTranslation();
   const alphabetLetters = [
     { letter: 'A', nidalum: 'Ā', pronunciation: 'ah', meaning: 'Origine' },
     { letter: 'E', nidalum: 'Ē', pronunciation: 'eh', meaning: 'Essence' },
@@ -42,10 +44,10 @@ export default function AlphabetPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6">
-              Alphabet Toraé-Shira
+              {t('pages.alphabet.title')}
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              L'alphabet sacré de Nidalum, écrit verticalement dans la tradition Toraé-Shira. Chaque lettre porte une signification cosmique et spirituelle, formant la base de notre langue mystique.
+              {t('pages.alphabet.description')}
             </p>
           </motion.div>
         </div>

@@ -8,8 +8,10 @@ import { NidalumLexicon } from '@/entities';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { generateCompleteWord } from '@/lib/nidalum-generator';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function LexiconPage() {
+  const { t } = useTranslation();
   const [lexiconItems, setLexiconItems] = useState<NidalumLexicon[]>([]);
   const [filteredItems, setFilteredItems] = useState<NidalumLexicon[]>([]);
   const [searchTerm, setSearchTerm] = useState('');

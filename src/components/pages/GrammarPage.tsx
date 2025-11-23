@@ -4,8 +4,10 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BookOpen, Layers, Link2, Zap, ChevronDown, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function GrammarPage() {
+  const { t } = useTranslation();
   const [expandedRule, setExpandedRule] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'rules' | 'verbs' | 'cases' | 'sentences'>('all');

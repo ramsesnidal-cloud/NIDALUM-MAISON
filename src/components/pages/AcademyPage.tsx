@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BookOpen, Users, Award, Calendar, CheckCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function AcademyPage() {
+  const { t } = useTranslation();
   const programs = [
     {
       title: 'Initiation à Nidalum',

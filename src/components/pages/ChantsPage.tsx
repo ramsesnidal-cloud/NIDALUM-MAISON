@@ -7,8 +7,10 @@ import { RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Sparkles } from 'lucide-react';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ChantsPage() {
+  const { t } = useTranslation();
   const [chants, setChants] = useState<RitualChants[]>([]);
   const [selectedChant, setSelectedChant] = useState<RitualChants | null>(null);
   const [isLoading, setIsLoading] = useState(true);

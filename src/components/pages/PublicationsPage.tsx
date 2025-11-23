@@ -6,8 +6,10 @@ import { BaseCrudService } from '@/integrations';
 import { Publications } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { ExternalLink, Calendar, User, Download, BookOpen, Sparkles, CheckCircle, AlertCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function PublicationsPage() {
+  const { t } = useTranslation();
   const [publications, setPublications] = useState<Publications[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
