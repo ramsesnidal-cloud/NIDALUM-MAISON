@@ -97,16 +97,16 @@ export default function Footer() {
               </li>
             </ul>
             <div className="flex space-x-4">
-              <a href="#" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="https://Facebook.com/share/17TQzqWwzM" className="text-foreground/70 hover:text-primary transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="https://wwww.Instagram.com/nidalumuniverseofficial?igsh=MTVsc2Jhem9renhoNQ==" className="text-foreground/70 hover:text-primary transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="https://www.youtube.com/channel/UCOUh1sSDFaMgr24SNVLj4Nw" className="text-foreground/70 hover:text-primary transition-colors">
                 <Youtube size={20} />
               </a>
-              <a href="mailto:contact@nidalum.com" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="ramsesnidal@gmail.com" className="text-foreground/70 hover:text-primary transition-colors">
                 <Mail size={20} />
               </a>
             </div>
