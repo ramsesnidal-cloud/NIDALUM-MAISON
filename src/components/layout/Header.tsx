@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, UserPlus } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguageStore } from '@/lib/language-store';
 import { getTranslation } from '@/lib/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const location = useLocation();
   const { language } = useLanguageStore();
   const [, setRenderTrigger] = useState(0);
@@ -27,6 +29,11 @@ export default function Header() {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    setIsOpen(false);
+    setExpandedMenu(null);
+  }, [location.pathname]);
 
   const isActive = (path: string) => location.pathname === path;
 

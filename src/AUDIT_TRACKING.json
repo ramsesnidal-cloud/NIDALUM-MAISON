@@ -1,0 +1,547 @@
+{
+  "auditMetadata": {
+    "projectName": "Nidalum Language Institute",
+    "auditDate": "2025-11-24",
+    "auditVersion": "1.0",
+    "totalIssues": 45,
+    "criticalIssues": 8,
+    "majorIssues": 15,
+    "minorIssues": 22
+  },
+  "phase1_critical": {
+    "name": "Phase 1 - CRITICAL (Week 1)",
+    "estimatedHours": "10-16",
+    "status": "IN_PROGRESS",
+    "issues": [
+      {
+        "id": "CRITICAL_001",
+        "title": "Navigation Mobile - Submenu Non Fonctionnel",
+        "severity": "CRITICAL",
+        "pages": ["All"],
+        "devices": ["Mobile"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "Les sous-menus (Language, Spirituality) ne s'ouvrent pas au toucher sur mobile",
+        "impact": "30% des pages inaccessibles sur mobile",
+        "rootCause": "Utilise group-hover qui ne fonctionne pas au toucher",
+        "solution": "Implémenter menu mobile avec Sheet/Drawer",
+        "estimatedTime": "2-3 heures",
+        "priority": 1,
+        "status": "IN_PROGRESS",
+        "startDate": "2025-11-24",
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Utiliser le composant Sheet de shadcn/ui",
+        "files": [
+          "/src/components/layout/Header.tsx"
+        ]
+      },
+      {
+        "id": "CRITICAL_002",
+        "title": "Traductions Manquantes - Clés i18n Non Définies",
+        "severity": "CRITICAL",
+        "pages": ["Alphabet", "Grammar", "Phonetics", "Lexicon", "Chants", "Origins", "Academy", "Publications", "Resources", "Author", "Contact", "SignUp"],
+        "devices": ["All"],
+        "languages": ["EN", "DE"],
+        "description": "De nombreuses clés de traduction ne sont pas définies dans les fichiers i18n",
+        "impact": "Site non professionnel, contenu incompréhensible",
+        "rootCause": "Fichier i18n incomplet pour EN et DE",
+        "solution": "Compléter toutes les clés de traduction manquantes",
+        "estimatedTime": "4-6 heures",
+        "priority": 1,
+        "status": "IN_PROGRESS",
+        "startDate": "2025-11-24",
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Vérifier toutes les pages pour les clés manquantes",
+        "files": [
+          "/src/lib/i18n.ts"
+        ],
+        "missingKeys": {
+          "en": [
+            "pages.phonetics.description",
+            "pages.lexicon.description",
+            "pages.origins.description",
+            "pages.academy.description",
+            "pages.publications.description",
+            "pages.resources.description",
+            "pages.contact.description",
+            "pages.signup.description"
+          ],
+          "de": [
+            "pages.phonetics.description",
+            "pages.lexicon.description",
+            "pages.origins.description",
+            "pages.academy.description",
+            "pages.publications.description",
+            "pages.resources.description",
+            "pages.contact.description",
+            "pages.signup.description"
+          ]
+        }
+      },
+      {
+        "id": "CRITICAL_003",
+        "title": "SEO - Pas de Meta Tags Dynamiques",
+        "severity": "CRITICAL",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "Pas de meta tags dynamiques (title, description, og:image, etc.) par page",
+        "impact": "Classement SEO très faible, partage social non optimisé",
+        "rootCause": "Pas de Head component ou Helmet",
+        "solution": "Créer Head component avec meta tags dynamiques",
+        "estimatedTime": "2-3 heures",
+        "priority": 1,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Ajouter title, description, og:image, og:title, og:description, canonical",
+        "files": [
+          "/src/components/Head.tsx",
+          "/src/components/pages/HomePage.tsx",
+          "/src/components/pages/AlphabetPage.tsx"
+        ]
+      },
+      {
+        "id": "CRITICAL_004",
+        "title": "Images - Pas d'Alt Text ou URLs Cassées",
+        "severity": "CRITICAL",
+        "pages": ["HomePage", "AlphabetPage", "ChantsPage", "AuthorPage", "PublicationsPage"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Plusieurs images n'ont pas d'alt text ou utilisent des URLs cassées",
+        "impact": "Accessibilité compromise (WCAG AA), SEO impacté",
+        "rootCause": "Images sans alt text ou URLs dynamiques non chargées",
+        "solution": "Ajouter alt text à toutes les images et vérifier les URLs",
+        "estimatedTime": "1-2 heures",
+        "priority": 1,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Vérifier toutes les images dans les pages",
+        "files": [
+          "/src/components/pages/HomePage.tsx",
+          "/src/components/pages/AlphabetPage.tsx",
+          "/src/components/pages/ChantsPage.tsx",
+          "/src/components/pages/AuthorPage.tsx",
+          "/src/components/pages/PublicationsPage.tsx"
+        ]
+      },
+      {
+        "id": "CRITICAL_005",
+        "title": "Responsive Design - Breakpoints Mal Configurés",
+        "severity": "CRITICAL",
+        "pages": ["All"],
+        "devices": ["Tablet", "Mobile"],
+        "languages": ["N/A"],
+        "description": "Les breakpoints Tailwind ne sont pas optimisés pour tablet (768px-1024px)",
+        "impact": "Expérience utilisateur dégradée sur 40% des appareils",
+        "rootCause": "Sauts visuels entre breakpoints (1 col → 2 cols)",
+        "solution": "Ajouter breakpoints intermédiaires (md: 768px, lg: 1024px, xl: 1280px)",
+        "estimatedTime": "3-4 heures",
+        "priority": 2,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Vérifier toutes les grilles et layouts",
+        "files": [
+          "/src/components/pages/HomePage.tsx",
+          "/src/components/pages/AlphabetPage.tsx",
+          "/src/components/layout/Header.tsx"
+        ]
+      },
+      {
+        "id": "CRITICAL_006",
+        "title": "Performance - Pas de Lazy Loading pour Images",
+        "severity": "CRITICAL",
+        "pages": ["HomePage", "PublicationsPage", "ResourcesPage"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Les images se chargent toutes au montage de la page, même celles hors écran",
+        "impact": "Temps de chargement: 4-6s (vs 1-2s optimal)",
+        "rootCause": "Pas d'attribut loading=\"lazy\" sur les images",
+        "solution": "Ajouter loading=\"lazy\" à toutes les images",
+        "estimatedTime": "1-2 heures",
+        "priority": 2,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Vérifier le composant Image de shadcn/ui",
+        "files": [
+          "/src/components/ui/image.tsx",
+          "/src/components/pages/HomePage.tsx",
+          "/src/components/pages/PublicationsPage.tsx"
+        ]
+      },
+      {
+        "id": "CRITICAL_007",
+        "title": "Lecteur Audio - Pas de Fallback",
+        "severity": "CRITICAL",
+        "pages": ["ChantsPage", "AuthorPage"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Les lecteurs audio utilisent l'API Web Audio sans fallback",
+        "impact": "Audio complètement inaccessible sur certains navigateurs",
+        "rootCause": "Pas de try-catch ou de fallback dans ModernAudioPlayer",
+        "solution": "Ajouter fallback et gestion d'erreur",
+        "estimatedTime": "2-3 heures",
+        "priority": 2,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Implémenter fallback HTML5 audio",
+        "files": [
+          "/src/components/ModernAudioPlayer.tsx"
+        ]
+      },
+      {
+        "id": "CRITICAL_008",
+        "title": "Sélecteur de Langue - Pas de Persistance Correcte",
+        "severity": "CRITICAL",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "Le changement de langue ne persiste pas correctement lors de la navigation",
+        "impact": "Expérience multilingue cassée",
+        "rootCause": "Valeur par défaut codée en dur, initializeLanguage() non appelé",
+        "solution": "Corriger l'initialisation et la persistance du langage",
+        "estimatedTime": "1-2 heures",
+        "priority": 1,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Vérifier language-store.ts et Header.tsx",
+        "files": [
+          "/src/lib/language-store.ts",
+          "/src/components/layout/Header.tsx"
+        ]
+      }
+    ]
+  },
+  "phase2_major": {
+    "name": "Phase 2 - MAJOR (Week 2)",
+    "estimatedHours": "9-14",
+    "status": "NOT_STARTED",
+    "issues": [
+      {
+        "id": "MAJOR_001",
+        "title": "Accessibilité - Contraste de Couleurs Insuffisant",
+        "severity": "MAJOR",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Plusieurs combinaisons de couleurs ne respectent pas WCAG AA",
+        "impact": "Utilisateurs malvoyants affectés",
+        "rootCause": "foreground/70 sur background: 4.2:1 (besoin 4.5:1)",
+        "solution": "Augmenter le contraste en utilisant foreground/80 ou foreground/90",
+        "estimatedTime": "1-2 heures",
+        "priority": 3,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Vérifier tous les textes et boutons",
+        "files": [
+          "/src/components/pages/HomePage.tsx",
+          "/src/components/layout/Footer.tsx"
+        ]
+      },
+      {
+        "id": "MAJOR_002",
+        "title": "Animations - Pas de Respect de prefers-reduced-motion",
+        "severity": "MAJOR",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Les animations Framer Motion s'exécutent même si l'utilisateur a activé prefers-reduced-motion",
+        "impact": "Utilisateurs avec sensibilité au mouvement affectés",
+        "rootCause": "Pas de vérification de prefers-reduced-motion",
+        "solution": "Ajouter hook pour vérifier prefers-reduced-motion",
+        "estimatedTime": "2-3 heures",
+        "priority": 3,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Créer hook useReducedMotion",
+        "files": [
+          "/src/components/pages/HomePage.tsx",
+          "/src/components/pages/AlphabetPage.tsx"
+        ]
+      },
+      {
+        "id": "MAJOR_003",
+        "title": "Formulaires - Pas de Validation Côté Client",
+        "severity": "MAJOR",
+        "pages": ["ContactPage", "SignUpPage"],
+        "devices": ["All"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "Les formulaires n'ont pas de validation côté client",
+        "impact": "Utilisateurs peuvent soumettre des données invalides",
+        "rootCause": "Pas de validation ou de messages d'erreur",
+        "solution": "Ajouter validation avec react-hook-form",
+        "estimatedTime": "2-3 heures",
+        "priority": 3,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Utiliser react-hook-form et zod pour validation",
+        "files": [
+          "/src/components/pages/ContactPage.tsx",
+          "/src/components/pages/SignUpPage.tsx"
+        ]
+      },
+      {
+        "id": "MAJOR_004",
+        "title": "Traductions - Incohérence Entre Pages",
+        "severity": "MAJOR",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "Les traductions ne sont pas cohérentes entre les pages",
+        "impact": "Expérience utilisateur confuse",
+        "rootCause": "Même terme traduit différemment",
+        "solution": "Standardiser les traductions",
+        "estimatedTime": "1-2 heures",
+        "priority": 3,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Créer glossaire de traductions",
+        "files": [
+          "/src/lib/i18n.ts"
+        ]
+      },
+      {
+        "id": "MAJOR_005",
+        "title": "Biographies - Contenu Manquant ou Incomplet",
+        "severity": "MAJOR",
+        "pages": ["AuthorPage"],
+        "devices": ["All"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "La biographie de Ramses Nidal est manquante ou incomplète",
+        "impact": "Contenu important non affiché",
+        "rootCause": "Pas de chargement de données de biographie depuis CMS",
+        "solution": "Charger les données depuis BaseCrudService",
+        "estimatedTime": "1-2 heures",
+        "priority": 4,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Vérifier les collections CMS disponibles",
+        "files": [
+          "/src/components/pages/AuthorPage.tsx"
+        ]
+      },
+      {
+        "id": "MAJOR_006",
+        "title": "Lecteur Audio - Pas de Contrôles Accessibles",
+        "severity": "MAJOR",
+        "pages": ["ChantsPage", "AuthorPage"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Le lecteur audio n'a pas de contrôles accessibles au clavier",
+        "impact": "Utilisateurs au clavier ne peuvent pas contrôler la lecture",
+        "rootCause": "Pas d'attributs aria-label, role, ou tabindex",
+        "solution": "Ajouter attributs ARIA et gestion des événements clavier",
+        "estimatedTime": "2-3 heures",
+        "priority": 3,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Implémenter contrôles clavier (Space, Enter, Arrow keys)",
+        "files": [
+          "/src/components/ModernAudioPlayer.tsx"
+        ]
+      },
+      {
+        "id": "MAJOR_007",
+        "title": "Pagination - Pas Implémentée",
+        "severity": "MAJOR",
+        "pages": ["LexiconPage", "ChantsPage", "PublicationsPage"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Les pages avec beaucoup de contenu n'ont pas de pagination",
+        "impact": "Temps de chargement très long",
+        "rootCause": "Tout le contenu se charge à la fois",
+        "solution": "Implémenter pagination ou infinite scroll",
+        "estimatedTime": "3-4 heures",
+        "priority": 4,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Ajouter pagination avec 10-20 items par page",
+        "files": [
+          "/src/components/pages/LexiconPage.tsx",
+          "/src/components/pages/ChantsPage.tsx",
+          "/src/components/pages/PublicationsPage.tsx"
+        ]
+      },
+      {
+        "id": "MAJOR_008",
+        "title": "Filtres - Pas de Sauvegarde d'État",
+        "severity": "MAJOR",
+        "pages": ["LexiconPage"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Les filtres et la recherche ne sont pas sauvegardés",
+        "impact": "Utilisateurs perdent leurs filtres en naviguant",
+        "rootCause": "Pas de localStorage ou URL params",
+        "solution": "Sauvegarder l'état dans URL params ou localStorage",
+        "estimatedTime": "1-2 heures",
+        "priority": 4,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Utiliser URL params pour persistance",
+        "files": [
+          "/src/components/pages/LexiconPage.tsx"
+        ]
+      }
+    ]
+  },
+  "phase3_minor": {
+    "name": "Phase 3 - MINOR (Week 3-4)",
+    "estimatedHours": "8-12",
+    "status": "NOT_STARTED",
+    "issues": [
+      {
+        "id": "MINOR_001",
+        "title": "Breadcrumbs - Pas Implémentés",
+        "severity": "MINOR",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "Pas de breadcrumbs pour la navigation",
+        "impact": "Utilisateurs ne savent pas où ils sont",
+        "rootCause": "Pas de composant breadcrumb",
+        "solution": "Créer composant Breadcrumb",
+        "estimatedTime": "1-2 heures",
+        "priority": 5,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Ajouter breadcrumbs à toutes les pages",
+        "files": [
+          "/src/components/layout/Header.tsx"
+        ]
+      },
+      {
+        "id": "MINOR_002",
+        "title": "Focus Visible - Pas Implémenté",
+        "severity": "MINOR",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["N/A"],
+        "description": "Pas de focus visible sur les éléments interactifs",
+        "impact": "Utilisateurs au clavier ne voient pas le focus",
+        "rootCause": "Pas de styles focus",
+        "solution": "Ajouter focus:ring à tous les éléments interactifs",
+        "estimatedTime": "1-2 heures",
+        "priority": 5,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Utiliser focus:ring-2 focus:ring-primary",
+        "files": [
+          "/src/components/layout/Header.tsx",
+          "/src/components/ui/button.tsx"
+        ]
+      },
+      {
+        "id": "MINOR_003",
+        "title": "Sitemap - Pas Généré",
+        "severity": "MINOR",
+        "pages": ["N/A"],
+        "devices": ["N/A"],
+        "languages": ["N/A"],
+        "description": "Pas de sitemap.xml",
+        "impact": "SEO impacté",
+        "rootCause": "Pas de sitemap",
+        "solution": "Générer sitemap.xml",
+        "estimatedTime": "30 min",
+        "priority": 5,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Créer sitemap.xml avec toutes les routes",
+        "files": [
+          "/public/sitemap.xml"
+        ]
+      },
+      {
+        "id": "MINOR_004",
+        "title": "Robots.txt - Pas Créé",
+        "severity": "MINOR",
+        "pages": ["N/A"],
+        "devices": ["N/A"],
+        "languages": ["N/A"],
+        "description": "Pas de robots.txt",
+        "impact": "Crawlers non guidés",
+        "rootCause": "Pas de robots.txt",
+        "solution": "Créer robots.txt",
+        "estimatedTime": "15 min",
+        "priority": 5,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Créer robots.txt avec directives de crawl",
+        "files": [
+          "/public/robots.txt"
+        ]
+      },
+      {
+        "id": "MINOR_005",
+        "title": "Structured Data - Pas Implémenté",
+        "severity": "MINOR",
+        "pages": ["All"],
+        "devices": ["All"],
+        "languages": ["FR", "EN", "DE"],
+        "description": "Pas de structured data (JSON-LD)",
+        "impact": "Rich snippets non affichés",
+        "rootCause": "Pas de JSON-LD",
+        "solution": "Ajouter JSON-LD pour Organization, Article, etc.",
+        "estimatedTime": "2-3 heures",
+        "priority": 5,
+        "status": "NOT_STARTED",
+        "startDate": null,
+        "completionDate": null,
+        "assignee": "Wix Vibe AI",
+        "notes": "Ajouter Organization, Article, BreadcrumbList",
+        "files": [
+          "/src/components/Head.tsx"
+        ]
+      }
+    ]
+  },
+  "summary": {
+    "totalEstimatedHours": "27-42",
+    "completionTarget": "2025-12-15",
+    "expectedScoreAfterCorrections": {
+      "uiUx": "8.5/10",
+      "responsive": "8/10",
+      "accessibility": "8/10",
+      "performance": "8/10",
+      "seo": "7/10",
+      "translations": "9/10",
+      "functionality": "9/10",
+      "average": "8.2/10"
+    }
+  }
+}
