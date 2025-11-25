@@ -66,21 +66,21 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-primary/20">
-      <nav className="max-w-[120rem] mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-20">
+      <nav className="max-w-[120rem] mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-              <span className="text-background font-heading font-bold text-xl">N</span>
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
+            <div className="w-8 sm:w-10 h-8 sm:h-10 bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
+              <span className="text-background font-heading font-bold text-lg sm:text-xl">N</span>
             </div>
-            <div className="flex flex-col">
-              <span className="font-heading text-xl text-primary tracking-wider">NIDALUM</span>
+            <div className="flex flex-col hidden sm:flex">
+              <span className="font-heading text-lg sm:text-xl text-primary tracking-wider">NIDALUM</span>
               <span className="font-paragraph text-xs text-secondary tracking-widest">LANGUAGE INSTITUTE</span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             {navigation.map((item) => (
               <div key={item.name} className="relative group">
                 <Link
@@ -126,13 +126,16 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-foreground hover:text-primary transition-colors"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu Button & Language Switcher */}
+          <div className="lg:hidden flex items-center gap-2">
+            <LanguageSwitcher />
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-foreground hover:text-primary transition-colors p-2"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -144,7 +147,7 @@ export default function Header() {
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden overflow-hidden"
             >
-              <div className="py-4 space-y-2">
+              <div className="py-4 space-y-2 max-h-[calc(100vh-80px)] overflow-y-auto">
                 {navigation.map((item) => (
                   <div key={item.name}>
                     <Link
@@ -188,11 +191,6 @@ export default function Header() {
                   <UserPlus className="w-4 h-4" />
                   {getTranslation(language, 'nav.signup')}
                 </Link>
-
-                {/* Mobile Language Switcher */}
-                <div className="mx-4 mt-4 pt-4 border-t border-primary/20">
-                  <LanguageSwitcher />
-                </div>
               </div>
             </motion.div>
           )}
