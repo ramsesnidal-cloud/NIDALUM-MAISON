@@ -47,6 +47,7 @@ export default function Header() {
         { name: getTranslation(language, 'nav.grammar'), href: '/grammar' },
         { name: getTranslation(language, 'nav.phonetics'), href: '/phonetics' },
         { name: getTranslation(language, 'nav.lexicon'), href: '/lexicon' },
+        { name: getTranslation(language, 'nav.lexicalArchives'), href: '/lexical-archives' },
       ]
     },
     { 
