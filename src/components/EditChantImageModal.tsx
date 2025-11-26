@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { X, Upload } from 'lucide-react';
 import { RitualChants } from '@/entities';
 import { BaseCrudService } from '@/integrations';
+import { Image } from '@/components/ui/image';
 
 interface EditChantImageModalProps {
   chant: RitualChants;
@@ -110,11 +111,7 @@ export default function EditChantImageModal({ chant, onClose, onSave }: EditChan
             <div className="space-y-2">
               <p className="font-paragraph text-sm text-foreground/70">Aperçu:</p>
               <div className="aspect-video overflow-hidden rounded-lg border border-primary/20">
-                <img
-                  src={imageUrl}
-                  alt="Aperçu"
-                  className="w-full h-full object-cover"
-                />
+                <Image src={imageUrl} alt="Aperçu" className="w-full h-full object-cover" />
               </div>
             </div>
           )}

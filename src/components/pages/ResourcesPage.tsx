@@ -170,6 +170,7 @@ ${content.length + 433}
 };
 
 export default function ResourcesPage() {
+  const { t } = useTranslation();
   const [resources, setResources] = useState<OfficialResources[]>([]);
   const [lexicon, setLexicon] = useState<NidalumLexicon[]>([]);
   const [chants, setChants] = useState<RitualChants[]>([]);

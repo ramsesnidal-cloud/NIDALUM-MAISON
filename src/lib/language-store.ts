@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { subscribeWithSelector } from 'zustand/middleware';
 import { Language } from './i18n';
 
 interface LanguageStore {
@@ -26,16 +27,18 @@ const getDefaultLanguage = (): Language => {
   return 'fr';
 };
 
-export const useLanguageStore = create<LanguageStore>((set) => ({
-  language: 'fr',
-  setLanguage: (lang: Language) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('nidalum-language', lang);
-    }
-    set({ language: lang });
-  },
-  initializeLanguage: () => {
-    const lang = getDefaultLanguage();
-    set({ language: lang });
-  },
-}));
+export const useLanguageStore = create<LanguageStore>()(
+  subscribeWithSelector((set) => ({
+    language: 'fr',
+    setLanguage: (lang: Language) => {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('nidalum-language', lang);
+      }
+      set({ language: lang });
+    },
+    initializeLanguage: () => {
+      const lang = getDefaultLanguage();
+      set({ language: lang });
+    },
+  }))
+);
