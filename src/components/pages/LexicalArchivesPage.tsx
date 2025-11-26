@@ -62,13 +62,30 @@ export default function LexicalArchivesPage() {
   const { t } = useTranslation();
   const [lexicon, setLexicon] = useState<WordData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['Sacré']));
   const [searchTerm, setSearchTerm] = useState('');
-  const [expandedCategory, setExpandedCategory] = useState<string | null>('Sacré');
 
   useEffect(() => {
     loadLexicon();
   }, []);
+
+  useEffect(() => {
+    // When search term changes, expand all categories that have matching results
+    if (searchTerm.trim()) {
+      const categoriesWithMatches = new Set<string>();
+      categories.forEach(category => {
+        const words = getWordsByTheme(category.theme);
+        const filteredWords = getFilteredWords(words);
+        if (filteredWords.length > 0) {
+          categoriesWithMatches.add(category.name);
+        }
+      });
+      setExpandedCategories(categoriesWithMatches);
+    } else {
+      // Reset to default when search is cleared
+      setExpandedCategories(new Set(['Sacré']));
+    }
+  }, [searchTerm, lexicon]);
 
   const loadLexicon = async () => {
     setIsLoading(true);
@@ -93,6 +110,16 @@ export default function LexicalArchivesPage() {
       word.definition?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       word.traduction_fr?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  };
+
+  const toggleCategory = (categoryName: string) => {
+    const newExpanded = new Set(expandedCategories);
+    if (newExpanded.has(categoryName)) {
+      newExpanded.delete(categoryName);
+    } else {
+      newExpanded.add(categoryName);
+    }
+    setExpandedCategories(newExpanded);
   };
 
   const getCategoryColor = (categoryName: string) => {
@@ -192,6 +219,7 @@ export default function LexicalArchivesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {categories.map((category, index) => {
               const wordCount = getWordsByTheme(category.theme).length;
+              const isExpanded = expandedCategories.has(category.name);
               return (
                 <motion.button
                   key={category.name}
@@ -199,9 +227,9 @@ export default function LexicalArchivesPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  onClick={() => setExpandedCategory(expandedCategory === category.name ? null : category.name)}
+                  onClick={() => toggleCategory(category.name)}
                   className={`p-6 border transition-all duration-300 text-center group cursor-pointer ${
-                    expandedCategory === category.name
+                    isExpanded
                       ? 'border-primary/50 bg-primary/10'
                       : 'border-primary/20 bg-background/50 hover:border-primary/40'
                   }`}
@@ -233,7 +261,7 @@ export default function LexicalArchivesPage() {
             <div className="space-y-12">
               {categories.map((category) => {
                 const words = getFilteredWords(getWordsByTheme(category.theme));
-                const isExpanded = expandedCategory === category.name;
+                const isExpanded = expandedCategories.has(category.name);
 
                 return (
                   <motion.div
@@ -245,7 +273,7 @@ export default function LexicalArchivesPage() {
                   >
                     {/* Category Header */}
                     <button
-                      onClick={() => setExpandedCategory(isExpanded ? null : category.name)}
+                      onClick={() => toggleCategory(category.name)}
                       className="w-full text-left group mb-6"
                     >
                       <div className={`flex items-center gap-4 p-6 border-l-4 transition-all duration-300 ${
