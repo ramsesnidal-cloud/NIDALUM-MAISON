@@ -14,6 +14,7 @@ import OriginsPage from '@/components/pages/OriginsPage';
 import AcademyPage from '@/components/pages/AcademyPage';
 import PublicationsPage from '@/components/pages/PublicationsPage';
 import ResourcesPage from '@/components/pages/ResourcesPage';
+import LexicalArchivesPage from '@/components/pages/LexicalArchivesPage';
 import AuthorPage from '@/components/pages/AuthorPage';
 import ContactPage from '@/components/pages/ContactPage';
 import SignUpPage from '@/components/pages/SignUpPage';
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "resources",
         element: <ResourcesPage />,
+      },
+      {
+        path: "lexical-archives",
+        element: <LexicalArchivesPage />,
       },
       {
         path: "author",
