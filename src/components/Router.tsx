@@ -9,6 +9,7 @@ import AlphabetPage from '@/components/pages/AlphabetPage';
 import GrammarPage from '@/components/pages/GrammarPage';
 import PhoneticsPage from '@/components/pages/PhoneticsPage';
 import LexiconPage from '@/components/pages/LexiconPage';
+import GrandLexiquePage from '@/components/pages/GrandLexiquePage';
 import ChantsPage from '@/components/pages/ChantsPage';
 import OriginsPage from '@/components/pages/OriginsPage';
 import AcademyPage from '@/components/pages/AcademyPage';
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "lexicon",
         element: <LexiconPage />,
+      },
+      {
+        path: "grand-lexique",
+        element: <GrandLexiquePage />,
       },
       {
         path: "chants",
