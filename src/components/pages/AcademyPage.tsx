@@ -27,8 +27,17 @@ export default function AcademyPage() {
         console.warn('No academy programs found in CMS');
         setPrograms([]);
       } else {
-        setPrograms(items);
-        console.log(`Loaded ${items.length} academy programs from CMS`);
+        // Filter out incomplete programs - only show programs with all essential fields
+        const completePrograms = items.filter(program => 
+          program.programName && 
+          program.programImage && 
+          program.programLevel && 
+          program.programDuration && 
+          program.programDescription && 
+          program.enrollmentLink
+        );
+        setPrograms(completePrograms);
+        console.log(`Loaded ${completePrograms.length} complete academy programs from CMS (${items.length} total)`);
       }
     } catch (error) {
       console.error('Error loading academy programs:', error);
