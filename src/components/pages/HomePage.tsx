@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { BookOpen, Languages, Music, Sparkles, Globe, Library } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BookOpen, Languages, Music, Sparkles, Globe, Library, Zap } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useState } from 'react';
 
 export default function HomePage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [isSyncing, setIsSyncing] = useState(false);
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -50,6 +53,17 @@ export default function HomePage() {
               >
                 {t('nav.academy')}
               </Link>
+              <button
+                onClick={() => {
+                  setIsSyncing(true);
+                  navigate('/initialize-lexical');
+                }}
+                disabled={isSyncing}
+                className="w-full sm:w-auto bg-secondary text-secondary-foreground font-paragraph font-semibold px-6 sm:px-8 py-3 sm:py-4 hover:bg-secondary/90 transition-all duration-300 transform hover:scale-105 text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <Zap size={18} />
+                {isSyncing ? 'Synchronisation...' : 'Synchroniser les données'}
+              </button>
             </div>
           </motion.div>
         </div>
