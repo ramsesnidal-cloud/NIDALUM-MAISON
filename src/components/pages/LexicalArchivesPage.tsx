@@ -97,9 +97,11 @@ export default function LexicalArchivesPage() {
     setIsLoading(true);
     try {
       const { items } = await BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon');
-      setLexicon(items);
+      setLexicon(items || []);
+      console.log(`Loaded ${items?.length || 0} lexicon items from CMS`);
     } catch (error) {
       console.error('Erreur lors du chargement du lexique:', error);
+      setLexicon([]);
     } finally {
       setIsLoading(false);
     }

@@ -34,7 +34,7 @@ export default function LexiconPage() {
   const loadLexicon = async () => {
     setIsLoading(true);
     const { items } = await BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon');
-    setLexiconItems(items);
+    setLexiconItems(items || []);
     setIsLoading(false);
   };
 
@@ -288,10 +288,26 @@ export default function LexiconPage() {
       {/* Lexicon Grid */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-6 text-center">
+              Mots du Lexique
+            </h2>
+            <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto leading-relaxed">
+              Explorez les mots de la langue Nidalum avec leurs définitions, étymologies et exemples
+            </p>
+          </motion.div>
+
           {isLoading ? (
             <div className="text-center py-20">
-              <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-              <p className="font-paragraph text-foreground/70 mt-4">Chargement du lexique...</p>
+              <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+              <p className="font-paragraph text-foreground/70">Chargement du lexique...</p>
+              <p className="font-paragraph text-sm text-foreground/50 mt-2">{lexiconItems.length} mots en base</p>
             </div>
           ) : filteredItems.length === 0 ? (
             <div className="text-center py-20">
@@ -301,67 +317,80 @@ export default function LexiconPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredItems.map((item, index) => (
-                <motion.div
-                  key={item._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group"
-                >
-                  <div className="mb-4">
-                    <h3 className="font-heading text-3xl text-primary mb-2 group-hover:text-secondary transition-colors">
-                      {item.nidalumWord}
-                    </h3>
-                    {item.pronunciationGuide && (
-                      <p className="font-paragraph text-sm text-secondary">
-                        [{item.pronunciationGuide}]
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-3">
-                    <div>
-                      <p className="font-paragraph text-foreground/80 leading-relaxed">
-                        {item.definition}
-                      </p>
-                    </div>
-
-                    {item.exampleSentence && (
-                      <div className="bg-dark-amber-shadow/20 p-3 border-l-2 border-secondary">
-                        <p className="font-paragraph text-xs text-foreground/50 mb-1">Exemple:</p>
-                        <p className="font-paragraph text-sm text-foreground/70 italic">
-                          {item.exampleSentence}
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="mb-8"
+              >
+                <p className="font-paragraph text-sm text-secondary text-center">
+                  {filteredItems.length} mot{filteredItems.length > 1 ? 's' : ''} affiché{filteredItems.length > 1 ? 's' : ''} sur {lexiconItems.length}
+                </p>
+              </motion.div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredItems.map((item, index) => (
+                  <motion.div
+                    key={item._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    viewport={{ once: true }}
+                    className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group hover:bg-background/70"
+                  >
+                    <div className="mb-4">
+                      <h3 className="font-heading text-3xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                        {item.nidalumWord}
+                      </h3>
+                      {item.pronunciationGuide && (
+                        <p className="font-paragraph text-sm text-secondary font-semibold">
+                          [{item.pronunciationGuide}]
                         </p>
-                      </div>
-                    )}
-
-                    {item.etymology && (
-                      <div className="pt-3 border-t border-primary/10">
-                        <p className="font-paragraph text-xs text-foreground/50 mb-1">Étymologie:</p>
-                        <p className="font-paragraph text-sm text-foreground/60">
-                          {item.etymology}
-                        </p>
-                      </div>
-                    )}
-
-                    <div className="flex flex-wrap gap-2 pt-3">
-                      {item.category && (
-                        <span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 font-paragraph text-xs text-primary">
-                          {item.category}
-                        </span>
-                      )}
-                      {item.theme && (
-                        <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
-                          {item.theme}
-                        </span>
                       )}
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <p className="font-paragraph text-foreground/80 leading-relaxed">
+                          {item.definition || 'Définition non disponible'}
+                        </p>
+                      </div>
+
+                      {item.exampleSentence && (
+                        <div className="bg-dark-amber-shadow/20 p-3 border-l-2 border-secondary">
+                          <p className="font-paragraph text-xs text-foreground/50 mb-1">Exemple:</p>
+                          <p className="font-paragraph text-sm text-foreground/70 italic">
+                            {item.exampleSentence}
+                          </p>
+                        </div>
+                      )}
+
+                      {item.etymology && (
+                        <div className="pt-3 border-t border-primary/10">
+                          <p className="font-paragraph text-xs text-foreground/50 mb-1">Étymologie:</p>
+                          <p className="font-paragraph text-sm text-foreground/60">
+                            {item.etymology}
+                          </p>
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap gap-2 pt-3">
+                        {item.category && (
+                          <span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 font-paragraph text-xs text-primary">
+                            {item.category}
+                          </span>
+                        )}
+                        {item.theme && (
+                          <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
+                            {item.theme}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>
