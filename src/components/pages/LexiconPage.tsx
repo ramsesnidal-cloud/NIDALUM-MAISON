@@ -480,7 +480,6 @@ export default function LexiconPage() {
                             )}
                           </button>
                         </th>
-                        <th className="px-6 py-5 text-left font-heading text-lg text-primary hidden md:table-cell">Prononciation</th>
                         <th className="px-6 py-5 text-left font-heading text-lg text-primary hidden lg:table-cell">Définition</th>
                         <th className="px-6 py-5 text-left">
                           <button
@@ -533,13 +532,7 @@ export default function LexiconPage() {
                           <td className="px-6 py-5">
                             <div>
                               <p className="font-heading text-xl text-primary font-semibold">{item.nidalumWord}</p>
-                              {item.pronunciationGuide && (
-                                <p className="font-paragraph text-sm text-secondary mt-1">[{item.pronunciationGuide}]</p>
-                              )}
                             </div>
-                          </td>
-                          <td className="px-6 py-5 hidden md:table-cell">
-                            <p className="font-paragraph text-base text-foreground/85">{item.pronunciationGuide || '—'}</p>
                           </td>
                           <td className="px-6 py-5 hidden lg:table-cell">
                             <p className="font-paragraph text-base text-foreground/85 line-clamp-2">{item.definition || '—'}</p>
@@ -583,11 +576,6 @@ export default function LexiconPage() {
                         <h3 className="font-heading text-4xl text-primary mb-3 group-hover:text-secondary transition-colors">
                           {item.nidalumWord}
                         </h3>
-                        {item.pronunciationGuide && (
-                          <p className="font-paragraph text-base text-secondary font-semibold">
-                            [{item.pronunciationGuide}]
-                          </p>
-                        )}
                       </div>
 
                       <div className="space-y-4">
@@ -683,11 +671,6 @@ export default function LexiconPage() {
                             <h3 className="font-heading text-3xl text-secondary mb-2 group-hover:text-primary transition-colors">
                               {item.nidalum}
                             </h3>
-                            {item.phonetic && (
-                              <p className="font-paragraph text-sm text-foreground/70">
-                                Prononciation: <span className="text-secondary font-semibold">{item.phonetic}</span>
-                              </p>
-                            )}
                           </div>
                         </div>
                       </div>

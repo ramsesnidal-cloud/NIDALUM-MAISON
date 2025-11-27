@@ -12,6 +12,8 @@ export interface RpertoireLinguistiqueNidalumSectionQuotidienne {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  usageExample?: string;
+  /** @wixFieldType text */
   title?: string;
   /** @wixFieldType text */
   nidalum?: string;
