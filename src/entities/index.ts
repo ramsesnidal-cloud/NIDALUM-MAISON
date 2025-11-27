@@ -5,9 +5,9 @@
 
 /**
  * Collection ID: Import1
- * Interface for Importer1
+ * Interface for RpertoireLinguistiqueNidalumSectionQuotidienne
  */
-export interface Importer1 {
+export interface RpertoireLinguistiqueNidalumSectionQuotidienne {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;

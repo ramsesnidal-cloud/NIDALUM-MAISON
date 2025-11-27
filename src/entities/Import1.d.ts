@@ -1,2 +1,2 @@
 // Re-export from main entities file for backward compatibility
-export type { Importer1 } from './index';
+export type { RpertoireLinguistiqueNidalumSectionQuotidienne } from './index';
