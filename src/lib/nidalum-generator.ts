@@ -3,11 +3,11 @@
  * Generates coherent Nidalum words based on linguistic patterns
  */
 
-const CONSONANTS = ['k', 'n', 'd', 'r', 's', 't', 'l', 'm', 'sh', 'th', 'ph'];
-const VOWELS = ['a', 'e', 'i', 'o', 'u', 'ā', 'ē', 'ī', 'ō', 'ū'];
-const SUFFIXES = ['um', 'an', 'en', 'tō', 'sha', 'ra', 'shi', 'ren', 'tē'];
+export const CONSONANTS = ['k', 'n', 'd', 'r', 's', 't', 'l', 'm', 'sh', 'th', 'ph'];
+export const VOWELS = ['a', 'e', 'i', 'o', 'u', 'ā', 'ē', 'ī', 'ō', 'ū'];
+export const SUFFIXES = ['um', 'an', 'en', 'tō', 'sha', 'ra', 'shi', 'ren', 'tē'];
 
-const CATEGORIES = [
+export const CATEGORIES = [
   'Cosmologie',
   'Spiritualité',
   'Nature',
@@ -18,7 +18,7 @@ const CATEGORIES = [
   'Rituel'
 ];
 
-const THEMES = [
+export const THEMES = [
   'Souma-Ra',
   'Divinité',
   'Transformation',

@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { generateCompleteWord } from '@/lib/nidalum-generator';
 import { useTranslation } from '@/hooks/useTranslation';
+import OfficialNidalumGenerator from '@/components/OfficialNidalumGenerator';
 
 type SortField = 'word' | 'category' | 'theme' | 'none';
 type SortOrder = 'asc' | 'desc';
@@ -39,7 +40,7 @@ export default function LexiconPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('table');
   const [sortField, setSortField] = useState<SortField>('word');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
-  const [activeTab, setActiveTab] = useState<'lexicon' | 'daily'>('lexicon');
+  const [activeTab, setActiveTab] = useState<'lexicon' | 'daily' | 'generator'>('lexicon');
 
   useEffect(() => {
     loadLexicon();
@@ -196,6 +197,16 @@ export default function LexiconPage() {
               }`}
             >
               Expressions Quotidiennes
+            </button>
+            <button
+              onClick={() => setActiveTab('generator')}
+              className={`px-8 py-4 font-paragraph font-semibold text-lg transition-all duration-300 border-b-4 ${
+                activeTab === 'generator'
+                  ? 'border-secondary text-secondary'
+                  : 'border-transparent text-foreground/70 hover:text-foreground'
+              }`}
+            >
+              Générateur Officiel
             </button>
           </div>
         </div>
@@ -620,6 +631,26 @@ export default function LexiconPage() {
                   ))}
                 </div>
               )}
+            </>
+          ) : activeTab === 'generator' ? (
+            <>
+              {/* Official Generator Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="mb-16"
+              >
+                <h2 className="font-heading text-4xl md:text-5xl text-secondary mb-6 text-center">
+                  Générateur Linguistique Officiel
+                </h2>
+                <p className="font-paragraph text-lg text-foreground/90 text-center max-w-3xl mx-auto leading-relaxed">
+                  Générez des mots Nidalum authentiques selon les règles phonétiques et sémantiques de l'Institut Nidalum Universe
+                </p>
+              </motion.div>
+
+              <OfficialNidalumGenerator />
             </>
           ) : (
             <>
