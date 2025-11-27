@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { NidalumLexicon } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { BookOpen, Sparkles, Scroll, Archive, Search, Filter, ChevronDown } from 'lucide-react';
+import { BookOpen, Sparkles, Scroll, Archive, Search, Filter, ChevronDown, Volume2, Play, Pause } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface LexicalCategory {
@@ -56,6 +56,12 @@ const categories: LexicalCategory[] = [
 
 interface WordData extends NidalumLexicon {
   categoryIndex?: number;
+  audio?: string;
+}
+
+interface AudioState {
+  playingId: string | null;
+  currentAudio: HTMLAudioElement | null;
 }
 
 export default function LexicalArchivesPage() {
@@ -64,6 +70,7 @@ export default function LexicalArchivesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['Sacré']));
   const [searchTerm, setSearchTerm] = useState('');
+  const [audioState, setAudioState] = useState<AudioState>({ playingId: null, currentAudio: null });
 
   useEffect(() => {
     loadLexicon();
@@ -125,6 +132,32 @@ export default function LexicalArchivesPage() {
   const getCategoryColor = (categoryName: string) => {
     const category = categories.find(c => c.name === categoryName);
     return category?.color || 'from-gray-500 to-gray-600';
+  };
+
+  const playAudio = (audioUrl: string | undefined, wordId: string) => {
+    if (!audioUrl) return;
+
+    // Stop current audio if playing
+    if (audioState.currentAudio) {
+      audioState.currentAudio.pause();
+      audioState.currentAudio.currentTime = 0;
+    }
+
+    // If clicking the same word, toggle play/pause
+    if (audioState.playingId === wordId) {
+      setAudioState({ playingId: null, currentAudio: null });
+      return;
+    }
+
+    // Play new audio
+    const audio = new Audio(audioUrl);
+    audio.play().catch(err => console.error('Error playing audio:', err));
+    
+    audio.onended = () => {
+      setAudioState({ playingId: null, currentAudio: null });
+    };
+
+    setAudioState({ playingId: wordId, currentAudio: audio });
   };
 
   return (
@@ -317,45 +350,124 @@ export default function LexicalArchivesPage() {
                               <p className="font-paragraph text-foreground/60">Aucun mot trouvé pour cette catégorie.</p>
                             </div>
                           ) : (
-                            <div className="border border-primary/20 border-t-0 bg-background/30 overflow-x-auto">
-                              <table className="w-full">
-                                <thead>
-                                  <tr className="border-b border-primary/20 bg-background/50">
-                                    <th className="px-6 py-4 text-left font-heading text-primary">Mot Nidalum</th>
-                                    <th className="px-6 py-4 text-left font-heading text-primary">Définition</th>
-                                    <th className="px-6 py-4 text-left font-heading text-primary">Traduction FR</th>
-                                    <th className="px-6 py-4 text-left font-heading text-primary">Prononciation</th>
-                                    <th className="px-6 py-4 text-left font-heading text-primary">Exemple</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {words.map((word, index) => (
-                                    <motion.tr
-                                      key={word._id}
-                                      initial={{ opacity: 0 }}
-                                      animate={{ opacity: 1 }}
-                                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                                      className="border-b border-primary/10 hover:bg-primary/5 transition-colors"
-                                    >
-                                      <td className="px-6 py-4 font-heading text-secondary whitespace-nowrap">
-                                        {word.nidalumWord}
-                                      </td>
-                                      <td className="px-6 py-4 font-paragraph text-foreground/80 max-w-xs">
-                                        {word.definition}
-                                      </td>
-                                      <td className="px-6 py-4 font-paragraph text-foreground/70 max-w-xs">
-                                        {word.traduction_fr || word.traductionEn || '-'}
-                                      </td>
-                                      <td className="px-6 py-4 font-paragraph text-foreground/70 max-w-xs">
-                                        {word.pronunciationGuide || '-'}
-                                      </td>
-                                      <td className="px-6 py-4 font-paragraph text-foreground/70 max-w-xs italic">
-                                        {word.exampleSentence || '-'}
-                                      </td>
-                                    </motion.tr>
-                                  ))}
-                                </tbody>
-                              </table>
+                            <div className="border border-primary/20 border-t-0 bg-background/30">
+                              {/* Desktop Table View */}
+                              <div className="hidden md:block overflow-x-auto">
+                                <table className="w-full">
+                                  <thead>
+                                    <tr className="border-b border-primary/20 bg-background/50">
+                                      <th className="px-6 py-4 text-left font-heading text-primary">Mot Nidalum</th>
+                                      <th className="px-6 py-4 text-left font-heading text-primary">Définition</th>
+                                      <th className="px-6 py-4 text-left font-heading text-primary">Traduction FR</th>
+                                      <th className="px-6 py-4 text-left font-heading text-primary">Prononciation</th>
+                                      <th className="px-6 py-4 text-left font-heading text-primary">Exemple</th>
+                                      <th className="px-6 py-4 text-center font-heading text-primary">Audio</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {words.map((word, index) => (
+                                      <motion.tr
+                                        key={word._id}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                                        className="border-b border-primary/10 hover:bg-primary/5 transition-colors"
+                                      >
+                                        <td className="px-6 py-4 font-heading text-secondary whitespace-nowrap">
+                                          {word.nidalumWord}
+                                        </td>
+                                        <td className="px-6 py-4 font-paragraph text-foreground/80 max-w-xs">
+                                          {word.definition}
+                                        </td>
+                                        <td className="px-6 py-4 font-paragraph text-foreground/70 max-w-xs">
+                                          {word.traduction_fr || word.traductionEn || '-'}
+                                        </td>
+                                        <td className="px-6 py-4 font-paragraph text-foreground/70 max-w-xs">
+                                          {word.pronunciationGuide || '-'}
+                                        </td>
+                                        <td className="px-6 py-4 font-paragraph text-foreground/70 max-w-xs italic">
+                                          {word.exampleSentence || '-'}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                          <button
+                                            onClick={() => playAudio(word.audio, word._id)}
+                                            className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+                                              audioState.playingId === word._id
+                                                ? 'bg-secondary text-background'
+                                                : 'bg-secondary/20 text-secondary hover:bg-secondary/40'
+                                            }`}
+                                            title={word.audio ? 'Écouter la prononciation' : 'Pas d\'audio disponible'}
+                                            disabled={!word.audio}
+                                          >
+                                            {audioState.playingId === word._id ? (
+                                              <Pause className="w-5 h-5" />
+                                            ) : (
+                                              <Play className="w-5 h-5" />
+                                            )}
+                                          </button>
+                                        </td>
+                                      </motion.tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+
+                              {/* Mobile Card View */}
+                              <div className="md:hidden space-y-4 p-4">
+                                {words.map((word, index) => (
+                                  <motion.div
+                                    key={word._id}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    className="border border-primary/20 p-4 bg-background/50 hover:bg-primary/5 transition-colors"
+                                  >
+                                    <div className="flex items-start justify-between mb-3">
+                                      <h4 className="font-heading text-lg text-secondary">{word.nidalumWord}</h4>
+                                      <button
+                                        onClick={() => playAudio(word.audio, word._id)}
+                                        className={`flex-shrink-0 w-10 h-10 rounded-full transition-all ${
+                                          audioState.playingId === word._id
+                                            ? 'bg-secondary text-background'
+                                            : 'bg-secondary/20 text-secondary hover:bg-secondary/40'
+                                        }`}
+                                        disabled={!word.audio}
+                                      >
+                                        {audioState.playingId === word._id ? (
+                                          <Pause className="w-5 h-5 mx-auto" />
+                                        ) : (
+                                          <Play className="w-5 h-5 mx-auto" />
+                                        )}
+                                      </button>
+                                    </div>
+                                    
+                                    <div className="space-y-2 font-paragraph text-sm">
+                                      <div>
+                                        <span className="text-foreground/60">Définition:</span>
+                                        <p className="text-foreground/80">{word.definition}</p>
+                                      </div>
+                                      {(word.traduction_fr || word.traductionEn) && (
+                                        <div>
+                                          <span className="text-foreground/60">Traduction:</span>
+                                          <p className="text-foreground/70">{word.traduction_fr || word.traductionEn}</p>
+                                        </div>
+                                      )}
+                                      {word.pronunciationGuide && (
+                                        <div>
+                                          <span className="text-foreground/60">Prononciation:</span>
+                                          <p className="text-foreground/70">{word.pronunciationGuide}</p>
+                                        </div>
+                                      )}
+                                      {word.exampleSentence && (
+                                        <div>
+                                          <span className="text-foreground/60">Exemple:</span>
+                                          <p className="text-foreground/70 italic">{word.exampleSentence}</p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </motion.div>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </motion.div>
