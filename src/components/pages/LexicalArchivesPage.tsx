@@ -3,59 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { NidalumApprendrelaLangue } from '@/entities';
+import { NidalumApprendrelaLangue, LanguageCategories } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { BookOpen, Sparkles, Scroll, Archive, Search, Filter, ChevronDown, Volume2, Play, Pause } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 
-interface LexicalCategory {
-  name: string;
-  description: string;
+interface LexicalCategory extends Omit<LanguageCategories, 'icon'> {
   icon: React.ReactNode;
-  color: string;
-  theme: string;
-}
-
-const categories: LexicalCategory[] = [
-  {
-    name: 'Sacré',
-    description: 'Termes spirituels et rituels',
-    icon: <Sparkles className="w-6 h-6" />,
-    color: 'from-purple-500 to-pink-500',
-    theme: 'Sacré'
-  },
-  {
-    name: 'Éléments',
-    description: 'Forces naturelles et cosmiques',
-    icon: <Scroll className="w-6 h-6" />,
-    color: 'from-blue-500 to-cyan-500',
-    theme: 'Éléments'
-  },
-  {
-    name: 'Humain',
-    description: 'Corps, âme et existence',
-    icon: <BookOpen className="w-6 h-6" />,
-    color: 'from-amber-500 to-orange-500',
-    theme: 'Humain'
-  },
-  {
-    name: 'Protection',
-    description: 'Défense et préservation',
-    icon: <Archive className="w-6 h-6" />,
-    color: 'from-green-500 to-emerald-500',
-    theme: 'Protection'
-  },
-  {
-    name: 'Nombres',
-    description: 'Numérologie et harmonie',
-    icon: <Sparkles className="w-6 h-6" />,
-    color: 'from-indigo-500 to-violet-500',
-    theme: 'Nombres'
-  }
-];
-
-interface WordData extends NidalumApprendrelaLangue {
-  categoryIndex?: number;
 }
 
 interface AudioState {
@@ -65,14 +19,15 @@ interface AudioState {
 
 export default function LexicalArchivesPage() {
   const { t } = useTranslation();
-  const [lexicon, setLexicon] = useState<WordData[]>([]);
+  const [lexicon, setLexicon] = useState<NidalumApprendrelaLangue[]>([]);
+  const [categories, setCategories] = useState<LexicalCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['Sacré']));
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState('');
   const [audioState, setAudioState] = useState<AudioState>({ playingId: null, currentAudio: null });
 
   useEffect(() => {
-    loadLexicon();
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -80,38 +35,69 @@ export default function LexicalArchivesPage() {
     if (searchTerm.trim()) {
       const categoriesWithMatches = new Set<string>();
       categories.forEach(category => {
-        const words = getWordsByTheme(category.theme);
+        const words = getWordsByCategory(category.categoryName || '');
         const filteredWords = getFilteredWords(words);
         if (filteredWords.length > 0) {
-          categoriesWithMatches.add(category.name);
+          categoriesWithMatches.add(category.categoryName || '');
         }
       });
       setExpandedCategories(categoriesWithMatches);
     } else {
       // Reset to default when search is cleared
-      setExpandedCategories(new Set(['Sacré']));
+      setExpandedCategories(categories.length > 0 ? new Set([categories[0].categoryName || '']) : new Set());
     }
-  }, [searchTerm, lexicon]);
+  }, [searchTerm, lexicon, categories]);
 
-  const loadLexicon = async () => {
+  const loadData = async () => {
     setIsLoading(true);
     try {
-      const { items } = await BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon');
-      setLexicon(items || []);
-      console.log(`Loaded ${items?.length || 0} lexicon items from CMS`);
+      // Load both lexicon and categories
+      const [lexiconResult, categoriesResult] = await Promise.all([
+        BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon'),
+        BaseCrudService.getAll<LanguageCategories>('languagecategories')
+      ]);
+
+      setLexicon(lexiconResult.items || []);
+      
+      // Map categories with icons
+      const categoriesWithIcons: LexicalCategory[] = (categoriesResult.items || []).map(cat => ({
+        ...cat,
+        icon: getIconForCategory(cat.categoryName || '')
+      }));
+      
+      setCategories(categoriesWithIcons);
+      
+      // Set first category as expanded if available
+      if (categoriesWithIcons.length > 0) {
+        setExpandedCategories(new Set([categoriesWithIcons[0].categoryName || '']));
+      }
+      
+      console.log(`Loaded ${lexiconResult.items?.length || 0} lexicon items and ${categoriesResult.items?.length || 0} categories from CMS`);
     } catch (error) {
-      console.error('Erreur lors du chargement du lexique:', error);
+      console.error('Erreur lors du chargement des données:', error);
       setLexicon([]);
+      setCategories([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getWordsByTheme = (theme: string) => {
-    return lexicon.filter(word => word.theme === theme);
+  const getIconForCategory = (categoryName: string): React.ReactNode => {
+    const iconMap: Record<string, React.ReactNode> = {
+      'Sacré': <Sparkles className="w-6 h-6" />,
+      'Éléments': <Scroll className="w-6 h-6" />,
+      'Humain': <BookOpen className="w-6 h-6" />,
+      'Protection': <Archive className="w-6 h-6" />,
+      'Nombres': <Sparkles className="w-6 h-6" />,
+    };
+    return iconMap[categoryName] || <BookOpen className="w-6 h-6" />;
   };
 
-  const getFilteredWords = (words: WordData[]) => {
+  const getWordsByCategory = (categoryName: string) => {
+    return lexicon.filter(word => word.category === categoryName);
+  };
+
+  const getFilteredWords = (words: NidalumApprendrelaLangue[]) => {
     if (!searchTerm) return words;
     return words.filter(word =>
       word.nidalumWord?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -130,9 +116,11 @@ export default function LexicalArchivesPage() {
     setExpandedCategories(newExpanded);
   };
 
-  const getCategoryColor = (categoryName: string) => {
-    const category = categories.find(c => c.name === categoryName);
-    return category?.color || 'from-gray-500 to-gray-600';
+  const getCategoryGradient = (category: LexicalCategory) => {
+    if (category.gradientColorFrom && category.gradientColorTo) {
+      return `linear-gradient(135deg, ${category.gradientColorFrom}, ${category.gradientColorTo})`;
+    }
+    return 'linear-gradient(135deg, #666, #999)';
   };
 
   const playAudio = (audioUrl: string | undefined, wordId: string) => {
@@ -210,7 +198,7 @@ export default function LexicalArchivesPage() {
                 Chaque mot n'est pas simplement une étiquette linguistique, mais une clé ouvrant des portes vers des réalités spirituelles et métaphysiques.
               </p>
               <p>
-                Cette collection organisée en cinq thèmes fondamentaux reflète l'architecture même de l'univers Nidalum : le Sacré qui transcende, 
+                Cette collection organisée en thèmes fondamentaux reflète l'architecture même de l'univers Nidalum : le Sacré qui transcende, 
                 les Éléments qui constituent, l'Humain qui expérimente, la Protection qui préserve, et les Nombres qui harmonisent.
               </p>
               <p>
@@ -252,26 +240,29 @@ export default function LexicalArchivesPage() {
           <h2 className="font-heading text-3xl text-primary mb-12 text-center">Thèmes Lexicaux</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {categories.map((category, index) => {
-              const wordCount = getWordsByTheme(category.theme).length;
-              const isExpanded = expandedCategories.has(category.name);
+              const wordCount = getWordsByCategory(category.categoryName || '').length;
+              const isExpanded = expandedCategories.has(category.categoryName || '');
               return (
                 <motion.button
-                  key={category.name}
+                  key={category._id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  onClick={() => toggleCategory(category.name)}
+                  onClick={() => toggleCategory(category.categoryName || '')}
                   className={`p-6 border transition-all duration-300 text-center group cursor-pointer ${
                     isExpanded
                       ? 'border-primary/50 bg-primary/10'
                       : 'border-primary/20 bg-background/50 hover:border-primary/40'
                   }`}
                 >
-                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br ${category.color} text-white mb-3 group-hover:scale-110 transition-transform`}>
+                  <div 
+                    className="inline-flex items-center justify-center w-12 h-12 rounded-full text-white mb-3 group-hover:scale-110 transition-transform"
+                    style={{ background: getCategoryGradient(category) }}
+                  >
                     {category.icon}
                   </div>
-                  <h3 className="font-heading text-lg text-primary mb-2">{category.name}</h3>
+                  <h3 className="font-heading text-lg text-primary mb-2">{category.categoryName}</h3>
                   <p className="font-paragraph text-xs text-foreground/70 mb-3">{category.description}</p>
                   <span className="inline-block px-3 py-1 bg-secondary/20 border border-secondary/50 text-secondary text-xs font-semibold">
                     {wordCount} mots
@@ -283,7 +274,7 @@ export default function LexicalArchivesPage() {
         </div>
       </section>
 
-      {/* Lexical Tables by Theme */}
+      {/* Lexical Tables by Category */}
       <section className="py-20 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
           {isLoading ? (
@@ -291,15 +282,20 @@ export default function LexicalArchivesPage() {
               <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
               <p className="font-paragraph text-foreground/70 mt-4">Chargement des archives...</p>
             </div>
+          ) : categories.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="font-paragraph text-2xl text-foreground">Aucune catégorie trouvée</p>
+              <p className="font-paragraph text-base text-foreground/70 mt-2">Veuillez ajouter des catégories dans la CMS</p>
+            </div>
           ) : (
             <div className="space-y-12">
               {categories.map((category) => {
-                const words = getFilteredWords(getWordsByTheme(category.theme));
-                const isExpanded = expandedCategories.has(category.name);
+                const words = getFilteredWords(getWordsByCategory(category.categoryName || ''));
+                const isExpanded = expandedCategories.has(category.categoryName || '');
 
                 return (
                   <motion.div
-                    key={category.name}
+                    key={category._id}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
@@ -307,19 +303,25 @@ export default function LexicalArchivesPage() {
                   >
                     {/* Category Header */}
                     <button
-                      onClick={() => toggleCategory(category.name)}
+                      onClick={() => toggleCategory(category.categoryName || '')}
                       className="w-full text-left group mb-6"
                     >
-                      <div className={`flex items-center gap-4 p-6 border-l-4 transition-all duration-300 ${
-                        isExpanded
-                          ? `border-l-primary bg-gradient-to-r ${category.color} bg-opacity-10`
-                          : 'border-l-primary/30 bg-background/50 hover:bg-background/70'
-                      }`}>
-                        <div className={`flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center text-white`}>
+                      <div 
+                        className={`flex items-center gap-4 p-6 border-l-4 transition-all duration-300 ${
+                          isExpanded
+                            ? 'border-l-primary bg-opacity-10'
+                            : 'border-l-primary/30 bg-background/50 hover:bg-background/70'
+                        }`}
+                        style={isExpanded ? { background: `${getCategoryGradient(category)}08` } : {}}
+                      >
+                        <div 
+                          className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-white"
+                          style={{ background: getCategoryGradient(category) }}
+                        >
                           {category.icon}
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-heading text-2xl text-primary mb-1">{category.name}</h3>
+                          <h3 className="font-heading text-2xl text-primary mb-1">{category.categoryName}</h3>
                           <p className="font-paragraph text-sm text-foreground/70">{category.description}</p>
                         </div>
                         <div className="flex items-center gap-3">
@@ -495,12 +497,12 @@ export default function LexicalArchivesPage() {
             <h2 className="font-heading text-3xl text-secondary mb-6">Conclusion : L'Harmonie Lexicale</h2>
             <div className="space-y-4 font-paragraph text-foreground/80 leading-relaxed">
               <p>
-                Les Archives Lexicales ne sont pas simplement un dictionnaire, mais un miroir de l'âme Nidalum. À travers ces cinq thèmes fondamentaux, 
+                Les Archives Lexicales ne sont pas simplement un dictionnaire, mais un miroir de l'âme Nidalum. À travers les thèmes fondamentaux, 
                 nous découvrons comment la langue elle-même encode la sagesse cosmique et spirituelle.
               </p>
               <p>
-                Le Sacré nous élève vers le divin, les Éléments nous ancrent dans la matière vivante, l'Humain nous rappelle notre place dans l'univers, 
-                la Protection nous guide vers la préservation, et les Nombres nous montrent l'harmonie mathématique sous-jacente à toute existence.
+                Chaque catégorie nous guide vers une compréhension plus profonde : le Sacré nous élève vers le divin, les Éléments nous ancrent dans la matière vivante, 
+                l'Humain nous rappelle notre place dans l'univers, la Protection nous guide vers la préservation, et les Nombres nous montrent l'harmonie mathématique sous-jacente à toute existence.
               </p>
               <p>
                 En maîtrisant ces mots, vous ne mémorisez pas simplement du vocabulaire : vous intégrez une vision du monde, une philosophie, une manière 
@@ -536,7 +538,7 @@ export default function LexicalArchivesPage() {
               viewport={{ once: true }}
               className="border border-primary/20 p-8 text-center bg-background/50 hover:border-primary/50 transition-all"
             >
-              <div className="font-heading text-5xl text-primary mb-2">5</div>
+              <div className="font-heading text-5xl text-primary mb-2">{categories.length}</div>
               <p className="font-paragraph text-foreground/70">Thèmes Fondamentaux</p>
             </motion.div>
             <motion.div
