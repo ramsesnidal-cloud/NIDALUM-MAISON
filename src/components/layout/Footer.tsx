@@ -97,16 +97,16 @@ export default function Footer() {
               </li>
             </ul>
             <div className="flex space-x-3 sm:space-x-4">
-              <a href="https://Facebook.com/share/17TQzqWwzM" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="https://facebook.com/share/17TQzqWwzM" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-primary transition-colors">
                 <Facebook size={18} />
               </a>
-              <a href="https://wwww.instagram.com/nidalumuniverseofficial?igsh=MTVsc2Jhem9renhoNQ==" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="https://www.instagram.com/nidalumuniverseofficial?igsh=MTVsc2Jhem9renhoNQ==" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-primary transition-colors">
                 <Instagram size={18} />
               </a>
-              <a href="https://www.youtube.com/channel/UCOUh1sSDFaMgr24SNVLj4Nw" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="https://www.youtube.com/channel/UCOUh1sSDFaMgr24SNVLj4Nw" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-primary transition-colors">
                 <Youtube size={18} />
               </a>
-              <a href="ramsesnidal@gmail.com" className="text-foreground/70 hover:text-primary transition-colors">
+              <a href="mailto:ramsesnidal@gmail.com" className="text-foreground/70 hover:text-primary transition-colors">
                 <Mail size={18} />
               </a>
             </div>

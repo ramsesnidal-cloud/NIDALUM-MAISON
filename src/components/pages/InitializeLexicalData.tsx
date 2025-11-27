@@ -697,7 +697,6 @@ export default function InitializeLexicalData() {
             } as NidalumApprendrelaLangue);
             successCount++;
           } catch (error) {
-            console.error(`Erreur lors de l'ajout du mot ${wordData.nidalumWord}:`, error);
             failureCount++;
           }
           setProgress(Math.round(((i + 1) / NIDALUM_WORDS_DATA.length) * 100));

@@ -60,22 +60,7 @@ export default function LexicalArchivesPage() {
       const lexiconItems = lexiconResult.items || [];
       const categoryItems = categoriesResult.items || [];
 
-      // DIAGNOSTIC LOGS
-      console.log('=== DIAGNOSTIC LEXICAL ARCHIVES ===');
-      console.log(`✓ Lexicon items loaded: ${lexiconItems.length}`);
-      console.log(`✓ Categories loaded: ${categoryItems.length}`);
-      
-      if (lexiconItems.length > 0) {
-        console.log('Sample lexicon item:', lexiconItems[0]);
-        console.log('Unique categories in lexicon:', [...new Set(lexiconItems.map(w => w.category))]);
-      }
-      
-      if (categoryItems.length > 0) {
-        console.log('Sample category:', categoryItems[0]);
-        console.log('All category names:', categoryItems.map(c => c.categoryName));
-      }
-
-      setLexicon(lexiconItems);
+      // ... keep existing code (mapping categories with icons) ...
       
       // Map categories with icons
       const categoriesWithIcons: LexicalCategory[] = categoryItems.map(cat => ({

@@ -26,8 +26,28 @@ export default function ContactPage() {
     });
   };
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateForm = (): boolean => {
+    if (!formData.name.trim()) return false;
+    if (!validateEmail(formData.email)) return false;
+    if (!formData.subject.trim()) return false;
+    if (formData.message.trim().length < 10) return false;
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // Simulate form submission
@@ -129,6 +149,20 @@ export default function ContactPage() {
                     <p className="font-paragraph text-secondary">
                       Merci pour votre message! Nous vous répondrons bientôt.
                     </p>
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30">
+                    <p className="font-paragraph text-red-400">
+                      ❌ Veuillez vérifier vos informations:
+                    </p>
+                    <ul className="font-paragraph text-red-400 text-sm mt-2 space-y-1">
+                      {!formData.name.trim() && <li>• Nom requis</li>}
+                      {!validateEmail(formData.email) && <li>• Email invalide</li>}
+                      {!formData.subject.trim() && <li>• Sujet requis</li>}
+                      {formData.message.trim().length < 10 && <li>• Message trop court (min. 10 caractères)</li>}
+                    </ul>
                   </div>
                 )}
 
