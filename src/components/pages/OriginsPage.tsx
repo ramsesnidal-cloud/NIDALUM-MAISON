@@ -18,10 +18,23 @@ export default function OriginsPage() {
   }, []);
 
   const loadOrigins = async () => {
-    setIsLoading(true);
-    const { items } = await BaseCrudService.getAll<OriginsandChronology>('origineschronologie');
-    setOriginsData(items);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const { items } = await BaseCrudService.getAll<OriginsandChronology>('origineschronologie');
+      
+      if (!items || items.length === 0) {
+        console.warn('No origins items found in CMS');
+        setOriginsData([]);
+      } else {
+        setOriginsData(items);
+        console.log(`Loaded ${items.length} origins items from CMS`);
+      }
+    } catch (error) {
+      console.error('Error loading origins data:', error);
+      setOriginsData([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const cosmicElements = originsData.filter(item => item.category === 'Cosmic Element');

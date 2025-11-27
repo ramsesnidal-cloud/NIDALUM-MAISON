@@ -17,12 +17,25 @@ export default function AlphabetPage() {
   }, []);
 
   const loadAlphabet = async () => {
-    setIsLoading(true);
-    const { items } = await BaseCrudService.getAll<NidalumAlphabet>('alphabetnidalum');
-    // Sort by alphabetical order if available
-    const sorted = items.sort((a, b) => (a.alphabeticalOrder || 0) - (b.alphabeticalOrder || 0));
-    setAlphabetLetters(sorted);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const { items } = await BaseCrudService.getAll<NidalumAlphabet>('alphabetnidalum');
+      
+      if (!items || items.length === 0) {
+        console.warn('No alphabet items found in CMS');
+        setAlphabetLetters([]);
+      } else {
+        // Sort by alphabetical order if available
+        const sorted = items.sort((a, b) => (a.alphabeticalOrder || 0) - (b.alphabeticalOrder || 0));
+        setAlphabetLetters(sorted);
+        console.log(`Loaded ${sorted.length} alphabet letters from CMS`);
+      }
+    } catch (error) {
+      console.error('Error loading alphabet data:', error);
+      setAlphabetLetters([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -127,49 +140,57 @@ export default function AlphabetPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {alphabetLetters.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-background/50 border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 group backdrop-blur-sm"
-              >
-                <div className="text-center mb-4">
-                  {item.glyphImage ? (
-                    <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors overflow-hidden">
-                      <Image
-                        src={item.glyphImage}
-                        alt={item.letter || 'Letter'}
-                        width={80}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  ) : (
-                    <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors">
-                      <span className="font-heading text-5xl text-primary group-hover:text-secondary transition-colors">
-                        {item.letter}
-                      </span>
-                    </div>
-                  )}
-                  <p className="font-paragraph text-sm text-foreground/50">
-                    {t('pages.alphabet.latin')}: {item.letter}
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="font-paragraph text-xs text-foreground/50">{t('pages.alphabet.pronunciation')}:</span>
-                    <span className="font-paragraph text-sm text-secondary">[{item.pronunciation}]</span>
-                  </div>
-                  <div className="pt-2 border-t border-primary/10">
-                    <p className="font-paragraph text-sm text-foreground/70 text-center italic">
-                      "{item.meaning}"
+            {alphabetLetters && alphabetLetters.length > 0 ? (
+              alphabetLetters.map((item, index) => (
+                <motion.div
+                  key={item._id || index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  viewport={{ once: true }}
+                  className="bg-background/50 border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 group backdrop-blur-sm"
+                >
+                  <div className="text-center mb-4">
+                    {item.glyphImage ? (
+                      <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors overflow-hidden">
+                        <Image
+                          src={item.glyphImage}
+                          alt={item.letter || 'Letter'}
+                          width={80}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors">
+                        <span className="font-heading text-5xl text-primary group-hover:text-secondary transition-colors">
+                          {item.letter || '?'}
+                        </span>
+                      </div>
+                    )}
+                    <p className="font-paragraph text-sm text-foreground/50">
+                      {t('pages.alphabet.latin')}: {item.letter}
                     </p>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="font-paragraph text-xs text-foreground/50">{t('pages.alphabet.pronunciation')}:</span>
+                      <span className="font-paragraph text-sm text-secondary">[{item.pronunciation}]</span>
+                    </div>
+                    <div className="pt-2 border-t border-primary/10">
+                      <p className="font-paragraph text-sm text-foreground/70 text-center italic">
+                        "{item.meaning}"
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="font-paragraph text-lg text-foreground/70">
+                  {isLoading ? 'Chargement des lettres...' : 'Aucune lettre disponible'}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>

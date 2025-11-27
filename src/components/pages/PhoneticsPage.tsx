@@ -17,10 +17,23 @@ export default function PhoneticsPage() {
   }, []);
 
   const loadPhonetics = async () => {
-    setIsLoading(true);
-    const { items } = await BaseCrudService.getAll<NidalumPhonetics>('phonetiquenidalum');
-    setPhoneticItems(items);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const { items } = await BaseCrudService.getAll<NidalumPhonetics>('phonetiquenidalum');
+      
+      if (!items || items.length === 0) {
+        console.warn('No phonetic items found in CMS');
+        setPhoneticItems([]);
+      } else {
+        setPhoneticItems(items);
+        console.log(`Loaded ${items.length} phonetic items from CMS`);
+      }
+    } catch (error) {
+      console.error('Error loading phonetics data:', error);
+      setPhoneticItems([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const vowels = phoneticItems.filter(item => item.type === 'Vowel');
@@ -108,28 +121,36 @@ export default function PhoneticsPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {vowels.map((vowel, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm text-center"
-              >
-                <div className="w-16 h-16 mx-auto mb-4 border-2 border-secondary/30 flex items-center justify-center">
-                  <span className="font-heading text-4xl text-primary">{vowel.character}</span>
-                </div>
-                <p className="font-paragraph text-secondary mb-2">{vowel.pronunciationGuide}</p>
-                <p className="font-paragraph text-sm text-foreground/70 mb-3 leading-relaxed">
-                  {vowel.notes}
+            {vowels && vowels.length > 0 ? (
+              vowels.map((vowel, index) => (
+                <motion.div
+                  key={vowel._id || index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm text-center"
+                >
+                  <div className="w-16 h-16 mx-auto mb-4 border-2 border-secondary/30 flex items-center justify-center">
+                    <span className="font-heading text-4xl text-primary">{vowel.character}</span>
+                  </div>
+                  <p className="font-paragraph text-secondary mb-2">{vowel.pronunciationGuide}</p>
+                  <p className="font-paragraph text-sm text-foreground/70 mb-3 leading-relaxed">
+                    {vowel.notes}
+                  </p>
+                  <div className="bg-dark-amber-shadow/20 p-2 border-l-2 border-primary">
+                    <p className="font-paragraph text-xs text-foreground/50">Exemple:</p>
+                    <p className="font-paragraph text-sm text-secondary italic">{vowel.exampleWord}</p>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="font-paragraph text-lg text-foreground/70">
+                  {isLoading ? 'Chargement des voyelles...' : 'Aucune voyelle disponible'}
                 </p>
-                <div className="bg-dark-amber-shadow/20 p-2 border-l-2 border-primary">
-                  <p className="font-paragraph text-xs text-foreground/50">Exemple:</p>
-                  <p className="font-paragraph text-sm text-secondary italic">{vowel.exampleWord}</p>
-                </div>
-              </motion.div>
-            ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -156,30 +177,38 @@ export default function PhoneticsPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {consonants.map((consonant, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="border border-primary/20 p-6 hover:border-secondary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 border border-secondary/30 flex items-center justify-center mr-4">
-                    <span className="font-heading text-3xl text-secondary">{consonant.character}</span>
+            {consonants && consonants.length > 0 ? (
+              consonants.map((consonant, index) => (
+                <motion.div
+                  key={consonant._id || index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  viewport={{ once: true }}
+                  className="border border-primary/20 p-6 hover:border-secondary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
+                >
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 border border-secondary/30 flex items-center justify-center mr-4">
+                      <span className="font-heading text-3xl text-secondary">{consonant.character}</span>
+                    </div>
+                    <span className="font-paragraph text-lg text-primary">{consonant.pronunciationGuide}</span>
                   </div>
-                  <span className="font-paragraph text-lg text-primary">{consonant.pronunciationGuide}</span>
-                </div>
-                <p className="font-paragraph text-sm text-foreground/70 mb-3 leading-relaxed">
-                  {consonant.notes}
+                  <p className="font-paragraph text-sm text-foreground/70 mb-3 leading-relaxed">
+                    {consonant.notes}
+                  </p>
+                  <div className="bg-dark-amber-shadow/20 p-2 border-l-2 border-secondary">
+                    <p className="font-paragraph text-xs text-foreground/50">Exemple:</p>
+                    <p className="font-paragraph text-sm text-primary italic">{consonant.exampleWord}</p>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="font-paragraph text-lg text-foreground/70">
+                  {isLoading ? 'Chargement des consonnes...' : 'Aucune consonne disponible'}
                 </p>
-                <div className="bg-dark-amber-shadow/20 p-2 border-l-2 border-secondary">
-                  <p className="font-paragraph text-xs text-foreground/50">Exemple:</p>
-                  <p className="font-paragraph text-sm text-primary italic">{consonant.exampleWord}</p>
-                </div>
-              </motion.div>
-            ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

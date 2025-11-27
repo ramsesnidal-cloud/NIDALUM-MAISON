@@ -19,10 +19,23 @@ export default function AcademyPage() {
   }, []);
 
   const loadPrograms = async () => {
-    setIsLoading(true);
-    const { items } = await BaseCrudService.getAll<ProgrammesdelAcadmie>('academieprogrammes');
-    setPrograms(items);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const { items } = await BaseCrudService.getAll<ProgrammesdelAcadmie>('academieprogrammes');
+      
+      if (!items || items.length === 0) {
+        console.warn('No academy programs found in CMS');
+        setPrograms([]);
+      } else {
+        setPrograms(items);
+        console.log(`Loaded ${items.length} academy programs from CMS`);
+      }
+    } catch (error) {
+      console.error('Error loading academy programs:', error);
+      setPrograms([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const benefits = [
