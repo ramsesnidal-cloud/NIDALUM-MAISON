@@ -4,7 +4,7 @@ import { Search, Filter, Wand2, ChevronDown } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { NidalumLexicon } from '@/entities';
+import { NidalumApprendrelaLangue } from '@/entities';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { generateCompleteWord } from '@/lib/nidalum-generator';
@@ -12,8 +12,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 export default function LexiconPage() {
   const { t } = useTranslation();
-  const [lexiconItems, setLexiconItems] = useState<NidalumLexicon[]>([]);
-  const [filteredItems, setFilteredItems] = useState<NidalumLexicon[]>([]);
+  const [lexiconItems, setLexiconItems] = useState<NidalumApprendrelaLangue[]>([]);
+  const [filteredItems, setFilteredItems] = useState<NidalumApprendrelaLangue[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchField, setSearchField] = useState<'all' | 'word' | 'definition' | 'etymology'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -33,7 +33,7 @@ export default function LexiconPage() {
 
   const loadLexicon = async () => {
     setIsLoading(true);
-    const { items } = await BaseCrudService.getAll<NidalumLexicon>('nidalumlexicon');
+    const { items } = await BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon');
     setLexiconItems(items);
     setIsLoading(false);
   };

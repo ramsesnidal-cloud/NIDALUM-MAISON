@@ -500,3 +500,8 @@ export interface RitualChants {
   /** @wixFieldType text */
   text?: string;
 }
+
+/**
+ * Backward compatibility alias for NidalumApprendrelaLangue
+ */
+export type NidalumLexicon = NidalumApprendrelaLangue;

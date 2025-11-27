@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { OfficialResources, NidalumLexicon, RitualChants } from '@/entities';
+import { OfficialResources, NidalumApprendrelaLangue, RitualChants } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { Download, FileText, Calendar, BookOpen, Zap, CheckCircle, AlertCircle, Lightbulb, Target, X, Music, Scroll } from 'lucide-react';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
@@ -172,7 +172,7 @@ ${content.length + 433}
 export default function ResourcesPage() {
   const { t } = useTranslation();
   const [resources, setResources] = useState<OfficialResources[]>([]);
-  const [lexicon, setLexicon] = useState<NidalumLexicon[]>([]);
+  const [lexicon, setLexicon] = useState<NidalumApprendrelaLangue[]>([]);
   const [chants, setChants] = useState<RitualChants[]>([]);
   const [selectedType, setSelectedType] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
@@ -197,7 +197,7 @@ export default function ResourcesPage() {
     setIsLoading(true);
     const [resourcesData, lexiconData, chantsData] = await Promise.all([
       BaseCrudService.getAll<OfficialResources>('officialresources'),
-      BaseCrudService.getAll<NidalumLexicon>('nidalumlexicon'),
+      BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon'),
       BaseCrudService.getAll<RitualChants>('ritualchants')
     ]);
     setResources(resourcesData.items);

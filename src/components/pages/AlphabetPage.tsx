@@ -129,33 +129,45 @@ export default function AlphabetPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-12"
+            className="mb-16"
           >
-            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-4 text-center">
+            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-6 text-center">
               {t('pages.alphabet.sixteenLetters')}
             </h2>
-            <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto">
+            <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto leading-relaxed">
               {t('pages.alphabet.sixteenLettersDesc')}
             </p>
+            {alphabetLetters.length > 0 && (
+              <p className="font-paragraph text-sm text-secondary text-center mt-4">
+                {alphabetLetters.length} lettres chargées du système
+              </p>
+            )}
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {alphabetLetters && alphabetLetters.length > 0 ? (
-              alphabetLetters.map((item, index) => (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="text-center">
+                <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+                <p className="font-paragraph text-foreground/70">Chargement des lettres...</p>
+              </div>
+            </div>
+          ) : alphabetLetters && alphabetLetters.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {alphabetLetters.map((item, index) => (
                 <motion.div
                   key={item._id || index}
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
                   viewport={{ once: true }}
-                  className="bg-background/50 border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 group backdrop-blur-sm"
+                  className="bg-background/50 border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 group backdrop-blur-sm hover:bg-background/70"
                 >
                   <div className="text-center mb-4">
                     {item.glyphImage ? (
                       <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors overflow-hidden">
                         <Image
                           src={item.glyphImage}
-                          alt={item.letter || 'Letter'}
+                          alt={`Lettre ${item.letter || 'inconnue'}`}
                           width={80}
                           className="w-full h-full object-contain"
                         />
@@ -168,30 +180,36 @@ export default function AlphabetPage() {
                       </div>
                     )}
                     <p className="font-paragraph text-sm text-foreground/50">
-                      {t('pages.alphabet.latin')}: {item.letter}
+                      {t('pages.alphabet.latin')}: <span className="text-primary font-semibold">{item.letter}</span>
                     </p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-paragraph text-xs text-foreground/50">{t('pages.alphabet.pronunciation')}:</span>
-                      <span className="font-paragraph text-sm text-secondary">[{item.pronunciation}]</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-start gap-2">
+                      <span className="font-paragraph text-xs text-foreground/50 flex-shrink-0">{t('pages.alphabet.pronunciation')}:</span>
+                      <span className="font-paragraph text-sm text-secondary text-right">[{item.pronunciation}]</span>
                     </div>
-                    <div className="pt-2 border-t border-primary/10">
+                    {item.letterType && (
+                      <div className="flex justify-between items-start gap-2">
+                        <span className="font-paragraph text-xs text-foreground/50 flex-shrink-0">Type:</span>
+                        <span className="font-paragraph text-xs text-primary/80 text-right">{item.letterType}</span>
+                      </div>
+                    )}
+                    <div className="pt-3 border-t border-primary/10">
                       <p className="font-paragraph text-sm text-foreground/70 text-center italic">
-                        "{item.meaning}"
+                        "{item.meaning || 'Signification non disponible'}"
                       </p>
                     </div>
                   </div>
                 </motion.div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12">
-                <p className="font-paragraph text-lg text-foreground/70">
-                  {isLoading ? 'Chargement des lettres...' : 'Aucune lettre disponible'}
-                </p>
-              </div>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="col-span-full text-center py-16">
+              <p className="font-paragraph text-lg text-foreground/70">
+                Aucune lettre disponible pour le moment
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

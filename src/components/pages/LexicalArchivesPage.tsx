@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { NidalumLexicon } from '@/entities';
+import { NidalumApprendrelaLangue } from '@/entities';
 import { Image } from '@/components/ui/image';
 import { BookOpen, Sparkles, Scroll, Archive, Search, Filter, ChevronDown, Volume2, Play, Pause } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -54,9 +54,8 @@ const categories: LexicalCategory[] = [
   }
 ];
 
-interface WordData extends NidalumLexicon {
+interface WordData extends NidalumApprendrelaLangue {
   categoryIndex?: number;
-  audio?: string;
 }
 
 interface AudioState {
@@ -97,7 +96,7 @@ export default function LexicalArchivesPage() {
   const loadLexicon = async () => {
     setIsLoading(true);
     try {
-      const { items } = await BaseCrudService.getAll<NidalumLexicon>('nidalumlexicon');
+      const { items } = await BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon');
       setLexicon(items);
     } catch (error) {
       console.error('Erreur lors du chargement du lexique:', error);
@@ -390,14 +389,14 @@ export default function LexicalArchivesPage() {
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                           <button
-                                            onClick={() => playAudio(word.audio, word._id)}
+                                            onClick={() => playAudio(word.audio_url, word._id)}
                                             className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-all ${
                                               audioState.playingId === word._id
                                                 ? 'bg-secondary text-background'
                                                 : 'bg-secondary/20 text-secondary hover:bg-secondary/40'
                                             }`}
-                                            title={word.audio ? 'Écouter la prononciation' : 'Pas d\'audio disponible'}
-                                            disabled={!word.audio}
+                                            title={word.audio_url ? 'Écouter la prononciation' : 'Pas d\'audio disponible'}
+                                            disabled={!word.audio_url}
                                           >
                                             {audioState.playingId === word._id ? (
                                               <Pause className="w-5 h-5" />
@@ -425,13 +424,13 @@ export default function LexicalArchivesPage() {
                                     <div className="flex items-start justify-between mb-3">
                                       <h4 className="font-heading text-lg text-secondary">{word.nidalumWord}</h4>
                                       <button
-                                        onClick={() => playAudio(word.audio, word._id)}
+                                        onClick={() => playAudio(word.audio_url, word._id)}
                                         className={`flex-shrink-0 w-10 h-10 rounded-full transition-all ${
                                           audioState.playingId === word._id
                                             ? 'bg-secondary text-background'
                                             : 'bg-secondary/20 text-secondary hover:bg-secondary/40'
                                         }`}
-                                        disabled={!word.audio}
+                                        disabled={!word.audio_url}
                                       >
                                         {audioState.playingId === word._id ? (
                                           <Pause className="w-5 h-5 mx-auto" />

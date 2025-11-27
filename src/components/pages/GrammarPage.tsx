@@ -63,21 +63,6 @@ export default function GrammarPage() {
     return matchesSearch && matchesCategory;
   });
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
-            <p className="font-paragraph text-foreground/70">{t('common.loading')}</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -160,55 +145,81 @@ export default function GrammarPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-12"
+            className="mb-16"
           >
-            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-4 text-center">
+            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-6 text-center">
               Règles Fondamentales
             </h2>
+            <p className="font-paragraph text-lg text-foreground/70 text-center max-w-3xl mx-auto leading-relaxed">
+              Explorez les règles grammaticales essentielles de la langue Nidalum
+            </p>
+            {filteredRules.length > 0 && (
+              <p className="font-paragraph text-sm text-secondary text-center mt-4">
+                {filteredRules.length} règle{filteredRules.length > 1 ? 's' : ''} trouvée{filteredRules.length > 1 ? 's' : ''}
+              </p>
+            )}
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {filteredRules.map((rule, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                onClick={() => setExpandedRule(expandedRule === index ? null : index)}
-                className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm cursor-pointer group"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <Layers className="w-12 h-12 text-primary flex-shrink-0" />
-                  <ChevronDown className={`w-5 h-5 text-primary transition-transform ${expandedRule === index ? 'rotate-180' : ''}`} />
-                </div>
-                <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">{rule.ruleTitle}</h3>
-                
-                {expandedRule === index && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-4"
-                  >
-                    <p className="font-paragraph text-foreground/70 leading-relaxed">
-                      {rule.explanation}
-                    </p>
-                    <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-4">
-                      <p className="font-paragraph text-sm text-foreground/60 mb-1">Exemple:</p>
-                      <p className="font-paragraph text-secondary italic">{rule.nidalumExample}</p>
-                      {rule.exampleTranslation && (
-                        <p className="font-paragraph text-sm text-foreground/70 mt-2">{rule.exampleTranslation}</p>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="text-center">
+                <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+                <p className="font-paragraph text-foreground/70">Chargement des règles...</p>
+              </div>
+            </div>
+          ) : filteredRules.length > 0 ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {filteredRules.map((rule, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  onClick={() => setExpandedRule(expandedRule === index ? null : index)}
+                  className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm cursor-pointer group hover:bg-background/70"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <Layers className="w-12 h-12 text-primary flex-shrink-0 group-hover:text-secondary transition-colors" />
+                    <ChevronDown className={`w-5 h-5 text-primary transition-transform ${expandedRule === index ? 'rotate-180' : ''}`} />
+                  </div>
+                  <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">{rule.ruleTitle}</h3>
+                  
+                  {expandedRule === index && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-4"
+                    >
+                      <p className="font-paragraph text-foreground/70 leading-relaxed">
+                        {rule.explanation}
+                      </p>
+                      {rule.category && (
+                        <div className="flex items-center gap-2">
+                          <span className="font-paragraph text-xs text-foreground/50">Catégorie:</span>
+                          <span className="font-paragraph text-sm text-secondary">{rule.category}</span>
+                        </div>
                       )}
-                    </div>
-                  </motion.div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-
-          {filteredRules.length === 0 && (
-            <div className="text-center py-12">
+                      <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-4">
+                        <p className="font-paragraph text-sm text-foreground/60 mb-1">Exemple:</p>
+                        <p className="font-paragraph text-secondary italic">{rule.nidalumExample}</p>
+                        {rule.exampleTranslation && (
+                          <p className="font-paragraph text-sm text-foreground/70 mt-2">{rule.exampleTranslation}</p>
+                        )}
+                      </div>
+                      {rule.additionalNotes && (
+                        <div className="bg-primary/10 border border-primary/20 p-4">
+                          <p className="font-paragraph text-sm text-foreground/70">{rule.additionalNotes}</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
               <p className="font-paragraph text-xl text-foreground/70">Aucune règle trouvée</p>
               <p className="font-paragraph text-sm text-foreground/50 mt-2">
                 Essayez de modifier votre recherche
@@ -336,7 +347,7 @@ export default function GrammarPage() {
                     <p className="font-paragraph text-sm text-foreground/60 mb-2">Structure: S-O-V</p>
                     <p className="font-paragraph text-lg text-primary mb-2">Nidar souma-ra-an kēla</p>
                     <p className="font-paragraph text-sm text-foreground/70 italic">Nidar le-monde voit</p>
-                    <p className="font-paragraph text-sm text-secondary mt-2">"Nidar voit le monde"</p>
+                    <p className="font-paragraph text-sm text-secondary mt-2">« Nidar voit le monde »</p>
                   </div>
                 </div>
               </div>
@@ -347,7 +358,7 @@ export default function GrammarPage() {
                     <p className="font-paragraph text-sm text-foreground/60 mb-2">Avec modificateurs</p>
                     <p className="font-paragraph text-lg text-primary mb-2">Nidar-tō souma-ra-sha-an kēla-ren</p>
                     <p className="font-paragraph text-sm text-foreground/70 italic">Nidar-sacré monde-mystique verra-futur</p>
-                    <p className="font-paragraph text-sm text-secondary mt-2">"Le Nidar sacré verra le monde mystique"</p>
+                    <p className="font-paragraph text-sm text-secondary mt-2">« Le Nidar sacré verra le monde mystique »</p>
                   </div>
                 </div>
               </div>
