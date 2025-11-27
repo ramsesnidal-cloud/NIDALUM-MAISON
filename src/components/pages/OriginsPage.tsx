@@ -210,13 +210,13 @@ export default function OriginsPage() {
             >
               <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
                 <Image
-                  src="https://static.wixstatic.com/media/9c8aea_bc2fee18935f4c26807024d062ba00a6~mv2.png"
+                  src="https://static.wixstatic.com/media/9c8aea_c0be0acf874f498298509af864506115~mv2.jpg"
                   width={600}
                   className="w-full h-full object-cover"
-                  originWidth={1024}
+                  originWidth={687}
                   originHeight={1024}
-                  focalPointX={50.68359375}
-                  focalPointY={22.36328125} />
+                  focalPointX={50.072780203784575}
+                  focalPointY={12.01171875} />
               </div>
             </motion.div>
           </div>
