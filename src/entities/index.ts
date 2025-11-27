@@ -4,29 +4,6 @@
  */
 
 /**
- * Collection ID: languagecategories
- * Interface for LanguageCategories
- */
-export interface LanguageCategories {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  categoryName?: string;
-  /** @wixFieldType text */
-  description?: string;
-  /** @wixFieldType text */
-  gradientColorFrom?: string;
-  /** @wixFieldType text */
-  gradientColorTo?: string;
-  /** @wixFieldType text */
-  theme?: string;
-  /** @wixFieldType image */
-  icon?: string;
-}
-
-
-/**
  * Collection ID: Import1
  * Interface for RpertoireLinguistiqueNidalumSectionQuotidienne
  */
@@ -77,6 +54,36 @@ export interface ProgrammesdelAcadmie {
   enrollmentLink?: string;
   /** @wixFieldType boolean */
   isAvailable?: boolean;
+  /** @wixFieldType text */
+  name_fr?: string;
+  /** @wixFieldType text */
+  name_en?: string;
+  /** @wixFieldType text */
+  name_de?: string;
+  /** @wixFieldType text */
+  description_fr?: string;
+  /** @wixFieldType text */
+  description_en?: string;
+  /** @wixFieldType text */
+  description_de?: string;
+  /** @wixFieldType image */
+  image?: string;
+  /** @wixFieldType text */
+  level_fr?: string;
+  /** @wixFieldType text */
+  level_en?: string;
+  /** @wixFieldType text */
+  level_de?: string;
+  /** @wixFieldType text */
+  duration_fr?: string;
+  /** @wixFieldType text */
+  duration_en?: string;
+  /** @wixFieldType text */
+  duration_de?: string;
+  /** @wixFieldType url */
+  enroll_url?: string;
+  /** @wixFieldType text */
+  institute?: string;
 }
 
 
