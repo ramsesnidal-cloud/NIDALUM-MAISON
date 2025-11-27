@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Wand2, ChevronDown } from 'lucide-react';
+import { Search, Filter, Wand2, ChevronDown, ChevronUp, ArrowUpDown } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
@@ -9,6 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { generateCompleteWord } from '@/lib/nidalum-generator';
 import { useTranslation } from '@/hooks/useTranslation';
+
+type SortField = 'word' | 'category' | 'theme' | 'none';
+type SortOrder = 'asc' | 'desc';
 
 export default function LexiconPage() {
   const { t } = useTranslation();
@@ -22,6 +25,9 @@ export default function LexiconPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [showFilters, setShowFilters] = useState(true);
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('table');
+  const [sortField, setSortField] = useState<SortField>('word');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
   useEffect(() => {
     loadLexicon();
@@ -29,7 +35,7 @@ export default function LexiconPage() {
 
   useEffect(() => {
     filterItems();
-  }, [searchTerm, searchField, selectedCategory, selectedTheme, lexiconItems]);
+  }, [searchTerm, searchField, selectedCategory, selectedTheme, lexiconItems, sortField, sortOrder]);
 
   const loadLexicon = async () => {
     setIsLoading(true);
@@ -68,6 +74,28 @@ export default function LexiconPage() {
 
     if (selectedTheme !== 'all') {
       filtered = filtered.filter(item => item.theme === selectedTheme);
+    }
+
+    // Apply sorting
+    if (sortField !== 'none') {
+      filtered.sort((a, b) => {
+        let aVal: string = '';
+        let bVal: string = '';
+
+        if (sortField === 'word') {
+          aVal = a.nidalumWord || '';
+          bVal = b.nidalumWord || '';
+        } else if (sortField === 'category') {
+          aVal = a.category || '';
+          bVal = b.category || '';
+        } else if (sortField === 'theme') {
+          aVal = a.theme || '';
+          bVal = b.theme || '';
+        }
+
+        const comparison = aVal.localeCompare(bVal);
+        return sortOrder === 'asc' ? comparison : -comparison;
+      });
     }
 
     setFilteredItems(filtered);
@@ -272,11 +300,35 @@ export default function LexiconPage() {
               </motion.div>
             )}
 
-            {/* Results Count */}
-            <div className="flex items-center justify-between pt-4 border-t border-primary/10">
+            {/* Results Count and View Toggle */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-primary/10 gap-4">
               <p className="font-paragraph text-sm text-foreground/60">
                 {filteredItems.length} mot{filteredItems.length !== 1 ? 's' : ''} trouvé{filteredItems.length !== 1 ? 's' : ''}
               </p>
+              <div className="flex items-center gap-3">
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    className={`px-3 py-2 text-sm font-paragraph transition-colors ${
+                      viewMode === 'grid'
+                        ? 'bg-primary text-primary-foreground border border-primary'
+                        : 'bg-background border border-primary/20 text-foreground/70 hover:border-primary/50'
+                    }`}
+                  >
+                    Grille
+                  </button>
+                  <button
+                    onClick={() => setViewMode('table')}
+                    className={`px-3 py-2 text-sm font-paragraph transition-colors ${
+                      viewMode === 'table'
+                        ? 'bg-primary text-primary-foreground border border-primary'
+                        : 'bg-background border border-primary/20 text-foreground/70 hover:border-primary/50'
+                    }`}
+                  >
+                    Tableau
+                  </button>
+                </div>
+              </div>
               <p className="font-paragraph text-xs text-foreground/50">
                 Total: {lexiconItems.length} mots
               </p>
@@ -285,7 +337,7 @@ export default function LexiconPage() {
         </div>
       </section>
 
-      {/* Lexicon Grid */}
+      {/* Lexicon Display */}
       <section className="py-16 px-6 lg:px-12">
         <div className="max-w-[120rem] mx-auto">
           <motion.div
@@ -316,81 +368,186 @@ export default function LexiconPage() {
                 Essayez de modifier vos critères de recherche
               </p>
             </div>
-          ) : (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="mb-8"
-              >
-                <p className="font-paragraph text-sm text-secondary text-center">
-                  {filteredItems.length} mot{filteredItems.length > 1 ? 's' : ''} affiché{filteredItems.length > 1 ? 's' : ''} sur {lexiconItems.length}
-                </p>
-              </motion.div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredItems.map((item, index) => (
-                  <motion.div
-                    key={item._id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                    viewport={{ once: true }}
-                    className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group hover:bg-background/70"
-                  >
-                    <div className="mb-4">
-                      <h3 className="font-heading text-3xl text-primary mb-2 group-hover:text-secondary transition-colors">
-                        {item.nidalumWord}
-                      </h3>
-                      {item.pronunciationGuide && (
-                        <p className="font-paragraph text-sm text-secondary font-semibold">
-                          [{item.pronunciationGuide}]
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-3">
-                      <div>
-                        <p className="font-paragraph text-foreground/80 leading-relaxed">
-                          {item.definition || 'Définition non disponible'}
-                        </p>
-                      </div>
-
-                      {item.exampleSentence && (
-                        <div className="bg-dark-amber-shadow/20 p-3 border-l-2 border-secondary">
-                          <p className="font-paragraph text-xs text-foreground/50 mb-1">Exemple:</p>
-                          <p className="font-paragraph text-sm text-foreground/70 italic">
-                            {item.exampleSentence}
-                          </p>
+          ) : viewMode === 'table' ? (
+            // Table View
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="overflow-x-auto"
+            >
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b-2 border-primary/30 bg-background/50">
+                    <th className="px-4 py-4 text-left">
+                      <button
+                        onClick={() => {
+                          if (sortField === 'word') {
+                            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                          } else {
+                            setSortField('word');
+                            setSortOrder('asc');
+                          }
+                        }}
+                        className="flex items-center gap-2 font-heading text-primary hover:text-secondary transition-colors"
+                      >
+                        Mot Nidalum
+                        {sortField === 'word' && (
+                          <ArrowUpDown className={`w-4 h-4 ${sortOrder === 'desc' ? 'rotate-180' : ''}`} />
+                        )}
+                      </button>
+                    </th>
+                    <th className="px-4 py-4 text-left font-heading text-primary hidden md:table-cell">Prononciation</th>
+                    <th className="px-4 py-4 text-left font-heading text-primary hidden lg:table-cell">Définition</th>
+                    <th className="px-4 py-4 text-left">
+                      <button
+                        onClick={() => {
+                          if (sortField === 'category') {
+                            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                          } else {
+                            setSortField('category');
+                            setSortOrder('asc');
+                          }
+                        }}
+                        className="flex items-center gap-2 font-heading text-primary hover:text-secondary transition-colors"
+                      >
+                        Catégorie
+                        {sortField === 'category' && (
+                          <ArrowUpDown className={`w-4 h-4 ${sortOrder === 'desc' ? 'rotate-180' : ''}`} />
+                        )}
+                      </button>
+                    </th>
+                    <th className="px-4 py-4 text-left">
+                      <button
+                        onClick={() => {
+                          if (sortField === 'theme') {
+                            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                          } else {
+                            setSortField('theme');
+                            setSortOrder('asc');
+                          }
+                        }}
+                        className="flex items-center gap-2 font-heading text-primary hover:text-secondary transition-colors"
+                      >
+                        Thème
+                        {sortField === 'theme' && (
+                          <ArrowUpDown className={`w-4 h-4 ${sortOrder === 'desc' ? 'rotate-180' : ''}`} />
+                        )}
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredItems.map((item, index) => (
+                    <motion.tr
+                      key={item._id}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.02 }}
+                      viewport={{ once: true }}
+                      className="border-b border-primary/10 hover:bg-primary/5 transition-colors"
+                    >
+                      <td className="px-4 py-4">
+                        <div>
+                          <p className="font-heading text-lg text-primary font-semibold">{item.nidalumWord}</p>
+                          {item.pronunciationGuide && (
+                            <p className="font-paragraph text-xs text-secondary/80 mt-1">[{item.pronunciationGuide}]</p>
+                          )}
                         </div>
-                      )}
-
-                      {item.etymology && (
-                        <div className="pt-3 border-t border-primary/10">
-                          <p className="font-paragraph text-xs text-foreground/50 mb-1">Étymologie:</p>
-                          <p className="font-paragraph text-sm text-foreground/60">
-                            {item.etymology}
-                          </p>
-                        </div>
-                      )}
-
-                      <div className="flex flex-wrap gap-2 pt-3">
-                        {item.category && (
-                          <span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 font-paragraph text-xs text-primary">
+                      </td>
+                      <td className="px-4 py-4 hidden md:table-cell">
+                        <p className="font-paragraph text-sm text-foreground/70">{item.pronunciationGuide || '—'}</p>
+                      </td>
+                      <td className="px-4 py-4 hidden lg:table-cell">
+                        <p className="font-paragraph text-sm text-foreground/70 line-clamp-2">{item.definition || '—'}</p>
+                      </td>
+                      <td className="px-4 py-4">
+                        {item.category ? (
+                          <span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 font-paragraph text-xs text-primary rounded">
                             {item.category}
                           </span>
+                        ) : (
+                          <span className="text-foreground/30">—</span>
                         )}
-                        {item.theme && (
-                          <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
+                      </td>
+                      <td className="px-4 py-4">
+                        {item.theme ? (
+                          <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary rounded">
                             {item.theme}
                           </span>
+                        ) : (
+                          <span className="text-foreground/30">—</span>
                         )}
-                      </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </motion.div>
+          ) : (
+            // Grid View
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.map((item, index) => (
+                <motion.div
+                  key={item._id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  viewport={{ once: true }}
+                  className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group hover:bg-background/70"
+                >
+                  <div className="mb-4">
+                    <h3 className="font-heading text-3xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                      {item.nidalumWord}
+                    </h3>
+                    {item.pronunciationGuide && (
+                      <p className="font-paragraph text-sm text-secondary font-semibold">
+                        [{item.pronunciationGuide}]
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-3">
+                    <div>
+                      <p className="font-paragraph text-foreground/80 leading-relaxed">
+                        {item.definition || 'Définition non disponible'}
+                      </p>
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-            </>
+
+                    {item.exampleSentence && (
+                      <div className="bg-dark-amber-shadow/20 p-3 border-l-2 border-secondary">
+                        <p className="font-paragraph text-xs text-foreground/50 mb-1">Exemple:</p>
+                        <p className="font-paragraph text-sm text-foreground/70 italic">
+                          {item.exampleSentence}
+                        </p>
+                      </div>
+                    )}
+
+                    {item.etymology && (
+                      <div className="pt-3 border-t border-primary/10">
+                        <p className="font-paragraph text-xs text-foreground/50 mb-1">Étymologie:</p>
+                        <p className="font-paragraph text-sm text-foreground/60">
+                          {item.etymology}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex flex-wrap gap-2 pt-3">
+                      {item.category && (
+                        <span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 font-paragraph text-xs text-primary">
+                          {item.category}
+                        </span>
+                      )}
+                      {item.theme && (
+                        <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
+                          {item.theme}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           )}
         </div>
       </section>
