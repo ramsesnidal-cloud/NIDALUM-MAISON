@@ -57,10 +57,28 @@ export default function LexicalArchivesPage() {
         BaseCrudService.getAll<LanguageCategories>('languagecategories')
       ]);
 
-      setLexicon(lexiconResult.items || []);
+      const lexiconItems = lexiconResult.items || [];
+      const categoryItems = categoriesResult.items || [];
+
+      // DIAGNOSTIC LOGS
+      console.log('=== DIAGNOSTIC LEXICAL ARCHIVES ===');
+      console.log(`✓ Lexicon items loaded: ${lexiconItems.length}`);
+      console.log(`✓ Categories loaded: ${categoryItems.length}`);
+      
+      if (lexiconItems.length > 0) {
+        console.log('Sample lexicon item:', lexiconItems[0]);
+        console.log('Unique categories in lexicon:', [...new Set(lexiconItems.map(w => w.category))]);
+      }
+      
+      if (categoryItems.length > 0) {
+        console.log('Sample category:', categoryItems[0]);
+        console.log('All category names:', categoryItems.map(c => c.categoryName));
+      }
+
+      setLexicon(lexiconItems);
       
       // Map categories with icons
-      const categoriesWithIcons: LexicalCategory[] = (categoriesResult.items || []).map(cat => ({
+      const categoriesWithIcons: LexicalCategory[] = categoryItems.map(cat => ({
         ...cat,
         icon: getIconForCategory(cat.categoryName || '')
       }));
@@ -72,7 +90,7 @@ export default function LexicalArchivesPage() {
         setExpandedCategories(new Set([categoriesWithIcons[0].categoryName || '']));
       }
       
-      console.log(`Loaded ${lexiconResult.items?.length || 0} lexicon items and ${categoriesResult.items?.length || 0} categories from CMS`);
+      console.log(`✓ Final state: ${lexiconItems.length} words, ${categoriesWithIcons.length} categories`);
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error);
       setLexicon([]);

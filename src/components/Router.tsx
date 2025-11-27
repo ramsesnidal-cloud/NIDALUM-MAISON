@@ -20,6 +20,9 @@ import AuthorPage from '@/components/pages/AuthorPage';
 import ContactPage from '@/components/pages/ContactPage';
 import SignUpPage from '@/components/pages/SignUpPage';
 
+// Diagnostic
+import LexicalArchivesDiagnostic from '@/components/LexicalArchivesDiagnostic';
+
 // Layout component that includes ScrollToTop
 function Layout() {
   return (
@@ -83,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "lexical-archives",
         element: <LexicalArchivesPage />,
+      },
+      {
+        path: "diagnostic-lexical",
+        element: <LexicalArchivesDiagnostic />,
       },
       {
         path: "author",
