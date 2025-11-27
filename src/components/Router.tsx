@@ -20,6 +20,8 @@ import AuthorPage from '@/components/pages/AuthorPage';
 import ContactPage from '@/components/pages/ContactPage';
 import SignUpPage from '@/components/pages/SignUpPage';
 import InitializeLexicalData from '@/components/pages/InitializeLexicalData';
+import TermsPage from '@/components/pages/TermsPage';
+import PrivacyPage from '@/components/pages/PrivacyPage';
 
 // Diagnostic
 import LexicalArchivesDiagnostic from '@/components/LexicalArchivesDiagnostic';
@@ -107,6 +109,14 @@ const router = createBrowserRouter([
       {
         path: "initialize-lexical",
         element: <InitializeLexicalData />,
+      },
+      {
+        path: "terms",
+        element: <TermsPage />,
+      },
+      {
+        path: "privacy",
+        element: <PrivacyPage />,
       },
       {
         path: "*",

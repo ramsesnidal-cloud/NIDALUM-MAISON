@@ -394,11 +394,11 @@ export default function SignUpPage() {
                   />
                   <label htmlFor="agreeToTerms" className="font-paragraph text-sm text-foreground/80 cursor-pointer">
                     J'accepte les{' '}
-                    <a href="#" className="text-secondary hover:text-primary transition-colors">
+                    <a href="/terms" className="text-secondary hover:text-primary transition-colors">
                       conditions d'utilisation
                     </a>{' '}
                     et la{' '}
-                    <a href="#" className="text-secondary hover:text-primary transition-colors">
+                    <a href="/privacy" className="text-secondary hover:text-primary transition-colors">
                       politique de confidentialité
                     </a>
                   </label>
