@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BaseCrudService } from '@/integrations';
 import { NidalumApprendrelaLangue } from '@/entities';
 
@@ -675,8 +676,11 @@ const NIDALUM_WORDS_DATA = [
 ];
 
 export default function InitializeLexicalData() {
+  const navigate = useNavigate();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Initialisation des données...');
+  const [progress, setProgress] = useState(0);
+  const [redirectCountdown, setRedirectCountdown] = useState(0);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -684,7 +688,8 @@ export default function InitializeLexicalData() {
         let successCount = 0;
         let failureCount = 0;
 
-        for (const wordData of NIDALUM_WORDS_DATA) {
+        for (let i = 0; i < NIDALUM_WORDS_DATA.length; i++) {
+          const wordData = NIDALUM_WORDS_DATA[i];
           try {
             await BaseCrudService.create('nidalumlexicon', {
               _id: crypto.randomUUID(),
@@ -695,10 +700,24 @@ export default function InitializeLexicalData() {
             console.error(`Erreur lors de l'ajout du mot ${wordData.nidalumWord}:`, error);
             failureCount++;
           }
+          setProgress(Math.round(((i + 1) / NIDALUM_WORDS_DATA.length) * 100));
         }
 
         setStatus('success');
-        setMessage(`✅ Données initialisées avec succès! ${successCount} mots ajoutés. ${failureCount > 0 ? `${failureCount} erreurs.` : ''}`);
+        setMessage(`✅ Synchronisation complète! ${successCount} mots ajoutés. ${failureCount > 0 ? `${failureCount} erreurs.` : ''}`);
+        
+        // Auto-redirect after 3 seconds
+        setRedirectCountdown(3);
+        const timer = setInterval(() => {
+          setRedirectCountdown(prev => {
+            if (prev <= 1) {
+              clearInterval(timer);
+              navigate('/lexical-archives');
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
       } catch (error) {
         setStatus('error');
         setMessage(`❌ Erreur lors de l'initialisation: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
@@ -721,10 +740,22 @@ export default function InitializeLexicalData() {
           </h1>
           <p className="font-paragraph text-lg text-foreground mb-6">{message}</p>
           
+          {status === 'loading' && (
+            <div className="space-y-4">
+              <div className="w-full bg-foreground/20 rounded-full h-2 overflow-hidden">
+                <div 
+                  className="bg-primary h-full transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <p className="font-paragraph text-sm text-foreground/70 text-center">{progress}% complété</p>
+            </div>
+          )}
+          
           {status === 'success' && (
             <div className="space-y-4">
               <p className="font-paragraph text-foreground/80">
-                Les 5 catégories et 60 mots Nidalum ont été ajoutés avec succès!
+                ✨ Les 5 catégories et 60 mots Nidalum ont été synchronisés avec succès!
               </p>
               <div className="grid grid-cols-5 gap-2">
                 {['Sacré', 'Éléments', 'Humain', 'Protection', 'Nombres'].map(cat => (
@@ -734,12 +765,40 @@ export default function InitializeLexicalData() {
                   </div>
                 ))}
               </div>
-              <a 
-                href="/lexical-archives"
-                className="inline-block mt-6 px-6 py-3 bg-primary text-primary-foreground rounded font-heading hover:bg-primary/90 transition"
+              
+              <div className="mt-6 p-4 bg-foreground/10 rounded border border-foreground/20">
+                <p className="font-paragraph text-sm text-foreground/80 mb-2">
+                  📊 Redirection automatique dans {redirectCountdown}s...
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => navigate('/lexical-archives')}
+                    className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded font-heading hover:bg-primary/90 transition"
+                  >
+                    Voir Archives Lexicales
+                  </button>
+                  <button
+                    onClick={() => navigate('/diagnostic-lexical')}
+                    className="flex-1 px-4 py-2 bg-secondary text-secondary-foreground rounded font-heading hover:bg-secondary/90 transition"
+                  >
+                    Voir Diagnostic
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {status === 'error' && (
+            <div className="space-y-4">
+              <p className="font-paragraph text-foreground/80">
+                Une erreur s'est produite lors de la synchronisation.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-3 bg-primary text-primary-foreground rounded font-heading hover:bg-primary/90 transition"
               >
-                Voir les Archives Lexicales →
-              </a>
+                Réessayer
+              </button>
             </div>
           )}
         </div>
