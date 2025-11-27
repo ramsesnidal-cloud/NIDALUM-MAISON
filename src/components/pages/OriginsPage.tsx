@@ -1,47 +1,46 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
 import { Globe, Star, Zap, Moon } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { BaseCrudService } from '@/integrations';
+import { OriginsandChronology } from '@/entities';
 
 export default function OriginsPage() {
   const { t } = useTranslation();
-  const cosmicElements = [
-    {
-      icon: Star,
-      title: 'La Naissance de Souma-Ra',
-      description: 'Au commencement, il n\'y avait que le vide cosmique, le Néant Primordial. De ce silence absolu émergea Souma-Ra, le premier monde, né de la volonté des Ancêtres Stellaires.',
-      color: 'primary'
-    },
-    {
-      icon: Globe,
-      title: 'L\'Éveil de Nidar',
-      description: 'Nidar, le Premier Gardien, fut le premier être conscient de Souma-Ra. Il reçut le don de la parole sacrée et créa la langue Nidalum pour nommer toutes choses.',
-      color: 'secondary'
-    },
-    {
-      icon: Zap,
-      title: 'Les Sept Piliers',
-      description: 'Nidar érigea les Sept Piliers Cosmiques, structures mystiques qui maintiennent l\'équilibre entre les dimensions et permettent la circulation de l\'énergie vitale.',
-      color: 'primary'
-    },
-    {
-      icon: Moon,
-      title: 'Le Cycle Éternel',
-      description: 'Souma-Ra existe dans un cycle perpétuel de création et de renaissance, guidé par les lois cosmiques inscrites dans la langue Nidalum elle-même.',
-      color: 'secondary'
-    }
-  ];
+  const [originsData, setOriginsData] = useState<OriginsandChronology[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const timeline = [
-    { era: 'Ère du Vide', event: 'Le Néant Primordial avant toute création' },
-    { era: 'Ère de l\'Éveil', event: 'Naissance de Souma-Ra et émergence de Nidar' },
-    { era: 'Ère de la Parole', event: 'Création de la langue Nidalum et nomination du monde' },
-    { era: 'Ère des Piliers', event: 'Érection des Sept Piliers Cosmiques' },
-    { era: 'Ère de l\'Harmonie', event: 'Établissement de l\'équilibre cosmique' },
-    { era: 'Ère Présente', event: 'Transmission de la sagesse aux générations futures' },
-  ];
+  useEffect(() => {
+    loadOrigins();
+  }, []);
+
+  const loadOrigins = async () => {
+    setIsLoading(true);
+    const { items } = await BaseCrudService.getAll<OriginsandChronology>('origineschronologie');
+    setOriginsData(items);
+    setIsLoading(false);
+  };
+
+  const cosmicElements = originsData.filter(item => item.category === 'Cosmic Element');
+  const timeline = originsData.filter(item => item.category === 'Chronological Era');
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+            <p className="font-paragraph text-foreground/70">{t('common.loading')}</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -92,22 +91,33 @@ export default function OriginsPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {cosmicElements.map((element, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
-              >
-                <element.icon className={`w-12 h-12 text-${element.color} mb-6`} />
-                <h3 className="font-heading text-2xl text-primary mb-4">{element.title}</h3>
-                <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  {element.description}
-                </p>
-              </motion.div>
-            ))}
+            {cosmicElements.map((element, index) => {
+              const icons = [Star, Globe, Zap, Moon];
+              const Icon = icons[index % icons.length];
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
+                >
+                  <Icon className="w-12 h-12 text-primary mb-6" />
+                  <h3 className="font-heading text-2xl text-primary mb-4">{element.name}</h3>
+                  <p className="font-paragraph text-foreground/70 leading-relaxed">
+                    {element.description}
+                  </p>
+                  {element.significance && (
+                    <div className="mt-4 pt-4 border-t border-primary/10">
+                      <p className="font-paragraph text-sm text-secondary italic">
+                        {element.significance}
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -139,8 +149,8 @@ export default function OriginsPage() {
                   >
                     <div className={`flex-1 ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'}`}>
                       <div className="border border-primary/20 p-6 bg-background/50 backdrop-blur-sm inline-block">
-                        <h3 className="font-heading text-2xl text-secondary mb-2">{item.era}</h3>
-                        <p className="font-paragraph text-foreground/70">{item.event}</p>
+                        <h3 className="font-heading text-2xl text-secondary mb-2">{item.name}</h3>
+                        <p className="font-paragraph text-foreground/70">{item.description}</p>
                       </div>
                     </div>
                     <div className="hidden lg:block w-4 h-4 bg-primary border-4 border-background rounded-full relative z-10"></div>

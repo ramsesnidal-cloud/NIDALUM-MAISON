@@ -1,29 +1,29 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
 import { useTranslation } from '@/hooks/useTranslation';
+import { BaseCrudService } from '@/integrations';
+import { NidalumAlphabet } from '@/entities';
 
 export default function AlphabetPage() {
   const { t } = useTranslation();
-  const alphabetLetters = [
-    { letter: 'A', nidalum: 'Ā', pronunciation: 'ah', meaning: 'Origine' },
-    { letter: 'E', nidalum: 'Ē', pronunciation: 'eh', meaning: 'Essence' },
-    { letter: 'I', nidalum: 'Ī', pronunciation: 'ee', meaning: 'Lumière' },
-    { letter: 'O', nidalum: 'Ō', pronunciation: 'oh', meaning: 'Cosmos' },
-    { letter: 'U', nidalum: 'Ū', pronunciation: 'oo', meaning: 'Unité' },
-    { letter: 'N', nidalum: 'Ṇ', pronunciation: 'n', meaning: 'Naissance' },
-    { letter: 'D', nidalum: 'Ḍ', pronunciation: 'd', meaning: 'Destinée' },
-    { letter: 'L', nidalum: 'Ḷ', pronunciation: 'l', meaning: 'Lien' },
-    { letter: 'M', nidalum: 'Ṃ', pronunciation: 'm', meaning: 'Mystère' },
-    { letter: 'R', nidalum: 'Ṛ', pronunciation: 'r', meaning: 'Révélation' },
-    { letter: 'S', nidalum: 'Ṣ', pronunciation: 's', meaning: 'Sacré' },
-    { letter: 'T', nidalum: 'Ṭ', pronunciation: 't', meaning: 'Temps' },
-    { letter: 'K', nidalum: 'Ḳ', pronunciation: 'k', meaning: 'Connaissance' },
-    { letter: 'P', nidalum: 'Ṗ', pronunciation: 'p', meaning: 'Pouvoir' },
-    { letter: 'B', nidalum: 'Ḅ', pronunciation: 'b', meaning: 'Bénédiction' },
-    { letter: 'G', nidalum: 'Ġ', pronunciation: 'g', meaning: 'Gardien' },
-  ];
+  const [alphabetLetters, setAlphabetLetters] = useState<NidalumAlphabet[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    loadAlphabet();
+  }, []);
+
+  const loadAlphabet = async () => {
+    setIsLoading(true);
+    const { items } = await BaseCrudService.getAll<NidalumAlphabet>('alphabetnidalum');
+    // Sort by alphabetical order if available
+    const sorted = items.sort((a, b) => (a.alphabeticalOrder || 0) - (b.alphabeticalOrder || 0));
+    setAlphabetLetters(sorted);
+    setIsLoading(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -137,11 +137,22 @@ export default function AlphabetPage() {
                 className="bg-background/50 border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 group backdrop-blur-sm"
               >
                 <div className="text-center mb-4">
-                  <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors">
-                    <span className="font-heading text-5xl text-primary group-hover:text-secondary transition-colors">
-                      {item.nidalum}
-                    </span>
-                  </div>
+                  {item.glyphImage ? (
+                    <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors overflow-hidden">
+                      <Image
+                        src={item.glyphImage}
+                        alt={item.letter || 'Letter'}
+                        width={80}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div className="inline-block w-20 h-20 border-2 border-secondary/30 flex items-center justify-center mb-3 group-hover:border-secondary transition-colors">
+                      <span className="font-heading text-5xl text-primary group-hover:text-secondary transition-colors">
+                        {item.letter}
+                      </span>
+                    </div>
+                  )}
                   <p className="font-paragraph text-sm text-foreground/50">
                     {t('pages.alphabet.latin')}: {item.letter}
                   </p>

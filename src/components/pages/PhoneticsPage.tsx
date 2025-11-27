@@ -1,30 +1,30 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Volume2, Mic, Waves } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { BaseCrudService } from '@/integrations';
+import { NidalumPhonetics } from '@/entities';
 
 export default function PhoneticsPage() {
   const { t } = useTranslation();
-  const vowels = [
-    { symbol: 'ā', ipa: '/aː/', description: 'Voyelle ouverte longue, comme "ah" prolongé', example: 'Nidar' },
-    { symbol: 'ē', ipa: '/eː/', description: 'Voyelle mi-fermée longue, comme "é" français', example: 'Kēla' },
-    { symbol: 'ī', ipa: '/iː/', description: 'Voyelle fermée longue, comme "i" prolongé', example: 'Shīra' },
-    { symbol: 'ō', ipa: '/oː/', description: 'Voyelle mi-fermée arrondie longue', example: 'Tōra' },
-    { symbol: 'ū', ipa: '/uː/', description: 'Voyelle fermée arrondie longue', example: 'Sūma' },
-  ];
+  const [phoneticItems, setPhoneticItems] = useState<NidalumPhonetics[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const consonants = [
-    { symbol: 'n', ipa: '/n/', description: 'Nasale alvéolaire', example: 'Nidar' },
-    { symbol: 'd', ipa: '/d/', description: 'Occlusive alvéolaire voisée', example: 'Nidar' },
-    { symbol: 'l', ipa: '/l/', description: 'Latérale alvéolaire', example: 'Kēla' },
-    { symbol: 'm', ipa: '/m/', description: 'Nasale bilabiale', example: 'Souma' },
-    { symbol: 'r', ipa: '/r/', description: 'Roulée alvéolaire', example: 'Toraé' },
-    { symbol: 's', ipa: '/s/', description: 'Fricative alvéolaire sourde', example: 'Souma' },
-    { symbol: 't', ipa: '/t/', description: 'Occlusive alvéolaire sourde', example: 'Toraé' },
-    { symbol: 'k', ipa: '/k/', description: 'Occlusive vélaire sourde', example: 'Kēla' },
-    { symbol: 'sh', ipa: '/ʃ/', description: 'Fricative post-alvéolaire', example: 'Shīra' },
-  ];
+  useEffect(() => {
+    loadPhonetics();
+  }, []);
+
+  const loadPhonetics = async () => {
+    setIsLoading(true);
+    const { items } = await BaseCrudService.getAll<NidalumPhonetics>('phonetiquenidalum');
+    setPhoneticItems(items);
+    setIsLoading(false);
+  };
+
+  const vowels = phoneticItems.filter(item => item.type === 'Vowel');
+  const consonants = phoneticItems.filter(item => item.type === 'Consonant');
 
   const phonotactics = [
     {
@@ -43,6 +43,21 @@ export default function PhoneticsPage() {
       examples: ['NÍ-dar', 'SÓU-ma', 'KÉ-la']
     }
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+            <p className="font-paragraph text-foreground/70">{t('common.loading')}</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -103,15 +118,15 @@ export default function PhoneticsPage() {
                 className="border border-primary/20 p-6 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm text-center"
               >
                 <div className="w-16 h-16 mx-auto mb-4 border-2 border-secondary/30 flex items-center justify-center">
-                  <span className="font-heading text-4xl text-primary">{vowel.symbol}</span>
+                  <span className="font-heading text-4xl text-primary">{vowel.character}</span>
                 </div>
-                <p className="font-paragraph text-secondary mb-2">{vowel.ipa}</p>
+                <p className="font-paragraph text-secondary mb-2">{vowel.pronunciationGuide}</p>
                 <p className="font-paragraph text-sm text-foreground/70 mb-3 leading-relaxed">
-                  {vowel.description}
+                  {vowel.notes}
                 </p>
                 <div className="bg-dark-amber-shadow/20 p-2 border-l-2 border-primary">
                   <p className="font-paragraph text-xs text-foreground/50">Exemple:</p>
-                  <p className="font-paragraph text-sm text-secondary italic">{vowel.example}</p>
+                  <p className="font-paragraph text-sm text-secondary italic">{vowel.exampleWord}</p>
                 </div>
               </motion.div>
             ))}
@@ -152,16 +167,16 @@ export default function PhoneticsPage() {
               >
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 border border-secondary/30 flex items-center justify-center mr-4">
-                    <span className="font-heading text-3xl text-secondary">{consonant.symbol}</span>
+                    <span className="font-heading text-3xl text-secondary">{consonant.character}</span>
                   </div>
-                  <span className="font-paragraph text-lg text-primary">{consonant.ipa}</span>
+                  <span className="font-paragraph text-lg text-primary">{consonant.pronunciationGuide}</span>
                 </div>
                 <p className="font-paragraph text-sm text-foreground/70 mb-3 leading-relaxed">
-                  {consonant.description}
+                  {consonant.notes}
                 </p>
                 <div className="bg-dark-amber-shadow/20 p-2 border-l-2 border-secondary">
                   <p className="font-paragraph text-xs text-foreground/50">Exemple:</p>
-                  <p className="font-paragraph text-sm text-primary italic">{consonant.example}</p>
+                  <p className="font-paragraph text-sm text-primary italic">{consonant.exampleWord}</p>
                 </div>
               </motion.div>
             ))}

@@ -1,51 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BookOpen, Layers, Link2, Zap, ChevronDown, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useTranslation } from '@/hooks/useTranslation';
+import { BaseCrudService } from '@/integrations';
+import { RglesdeGrammaireNidalum } from '@/entities';
 
 export default function GrammarPage() {
   const { t } = useTranslation();
+  const [grammarRules, setGrammarRules] = useState<RglesdeGrammaireNidalum[]>([]);
   const [expandedRule, setExpandedRule] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'rules' | 'verbs' | 'cases' | 'sentences'>('all');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const grammarRules = [
-    {
-      icon: Layers,
-      titleKey: 'pages.grammar.sentenceStructure',
-      descriptionKey: 'pages.grammar.sentenceStructureDesc',
-      exampleKey: 'pages.grammar.sentenceExample',
-      color: 'primary',
-      category: 'rules'
-    },
-    {
-      icon: Link2,
-      titleKey: 'pages.grammar.caseSystem',
-      descriptionKey: 'pages.grammar.caseSystemDesc',
-      exampleKey: 'pages.grammar.caseExample',
-      color: 'secondary',
-      category: 'cases'
-    },
-    {
-      icon: Zap,
-      titleKey: 'pages.grammar.temporalConjugation',
-      descriptionKey: 'pages.grammar.temporalConjugationDesc',
-      exampleKey: 'pages.grammar.temporalExample',
-      color: 'primary',
-      category: 'verbs'
-    },
-    {
-      icon: BookOpen,
-      titleKey: 'pages.grammar.spiritualModifiers',
-      descriptionKey: 'pages.grammar.spiritualModifiersDesc',
-      exampleKey: 'pages.grammar.spiritualExample',
-      color: 'secondary',
-      category: 'rules'
-    }
-  ];
+  useEffect(() => {
+    loadGrammar();
+  }, []);
+
+  const loadGrammar = async () => {
+    setIsLoading(true);
+    const { items } = await BaseCrudService.getAll<RglesdeGrammaireNidalum>('grammairenidalum');
+    setGrammarRules(items);
+    setIsLoading(false);
+  };
 
   const verbConjugation = [
     { tenseKey: 'pages.grammar.eternalPresent', suffix: '-∅', exampleKey: 'pages.grammar.eternalPresent' },
@@ -62,13 +42,28 @@ export default function GrammarPage() {
   ];
 
   const filteredRules = grammarRules.filter(rule => {
-    const ruleTitle = t(rule.titleKey).toLowerCase();
-    const ruleDesc = t(rule.descriptionKey).toLowerCase();
+    const ruleTitle = rule.ruleTitle?.toLowerCase() || '';
+    const ruleDesc = rule.explanation?.toLowerCase() || '';
     const matchesSearch = ruleTitle.includes(searchTerm.toLowerCase()) ||
                          ruleDesc.includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || rule.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+            <p className="font-paragraph text-foreground/70">{t('common.loading')}</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -171,10 +166,10 @@ export default function GrammarPage() {
                 className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm cursor-pointer group"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <rule.icon className={`w-12 h-12 text-${rule.color} flex-shrink-0`} />
+                  <Layers className="w-12 h-12 text-primary flex-shrink-0" />
                   <ChevronDown className={`w-5 h-5 text-primary transition-transform ${expandedRule === index ? 'rotate-180' : ''}`} />
                 </div>
-                <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">{t(rule.titleKey)}</h3>
+                <h3 className="font-heading text-2xl text-primary mb-4 group-hover:text-secondary transition-colors">{rule.ruleTitle}</h3>
                 
                 {expandedRule === index && (
                   <motion.div
@@ -184,11 +179,14 @@ export default function GrammarPage() {
                     className="space-y-4"
                   >
                     <p className="font-paragraph text-foreground/70 leading-relaxed">
-                      {t(rule.descriptionKey)}
+                      {rule.explanation}
                     </p>
                     <div className="bg-dark-amber-shadow/20 border-l-4 border-secondary p-4">
-                      <p className="font-paragraph text-sm text-foreground/60 mb-1">{t('common.search')}:</p>
-                      <p className="font-paragraph text-secondary italic">{t(rule.exampleKey)}</p>
+                      <p className="font-paragraph text-sm text-foreground/60 mb-1">Exemple:</p>
+                      <p className="font-paragraph text-secondary italic">{rule.nidalumExample}</p>
+                      {rule.exampleTranslation && (
+                        <p className="font-paragraph text-sm text-foreground/70 mt-2">{rule.exampleTranslation}</p>
+                      )}
                     </div>
                   </motion.div>
                 )}

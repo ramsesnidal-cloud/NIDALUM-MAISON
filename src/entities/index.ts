@@ -33,6 +33,54 @@ export interface RpertoireLinguistiqueNidalumSectionQuotidienne {
 
 
 /**
+ * Collection ID: academieprogrammes
+ * Interface for ProgrammesdelAcadmie
+ */
+export interface ProgrammesdelAcadmie {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  programName?: string;
+  /** @wixFieldType text */
+  programDescription?: string;
+  /** @wixFieldType image */
+  programImage?: string;
+  /** @wixFieldType text */
+  programLevel?: string;
+  /** @wixFieldType text */
+  programDuration?: string;
+  /** @wixFieldType url */
+  enrollmentLink?: string;
+  /** @wixFieldType boolean */
+  isAvailable?: boolean;
+}
+
+
+/**
+ * Collection ID: alphabetnidalum
+ * Interface for NidalumAlphabet
+ */
+export interface NidalumAlphabet {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  letter?: string;
+  /** @wixFieldType text */
+  pronunciation?: string;
+  /** @wixFieldType text */
+  meaning?: string;
+  /** @wixFieldType image */
+  glyphImage?: string;
+  /** @wixFieldType number */
+  alphabeticalOrder?: number;
+  /** @wixFieldType text */
+  letterType?: string;
+}
+
+
+/**
  * Collection ID: gestionvideoauteur
  * Interface for AuthorVideoManagement
  */
@@ -62,6 +110,29 @@ export interface AuthorVideoManagement {
   isActive?: boolean;
   /** @wixFieldType video */
   video?: string;
+}
+
+
+/**
+ * Collection ID: grammairenidalum
+ * Interface for RglesdeGrammaireNidalum
+ */
+export interface RglesdeGrammaireNidalum {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  ruleTitle?: string;
+  /** @wixFieldType text */
+  category?: string;
+  /** @wixFieldType text */
+  explanation?: string;
+  /** @wixFieldType text */
+  nidalumExample?: string;
+  /** @wixFieldType text */
+  exampleTranslation?: string;
+  /** @wixFieldType text */
+  additionalNotes?: string;
 }
 
 
@@ -171,6 +242,54 @@ export interface OfficialResources {
   publicationDate?: Date | string;
   /** @wixFieldType image */
   thumbnailImage?: string;
+}
+
+
+/**
+ * Collection ID: origineschronologie
+ * Interface for OriginsandChronology
+ */
+export interface OriginsandChronology {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  name?: string;
+  /** @wixFieldType text */
+  category?: string;
+  /** @wixFieldType text */
+  description?: string;
+  /** @wixFieldType image */
+  image?: string;
+  /** @wixFieldType text */
+  timeframe?: string;
+  /** @wixFieldType text */
+  significance?: string;
+}
+
+
+/**
+ * Collection ID: phonetiquenidalum
+ * Interface for NidalumPhonetics
+ */
+export interface NidalumPhonetics {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  character?: string;
+  /** @wixFieldType text */
+  type?: string;
+  /** @wixFieldType text */
+  pronunciationGuide?: string;
+  /** @wixFieldType text */
+  exampleWord?: string;
+  /** @wixFieldType url */
+  audioPronunciation?: string;
+  /** @wixFieldType image */
+  visualRepresentation?: string;
+  /** @wixFieldType text */
+  notes?: string;
 }
 
 

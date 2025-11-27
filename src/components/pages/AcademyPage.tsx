@@ -1,42 +1,29 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BookOpen, Users, Award, Calendar, CheckCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { BaseCrudService } from '@/integrations';
+import { ProgrammesdelAcadmie } from '@/entities';
+import { Image } from '@/components/ui/image';
 
 export default function AcademyPage() {
   const { t } = useTranslation();
-  const programs = [
-    {
-      title: 'Initiation à Nidalum',
-      level: 'Débutant',
-      duration: '8 semaines',
-      description: 'Découvrez les bases de la langue Nidalum : alphabet Toraé-Shira, prononciation, et vocabulaire essentiel.',
-      modules: ['Alphabet et écriture', 'Phonétique de base', 'Vocabulaire fondamental', 'Phrases simples']
-    },
-    {
-      title: 'Grammaire Avancée',
-      level: 'Intermédiaire',
-      duration: '12 semaines',
-      description: 'Approfondissez votre compréhension de la structure grammaticale et des nuances linguistiques.',
-      modules: ['Système de cas', 'Conjugaisons complexes', 'Syntaxe avancée', 'Modificateurs spirituels']
-    },
-    {
-      title: 'Spiritualité et Chants',
-      level: 'Avancé',
-      duration: '10 semaines',
-      description: 'Explorez la dimension spirituelle de Nidalum à travers les chants rituels et la méditation.',
-      modules: ['Chants rituels', 'Contextes spirituels', 'Pratiques méditatives', 'Connexion cosmique']
-    },
-    {
-      title: 'Maîtrise Complète',
-      level: 'Expert',
-      duration: '16 semaines',
-      description: 'Devenez un maître de Nidalum, capable d\'enseigner et de créer dans la langue sacrée.',
-      modules: ['Création littéraire', 'Enseignement', 'Recherche linguistique', 'Certification']
-    }
-  ];
+  const [programs, setPrograms] = useState<ProgrammesdelAcadmie[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    loadPrograms();
+  }, []);
+
+  const loadPrograms = async () => {
+    setIsLoading(true);
+    const { items } = await BaseCrudService.getAll<ProgrammesdelAcadmie>('academieprogrammes');
+    setPrograms(items);
+    setIsLoading(false);
+  };
 
   const benefits = [
     {
@@ -60,6 +47,21 @@ export default function AcademyPage() {
       description: 'Étudiez à votre rythme avec un accès permanent aux cours'
     }
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+            <p className="font-paragraph text-foreground/70">{t('common.loading')}</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -115,39 +117,51 @@ export default function AcademyPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
+                className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group flex flex-col h-full"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="font-heading text-2xl text-primary mb-2">{program.title}</h3>
-                    <div className="flex gap-3">
-                      <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary">
-                        {program.level}
-                      </span>
-                      <span className="inline-block px-3 py-1 bg-primary/10 border border-primary/30 font-paragraph text-xs text-primary">
-                        {program.duration}
-                      </span>
-                    </div>
+                {program.programImage && (
+                  <div className="aspect-video overflow-hidden">
+                    <Image
+                      src={program.programImage}
+                      alt={program.programName || 'Programme'}
+                      width={600}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
-                </div>
+                )}
+                
+                <div className="p-8 flex-1 flex flex-col">
+                  <div className="mb-4">
+                    <span className="inline-block px-3 py-1 bg-secondary/10 border border-secondary/30 font-paragraph text-xs text-secondary mb-3">
+                      {program.programLevel}
+                    </span>
+                    <h3 className="font-heading text-2xl text-primary mb-2 group-hover:text-secondary transition-colors">
+                      {program.programName}
+                    </h3>
+                  </div>
 
-                <p className="font-paragraph text-foreground/70 leading-relaxed mb-6">
-                  {program.description}
-                </p>
-
-                <div className="space-y-2 mb-6">
-                  <p className="font-paragraph text-sm text-foreground/50 mb-3">Modules inclus:</p>
-                  {program.modules.map((module, idx) => (
-                    <div key={idx} className="flex items-center">
-                      <CheckCircle className="w-4 h-4 text-secondary mr-2" />
-                      <span className="font-paragraph text-sm text-foreground/70">{module}</span>
+                  {program.programDuration && (
+                    <div className="flex items-center text-foreground/60 mb-4">
+                      <Calendar className="w-4 h-4 mr-2 text-secondary flex-shrink-0" />
+                      <span className="font-paragraph text-sm">{program.programDuration}</span>
                     </div>
-                  ))}
-                </div>
+                  )}
 
-                <button className="w-full bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-3 hover:bg-primary/90 transition-all duration-300">
-                  S'inscrire
-                </button>
+                  <p className="font-paragraph text-foreground/70 leading-relaxed mb-6 flex-1">
+                    {program.programDescription}
+                  </p>
+
+                  {program.enrollmentLink && (
+                    <a
+                      href={program.enrollmentLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-3 hover:bg-primary/90 transition-all duration-300 text-center"
+                    >
+                      S'inscrire
+                    </a>
+                  )}
+                </div>
               </motion.div>
             ))}
           </div>
