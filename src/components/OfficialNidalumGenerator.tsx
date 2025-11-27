@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Wand2, Copy, Check, Download, RefreshCw } from 'lucide-react';
+import { Wand2, Copy, Check, Download, RefreshCw, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useMember } from '@/integrations';
 import { 
   generateNidalumWord, 
   generateDefinition, 
@@ -97,6 +98,7 @@ Exemple: {example}
 ---`;
 
 export default function OfficialNidalumGenerator() {
+  const { isAuthenticated, actions } = useMember();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedTheme, setSelectedTheme] = useState<string>('');
   const [generatedWords, setGeneratedWords] = useState<GeneratedWord[]>([]);
@@ -163,14 +165,51 @@ export default function OfficialNidalumGenerator() {
 
   return (
     <div className="space-y-12">
-      {/* Official Prompt Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="border-2 border-primary/40 p-10 bg-gradient-to-br from-dark-amber-shadow/20 to-background"
-      >
+      {/* Access Control - Show login prompt if not authenticated */}
+      {!isAuthenticated ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="border-2 border-primary/40 p-12 bg-gradient-to-br from-dark-amber-shadow/20 to-background rounded-lg text-center"
+        >
+          <div className="flex justify-center mb-6">
+            <div className="p-4 bg-primary/20 rounded-full">
+              <Lock className="w-12 h-12 text-primary" />
+            </div>
+          </div>
+          
+          <h3 className="font-heading text-3xl text-primary mb-4">
+            Accès Réservé
+          </h3>
+          
+          <p className="font-paragraph text-lg text-foreground/90 mb-8 max-w-2xl mx-auto">
+            Le Générateur Linguistique Officiel du Nidalum Universe Institute est réservé aux utilisateurs autorisés. 
+            Connectez-vous pour accéder à cet outil exclusif.
+          </p>
+
+          <Button
+            onClick={actions.login}
+            className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-paragraph font-semibold px-8 py-4 text-lg"
+          >
+            Se Connecter
+          </Button>
+
+          <p className="font-paragraph text-sm text-foreground/60 mt-6">
+            Vous n'avez pas de compte ? Contactez l'Institut Nidalum Universe pour obtenir un accès.
+          </p>
+        </motion.div>
+      ) : (
+        <>
+          {/* Official Prompt Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="border-2 border-primary/40 p-10 bg-gradient-to-br from-dark-amber-shadow/20 to-background"
+          >
         <button
           onClick={() => setShowPrompt(!showPrompt)}
           className="w-full flex items-center justify-between mb-6 group"
@@ -426,6 +465,8 @@ export default function OfficialNidalumGenerator() {
             Sélectionnez une catégorie et un thème, puis cliquez sur "Générer un Mot"
           </p>
         </motion.div>
+      )}
+        </>
       )}
     </div>
   );
