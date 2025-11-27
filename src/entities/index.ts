@@ -4,6 +4,29 @@
  */
 
 /**
+ * Collection ID: languagecategories
+ * Interface for LanguageCategories
+ */
+export interface LanguageCategories {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  categoryName?: string;
+  /** @wixFieldType text */
+  description?: string;
+  /** @wixFieldType text */
+  gradientColorFrom?: string;
+  /** @wixFieldType text */
+  gradientColorTo?: string;
+  /** @wixFieldType text */
+  theme?: string;
+  /** @wixFieldType image */
+  icon?: string;
+}
+
+
+/**
  * Collection ID: Import1
  * Interface for RpertoireLinguistiqueNidalumSectionQuotidienne
  */
@@ -133,6 +156,29 @@ export interface RglesdeGrammaireNidalum {
   exampleTranslation?: string;
   /** @wixFieldType text */
   additionalNotes?: string;
+}
+
+
+/**
+ * Collection ID: languagecategories
+ * Interface for LanguageCategories
+ */
+export interface LanguageCategories {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  categoryName?: string;
+  /** @wixFieldType text */
+  description?: string;
+  /** @wixFieldType text */
+  gradientColorFrom?: string;
+  /** @wixFieldType text */
+  gradientColorTo?: string;
+  /** @wixFieldType text */
+  theme?: string;
+  /** @wixFieldType image */
+  icon?: string;
 }
 
 
