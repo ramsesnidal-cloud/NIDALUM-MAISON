@@ -4,6 +4,35 @@
  */
 
 /**
+ * Collection ID: Import1
+ * Interface for Importer1
+ */
+export interface Importer1 {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  title?: string;
+  /** @wixFieldType text */
+  nidalum?: string;
+  /** @wixFieldType text */
+  phonetic?: string;
+  /** @wixFieldType text */
+  root?: string;
+  /** @wixFieldType text */
+  french?: string;
+  /** @wixFieldType text */
+  english?: string;
+  /** @wixFieldType text */
+  definition?: string;
+  /** @wixFieldType text */
+  category?: string;
+  /** @wixFieldType text */
+  german?: string;
+}
+
+
+/**
  * Collection ID: gestionvideoauteur
  * Interface for AuthorVideoManagement
  */
