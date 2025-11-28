@@ -4,6 +4,7 @@ import { BaseCrudService } from '@/integrations';
 import { NidalumApprendrelaLangue, LanguageCategories } from '@/entities';
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle, XCircle, RefreshCw, Download, Eye, Trash2, Edit3 } from 'lucide-react';
+import { useAdminStore } from '@/lib/admin-store';
 
 interface OrphanedWordFix {
   wordId: string;
@@ -39,11 +40,19 @@ interface DiagnosticReport {
 
 export default function CompleteLexicalDiagnostic() {
   const navigate = useNavigate();
+  const { isAdmin } = useAdminStore();
   const [status, setStatus] = useState<'analyzing' | 'correcting' | 'complete' | 'error'>('analyzing');
   const [progress, setProgress] = useState(0);
   const [report, setReport] = useState<DiagnosticReport | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const [showDetails, setShowDetails] = useState(false);
+
+  // Redirect non-admin users
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate('/');
+    }
+  }, [isAdmin, navigate]);
 
   const addLog = (message: string) => {
     const timestamp = new Date().toLocaleTimeString();
@@ -479,6 +488,27 @@ FIN DU RAPPORT
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
   };
+
+  // Show access denied message for non-admin users
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-background p-6 lg:p-12 flex items-center justify-center">
+        <div className="max-w-md text-center">
+          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h1 className="font-heading text-3xl text-primary mb-4">Accès Refusé</h1>
+          <p className="font-paragraph text-foreground/80 mb-6">
+            Cette page est réservée aux administrateurs uniquement.
+          </p>
+          <button
+            onClick={() => navigate('/')}
+            className="px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-heading"
+          >
+            Retour à l'accueil
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-6 lg:p-12">
