@@ -60,7 +60,8 @@ export default function LexicalArchivesPage() {
       const lexiconItems = lexiconResult.items || [];
       const categoryItems = categoriesResult.items || [];
 
-      // ... keep existing code (mapping categories with icons) ...
+      // CRITICAL FIX: Store lexicon items in state
+      setLexicon(lexiconItems);
       
       // Map categories with icons
       const categoriesWithIcons: LexicalCategory[] = categoryItems.map(cat => ({
