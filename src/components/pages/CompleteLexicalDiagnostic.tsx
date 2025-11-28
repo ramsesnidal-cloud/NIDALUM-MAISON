@@ -3,7 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { BaseCrudService } from '@/integrations';
 import { NidalumApprendrelaLangue, LanguageCategories } from '@/entities';
 import { motion } from 'framer-motion';
-import { AlertCircle, CheckCircle, XCircle, RefreshCw, Download, Eye } from 'lucide-react';
+import { AlertCircle, CheckCircle, XCircle, RefreshCw, Download, Eye, Trash2, Edit3 } from 'lucide-react';
+
+interface OrphanedWordFix {
+  wordId: string;
+  wordName: string;
+  oldCategory: string;
+  newCategory: string;
+  status: 'fixed' | 'deleted' | 'error';
+  reason: string;
+}
 
 interface DiagnosticReport {
   timestamp: string;
@@ -13,12 +22,17 @@ interface DiagnosticReport {
   orphanedWords: NidalumApprendrelaLangue[];
   missingCategories: string[];
   duplicateWords: string[];
+  invalidWords: NidalumApprendrelaLangue[];
+  slugMismatches: Array<{ word: NidalumApprendrelaLangue; issue: string }>;
   synchronizationStatus: 'success' | 'partial' | 'failed';
   corrections: {
     categoriesCreated: number;
     wordsFixed: number;
     orphansResolved: number;
+    wordsDeleted: number;
+    slugsCorrected: number;
   };
+  orphanedWordsFixes: OrphanedWordFix[];
   errors: string[];
   warnings: string[];
 }
@@ -38,10 +52,30 @@ export default function CompleteLexicalDiagnostic() {
     console.log(logMessage);
   };
 
+  const inferCategoryFromWord = (word: NidalumApprendrelaLangue): string => {
+    // Try to infer category from various fields
+    if (word.category && word.category !== 'UNCATEGORIZED') return word.category;
+    if (word.theme) return word.theme;
+    if (word.categorie) return word.categorie;
+    
+    // Infer from definition or context
+    const definition = (word.definition || word.definition1 || '').toLowerCase();
+    const context = (word.context || '').toLowerCase();
+    const fullText = `${definition} ${context}`;
+    
+    if (fullText.includes('sacr') || fullText.includes('spirit') || fullText.includes('divin')) return 'Sacré';
+    if (fullText.includes('élém') || fullText.includes('eau') || fullText.includes('feu') || fullText.includes('terre') || fullText.includes('air')) return 'Éléments';
+    if (fullText.includes('humain') || fullText.includes('person') || fullText.includes('homme') || fullText.includes('femme')) return 'Humain';
+    if (fullText.includes('protect') || fullText.includes('défens') || fullText.includes('garde')) return 'Protection';
+    if (fullText.includes('nombr') || fullText.includes('chiffr') || fullText.includes('quantit')) return 'Nombres';
+    
+    return 'Humain'; // Default category
+  };
+
   useEffect(() => {
     const runDiagnostic = async () => {
       try {
-        addLog('🔍 Démarrage du diagnostic technique complet...');
+        addLog('🔍 Démarrage du diagnostic technique complet et correction des orphelins...');
         
         // Step 1: Load all data
         addLog('📥 Chargement des données...');
@@ -55,10 +89,10 @@ export default function CompleteLexicalDiagnostic() {
 
         addLog(`✓ ${words.length} mots chargés`);
         addLog(`✓ ${categories.length} catégories chargées`);
-        setProgress(20);
+        setProgress(15);
 
         // Step 2: Analyze data
-        addLog('🔬 Analyse des données...');
+        addLog('🔬 Analyse détaillée des données...');
         const report: DiagnosticReport = {
           timestamp: new Date().toISOString(),
           totalWords: words.length,
@@ -67,25 +101,40 @@ export default function CompleteLexicalDiagnostic() {
           orphanedWords: [],
           missingCategories: [],
           duplicateWords: [],
+          invalidWords: [],
+          slugMismatches: [],
           synchronizationStatus: 'success',
           corrections: {
             categoriesCreated: 0,
             wordsFixed: 0,
             orphansResolved: 0,
+            wordsDeleted: 0,
+            slugsCorrected: 0,
           },
+          orphanedWordsFixes: [],
           errors: [],
           warnings: [],
         };
 
-        // Count words by category
+        // Build category map
         const categoryNames = new Set(categories.map(c => c.categoryName).filter(Boolean));
+        const categoryMap = new Map(categories.map(c => [c.categoryName, c]));
         
+        // Analyze each word
         words.forEach(word => {
           const category = word.category || 'UNCATEGORIZED';
           report.wordsByCategory[category] = (report.wordsByCategory[category] || 0) + 1;
 
-          if (!categoryNames.has(category)) {
+          // Check for invalid words (missing essential fields)
+          if (!word.nidalumWord || word.nidalumWord.trim() === '') {
+            report.invalidWords.push(word);
+            addLog(`⚠ Mot invalide détecté: ID ${word._id} (pas de nom Nidalum)`);
+          }
+
+          // Check for orphaned words
+          if (!categoryNames.has(category) && category !== 'UNCATEGORIZED') {
             report.orphanedWords.push(word);
+            addLog(`⚠ Mot orphelin: "${word.nidalumWord}" → catégorie inexistante "${category}"`);
           }
         });
 
@@ -101,7 +150,9 @@ export default function CompleteLexicalDiagnostic() {
         const wordNames = new Map<string, number>();
         words.forEach(word => {
           const name = word.nidalumWord || '';
-          wordNames.set(name, (wordNames.get(name) || 0) + 1);
+          if (name) {
+            wordNames.set(name, (wordNames.get(name) || 0) + 1);
+          }
         });
         wordNames.forEach((count, name) => {
           if (count > 1) {
@@ -111,20 +162,20 @@ export default function CompleteLexicalDiagnostic() {
 
         addLog(`✓ ${Object.keys(report.wordsByCategory).length} catégories trouvées`);
         addLog(`⚠ ${report.orphanedWords.length} mots orphelins détectés`);
+        addLog(`⚠ ${report.invalidWords.length} mots invalides détectés`);
         addLog(`⚠ ${report.missingCategories.length} catégories manquantes`);
         addLog(`⚠ ${report.duplicateWords.length} doublons détectés`);
 
-        if (report.orphanedWords.length > 0 || report.missingCategories.length > 0) {
+        if (report.orphanedWords.length > 0 || report.missingCategories.length > 0 || report.invalidWords.length > 0) {
           report.synchronizationStatus = 'partial';
         }
 
-        setProgress(40);
+        setProgress(30);
 
-        // Step 3: Auto-correct
-        addLog('🔧 Correction automatique en cours...');
+        // Step 3: Create missing categories
+        addLog('🔧 Création des catégories manquantes...');
         setStatus('correcting');
 
-        // Create missing categories
         const CATEGORIES_DATA: LanguageCategories[] = [
           {
             _id: crypto.randomUUID(),
@@ -180,46 +231,111 @@ export default function CompleteLexicalDiagnostic() {
           }
         }
 
-        setProgress(60);
+        setProgress(45);
 
-        // Fix orphaned words
+        // Step 4: Delete invalid words
+        addLog('🗑️ Suppression des mots invalides...');
+        for (const invalidWord of report.invalidWords) {
+          try {
+            await BaseCrudService.delete('nidalumlexicon', invalidWord._id);
+            report.corrections.wordsDeleted++;
+            addLog(`✓ Mot invalide supprimé: ID ${invalidWord._id}`);
+          } catch (error) {
+            report.errors.push(`Erreur lors de la suppression du mot invalide ${invalidWord._id}`);
+            addLog(`✗ Erreur suppression: ${invalidWord._id}`);
+          }
+        }
+
+        setProgress(55);
+
+        // Step 5: Fix orphaned words by reassigning to correct category
+        addLog('🔗 Rattachement des mots orphelins aux catégories...');
         for (const orphanWord of report.orphanedWords) {
           try {
-            // Try to infer category from word data or assign to default
-            const inferredCategory = inferCategory(orphanWord);
+            const newCategory = this.inferCategoryFromWord(orphanWord);
             await BaseCrudService.update('nidalumlexicon', {
               _id: orphanWord._id,
-              category: inferredCategory,
+              category: newCategory,
             });
             report.corrections.orphansResolved++;
-            addLog(`✓ Mot corrigé: ${orphanWord.nidalumWord} → ${inferredCategory}`);
+            report.orphanedWordsFixes.push({
+              wordId: orphanWord._id,
+              wordName: orphanWord.nidalumWord || 'Unknown',
+              oldCategory: orphanWord.category || 'UNCATEGORIZED',
+              newCategory: newCategory,
+              status: 'fixed',
+              reason: 'Catégorie réassignée automatiquement',
+            });
+            addLog(`✓ Mot orphelin corrigé: "${orphanWord.nidalumWord}" → ${newCategory}`);
           } catch (error) {
             report.errors.push(`Erreur lors de la correction de ${orphanWord.nidalumWord}`);
+            report.orphanedWordsFixes.push({
+              wordId: orphanWord._id,
+              wordName: orphanWord.nidalumWord || 'Unknown',
+              oldCategory: orphanWord.category || 'UNCATEGORIZED',
+              newCategory: 'ERROR',
+              status: 'error',
+              reason: error instanceof Error ? error.message : 'Erreur inconnue',
+            });
             addLog(`✗ Erreur: ${orphanWord.nidalumWord}`);
           }
         }
 
-        setProgress(80);
+        setProgress(65);
 
-        // Remove duplicates
-        const seenWords = new Set<string>();
+        // Step 6: Remove duplicates (keep first, delete others)
+        addLog('🔄 Suppression des doublons...');
+        const seenWords = new Map<string, string>(); // word name -> first ID
         for (const word of words) {
           const name = word.nidalumWord || '';
-          if (seenWords.has(name)) {
-            try {
-              await BaseCrudService.delete('nidalumlexicon', word._id);
-              addLog(`✓ Doublon supprimé: ${name}`);
-            } catch (error) {
-              report.warnings.push(`Impossible de supprimer le doublon: ${name}`);
+          if (name) {
+            if (seenWords.has(name)) {
+              // This is a duplicate, delete it
+              try {
+                await BaseCrudService.delete('nidalumlexicon', word._id);
+                report.corrections.wordsDeleted++;
+                addLog(`✓ Doublon supprimé: "${name}" (ID: ${word._id})`);
+              } catch (error) {
+                report.warnings.push(`Impossible de supprimer le doublon: ${name}`);
+              }
+            } else {
+              seenWords.set(name, word._id);
             }
           }
-          seenWords.add(name);
         }
 
-        setProgress(90);
+        setProgress(75);
 
-        // Final verification
-        addLog('✓ Vérification finale...');
+        // Step 7: Verify slug/category correspondence
+        addLog('✓ Vérification des correspondances slug/catégories...');
+        const updatedCategoriesResult = await BaseCrudService.getAll<LanguageCategories>('languagecategories');
+        const updatedCategories = updatedCategoriesResult.items || [];
+        const updatedCategoryNames = new Set(updatedCategories.map(c => c.categoryName).filter(Boolean));
+
+        for (const word of words) {
+          if (word.category && !updatedCategoryNames.has(word.category)) {
+            const inferredCategory = this.inferCategoryFromWord(word);
+            try {
+              await BaseCrudService.update('nidalumlexicon', {
+                _id: word._id,
+                category: inferredCategory,
+              });
+              report.corrections.slugsCorrected++;
+              report.slugMismatches.push({
+                word: word,
+                issue: `Catégorie "${word.category}" corrigée en "${inferredCategory}"`,
+              });
+              addLog(`✓ Slug corrigé: "${word.nidalumWord}" (${word.category} → ${inferredCategory})`);
+            } catch (error) {
+              report.warnings.push(`Impossible de corriger le slug pour ${word.nidalumWord}`);
+            }
+          }
+        }
+
+        setProgress(85);
+
+        // Step 8: Final verification and synchronization
+        addLog('✓ Synchronisation complète et vérification finale...');
         const [finalWordsResult, finalCategoriesResult] = await Promise.all([
           BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon'),
           BaseCrudService.getAll<LanguageCategories>('languagecategories')
@@ -239,16 +355,19 @@ export default function CompleteLexicalDiagnostic() {
         report.totalWords = finalWords.length;
         report.totalCategories = finalCategories.length;
 
-        if (report.orphanedWords.length === 0 && report.missingCategories.length === 0) {
+        // Check final status
+        const finalOrphans = finalWords.filter(w => !updatedCategoryNames.has(w.category || 'UNCATEGORIZED'));
+        if (finalOrphans.length === 0 && report.missingCategories.length === 0) {
           report.synchronizationStatus = 'success';
         }
 
-        addLog(`✅ Diagnostic terminé avec succès!`);
+        addLog(`✅ Diagnostic et correction terminés!`);
         addLog(`📊 Résumé final:`);
-        addLog(`   - ${report.totalWords} mots`);
-        addLog(`   - ${report.totalCategories} catégories`);
-        addLog(`   - ${report.corrections.categoriesCreated} catégories créées`);
-        addLog(`   - ${report.corrections.orphansResolved} mots corrigés`);
+        addLog(`   - ${report.totalWords} mots (${report.corrections.wordsDeleted} supprimés)`);
+        addLog(`   - ${report.totalCategories} catégories (${report.corrections.categoriesCreated} créées)`);
+        addLog(`   - ${report.corrections.orphansResolved} mots orphelins corrigés`);
+        addLog(`   - ${report.corrections.slugsCorrected} slugs corrigés`);
+        addLog(`   - Statut: ${report.synchronizationStatus}`);
 
         setReport(report);
         setStatus('complete');
@@ -262,63 +381,99 @@ export default function CompleteLexicalDiagnostic() {
     runDiagnostic();
   }, []);
 
-  const inferCategory = (word: NidalumApprendrelaLangue): string => {
-    // Simple inference based on word properties
-    if (word.category) return word.category;
-    if (word.theme) return word.theme;
-    return 'Humain'; // Default category
-  };
-
   const downloadReport = () => {
     if (!report) return;
     
     const reportText = `
-RAPPORT DE DIAGNOSTIC LEXICAL NIDALUM
-=====================================
+╔════════════════════════════════════════════════════════════════════════════╗
+║         RAPPORT COMPLET DE DIAGNOSTIC LEXICAL NIDALUM                      ║
+║              Correction Technique des Mots Orphelins                       ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
 Généré: ${new Date(report.timestamp).toLocaleString()}
+Statut Final: ${report.synchronizationStatus.toUpperCase()}
 
+═══════════════════════════════════════════════════════════════════════════════
 STATISTIQUES GLOBALES
----------------------
-Total de mots: ${report.totalWords}
+═══════════════════════════════════════════════════════════════════════════════
+Total de mots (final): ${report.totalWords}
 Total de catégories: ${report.totalCategories}
-Statut de synchronisation: ${report.synchronizationStatus}
+Synchronisation: ${report.synchronizationStatus === 'success' ? '✓ SUCCÈS' : report.synchronizationStatus === 'partial' ? '⚠ PARTIELLE' : '✗ ÉCHOUÉE'}
 
-DISTRIBUTION PAR CATÉGORIE
---------------------------
+═══════════════════════════════════════════════════════════════════════════════
+DISTRIBUTION PAR CATÉGORIE (FINAL)
+═══════════════════════════════════════════════════════════════════════════════
 ${Object.entries(report.wordsByCategory)
-  .map(([cat, count]) => `${cat}: ${count} mots`)
+  .sort(([, a], [, b]) => b - a)
+  .map(([cat, count]) => `${cat.padEnd(20)} : ${count.toString().padStart(4)} mots`)
   .join('\n')}
 
+═══════════════════════════════════════════════════════════════════════════════
 CORRECTIONS APPLIQUÉES
----------------------
-Catégories créées: ${report.corrections.categoriesCreated}
-Mots corrigés: ${report.corrections.orphansResolved}
-Orphelins résolus: ${report.corrections.orphansResolved}
+═══════════════════════════════════════════════════════════════════════════════
+✓ Catégories créées        : ${report.corrections.categoriesCreated}
+✓ Mots orphelins corrigés  : ${report.corrections.orphansResolved}
+✓ Mots invalides supprimés : ${report.corrections.wordsDeleted}
+✓ Slugs/Catégories corrigés: ${report.corrections.slugsCorrected}
+─────────────────────────────────────────────────────────────────────────────
+  TOTAL CORRECTIONS        : ${report.corrections.categoriesCreated + report.corrections.orphansResolved + report.corrections.wordsDeleted + report.corrections.slugsCorrected}
 
-PROBLÈMES DÉTECTÉS
-------------------
-Mots orphelins: ${report.orphanedWords.length}
-Catégories manquantes: ${report.missingCategories.length}
-Doublons: ${report.duplicateWords.length}
+═══════════════════════════════════════════════════════════════════════════════
+DÉTAIL DES MOTS ORPHELINS CORRIGÉS (${report.orphanedWordsFixes.length})
+═══════════════════════════════════════════════════════════════════════════════
+${report.orphanedWordsFixes.map((fix, i) => `
+${i + 1}. "${fix.wordName}"
+   ID: ${fix.wordId}
+   Ancienne catégorie: ${fix.oldCategory}
+   Nouvelle catégorie: ${fix.newCategory}
+   Statut: ${fix.status === 'fixed' ? '✓ CORRIGÉ' : fix.status === 'deleted' ? '✗ SUPPRIMÉ' : '✗ ERREUR'}
+   Raison: ${fix.reason}
+`).join('\n')}
 
-ERREURS
--------
-${report.errors.length > 0 ? report.errors.join('\n') : 'Aucune erreur'}
+═══════════════════════════════════════════════════════════════════════════════
+PROBLÈMES DÉTECTÉS ET RÉSOLUS
+═══════════════════════════════════════════════════════════════════════════════
+Mots invalides détectés: ${report.invalidWords.length} (supprimés)
+Catégories manquantes: ${report.missingCategories.length} (créées)
+Doublons détectés: ${report.duplicateWords.length} (supprimés)
+Slug/Catégorie mismatches: ${report.slugMismatches.length} (corrigés)
 
-AVERTISSEMENTS
---------------
-${report.warnings.length > 0 ? report.warnings.join('\n') : 'Aucun avertissement'}
+${report.missingCategories.length > 0 ? `
+Catégories créées:
+${report.missingCategories.map(cat => `  • ${cat}`).join('\n')}
+` : ''}
 
-LOGS DÉTAILLÉS
---------------
+${report.duplicateWords.length > 0 ? `
+Doublons supprimés:
+${report.duplicateWords.slice(0, 10).map(word => `  • "${word}"`).join('\n')}
+${report.duplicateWords.length > 10 ? `  ... et ${report.duplicateWords.length - 10} autres\n` : ''}
+` : ''}
+
+═══════════════════════════════════════════════════════════════════════════════
+ERREURS RENCONTRÉES (${report.errors.length})
+═══════════════════════════════════════════════════════════════════════════════
+${report.errors.length > 0 ? report.errors.map((err, i) => `${i + 1}. ${err}`).join('\n') : 'Aucune erreur'}
+
+═══════════════════════════════════════════════════════════════════════════════
+AVERTISSEMENTS (${report.warnings.length})
+═══════════════════════════════════════════════════════════════════════════════
+${report.warnings.length > 0 ? report.warnings.map((warn, i) => `${i + 1}. ${warn}`).join('\n') : 'Aucun avertissement'}
+
+═══════════════════════════════════════════════════════════════════════════════
+LOGS DÉTAILLÉS DE L'EXÉCUTION
+═══════════════════════════════════════════════════════════════════════════════
 ${logs.join('\n')}
+
+═══════════════════════════════════════════════════════════════════════════════
+FIN DU RAPPORT
+═══════════════════════════════════════════════════════════════════════════════
     `;
 
-    const blob = new Blob([reportText], { type: 'text/plain' });
+    const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `diagnostic-lexical-${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `diagnostic-lexical-complet-${new Date().toISOString().split('T')[0]}.txt`;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -453,15 +608,35 @@ ${logs.join('\n')}
               </div>
             </div>
 
-            {/* Issues */}
-            {(report.orphanedWords.length > 0 || report.missingCategories.length > 0 || report.duplicateWords.length > 0) && (
+            {/* Issues Before Correction */}
+            {(report.orphanedWords.length > 0 || report.missingCategories.length > 0 || report.duplicateWords.length > 0 || report.invalidWords.length > 0) && (
               <div className="border border-yellow-500/30 p-6 bg-yellow-500/10">
-                <h2 className="font-heading text-2xl text-yellow-500 mb-4">Problèmes Détectés</h2>
+                <h2 className="font-heading text-2xl text-yellow-500 mb-4">Problèmes Détectés et Corrigés</h2>
                 <div className="space-y-4">
+                  {report.invalidWords.length > 0 && (
+                    <div>
+                      <p className="font-paragraph font-semibold text-foreground mb-2">
+                        Mots invalides supprimés ({report.invalidWords.length}):
+                      </p>
+                      <div className="space-y-1">
+                        {report.invalidWords.slice(0, 5).map((w, i) => (
+                          <p key={i} className="font-paragraph text-foreground/80 text-sm flex items-center gap-2">
+                            <Trash2 className="w-4 h-4 text-red-500" />
+                            ID: {w._id}
+                          </p>
+                        ))}
+                        {report.invalidWords.length > 5 && (
+                          <p className="font-paragraph text-foreground/80 text-sm">
+                            ... et {report.invalidWords.length - 5} autres
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   {report.missingCategories.length > 0 && (
                     <div>
                       <p className="font-paragraph font-semibold text-foreground mb-2">
-                        Catégories manquantes ({report.missingCategories.length}):
+                        Catégories manquantes créées ({report.missingCategories.length}):
                       </p>
                       <p className="font-paragraph text-foreground/80">
                         {report.missingCategories.join(', ')}
@@ -471,18 +646,27 @@ ${logs.join('\n')}
                   {report.orphanedWords.length > 0 && (
                     <div>
                       <p className="font-paragraph font-semibold text-foreground mb-2">
-                        Mots orphelins ({report.orphanedWords.length}):
+                        Mots orphelins rattachés ({report.orphanedWords.length}):
                       </p>
-                      <p className="font-paragraph text-foreground/80 text-sm">
-                        {report.orphanedWords.slice(0, 5).map(w => w.nidalumWord).join(', ')}
-                        {report.orphanedWords.length > 5 && ` ... et ${report.orphanedWords.length - 5} autres`}
-                      </p>
+                      <div className="space-y-1 max-h-48 overflow-y-auto">
+                        {report.orphanedWordsFixes.slice(0, 10).map((fix, i) => (
+                          <p key={i} className="font-paragraph text-foreground/80 text-sm flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-500" />
+                            "{fix.wordName}" → {fix.newCategory}
+                          </p>
+                        ))}
+                        {report.orphanedWordsFixes.length > 10 && (
+                          <p className="font-paragraph text-foreground/80 text-sm">
+                            ... et {report.orphanedWordsFixes.length - 10} autres
+                          </p>
+                        )}
+                      </div>
                     </div>
                   )}
                   {report.duplicateWords.length > 0 && (
                     <div>
                       <p className="font-paragraph font-semibold text-foreground mb-2">
-                        Doublons ({report.duplicateWords.length}):
+                        Doublons supprimés ({report.duplicateWords.length}):
                       </p>
                       <p className="font-paragraph text-foreground/80 text-sm">
                         {report.duplicateWords.slice(0, 5).join(', ')}
@@ -490,17 +674,51 @@ ${logs.join('\n')}
                       </p>
                     </div>
                   )}
+                  {report.slugMismatches.length > 0 && (
+                    <div>
+                      <p className="font-paragraph font-semibold text-foreground mb-2">
+                        Slugs/Catégories corrigés ({report.slugMismatches.length}):
+                      </p>
+                      <div className="space-y-1 max-h-48 overflow-y-auto">
+                        {report.slugMismatches.slice(0, 5).map((mismatch, i) => (
+                          <p key={i} className="font-paragraph text-foreground/80 text-sm flex items-center gap-2">
+                            <Edit3 className="w-4 h-4 text-blue-500" />
+                            {mismatch.issue}
+                          </p>
+                        ))}
+                        {report.slugMismatches.length > 5 && (
+                          <p className="font-paragraph text-foreground/80 text-sm">
+                            ... et {report.slugMismatches.length - 5} autres
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
 
             {/* Corrections Applied */}
-            {(report.corrections.categoriesCreated > 0 || report.corrections.orphansResolved > 0) && (
+            {(report.corrections.categoriesCreated > 0 || report.corrections.orphansResolved > 0 || report.corrections.wordsDeleted > 0 || report.corrections.slugsCorrected > 0) && (
               <div className="border border-green-500/30 p-6 bg-green-500/10">
-                <h2 className="font-heading text-2xl text-green-500 mb-4">Corrections Appliquées</h2>
-                <div className="space-y-2 font-paragraph text-foreground">
-                  <p>✓ {report.corrections.categoriesCreated} catégories créées</p>
-                  <p>✓ {report.corrections.orphansResolved} mots corrigés</p>
+                <h2 className="font-heading text-2xl text-green-500 mb-4">Corrections Appliquées avec Succès</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div>
+                    <p className="font-paragraph text-sm text-foreground/70 mb-1">Catégories créées</p>
+                    <p className="font-heading text-2xl text-green-500">{report.corrections.categoriesCreated}</p>
+                  </div>
+                  <div>
+                    <p className="font-paragraph text-sm text-foreground/70 mb-1">Orphelins corrigés</p>
+                    <p className="font-heading text-2xl text-green-500">{report.corrections.orphansResolved}</p>
+                  </div>
+                  <div>
+                    <p className="font-paragraph text-sm text-foreground/70 mb-1">Mots supprimés</p>
+                    <p className="font-heading text-2xl text-green-500">{report.corrections.wordsDeleted}</p>
+                  </div>
+                  <div>
+                    <p className="font-paragraph text-sm text-foreground/70 mb-1">Slugs corrigés</p>
+                    <p className="font-heading text-2xl text-green-500">{report.corrections.slugsCorrected}</p>
+                  </div>
                 </div>
               </div>
             )}
