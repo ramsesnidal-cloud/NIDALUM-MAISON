@@ -252,7 +252,7 @@ export default function CompleteLexicalDiagnostic() {
         addLog('🔗 Rattachement des mots orphelins aux catégories...');
         for (const orphanWord of report.orphanedWords) {
           try {
-            const newCategory = this.inferCategoryFromWord(orphanWord);
+            const newCategory = inferCategoryFromWord(orphanWord);
             await BaseCrudService.update('nidalumlexicon', {
               _id: orphanWord._id,
               category: newCategory,
@@ -314,7 +314,7 @@ export default function CompleteLexicalDiagnostic() {
 
         for (const word of words) {
           if (word.category && !updatedCategoryNames.has(word.category)) {
-            const inferredCategory = this.inferCategoryFromWord(word);
+            const inferredCategory = inferCategoryFromWord(word);
             try {
               await BaseCrudService.update('nidalumlexicon', {
                 _id: word._id,
