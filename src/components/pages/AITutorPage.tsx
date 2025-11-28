@@ -324,17 +324,6 @@ export default function AITutorPage() {
             </Card>
           </div>
         </div>
-
-        {/* Configuration Notice */}
-        <Card className="bg-blue-500/10 border-blue-500/30 p-4 mt-6">
-          <p className="text-blue-400 text-sm">
-            <strong>Configuration requise:</strong> Pour utiliser le tuteur IA,
-            ajoutez votre clé OpenAI dans le fichier .env:
-            <code className="block bg-black/30 p-2 rounded mt-2 text-xs">
-              VITE_OPENAI_API_KEY=sk-...
-            </code>
-          </p>
-        </Card>
       </div>
     </div>
   );
