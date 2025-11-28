@@ -50,6 +50,9 @@ export default function Header() {
         { name: getTranslation(language, 'nav.phonetics'), href: '/phonetics' },
         { name: getTranslation(language, 'nav.lexicon'), href: '/lexicon' },
         { name: getTranslation(language, 'nav.lexicalArchives'), href: '/lexical-archives' },
+        { name: language === 'fr' ? 'Répertoire Linguistique' : language === 'de' ? 'Sprachrepertoire' : 'Linguistic Repertoire', href: '/repertoire-linguistique' },
+        { name: language === 'fr' ? 'Grammaire Nidalum' : language === 'de' ? 'Nidalum-Grammatik' : 'Nidalum Grammar', href: '/grammaire-nidalum' },
+        { name: language === 'fr' ? 'Apprendre la Langue' : language === 'de' ? 'Die Sprache lernen' : 'Learn the Language', href: '/apprendre-langage' },
         { name: language === 'fr' ? 'Grand Lexique' : language === 'de' ? 'Großes Lexikon' : 'Complete Lexicon', href: '/grand-lexique' },
         { name: language === 'fr' ? 'Dictionnaire complet' : language === 'de' ? 'Vollständiges Wörterbuch' : 'Complete Dictionary', href: '/dictionary' },
       ]

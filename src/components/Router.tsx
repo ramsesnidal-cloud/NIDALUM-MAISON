@@ -26,6 +26,9 @@ import DictionaryPage from '@/components/pages/DictionaryPage';
 import AITutorPage from '@/components/pages/AITutorPage';
 import ProfilePage from '@/components/pages/ProfilePage';
 import CompleteLexicalDiagnostic from '@/components/pages/CompleteLexicalDiagnostic';
+import RepertoireLinguistiquePage from '@/components/pages/RepertoireLinguistiquePage';
+import GrammaireNidalumPage from '@/components/pages/GrammaireNidalumPage';
+import ApprendreLangagePage from '@/components/pages/Apprendre LangagePage';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 // Diagnostic
@@ -70,6 +73,18 @@ const router = createBrowserRouter([
       {
         path: "grand-lexique",
         element: <GrandLexiquePage />,
+      },
+      {
+        path: "repertoire-linguistique",
+        element: <RepertoireLinguistiquePage />,
+      },
+      {
+        path: "grammaire-nidalum",
+        element: <GrammaireNidalumPage />,
+      },
+      {
+        path: "apprendre-langage",
+        element: <ApprendreLangagePage />,
       },
       {
         path: "chants",
