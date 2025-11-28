@@ -50,7 +50,8 @@ export default function Header() {
         { name: getTranslation(language, 'nav.phonetics'), href: '/phonetics' },
         { name: getTranslation(language, 'nav.lexicon'), href: '/lexicon' },
         { name: getTranslation(language, 'nav.lexicalArchives'), href: '/lexical-archives' },
-        { name: 'Dictionnaire complet', href: '/dictionary' },
+        { name: language === 'fr' ? 'Grand Lexique' : language === 'de' ? 'Großes Lexikon' : 'Complete Lexicon', href: '/grand-lexique' },
+        { name: language === 'fr' ? 'Dictionnaire complet' : language === 'de' ? 'Vollständiges Wörterbuch' : 'Complete Dictionary', href: '/dictionary' },
       ]
     },
     { 
@@ -61,7 +62,7 @@ export default function Header() {
         { name: getTranslation(language, 'nav.origins'), href: '/origins' },
       ]
     },
-    { name: 'Tuteur IA', href: '/ai-tutor' },
+    { name: language === 'fr' ? 'Tuteur IA' : language === 'de' ? 'KI-Tutor' : 'AI Tutor', href: '/ai-tutor' },
     { name: getTranslation(language, 'nav.academy'), href: '/academy' },
     { name: getTranslation(language, 'nav.publications'), href: '/publications' },
     { name: getTranslation(language, 'nav.resources'), href: '/resources' },
