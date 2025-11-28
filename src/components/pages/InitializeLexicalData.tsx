@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BaseCrudService } from '@/integrations';
-import { NidalumApprendrelaLangue } from '@/entities';
+import { NidalumApprendrelaLangue, LanguageCategories } from '@/entities';
 
 const NIDALUM_WORDS_DATA = [
   // SACRÉ (Sacred)
@@ -675,6 +675,50 @@ const NIDALUM_WORDS_DATA = [
   },
 ];
 
+// Categories data to sync with languagecategories collection
+const CATEGORIES_DATA: LanguageCategories[] = [
+  {
+    _id: crypto.randomUUID(),
+    categoryName: 'Sacré',
+    description: 'Termes sacrés et spirituels',
+    gradientColorFrom: '#FF6B6B',
+    gradientColorTo: '#FFE66D',
+    theme: 'sacred',
+  },
+  {
+    _id: crypto.randomUUID(),
+    categoryName: 'Éléments',
+    description: 'Les quatre éléments et forces naturelles',
+    gradientColorFrom: '#4ECDC4',
+    gradientColorTo: '#44A08D',
+    theme: 'elements',
+  },
+  {
+    _id: crypto.randomUUID(),
+    categoryName: 'Humain',
+    description: 'Termes relatifs à l\'être humain',
+    gradientColorFrom: '#95E1D3',
+    gradientColorTo: '#F38181',
+    theme: 'human',
+  },
+  {
+    _id: crypto.randomUUID(),
+    categoryName: 'Protection',
+    description: 'Concepts de protection et défense',
+    gradientColorFrom: '#AA96DA',
+    gradientColorTo: '#FCBAD3',
+    theme: 'protection',
+  },
+  {
+    _id: crypto.randomUUID(),
+    categoryName: 'Nombres',
+    description: 'Nombres et quantités',
+    gradientColorFrom: '#A8E6CF',
+    gradientColorTo: '#FFD3B6',
+    theme: 'numbers',
+  },
+];
+
 export default function InitializeLexicalData() {
   const navigate = useNavigate();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -688,6 +732,19 @@ export default function InitializeLexicalData() {
         let successCount = 0;
         let failureCount = 0;
 
+        // First, sync categories
+        console.log('📁 Syncing categories...');
+        for (const category of CATEGORIES_DATA) {
+          try {
+            await BaseCrudService.create('languagecategories', category);
+            console.log(`✓ Category created: ${category.categoryName}`);
+          } catch (error) {
+            console.warn(`⚠ Category already exists or error: ${category.categoryName}`, error);
+          }
+        }
+
+        // Then sync words
+        console.log('📝 Syncing words...');
         for (let i = 0; i < NIDALUM_WORDS_DATA.length; i++) {
           const wordData = NIDALUM_WORDS_DATA[i];
           try {
