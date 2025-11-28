@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, UserPlus } from 'lucide-react';
+import { Menu, X, ChevronDown, UserPlus, LogOut, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguageStore } from '@/lib/language-store';
 import { getTranslation } from '@/lib/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useMember } from '@/integrations';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const location = useLocation();
   const { language } = useLanguageStore();
+  const { member, isAuthenticated, isLoading, actions } = useMember();
   const [, setRenderTrigger] = useState(0);
 
   useEffect(() => {
@@ -48,6 +50,7 @@ export default function Header() {
         { name: getTranslation(language, 'nav.phonetics'), href: '/phonetics' },
         { name: getTranslation(language, 'nav.lexicon'), href: '/lexicon' },
         { name: getTranslation(language, 'nav.lexicalArchives'), href: '/lexical-archives' },
+        { name: 'Dictionnaire complet', href: '/dictionary' },
       ]
     },
     { 
@@ -58,6 +61,7 @@ export default function Header() {
         { name: getTranslation(language, 'nav.origins'), href: '/origins' },
       ]
     },
+    { name: 'Tuteur IA', href: '/ai-tutor' },
     { name: getTranslation(language, 'nav.academy'), href: '/academy' },
     { name: getTranslation(language, 'nav.publications'), href: '/publications' },
     { name: getTranslation(language, 'nav.resources'), href: '/resources' },
@@ -117,14 +121,33 @@ export default function Header() {
             {/* Language Switcher */}
             <LanguageSwitcher />
 
-            {/* Sign Up Button */}
-            <Link
-              to="/signup"
-              className="flex items-center gap-2 bg-secondary text-background font-paragraph font-semibold px-4 py-2 hover:bg-secondary/90 transition-all duration-300"
-            >
-              <UserPlus className="w-4 h-4" />
-              {getTranslation(language, 'nav.signup')}
-            </Link>
+            {/* Auth Section */}
+            {isLoading ? null : isAuthenticated ? (
+              <div className="flex items-center gap-4">
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+                >
+                  <User size={18} />
+                  {member?.profile?.nickname || 'Profil'}
+                </Link>
+                <button
+                  onClick={() => actions.logout()}
+                  className="flex items-center gap-2 bg-red-600/20 text-red-400 hover:bg-red-600/30 px-4 py-2 transition-colors"
+                >
+                  <LogOut size={18} />
+                  Déconnexion
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/signup"
+                className="flex items-center gap-2 bg-secondary text-background font-paragraph font-semibold px-4 py-2 hover:bg-secondary/90 transition-all duration-300"
+              >
+                <UserPlus className="w-4 h-4" />
+                {getTranslation(language, 'nav.signup')}
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button & Language Switcher */}
@@ -183,15 +206,38 @@ export default function Header() {
                   </div>
                 ))}
                 
-                {/* Mobile Sign Up Button */}
-                <Link
-                  to="/signup"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2 mx-4 mt-4 bg-secondary text-background font-paragraph font-semibold px-4 py-3 hover:bg-secondary/90 transition-all duration-300"
-                >
-                  <UserPlus className="w-4 h-4" />
-                  {getTranslation(language, 'nav.signup')}
-                </Link>
+                {/* Mobile Auth Section */}
+                {isLoading ? null : isAuthenticated ? (
+                  <>
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-2 mx-4 mt-4 px-4 py-3 bg-primary/20 text-primary font-paragraph font-semibold hover:bg-primary/30 transition-all duration-300"
+                    >
+                      <User className="w-4 h-4" />
+                      {member?.profile?.nickname || 'Profil'}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        actions.logout();
+                        setIsOpen(false);
+                      }}
+                      className="flex items-center gap-2 mx-4 mt-2 w-[calc(100%-2rem)] bg-red-600/20 text-red-400 font-paragraph font-semibold px-4 py-3 hover:bg-red-600/30 transition-all duration-300"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Déconnexion
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/signup"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-2 mx-4 mt-4 bg-secondary text-background font-paragraph font-semibold px-4 py-3 hover:bg-secondary/90 transition-all duration-300"
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    {getTranslation(language, 'nav.signup')}
+                  </Link>
+                )}
               </div>
             </motion.div>
           )}
