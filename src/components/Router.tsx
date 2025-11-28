@@ -25,6 +25,7 @@ import PrivacyPage from '@/components/pages/PrivacyPage';
 import DictionaryPage from '@/components/pages/DictionaryPage';
 import AITutorPage from '@/components/pages/AITutorPage';
 import ProfilePage from '@/components/pages/ProfilePage';
+import CompleteLexicalDiagnostic from '@/components/pages/CompleteLexicalDiagnostic';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 // Diagnostic
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
       {
         path: "diagnostic-lexical",
         element: <LexicalArchivesDiagnostic />,
+      },
+      {
+        path: "diagnostic-complet",
+        element: <CompleteLexicalDiagnostic />,
       },
       {
         path: "author",

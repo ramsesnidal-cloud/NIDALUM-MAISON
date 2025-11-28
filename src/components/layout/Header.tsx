@@ -51,6 +51,7 @@ export default function Header() {
         { name: getTranslation(language, 'nav.lexicon'), href: '/lexicon' },
         { name: getTranslation(language, 'nav.lexicalArchives'), href: '/lexical-archives' },
         { name: 'Dictionnaire complet', href: '/dictionary' },
+        { name: '🔧 Diagnostic Complet', href: '/diagnostic-complet' },
       ]
     },
     { 
