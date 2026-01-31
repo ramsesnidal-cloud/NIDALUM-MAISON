@@ -72,21 +72,27 @@ export default function NidalumMaisonPage() {
               className="h-px bg-gradient-to-r from-transparent via-luxury-gold to-transparent max-w-md mx-auto"
             ></motion.div>
 
-            {/* Core Symbolic Text */}
+            {/* Core Symbolic Text - International Press Bio */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="space-y-4 max-w-2xl mx-auto"
+              className="space-y-4 max-w-3xl mx-auto"
             >
               <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
-                Born from language, memory, and ritual, NIDALUM explores presence beyond sound and form.
+                NIDALUM is a sacred house of creation rooted in language, memory, and ritual. Conceived as a living universe rather than a brand, NIDALUM explores presence beyond sound and form.
               </p>
               <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70">
-                Music becomes architecture. Silence becomes signature. Creation becomes rite.
+                Music becomes architecture. Fragrance becomes memory. Creation becomes rite.
+              </p>
+              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
+                At the core of the House lies a unique language and a cinematic approach to sound, where silence is treated as a signature rather than an absence. Each expression—music, fashion, perfume—unfolds as part of a larger continuum, guided by restraint, intention, and timelessness.
+              </p>
+              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70">
+                NIDALUM does not follow trends, seasons, or genres. It establishes codes.
               </p>
               <p className="font-paragraph text-xs sm:text-sm md:text-base lg:text-lg tracking-widest text-luxury-gold/60 uppercase">
-                It is not a genre. It is a language. It is a House.
+                More than a house, NIDALUM is a space of resonance—where creation is not produced, but revealed.
               </p>
             </motion.div>
 

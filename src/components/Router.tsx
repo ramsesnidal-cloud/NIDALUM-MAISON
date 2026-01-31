@@ -29,6 +29,7 @@ import RepertoireLinguistiquePage from '@/components/pages/RepertoireLinguistiqu
 import GrammaireNidalumPage from '@/components/pages/GrammaireNidalumPage';
 import ApprendreLangagePage from '@/components/pages/Apprendre LangagePage';
 import NidalumMaisonPage from '@/components/pages/NidalumMaisonPage';
+import NidalumFashionPage from '@/components/pages/NidalumFashionPage';
 import ArtistPortfolioPage from '@/components/pages/ArtistPortfolioPage';
 import VideoShowcasePage from '@/components/pages/VideoShowcasePage';
 import DiagnosticPage from '@/components/pages/DiagnosticPage';
@@ -171,6 +172,10 @@ const router = createBrowserRouter([
       {
         path: "perfume",
         element: <PerfumePage />,
+      },
+      {
+        path: "fashion",
+        element: <NidalumFashionPage />,
       },
       {
         path: "*",
