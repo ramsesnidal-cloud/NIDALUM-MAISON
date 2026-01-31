@@ -68,7 +68,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-luxury-gold/20">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-deep-black/95 backdrop-blur-sm border-b border-luxury-gold/10">
       <nav className="max-w-[120rem] mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
@@ -97,7 +97,7 @@ export default function Header() {
                     {item.name}
                   </Link>
                   {item.submenu && (
-                    <div className="absolute top-full left-0 mt-2 w-48 bg-black border border-luxury-gold/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                    <div className="absolute top-full left-0 mt-2 w-48 bg-deep-black border border-luxury-gold/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                       {item.submenu.map((subitem) => (
                         <Link
                           key={subitem.name}
@@ -137,7 +137,7 @@ export default function Header() {
                     </Link>
                     <button
                       onClick={() => actions.logout()}
-                      className="flex items-center gap-2 border border-luxury-gold/50 text-luxury-gold hover:bg-luxury-gold hover:text-black px-3 py-2 transition-colors text-xs"
+                      className="flex items-center gap-2 border border-luxury-gold/40 text-luxury-gold/80 hover:text-luxury-gold hover:border-luxury-gold/60 px-3 py-2 transition-all text-xs"
                     >
                       <LogOut size={16} />
                       SIGN OUT
@@ -146,7 +146,7 @@ export default function Header() {
                 ) : (
                   <Link
                     to="/signup"
-                    className="flex items-center gap-2 border border-luxury-gold text-luxury-gold font-paragraph font-semibold px-4 py-2 hover:bg-luxury-gold hover:text-black transition-all duration-300 whitespace-nowrap text-sm"
+                    className="flex items-center gap-2 border border-luxury-gold/50 text-luxury-gold/80 font-paragraph font-semibold px-4 py-2 hover:text-luxury-gold hover:border-luxury-gold/80 transition-all duration-300 whitespace-nowrap text-sm"
                   >
                     <UserPlus className="w-4 h-4" />
                     SIGN UP
@@ -218,7 +218,7 @@ export default function Header() {
                     <Link
                       to="/profile"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-2 mx-4 mt-4 px-4 py-3 border border-luxury-gold/50 text-luxury-gold font-paragraph font-semibold hover:bg-luxury-gold/10 transition-all duration-300"
+                      className="flex items-center gap-2 mx-4 mt-4 px-4 py-3 border border-luxury-gold/30 text-luxury-gold/80 font-paragraph font-semibold hover:text-luxury-gold hover:border-luxury-gold/50 transition-all duration-300"
                     >
                       <User className="w-4 h-4" />
                       {member?.profile?.nickname || 'PROFILE'}
@@ -228,7 +228,7 @@ export default function Header() {
                         actions.logout();
                         setIsOpen(false);
                       }}
-                      className="flex items-center gap-2 mx-4 mt-2 w-[calc(100%-2rem)] border border-red-500/50 text-red-400 font-paragraph font-semibold px-4 py-3 hover:bg-red-500/10 transition-all duration-300"
+                      className="flex items-center gap-2 mx-4 mt-2 w-[calc(100%-2rem)] border border-luxury-gold/30 text-luxury-gold/60 font-paragraph font-semibold px-4 py-3 hover:text-luxury-gold/80 hover:border-luxury-gold/50 transition-all duration-300"
                     >
                       <LogOut className="w-4 h-4" />
                       SIGN OUT
@@ -238,7 +238,7 @@ export default function Header() {
                   <Link
                     to="/signup"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-2 mx-4 mt-4 border border-luxury-gold text-luxury-gold font-paragraph font-semibold px-4 py-3 hover:bg-luxury-gold hover:text-black transition-all duration-300"
+                    className="flex items-center gap-2 mx-4 mt-4 border border-luxury-gold/50 text-luxury-gold/80 font-paragraph font-semibold px-4 py-3 hover:text-luxury-gold hover:border-luxury-gold/80 transition-all duration-300"
                   >
                     <UserPlus className="w-4 h-4" />
                     SIGN UP

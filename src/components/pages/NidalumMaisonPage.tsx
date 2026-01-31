@@ -3,19 +3,11 @@ import { motion } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
 export default function NidalumMaisonPage() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +18,7 @@ export default function NidalumMaisonPage() {
     }
   };
 
-  const artists = [
+  const incarnations = [
     { id: 1, name: 'ETHEREAL', color: 'from-amber-600 to-amber-900' },
     { id: 2, name: 'CIPHER', color: 'from-blue-600 to-blue-900' },
     { id: 3, name: 'LUMINESCENCE', color: 'from-cyan-600 to-cyan-900' },
@@ -40,17 +32,17 @@ export default function NidalumMaisonPage() {
   ];
 
   return (
-    <div className="bg-black text-luxury-text overflow-hidden">
+    <div className="bg-deep-black text-luxury-text overflow-hidden">
       {/* Header Navigation */}
       <Header />
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-deep-black">
         {/* Cinematic Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-luxury-gold/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-luxury-gold/5 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-dark-grey-bg to-deep-black">
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-luxury-gold rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-luxury-gold rounded-full blur-3xl"></div>
           </div>
         </div>
 
@@ -85,7 +77,7 @@ export default function NidalumMaisonPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="font-paragraph text-xs sm:text-sm md:text-lg lg:text-xl tracking-widest text-luxury-gold/80 uppercase"
+              className="font-paragraph text-xs sm:text-sm md:text-lg lg:text-xl tracking-widest text-luxury-gold/70 uppercase"
             >
               NIDALUM MAISON • EST. 2026
             </motion.p>
@@ -96,17 +88,17 @@ export default function NidalumMaisonPage() {
               transition={{ duration: 2, repeat: Infinity }}
               className="pt-12"
             >
-              <div className="text-xs tracking-widest text-luxury-gold/50 uppercase">Scroll to explore</div>
+              <div className="text-xs tracking-widest text-luxury-gold/40 uppercase">Scroll to explore</div>
               <div className="mt-4 flex justify-center gap-1">
-                <div className="w-px h-8 bg-gradient-to-b from-luxury-gold to-transparent"></div>
+                <div className="w-px h-8 bg-gradient-to-b from-luxury-gold/50 to-transparent"></div>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* The Roster Section */}
-      <section id="roster" className="relative py-16 md:py-32 px-4 md:px-8 bg-black">
+      {/* The Incarnations Section */}
+      <section id="incarnations" className="relative py-16 md:py-32 px-4 md:px-8 bg-deep-black border-t border-luxury-gold/10">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
           <motion.div
@@ -122,38 +114,35 @@ export default function NidalumMaisonPage() {
             <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
           </motion.div>
 
-          {/* Artist Grid */}
+          {/* Incarnations Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8">
-            {artists.map((artist, index) => (
+            {incarnations.map((incarnation, index) => (
               <motion.div
-                key={artist.id}
+                key={incarnation.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.08 }}
                 viewport={{ once: true, margin: '-100px' }}
                 className="group"
               >
-                <div className="relative aspect-square mb-3 md:mb-6 overflow-hidden">
+                <div className="relative aspect-square mb-3 md:mb-6 overflow-hidden border border-luxury-gold/20 group-hover:border-luxury-gold/50 transition-colors duration-300">
                   {/* Avatar Background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${artist.color} opacity-60 group-hover:opacity-80 transition-opacity duration-300`}></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${incarnation.color} opacity-40 group-hover:opacity-60 transition-opacity duration-300`}></div>
 
-                  {/* Overlay Pattern */}
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
 
                   {/* Center Symbol */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-3xl md:text-5xl font-heading text-white/40 group-hover:text-white/60 transition-colors duration-300">
+                    <div className="text-3xl md:text-5xl font-heading text-white/30 group-hover:text-white/50 transition-colors duration-300">
                       ◆
                     </div>
                   </div>
-
-                  {/* Hover Glow */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
 
-                {/* Artist Name */}
-                <h3 className="font-heading text-xs md:text-sm tracking-widest text-luxury-text group-hover:text-luxury-gold transition-colors duration-300">
-                  {artist.name}
+                {/* Name */}
+                <h3 className="font-heading text-xs md:text-sm tracking-widest text-luxury-text/80 group-hover:text-luxury-gold transition-colors duration-300">
+                  {incarnation.name}
                 </h3>
               </motion.div>
             ))}
@@ -162,7 +151,7 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* THE VISION - Manifesto Section */}
-      <section className="relative py-16 md:py-32 px-4 md:px-8 bg-black border-t border-b border-luxury-gold/20">
+      <section className="relative py-16 md:py-32 px-4 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
         <div className="max-w-[100rem] mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
@@ -179,13 +168,13 @@ export default function NidalumMaisonPage() {
               <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
             </div>
 
-            {/* Central Logo Symbol */}
+            {/* Central Symbol */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
               className="flex justify-center"
             >
-              <div className="text-6xl md:text-9xl text-luxury-gold/40">◆</div>
+              <div className="text-6xl md:text-9xl text-luxury-gold/30">◆</div>
             </motion.div>
 
             {/* Manifesto Text */}
@@ -193,28 +182,28 @@ export default function NidalumMaisonPage() {
               <p className="font-paragraph text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-luxury-text/90">
                 Nidalum is not a language. It is a gateway to consciousness itself.
               </p>
-              <p className="font-paragraph text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-luxury-gold/80">
+              <p className="font-paragraph text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-luxury-gold/70">
                 Every glyph carries the weight of creation. Every sound echoes through dimensions yet unnamed.
               </p>
               <p className="font-paragraph text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-luxury-text/80">
                 The Architect has woven this reality into existence. Those who understand will transcend.
               </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/60 italic">
+              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/50 italic">
                 Enter. Decode. Ascend.
               </p>
             </div>
 
             {/* Decorative Elements */}
             <div className="flex justify-center gap-8 pt-4 md:pt-8">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent to-luxury-gold/50"></div>
-              <div className="w-12 h-px bg-gradient-to-l from-transparent to-luxury-gold/50"></div>
+              <div className="w-12 h-px bg-gradient-to-r from-transparent to-luxury-gold/40"></div>
+              <div className="w-12 h-px bg-gradient-to-l from-transparent to-luxury-gold/40"></div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Footer - Newsletter */}
-      <footer className="relative py-12 md:py-24 px-4 md:px-8 border-t border-luxury-gold/20 bg-black">
+      {/* Newsletter Section */}
+      <section className="relative py-12 md:py-24 px-4 md:px-8 border-t border-luxury-gold/10 bg-deep-black">
         <div className="max-w-[100rem] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -228,7 +217,7 @@ export default function NidalumMaisonPage() {
               <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-tight text-luxury-text mb-4">
                 JOIN THE INNER CIRCLE
               </h3>
-              <p className="font-paragraph text-xs sm:text-sm tracking-widest text-luxury-gold/60 uppercase">
+              <p className="font-paragraph text-xs sm:text-sm tracking-widest text-luxury-gold/50 uppercase">
                 Exclusive access to unreleased works
               </p>
             </div>
@@ -242,7 +231,7 @@ export default function NidalumMaisonPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your essence"
                   required
-                  className="w-full bg-black border border-luxury-gold/30 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base text-luxury-text placeholder-luxury-gold/30 focus:outline-none focus:border-luxury-gold/60 transition-colors duration-300 font-paragraph"
+                  className="w-full bg-deep-black border border-luxury-gold/30 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base text-luxury-text placeholder-luxury-gold/30 focus:outline-none focus:border-luxury-gold/60 transition-colors duration-300 font-paragraph"
                 />
                 <button
                   type="submit"
@@ -263,19 +252,12 @@ export default function NidalumMaisonPage() {
                 Welcome to the inner circle.
               </motion.p>
             )}
-
-            {/* Footer Info */}
-            <div className="pt-8 md:pt-12 border-t border-luxury-gold/20 space-y-2 md:space-y-4">
-              <p className="font-paragraph text-xs tracking-widest text-luxury-gold/40 uppercase">
-                NIDALUM MAISON
-              </p>
-              <p className="font-paragraph text-xs text-luxury-gold/30">
-                © 2026 All Realities Reserved
-              </p>
-            </div>
           </motion.div>
         </div>
-      </footer>
+      </section>
+
+      {/* Global Footer */}
+      <Footer />
     </div>
   );
 }

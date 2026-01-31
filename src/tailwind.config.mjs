@@ -35,8 +35,18 @@ export default {
                 'dark-grey': '#1a1a1a',
                 'darker-grey': '#0d0d0d',
                 'luxury-gold': '#D4AF37',
-                'luxury-text': '#FFFFFF'
+                'luxury-text': '#FFFFFF',
+                'deep-black': '#000000',
+                'dark-grey-bg': '#0a0a0a',
+                'charcoal': '#1a1a1a'
             },
+            borderRadius: {
+                'none': '0px',
+                'minimal': '2px',
+                'sm': '4px',
+                'md': '6px',
+                'lg': '8px',
+            }
         },
     },
     future: {

@@ -23,7 +23,6 @@ import InitializeLexicalData from '@/components/pages/InitializeLexicalData';
 import TermsPage from '@/components/pages/TermsPage';
 import PrivacyPage from '@/components/pages/PrivacyPage';
 import DictionaryPage from '@/components/pages/DictionaryPage';
-import AITutorPage from '@/components/pages/AITutorPage';
 import ProfilePage from '@/components/pages/ProfilePage';
 import CompleteLexicalDiagnostic from '@/components/pages/CompleteLexicalDiagnostic';
 import RepertoireLinguistiquePage from '@/components/pages/RepertoireLinguistiquePage';
@@ -98,10 +97,7 @@ const router = createBrowserRouter([
         path: "origins",
         element: <OriginsPage />,
       },
-      {
-        path: "academy",
-        element: <AcademyPage />,
-      },
+
       {
         path: "publications",
         element: <PublicationsPage />,
@@ -150,10 +146,7 @@ const router = createBrowserRouter([
         path: "dictionary",
         element: <DictionaryPage />,
       },
-      {
-        path: "ai-tutor",
-        element: <AITutorPage />,
-      },
+
       {
         path: "profile",
         element: (
