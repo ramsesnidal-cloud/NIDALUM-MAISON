@@ -82,69 +82,78 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-12 xl:space-x-16">
-            {navigation.map((item) => (
-              <div key={item.name} className="relative group">
-                <Link
-                  to={item.href}
-                  className={`font-paragraph text-sm tracking-wide transition-colors ${
-                    isActive(item.href)
-                      ? 'text-luxury-gold'
-                      : 'text-luxury-text hover:text-luxury-gold'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-                {item.submenu && (
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-black border border-luxury-gold/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    {item.submenu.map((subitem) => (
-                      <Link
-                        key={subitem.name}
-                        to={subitem.href}
-                        className={`block px-4 py-3 font-paragraph text-sm transition-colors ${
-                          isActive(subitem.href)
-                            ? 'text-luxury-gold bg-luxury-gold/10'
-                            : 'text-luxury-text hover:text-luxury-gold hover:bg-luxury-gold/5'
-                        }`}
-                      >
-                        {subitem.name}
-                      </Link>
-                    ))}
+          <div className="hidden lg:flex items-center flex-1">
+            <div className="flex items-center space-x-12 xl:space-x-16">
+              {navigation.map((item) => (
+                <div key={item.name} className="relative group">
+                  <Link
+                    to={item.href}
+                    className={`font-paragraph text-sm tracking-wide transition-colors ${
+                      isActive(item.href)
+                        ? 'text-luxury-gold'
+                        : 'text-luxury-text hover:text-luxury-gold'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                  {item.submenu && (
+                    <div className="absolute top-full left-0 mt-2 w-48 bg-black border border-luxury-gold/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                      {item.submenu.map((subitem) => (
+                        <Link
+                          key={subitem.name}
+                          to={subitem.href}
+                          className={`block px-4 py-3 font-paragraph text-sm transition-colors ${
+                            isActive(subitem.href)
+                              ? 'text-luxury-gold bg-luxury-gold/10'
+                              : 'text-luxury-text hover:text-luxury-gold hover:bg-luxury-gold/5'
+                          }`}
+                        >
+                          {subitem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            {/* Right Section - Language Switcher & Auth */}
+            <div className="flex items-center gap-6 ml-auto">
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+
+              {/* Auth Section - Fixed Width */}
+              <div className="w-40">
+                {isLoading ? (
+                  <div className="h-10" />
+                ) : isAuthenticated ? (
+                  <div className="flex items-center gap-3">
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-2 text-luxury-text hover:text-luxury-gold transition-colors text-sm"
+                    >
+                      <User size={18} />
+                      {member?.profile?.nickname || 'PROFILE'}
+                    </Link>
+                    <button
+                      onClick={() => actions.logout()}
+                      className="flex items-center gap-2 border border-luxury-gold/50 text-luxury-gold hover:bg-luxury-gold hover:text-black px-3 py-2 transition-colors text-xs"
+                    >
+                      <LogOut size={16} />
+                      SIGN OUT
+                    </button>
                   </div>
+                ) : (
+                  <Link
+                    to="/signup"
+                    className="flex items-center gap-2 border border-luxury-gold text-luxury-gold font-paragraph font-semibold px-4 py-2 hover:bg-luxury-gold hover:text-black transition-all duration-300 whitespace-nowrap text-sm"
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    SIGN UP
+                  </Link>
                 )}
               </div>
-            ))}
-            
-            {/* Language Switcher */}
-            <LanguageSwitcher />
-
-            {/* Auth Section */}
-            {isLoading ? null : isAuthenticated ? (
-              <div className="flex items-center gap-4">
-                <Link
-                  to="/profile"
-                  className="flex items-center gap-2 text-luxury-text hover:text-luxury-gold transition-colors"
-                >
-                  <User size={18} />
-                  {member?.profile?.nickname || 'PROFILE'}
-                </Link>
-                <button
-                  onClick={() => actions.logout()}
-                  className="flex items-center gap-2 border border-luxury-gold/50 text-luxury-gold hover:bg-luxury-gold hover:text-black px-4 py-2 transition-colors"
-                >
-                  <LogOut size={18} />
-                  SIGN OUT
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/signup"
-                className="flex items-center gap-2 border border-luxury-gold text-luxury-gold font-paragraph font-semibold px-4 py-2 hover:bg-luxury-gold hover:text-black transition-all duration-300"
-              >
-                <UserPlus className="w-4 h-4" />
-                SIGN UP
-              </Link>
-            )}
+            </div>
           </div>
 
           {/* Mobile Menu Button & Language Switcher */}
