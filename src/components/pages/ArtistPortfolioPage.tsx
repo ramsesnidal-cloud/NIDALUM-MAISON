@@ -57,10 +57,10 @@ export default function ArtistPortfolioPage() {
             transition={{ duration: 1 }}
           >
             <h1 className="font-heading text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary mb-6">
-              Les 10 Incarnations
+              THE 10 INCARNATIONS
             </h1>
             <p className="font-paragraph text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">
-              Découvrez les artistes et incarnations qui composent l'univers créatif de NIDALUM MAISON
+              Discover the artists and incarnations that compose the creative universe of NIDALUM MAISON
             </p>
           </motion.div>
         </div>

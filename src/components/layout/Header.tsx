@@ -35,36 +35,36 @@ export default function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   const navigation = [
-    { name: getTranslation(language, 'nav.home'), href: '/' },
-    { name: language === 'fr' ? 'Portfolio' : language === 'de' ? 'Portfolio' : 'Portfolio', href: '/portfolio' },
-    { name: language === 'fr' ? 'Cinéma' : language === 'de' ? 'Kino' : 'Cinema', href: '/videos' },
+    { name: 'HOME', href: '/' },
+    { name: 'PORTFOLIO', href: '/portfolio' },
+    { name: 'CINEMA', href: '/videos' },
     { 
-      name: getTranslation(language, 'nav.language'), 
+      name: 'LANGUAGE', 
       href: '/alphabet',
       submenu: [
-        { name: getTranslation(language, 'nav.alphabet'), href: '/alphabet' },
-        { name: getTranslation(language, 'nav.grammar'), href: '/grammar' },
-        { name: getTranslation(language, 'nav.phonetics'), href: '/phonetics' },
-        { name: getTranslation(language, 'nav.lexicon'), href: '/lexicon' },
-        { name: getTranslation(language, 'nav.lexicalArchives'), href: '/lexical-archives' },
-        { name: language === 'fr' ? 'Répertoire Linguistique' : language === 'de' ? 'Sprachrepertoire' : 'Linguistic Repertoire', href: '/repertoire-linguistique' },
-        { name: language === 'fr' ? 'Grammaire Nidalum' : language === 'de' ? 'Nidalum-Grammatik' : 'Nidalum Grammar', href: '/grammaire-nidalum' },
-        { name: language === 'fr' ? 'Grand Lexique' : language === 'de' ? 'Großes Lexikon' : 'Complete Lexicon', href: '/grand-lexique' },
-        { name: language === 'fr' ? 'Dictionnaire complet' : language === 'de' ? 'Vollständiges Wörterbuch' : 'Complete Dictionary', href: '/dictionary' },
+        { name: 'ALPHABET', href: '/alphabet' },
+        { name: 'GRAMMAR', href: '/grammar' },
+        { name: 'PHONETICS', href: '/phonetics' },
+        { name: 'LEXICON', href: '/lexicon' },
+        { name: 'LEXICAL ARCHIVES', href: '/lexical-archives' },
+        { name: 'LINGUISTIC REPERTOIRE', href: '/repertoire-linguistique' },
+        { name: 'NIDALUM GRAMMAR', href: '/grammaire-nidalum' },
+        { name: 'COMPLETE LEXICON', href: '/grand-lexique' },
+        { name: 'COMPLETE DICTIONARY', href: '/dictionary' },
       ]
     },
     { 
-      name: getTranslation(language, 'nav.spirituality'), 
+      name: 'SPIRITUALITY', 
       href: '/chants',
       submenu: [
-        { name: getTranslation(language, 'nav.chants'), href: '/chants' },
-        { name: getTranslation(language, 'nav.origins'), href: '/origins' },
+        { name: 'RITUAL CHANTS', href: '/chants' },
+        { name: 'ORIGINS', href: '/origins' },
       ]
     },
-    { name: getTranslation(language, 'nav.publications'), href: '/publications' },
-    { name: getTranslation(language, 'nav.resources'), href: '/resources' },
-    { name: getTranslation(language, 'nav.author'), href: '/author' },
-    { name: getTranslation(language, 'nav.contact'), href: '/contact' },
+    { name: 'PUBLICATIONS', href: '/publications' },
+    { name: 'RESOURCES', href: '/resources' },
+    { name: 'THE ARCHITECT', href: '/author' },
+    { name: 'CONTACT', href: '/contact' },
   ];
 
   return (
@@ -126,14 +126,14 @@ export default function Header() {
                   className="flex items-center gap-2 text-luxury-text hover:text-luxury-gold transition-colors"
                 >
                   <User size={18} />
-                  {member?.profile?.nickname || 'Profil'}
+                  {member?.profile?.nickname || 'PROFILE'}
                 </Link>
                 <button
                   onClick={() => actions.logout()}
                   className="flex items-center gap-2 border border-luxury-gold/50 text-luxury-gold hover:bg-luxury-gold hover:text-black px-4 py-2 transition-colors"
                 >
                   <LogOut size={18} />
-                  Déconnexion
+                  SIGN OUT
                 </button>
               </div>
             ) : (
@@ -142,7 +142,7 @@ export default function Header() {
                 className="flex items-center gap-2 border border-luxury-gold text-luxury-gold font-paragraph font-semibold px-4 py-2 hover:bg-luxury-gold hover:text-black transition-all duration-300"
               >
                 <UserPlus className="w-4 h-4" />
-                {getTranslation(language, 'nav.signup')}
+                SIGN UP
               </Link>
             )}
           </div>
@@ -212,7 +212,7 @@ export default function Header() {
                       className="flex items-center gap-2 mx-4 mt-4 px-4 py-3 border border-luxury-gold/50 text-luxury-gold font-paragraph font-semibold hover:bg-luxury-gold/10 transition-all duration-300"
                     >
                       <User className="w-4 h-4" />
-                      {member?.profile?.nickname || 'Profil'}
+                      {member?.profile?.nickname || 'PROFILE'}
                     </Link>
                     <button
                       onClick={() => {
@@ -222,7 +222,7 @@ export default function Header() {
                       className="flex items-center gap-2 mx-4 mt-2 w-[calc(100%-2rem)] border border-red-500/50 text-red-400 font-paragraph font-semibold px-4 py-3 hover:bg-red-500/10 transition-all duration-300"
                     >
                       <LogOut className="w-4 h-4" />
-                      Déconnexion
+                      SIGN OUT
                     </button>
                   </>
                 ) : (
@@ -232,7 +232,7 @@ export default function Header() {
                     className="flex items-center gap-2 mx-4 mt-4 border border-luxury-gold text-luxury-gold font-paragraph font-semibold px-4 py-3 hover:bg-luxury-gold hover:text-black transition-all duration-300"
                   >
                     <UserPlus className="w-4 h-4" />
-                    {getTranslation(language, 'nav.signup')}
+                    SIGN UP
                   </Link>
                 )}
               </div>

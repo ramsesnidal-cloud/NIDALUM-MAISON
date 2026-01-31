@@ -183,10 +183,10 @@ export default function ResourcesPage() {
   const downloadAbortControllers = useRef<{ [key: string]: AbortController }>({});
   const [activeChantTab, setActiveChantTab] = useState<'all' | 'featured'>('featured');
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
-    'Fondamentaux': true,
-    'Vocabulaire': true,
-    'Prononciation': true,
-    'Conseils Pratiques': true,
+    'Fundamentals': true,
+    'Vocabulary': true,
+    'Pronunciation': true,
+    'Practical Tips': true,
   });
 
   useEffect(() => {
@@ -379,10 +379,10 @@ export default function ResourcesPage() {
 
   // Organize resources by category for better display
   const resourcesByCategory = {
-    'Fondamentaux': resources.filter(r => r.resourceType === 'Fondamentaux'),
-    'Vocabulaire': resources.filter(r => r.resourceType === 'Vocabulaire'),
-    'Prononciation': resources.filter(r => r.resourceType === 'Prononciation'),
-    'Conseils Pratiques': resources.filter(r => r.resourceType === 'Conseils Pratiques'),
+    'Fundamentals': resources.filter(r => r.resourceType === 'Fondamentaux'),
+    'Vocabulary': resources.filter(r => r.resourceType === 'Vocabulaire'),
+    'Pronunciation': resources.filter(r => r.resourceType === 'Prononciation'),
+    'Practical Tips': resources.filter(r => r.resourceType === 'Conseils Pratiques'),
   };
 
   // Get unique categories for display
@@ -513,24 +513,24 @@ export default function ResourcesPage() {
             <div className="bg-background/30 border border-primary/20 p-6 rounded">
               <div className="flex items-start gap-3 mb-4">
                 <Lightbulb className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                <h3 className="font-heading text-lg text-secondary">Conseils pour une apprentissage optimal</h3>
+                <h3 className="font-heading text-lg text-secondary">Tips for Optimal Learning</h3>
               </div>
               <ul className="space-y-2 text-sm">
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
-                  <span className="font-paragraph">Pratiquez la prononciation quotidiennement avec les documents audio</span>
+                  <span className="font-paragraph">Practice pronunciation daily with audio materials</span>
                 </li>
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
-                  <span className="font-paragraph">Mémorisez les expressions courantes avant d'explorer la grammaire avancée</span>
+                  <span className="font-paragraph">Memorize common expressions before exploring advanced grammar</span>
                 </li>
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
-                  <span className="font-paragraph">Écoutez les chants rituels pour comprendre le contexte culturel</span>
+                  <span className="font-paragraph">Listen to ritual chants to understand cultural context</span>
                 </li>
                 <li className="flex gap-2 text-foreground/80">
                   <span className="text-secondary">•</span>
-                  <span className="font-paragraph">Téléchargez votre dictionnaire personnel pour une référence rapide</span>
+                  <span className="font-paragraph">Download your personal dictionary for quick reference</span>
                 </li>
               </ul>
             </div>
@@ -726,8 +726,8 @@ export default function ResourcesPage() {
                 </motion.div>
               )}
 
-              {/* Conseils Pratiques Section */}
-              {resourcesByCategory['Conseils Pratiques'].length > 0 && (
+              {/* Practical Tips Section */}
+              {resourcesByCategory['Practical Tips'].length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -735,15 +735,15 @@ export default function ResourcesPage() {
                   viewport={{ once: true }}
                 >
                   <button
-                    onClick={() => toggleSection('Conseils Pratiques')}
+                    onClick={() => toggleSection('Practical Tips')}
                     className="w-full text-left group"
-                    aria-expanded={expandedSections['Conseils Pratiques']}
+                    aria-expanded={expandedSections['Practical Tips']}
                   >
                     <div className="flex items-center gap-3 mb-8 cursor-pointer hover:opacity-80 transition-opacity">
                       <div className="w-1 h-8 bg-gradient-to-b from-secondary to-primary"></div>
-                      <h2 className="font-heading text-3xl text-secondary flex-1">Conseils Pratiques pour Apprendre</h2>
+                      <h2 className="font-heading text-3xl text-secondary flex-1">Practical Learning Tips</h2>
                       <motion.div
-                        animate={{ rotate: expandedSections['Conseils Pratiques'] ? 0 : -90 }}
+                        animate={{ rotate: expandedSections['Practical Tips'] ? 0 : -90 }}
                         transition={{ duration: 0.3 }}
                         className="flex-shrink-0"
                       >
@@ -754,7 +754,7 @@ export default function ResourcesPage() {
                     </div>
                   </button>
                   <AnimatePresence>
-                    {expandedSections['Conseils Pratiques'] && (
+                    {expandedSections['Practical Tips'] && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
@@ -762,10 +762,10 @@ export default function ResourcesPage() {
                         transition={{ duration: 0.3 }}
                       >
                         <p className="font-paragraph text-foreground/70 mb-8 max-w-3xl">
-                          Découvrez des stratégies d'apprentissage éprouvées, astuces quotidiennes et ressources complémentaires pour optimiser votre progression en Nidalum.
+                          Discover proven learning strategies, daily tips, and complementary resources to optimize your progress in Nidalum.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {resourcesByCategory['Conseils Pratiques'].map((resource, index) => (
+                          {resourcesByCategory['Practical Tips'].map((resource, index) => (
                             <ResourceCard
                               key={resource._id}
                               resource={resource}
@@ -926,26 +926,26 @@ export default function ResourcesPage() {
               <div className="flex items-start gap-4 mb-6">
                 <BookOpen className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
                 <div>
-                  <h2 className="font-heading text-4xl md:text-5xl text-primary mb-4">Mon Dictionnaire Personnel</h2>
+                  <h2 className="font-heading text-4xl md:text-5xl text-primary mb-4">My Personal Dictionary</h2>
                   <p className="font-paragraph text-lg text-foreground/80 leading-relaxed mb-6">
-                    Téléchargez un dictionnaire complet contenant tous les mots et expressions du Nidalum avec leurs définitions, catégories, thèmes, guides de prononciation, exemples et étymologies.
+                    Download a complete dictionary containing all Nidalum words and expressions with their definitions, categories, themes, pronunciation guides, examples, and etymologies.
                   </p>
                   <ul className="space-y-3 mb-8">
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                      <span className="font-paragraph text-foreground/80">{lexicon.length} mots et expressions du Nidalum</span>
+                      <span className="font-paragraph text-foreground/80">{lexicon.length} Nidalum words and expressions</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                      <span className="font-paragraph text-foreground/80">Format CSV compatible avec Excel et Google Sheets</span>
+                      <span className="font-paragraph text-foreground/80">CSV format compatible with Excel and Google Sheets</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                      <span className="font-paragraph text-foreground/80">Informations complètes : définitions, étymologies, exemples</span>
+                      <span className="font-paragraph text-foreground/80">Complete information: definitions, etymologies, examples</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                      <span className="font-paragraph text-foreground/80">Traductions en français incluses</span>
+                      <span className="font-paragraph text-foreground/80">English translations included</span>
                     </li>
                   </ul>
                   <button
@@ -959,7 +959,7 @@ export default function ResourcesPage() {
                     aria-busy={downloadingId === 'personal-dict'}
                   >
                     <Download className="w-5 h-5 mr-2" />
-                    {downloadingId === 'personal-dict' ? 'Téléchargement en cours...' : 'Télécharger Mon Dictionnaire'}
+                    {downloadingId === 'personal-dict' ? 'Downloading...' : 'Download My Dictionary'}
                   </button>
                 </div>
               </div>

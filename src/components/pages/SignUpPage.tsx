@@ -206,17 +206,17 @@ export default function SignUpPage() {
                 <div className="flex justify-center mb-4">
                   <CheckCircle className="w-16 h-16 text-green-500" />
                 </div>
-                <h2 className="font-heading text-2xl text-primary mb-4">Inscription réussie!</h2>
+                <h2 className="font-heading text-2xl text-primary mb-4">Sign Up Successful!</h2>
                 <p className="font-paragraph text-foreground/80 mb-6">
-                  Bienvenue dans l'Institut Nidalum! Un email de confirmation a été envoyé à votre adresse.
+                  Welcome to the Nidalum Institute! A confirmation email has been sent to your address.
                 </p>
                 <p className="font-paragraph text-sm text-foreground/60">
-                  Redirection vers l'accueil...
+                  Redirecting to home...
                 </p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <h2 className="font-heading text-3xl text-primary mb-8 text-center">Créer un compte</h2>
+                <h2 className="font-heading text-3xl text-primary mb-8 text-center">Create Account</h2>
 
                 {/* Submit Error */}
                 {errors.submit && (
@@ -425,11 +425,11 @@ export default function SignUpPage() {
                   {isLoading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin"></div>
-                      Inscription en cours...
+                      Signing Up...
                     </>
                   ) : (
                     <>
-                      Créer mon compte
+                      Create My Account
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -437,9 +437,9 @@ export default function SignUpPage() {
 
                 {/* Login Link */}
                 <p className="text-center font-paragraph text-sm text-foreground/70">
-                  Vous avez déjà un compte?{' '}
+                  Already have an account?{' '}
                   <a href="/" className="text-secondary hover:text-primary transition-colors font-semibold">
-                    Se connecter
+                    Sign In
                   </a>
                 </p>
               </form>
@@ -457,19 +457,19 @@ export default function SignUpPage() {
             <ul className="space-y-2 font-paragraph text-sm text-foreground/80">
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Accès à tous les cours et ressources
+                Access to all courses and resources
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Suivi de votre progression
+                Track your progress
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Téléchargement des publications
+                Download publications
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Accès à la communauté exclusive
+                Access to exclusive community
               </li>
             </ul>
           </motion.div>
