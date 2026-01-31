@@ -334,9 +334,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Section - Split Layout */}
-      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/20">
-        <div className="max-w-[120rem] mx-auto">
+      {/* About Section - The Visionary Transmitter */}
+      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-12 bg-gradient-to-b from-background via-dark-amber-shadow/30 to-background relative overflow-hidden">
+        {/* Mystical Background Elements */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-1/3 right-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-[120rem] mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -344,20 +350,32 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl text-primary mb-4 sm:mb-6">
-                Ramses Nidal
-              </h2>
-              <p className="font-paragraph text-base sm:text-lg text-foreground/80 leading-relaxed mb-4 sm:mb-6">
-                Aboudramane Doumbia, connu sous le nom artistique de Ramses Nidal, est le créateur de la langue Nidalum et de l'univers narratif Souma-Ra. Artiste afrofuturiste, compositeur de musique épique, et linguiste créatif, il fusionne tradition et innovation.
+              <div className="mb-6 sm:mb-8">
+                <p className="font-heading text-secondary text-sm sm:text-base tracking-widest uppercase mb-4">
+                  The Visionary
+                </p>
+                <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary mb-6 sm:mb-8 leading-tight">
+                  Ramses Nidal
+                </h2>
+              </div>
+
+              <p className="font-paragraph text-base sm:text-lg text-foreground/80 leading-relaxed mb-6 sm:mb-6 italic">
+                "We do not teach a language; we transmit a legacy."
               </p>
+
+              <p className="font-paragraph text-base sm:text-lg text-foreground/80 leading-relaxed mb-6 sm:mb-6">
+                Aboudramane Doumbia, known as Ramses Nidal, is not a linguist—he is an architect of consciousness. He has decoded the DNA of the universe and crystallized it into Nidalum, a secret code that transcends language itself. As the visionary founder of this High-Concept Artistic House, he channels ancient wisdom through a cyberpunk lens, bridging millennia of ancestral knowledge with the infinite possibilities of tomorrow.
+              </p>
+
               <p className="font-paragraph text-base sm:text-lg text-foreground/80 leading-relaxed mb-6 sm:mb-8">
-                Son œuvre explore les thèmes de l'identité, de la spiritualité, et de la mythologie à travers une lentille cinématographique et mystique, créant un pont entre le passé ancestral et le futur cosmique.
+                His work is not instruction—it is initiation. Through Nidalum and the Souma-Ra civilization, Ramses Nidal transmits a living mythology, a blueprint for spiritual evolution, and an invitation to decipher the cosmic secrets embedded within every syllable. He is the keeper of a legacy that transcends time, culture, and dimension.
               </p>
+
               <Link
                 to="/author"
-                className="inline-block bg-primary text-primary-foreground font-paragraph font-semibold px-6 sm:px-8 py-3 sm:py-4 hover:bg-primary/90 transition-all duration-300"
+                className="inline-block bg-gradient-to-r from-primary to-secondary text-primary-foreground font-paragraph font-semibold px-6 sm:px-8 py-3 sm:py-4 hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 uppercase tracking-wider text-sm"
               >
-                Découvrir l'Artiste
+                Enter the Visionary's World
               </Link>
             </motion.div>
 
@@ -368,50 +386,104 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                <Image
-                  src="https://static.wixstatic.com/media/9c8aea_d92e61748c39422fa5218c0d1ce84928~mv2.png"
-                  width={600}
-                  className="w-full h-full object-cover"
-                  originWidth={522}
-                  originHeight={660}
-                  focalPointX={34.099616858237546}
-                  focalPointY={31.287878787878785} />
+              <div className="relative">
+                {/* Mystical Frame */}
+                <div className="absolute -inset-4 sm:-inset-6 bg-gradient-to-br from-primary/30 via-secondary/20 to-primary/30 blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div className="relative aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-primary/40 shadow-2xl shadow-primary/20">
+                  <Image
+                    src="https://static.wixstatic.com/media/9c8aea_d92e61748c39422fa5218c0d1ce84928~mv2.png"
+                    width={600}
+                    className="w-full h-full object-cover"
+                    originWidth={522}
+                    originHeight={660}
+                    focalPointX={34.099616858237546}
+                    focalPointY={31.287878787878785}
+                    alt="Ramses Nidal - Visionary of Nidalum" />
+                </div>
+
+                {/* Decorative Corner Elements */}
+                <div className="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-secondary/50"></div>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-primary/50"></div>
               </div>
             </motion.div>
           </div>
+
+          {/* Legacy Statement */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="mt-12 sm:mt-16 md:mt-20 pt-12 sm:pt-16 border-t border-primary/30"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
+              <div className="text-center">
+                <h4 className="font-heading text-2xl sm:text-3xl text-secondary mb-3 sm:mb-4">
+                  Civilization
+                </h4>
+                <p className="font-paragraph text-sm sm:text-base text-foreground/70 leading-relaxed">
+                  Nidalum is not a subject—it is a living civilization, a complete world with its own mythology, spirituality, and cosmic order.
+                </p>
+              </div>
+              <div className="text-center">
+                <h4 className="font-heading text-2xl sm:text-3xl text-primary mb-3 sm:mb-4">
+                  Secret Code
+                </h4>
+                <p className="font-paragraph text-sm sm:text-base text-foreground/70 leading-relaxed">
+                  Every phoneme, every symbol, every structure encodes universal truths waiting to be deciphered by those initiated into the mystery.
+                </p>
+              </div>
+              <div className="text-center">
+                <h4 className="font-heading text-2xl sm:text-3xl text-secondary mb-3 sm:mb-4">
+                  Legacy
+                </h4>
+                <p className="font-paragraph text-sm sm:text-base text-foreground/70 leading-relaxed">
+                  A transmission of ancestral wisdom merged with cyberpunk vision—ancient mythology meets infinite future.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
       {/* Newsletter Signup Section */}
       <NewsletterSignup />
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-12">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* CTA Section - Initiation Call */}
+      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/20 relative overflow-hidden">
+        {/* Mystical Overlay */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.1)_0%,transparent_70%)]"></div>
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-4 sm:mb-6">
-              Commencez Votre Voyage
+            <p className="font-heading text-secondary text-sm sm:text-base tracking-widest uppercase mb-4">
+              Begin Your Initiation
+            </p>
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6 sm:mb-8">
+              Decipher the Secret Code
             </h2>
             <p className="font-paragraph text-base sm:text-lg text-foreground/70 mb-8 sm:mb-12 leading-relaxed px-2">
-              Plongez dans l'univers mystique de Nidalum. Apprenez la langue sacrée, explorez les chants rituels, et découvrez un monde où l'ancien rencontre le futur.
+              Enter the High-Concept Artistic House of Nidalum. Decipher the DNA of the Universe. Explore the sacred symbols, immerse yourself in the cosmic mythology, and discover the civilization that exists between ancient wisdom and infinite future.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-2">
               <Link
                 to="/lexicon"
-                className="bg-primary text-primary-foreground font-paragraph font-semibold px-6 sm:px-8 py-3 sm:py-4 hover:bg-primary/90 transition-all duration-300 text-center"
+                className="bg-gradient-to-r from-primary to-secondary text-primary-foreground font-paragraph font-semibold px-6 sm:px-8 py-3 sm:py-4 hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 text-center uppercase tracking-wider text-sm"
               >
-                Explorer le Lexique
+                Decipher the Lexicon
               </Link>
               <Link
                 to="/contact"
-                className="bg-transparent text-secondary border-2 border-secondary font-paragraph font-semibold px-6 sm:px-8 py-3 sm:py-4 hover:bg-secondary/10 transition-all duration-300 text-center"
+                className="bg-transparent text-secondary border-2 border-secondary font-paragraph font-semibold px-6 sm:px-8 py-3 sm:py-4 hover:bg-secondary/10 transition-all duration-300 text-center uppercase tracking-wider text-sm"
               >
-                Nous Contacter
+                Join the Civilization
               </Link>
             </div>
           </motion.div>
