@@ -17,7 +17,7 @@ export default function Footer() {
             className="mb-4 opacity-60"
           />
           <p className="text-xs tracking-widest text-stone-500 uppercase mb-1">NIDALUM MUSIC</p>
-          <p className="text-xs tracking-widest text-stone-600">The operational artistic arm of the House</p>
+          <p className="text-xs tracking-widest text-stone-600">The operational artistic foundation of the House</p>
         </div>
 
         {/* Main Footer Content */}
@@ -28,7 +28,7 @@ export default function Footer() {
               NIDALUM
             </h3>
             <p className="text-xs text-stone-500 tracking-wide">
-              A sacred luxury house.
+              A sacred house of creation.
             </p>
           </div>
 
@@ -165,7 +165,7 @@ export default function Footer() {
             © {currentYear} NIDALUM. All rights reserved.
           </p>
           <p className="text-xs text-stone-600 tracking-wide">
-            A sacred luxury house of music, fashion & perfume.
+            A sacred house of music, fashion, and perfume.
           </p>
         </div>
       </div>

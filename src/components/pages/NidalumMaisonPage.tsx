@@ -19,14 +19,14 @@ export default function NidalumMaisonPage() {
   };
 
   const incarnations = [
-    { id: 1, name: 'ORIGINE', poetic: 'Where silence begins', image: 'https://static.wixstatic.com/media/9c8aea_9a44e5db855f417897dbfb2ba2220468~mv2.png' },
-    { id: 2, name: 'SOUFFLE', poetic: 'Breath becomes form', image: 'https://static.wixstatic.com/media/9c8aea_854e879180c345b2942407cd6e95bb18~mv2.png' },
-    { id: 3, name: 'MÉMOIRE', poetic: 'Time held in trace', image: 'https://static.wixstatic.com/media/9c8aea_10c90976294c466b9acbe452f2bfca4d~mv2.png' },
+    { id: 1, name: 'ORIGIN', poetic: 'Where silence begins', image: 'https://static.wixstatic.com/media/9c8aea_9a44e5db855f417897dbfb2ba2220468~mv2.png' },
+    { id: 2, name: 'BREATH', poetic: 'Form emerges', image: 'https://static.wixstatic.com/media/9c8aea_854e879180c345b2942407cd6e95bb18~mv2.png' },
+    { id: 3, name: 'MEMORY', poetic: 'Time held in trace', image: 'https://static.wixstatic.com/media/9c8aea_10c90976294c466b9acbe452f2bfca4d~mv2.png' },
     { id: 4, name: 'LANGUAGE', poetic: 'Symbols speak truth', image: 'https://static.wixstatic.com/media/9c8aea_336642ef24364de8bc4d2b55da6124d6~mv2.png' },
     { id: 5, name: 'SOUND', poetic: 'Vibration through void', image: 'https://static.wixstatic.com/media/9c8aea_2516eb65a8764d628ab227067983c822~mv2.png' },
     { id: 6, name: 'FORM', poetic: 'Structure of essence', image: 'https://static.wixstatic.com/media/9c8aea_9737c58f74ed452e8b522d450868f6e8~mv2.png' },
-    { id: 7, name: 'SCENT', poetic: 'Memory in air', image: 'https://static.wixstatic.com/media/9c8aea_818661dfe0e846a2837c3bc38f537d1e~mv2.png' },
-    { id: 8, name: 'RITE', poetic: 'Sacred repetition', image: 'https://static.wixstatic.com/media/9c8aea_f7d006661dda43bebac755e55f5620fd~mv2.png' },
+    { id: 7, name: 'FRAGRANCE', poetic: 'Memory in air', image: 'https://static.wixstatic.com/media/9c8aea_818661dfe0e846a2837c3bc38f537d1e~mv2.png' },
+    { id: 8, name: 'RITUAL', poetic: 'Sacred repetition', image: 'https://static.wixstatic.com/media/9c8aea_f7d006661dda43bebac755e55f5620fd~mv2.png' },
     { id: 9, name: 'ARCHIVE', poetic: 'Layers of becoming', image: 'https://static.wixstatic.com/media/9c8aea_8882705288764033a27f2c56dbe8619a~mv2.png' },
     { id: 10, name: 'THE HOUSE', poetic: 'All returns here', image: 'https://static.wixstatic.com/media/9c8aea_6236e7268a7d45e4ac86bf416e422157~mv2.png' },
   ];
@@ -98,7 +98,7 @@ export default function NidalumMaisonPage() {
               className="pt-12"
             >
               <button className="font-heading text-sm md:text-base tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors duration-300 uppercase border border-luxury-gold/30 hover:border-luxury-gold/60 px-8 py-3 transition-all duration-300">
-                Begin Presence
+                Enter
               </button>
             </motion.div>
           </motion.div>
@@ -312,10 +312,10 @@ export default function NidalumMaisonPage() {
             {/* Newsletter Title */}
             <div>
               <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-widest text-luxury-text mb-4 uppercase">
-                JOIN THE INNER CIRCLE
+                The Inner Circle
               </h3>
               <p className="font-paragraph text-xs sm:text-sm tracking-widest text-luxury-gold/50 uppercase">
-                Exclusive access to unreleased works
+                Receive invitations to new works
               </p>
             </div>
 
@@ -326,7 +326,7 @@ export default function NidalumMaisonPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your essence"
+                  placeholder="Your email"
                   required
                   className="w-full bg-deep-black border border-luxury-gold/30 px-4 md:px-6 py-3 md:py-4 text-sm md:text-base text-luxury-text placeholder-luxury-gold/30 focus:outline-none focus:border-luxury-gold/60 transition-colors duration-300 font-paragraph"
                 />

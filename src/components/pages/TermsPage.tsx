@@ -25,10 +25,10 @@ export default function TermsPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6">
-              Conditions d'Utilisation
+              Terms of Use
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              Veuillez lire attentivement ces conditions avant d'utiliser notre plateforme
+              Please read these terms carefully before using this platform.
             </p>
           </motion.div>
         </div>
@@ -47,80 +47,80 @@ export default function TermsPage() {
             <div className="space-y-12">
               {/* Section 1 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">1. Acceptation des Conditions</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">1. Acceptance of Terms</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  En accédant et en utilisant le site NIDALUM Language Institute, vous acceptez d'être lié par ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser ce site.
+                  By accessing and using the NIDALUM platform, you accept these terms of use. If you do not accept these terms, do not use this site.
                 </p>
               </div>
 
               {/* Section 2 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">2. Utilisation Autorisée</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">2. Authorized Use</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mb-4">
-                  Vous acceptez d'utiliser ce site uniquement à des fins légales et de manière à ne pas violer les droits d'autrui ou à restreindre leur utilisation et leur jouissance du site.
+                  You agree to use this site only for lawful purposes and in a manner that does not violate the rights of others or restrict their use and enjoyment of the site.
                 </p>
                 <ul className="list-disc list-inside space-y-2 font-paragraph text-foreground/80">
-                  <li>Ne pas utiliser le site pour du harcèlement ou de la discrimination</li>
-                  <li>Ne pas transmettre de virus ou de code malveillant</li>
-                  <li>Ne pas collecter ou suivre les informations personnelles d'autrui</li>
-                  <li>Ne pas usurper l'identité d'une autre personne</li>
-                  <li>Ne pas violer les droits d'auteur ou les droits de propriété intellectuelle</li>
+                  <li>Do not use the site for harassment or discrimination</li>
+                  <li>Do not transmit viruses or malicious code</li>
+                  <li>Do not collect or track personal information of others</li>
+                  <li>Do not impersonate another person</li>
+                  <li>Do not violate copyright or intellectual property rights</li>
                 </ul>
               </div>
 
               {/* Section 3 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">3. Propriété Intellectuelle</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">3. Intellectual Property</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  Tout le contenu du site, y compris les textes, les images, les vidéos, les sons et les graphiques, est la propriété de NIDALUM Language Institute ou de ses fournisseurs de contenu et est protégé par les lois internationales sur les droits d'auteur.
+                  All content on this site, including text, images, videos, sounds, and graphics, is the property of NIDALUM or its content providers and is protected by international copyright laws.
                 </p>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mt-4">
-                  La langue Nidalum et tous ses éléments (alphabet, grammaire, vocabulaire) sont la création originale de Ramses Nidal et sont protégés par les droits d'auteur.
+                  The Nidalum language and all its elements (alphabet, grammar, vocabulary) are the original creation of Ramses Nidal and are protected by copyright.
                 </p>
               </div>
 
               {/* Section 4 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">4. Comptes Utilisateur</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">4. User Accounts</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mb-4">
-                  Si vous créez un compte sur notre site, vous êtes responsable de maintenir la confidentialité de vos identifiants de connexion et de votre mot de passe.
+                  If you create an account on this site, you are responsible for maintaining the confidentiality of your login credentials and password.
                 </p>
                 <ul className="list-disc list-inside space-y-2 font-paragraph text-foreground/80">
-                  <li>Vous êtes responsable de toutes les activités qui se produisent sous votre compte</li>
-                  <li>Vous acceptez de notifier immédiatement tout accès non autorisé</li>
-                  <li>Vous acceptez de fournir des informations exactes et complètes lors de l'inscription</li>
+                  <li>You are responsible for all activities that occur under your account</li>
+                  <li>You agree to notify immediately of any unauthorized access</li>
+                  <li>You agree to provide accurate and complete information during registration</li>
                 </ul>
               </div>
 
               {/* Section 5 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">5. Limitation de Responsabilité</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">5. Limitation of Liability</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  NIDALUM Language Institute ne sera pas responsable des dommages directs, indirects, accessoires, spéciaux ou consécutifs résultant de votre utilisation ou de votre incapacité à utiliser le site ou les services.
+                  NIDALUM will not be responsible for direct, indirect, incidental, special, or consequential damages resulting from your use or inability to use the site or services.
                 </p>
               </div>
 
               {/* Section 6 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">6. Modification des Conditions</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">6. Modification of Terms</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  NIDALUM Language Institute se réserve le droit de modifier ces conditions à tout moment. Les modifications entreront en vigueur dès leur publication sur le site. Votre utilisation continue du site après la publication des modifications constitue votre acceptation des conditions modifiées.
+                  NIDALUM reserves the right to modify these terms at any time. Modifications will take effect upon publication on the site. Your continued use of the site after publication of modifications constitutes your acceptance of the modified terms.
                 </p>
               </div>
 
               {/* Section 7 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">7. Résiliation</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">7. Termination</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  NIDALUM Language Institute peut résilier ou suspendre votre accès au site à tout moment, sans préavis, pour violation de ces conditions ou pour toute autre raison.
+                  NIDALUM may terminate or suspend your access to the site at any time, without notice, for violation of these terms or for any other reason.
                 </p>
               </div>
 
               {/* Section 8 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">8. Droit Applicable</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">8. Governing Law</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  Ces conditions sont régies par et construites conformément aux lois applicables. Tout litige découlant de ces conditions sera soumis à la juridiction exclusive des tribunaux compétents.
+                  These terms are governed by and construed in accordance with applicable law. Any dispute arising from these terms will be subject to the exclusive jurisdiction of the competent courts.
                 </p>
               </div>
 
@@ -128,18 +128,18 @@ export default function TermsPage() {
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
                 <h2 className="font-heading text-3xl text-primary mb-4">9. Contact</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  Si vous avez des questions concernant ces conditions d'utilisation, veuillez nous contacter à :
+                  If you have questions regarding these terms of use, please contact us at:
                 </p>
                 <div className="mt-4 space-y-2 font-paragraph text-foreground/80">
                   <p><strong>Email:</strong> contact@nidalum.com</p>
-                  <p><strong>Adresse:</strong> Institut Nidalum, Univers Souma-Ra</p>
+                  <p><strong>Address:</strong> NIDALUM Institute</p>
                 </div>
               </div>
 
               {/* Last Updated */}
               <div className="text-center pt-8 border-t border-primary/20">
                 <p className="font-paragraph text-sm text-foreground/60">
-                  Dernière mise à jour : 27 Novembre 2025
+                  Last updated: January 31, 2026
                 </p>
               </div>
             </div>

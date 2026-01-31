@@ -25,10 +25,10 @@ export default function PrivacyPage() {
             className="text-center mb-16"
           >
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6">
-              Politique de Confidentialité
+              Privacy Policy
             </h1>
             <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              Nous respectons votre vie privée et nous engageons à protéger vos données personnelles
+              We respect your privacy and are committed to protecting your personal data.
             </p>
           </motion.div>
         </div>
@@ -49,111 +49,111 @@ export default function PrivacyPage() {
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
                 <h2 className="font-heading text-3xl text-primary mb-4">1. Introduction</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  NIDALUM Language Institute (ci-après "nous", "notre" ou "le site") s'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, divulguons et sauvegardons vos informations.
+                  NIDALUM (hereinafter "we", "our", or "the site") is committed to protecting your privacy. This privacy policy explains how we collect, use, disclose, and safeguard your information.
                 </p>
               </div>
 
               {/* Section 2 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">2. Informations que Nous Collectons</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">2. Information We Collect</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mb-4">
-                  Nous collectons les informations suivantes :
+                  We collect the following information:
                 </p>
                 <ul className="list-disc list-inside space-y-2 font-paragraph text-foreground/80">
-                  <li><strong>Informations d'enregistrement:</strong> Nom, prénom, adresse e-mail, mot de passe</li>
-                  <li><strong>Informations de profil:</strong> Photo de profil, biographie, préférences de langue</li>
-                  <li><strong>Informations de contact:</strong> Messages via le formulaire de contact</li>
-                  <li><strong>Données d'utilisation:</strong> Pages visitées, temps passé, interactions</li>
-                  <li><strong>Informations techniques:</strong> Adresse IP, type de navigateur, système d'exploitation</li>
-                  <li><strong>Cookies:</strong> Identifiants de session, préférences utilisateur</li>
+                  <li><strong>Registration Information:</strong> Name, email address, password</li>
+                  <li><strong>Profile Information:</strong> Profile photo, biography, language preferences</li>
+                  <li><strong>Contact Information:</strong> Messages via contact form</li>
+                  <li><strong>Usage Data:</strong> Pages visited, time spent, interactions</li>
+                  <li><strong>Technical Information:</strong> IP address, browser type, operating system</li>
+                  <li><strong>Cookies:</strong> Session identifiers, user preferences</li>
                 </ul>
               </div>
 
               {/* Section 3 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">3. Utilisation de Vos Informations</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">3. Use of Your Information</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mb-4">
-                  Nous utilisons vos informations pour :
+                  We use your information to:
                 </p>
                 <ul className="list-disc list-inside space-y-2 font-paragraph text-foreground/80">
-                  <li>Créer et gérer votre compte utilisateur</li>
-                  <li>Fournir les services et fonctionnalités du site</li>
-                  <li>Personnaliser votre expérience utilisateur</li>
-                  <li>Communiquer avec vous concernant votre compte</li>
-                  <li>Envoyer des mises à jour et des newsletters (avec consentement)</li>
-                  <li>Analyser l'utilisation du site pour améliorer nos services</li>
-                  <li>Détecter et prévenir les fraudes et les abus</li>
-                  <li>Respecter les obligations légales</li>
+                  <li>Create and manage your user account</li>
+                  <li>Provide the services and features of the site</li>
+                  <li>Personalize your user experience</li>
+                  <li>Communicate with you regarding your account</li>
+                  <li>Send updates and newsletters (with consent)</li>
+                  <li>Analyze site usage to improve our services</li>
+                  <li>Detect and prevent fraud and abuse</li>
+                  <li>Comply with legal obligations</li>
                 </ul>
               </div>
 
               {/* Section 4 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">4. Partage de Vos Informations</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">4. Sharing Your Information</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mb-4">
-                  Nous ne vendons, ne louons et ne partageons pas vos informations personnelles avec des tiers, sauf dans les cas suivants :
+                  We do not sell, rent, or share your personal information with third parties, except in the following cases:
                 </p>
                 <ul className="list-disc list-inside space-y-2 font-paragraph text-foreground/80">
-                  <li>Avec votre consentement explicite</li>
-                  <li>Pour respecter la loi ou les ordonnances judiciaires</li>
-                  <li>Avec nos prestataires de services (hébergement, email, analytics)</li>
-                  <li>En cas de fusion, acquisition ou vente d'actifs</li>
+                  <li>With your explicit consent</li>
+                  <li>To comply with law or court orders</li>
+                  <li>With our service providers (hosting, email, analytics)</li>
+                  <li>In case of merger, acquisition, or asset sale</li>
                 </ul>
               </div>
 
               {/* Section 5 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">5. Sécurité de Vos Données</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">5. Data Security</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos informations personnelles contre l'accès non autorisé, la modification, la divulgation ou la destruction. Cependant, aucune méthode de transmission sur Internet ou de stockage électronique n'est 100% sécurisée.
+                  We implement appropriate security measures to protect your personal information against unauthorized access, modification, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure.
                 </p>
               </div>
 
               {/* Section 6 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">6. Cookies et Technologies de Suivi</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">6. Cookies and Tracking Technologies</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mb-4">
-                  Nous utilisons des cookies et des technologies similaires pour :
+                  We use cookies and similar technologies to:
                 </p>
                 <ul className="list-disc list-inside space-y-2 font-paragraph text-foreground/80">
-                  <li>Maintenir votre session de connexion</li>
-                  <li>Mémoriser vos préférences</li>
-                  <li>Analyser l'utilisation du site</li>
-                  <li>Afficher des publicités pertinentes</li>
+                  <li>Maintain your login session</li>
+                  <li>Remember your preferences</li>
+                  <li>Analyze site usage</li>
+                  <li>Display relevant content</li>
                 </ul>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mt-4">
-                  Vous pouvez contrôler les cookies via les paramètres de votre navigateur.
+                  You can control cookies through your browser settings.
                 </p>
               </div>
 
               {/* Section 7 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">7. Vos Droits</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">7. Your Rights</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed mb-4">
-                  Vous avez les droits suivants concernant vos données personnelles :
+                  You have the following rights regarding your personal data:
                 </p>
                 <ul className="list-disc list-inside space-y-2 font-paragraph text-foreground/80">
-                  <li><strong>Droit d'accès:</strong> Vous pouvez demander l'accès à vos données</li>
-                  <li><strong>Droit de rectification:</strong> Vous pouvez corriger vos données inexactes</li>
-                  <li><strong>Droit à l'oubli:</strong> Vous pouvez demander la suppression de vos données</li>
-                  <li><strong>Droit à la portabilité:</strong> Vous pouvez demander une copie de vos données</li>
-                  <li><strong>Droit d'opposition:</strong> Vous pouvez vous opposer au traitement de vos données</li>
+                  <li><strong>Right of Access:</strong> You can request access to your data</li>
+                  <li><strong>Right of Correction:</strong> You can correct inaccurate data</li>
+                  <li><strong>Right to be Forgotten:</strong> You can request deletion of your data</li>
+                  <li><strong>Right to Data Portability:</strong> You can request a copy of your data</li>
+                  <li><strong>Right to Object:</strong> You can object to processing of your data</li>
                 </ul>
               </div>
 
               {/* Section 8 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">8. Rétention des Données</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">8. Data Retention</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  Nous conservons vos données personnelles aussi longtemps que nécessaire pour fournir nos services et respecter nos obligations légales. Vous pouvez demander la suppression de vos données à tout moment.
+                  We retain your personal data as long as necessary to provide our services and comply with our legal obligations. You can request deletion of your data at any time.
                 </p>
               </div>
 
               {/* Section 9 */}
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-4">9. Modifications de cette Politique</h2>
+                <h2 className="font-heading text-3xl text-primary mb-4">9. Changes to This Policy</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  Nous pouvons modifier cette politique de confidentialité à tout moment. Les modifications entreront en vigueur dès leur publication sur le site. Votre utilisation continue du site après la publication des modifications constitue votre acceptation de la politique modifiée.
+                  We may modify this privacy policy at any time. Changes will take effect upon publication on the site. Your continued use of the site after publication of changes constitutes your acceptance of the modified policy.
                 </p>
               </div>
 
@@ -161,18 +161,18 @@ export default function PrivacyPage() {
               <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
                 <h2 className="font-heading text-3xl text-primary mb-4">10. Contact</h2>
                 <p className="font-paragraph text-foreground/80 leading-relaxed">
-                  Si vous avez des questions concernant cette politique de confidentialité ou nos pratiques en matière de confidentialité, veuillez nous contacter à :
+                  If you have questions regarding this privacy policy or our privacy practices, please contact us at:
                 </p>
                 <div className="mt-4 space-y-2 font-paragraph text-foreground/80">
                   <p><strong>Email:</strong> contact@nidalum.com</p>
-                  <p><strong>Adresse:</strong> Institut Nidalum, Univers Souma-Ra</p>
+                  <p><strong>Address:</strong> NIDALUM Institute</p>
                 </div>
               </div>
 
               {/* Last Updated */}
               <div className="text-center pt-8 border-t border-primary/20">
                 <p className="font-paragraph text-sm text-foreground/60">
-                  Dernière mise à jour : 27 Novembre 2025
+                  Last updated: January 31, 2026
                 </p>
               </div>
             </div>
