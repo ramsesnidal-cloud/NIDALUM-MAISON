@@ -294,7 +294,7 @@ export default function PublicationsPage() {
                             aria-busy={downloadingId === publication._id}
                           >
                             <Download className="w-4 h-4 mr-2" />
-                            {downloadingId === publication._id ? 'Téléchargement...' : 'Télécharger PDF'}
+                            {downloadingId === publication._id ? 'Downloading...' : 'Download PDF'}
                           </button>
                         )}
                         {publication.purchaseLink && (
@@ -304,7 +304,7 @@ export default function PublicationsPage() {
                             rel="noopener noreferrer"
                             className="inline-flex items-center bg-secondary/10 border border-secondary/30 text-secondary font-paragraph font-semibold px-6 py-3 hover:bg-secondary/20 transition-all duration-300"
                           >
-                            Acheter
+                            Purchase
                             <ExternalLink className="w-4 h-4 ml-2" />
                           </a>
                         )}

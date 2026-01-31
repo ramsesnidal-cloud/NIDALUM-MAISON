@@ -799,7 +799,7 @@ export default function ResourcesPage() {
           >
             <div className="flex items-center gap-4 mb-12">
               <Music className="w-8 h-8 text-primary" />
-              <h2 className="font-heading text-4xl md:text-5xl text-primary">Chants Rituels Sacrés</h2>
+              <h2 className="font-heading text-4xl md:text-5xl text-primary">Sacred Ritual Chants</h2>
             </div>
 
             {/* Tabs */}
@@ -813,7 +813,7 @@ export default function ResourcesPage() {
                     : 'bg-background/50 border border-primary/30 text-foreground hover:border-primary'
                 }`}
               >
-                Chants en Vedette ({featuredChants.length})
+                Featured Chants ({featuredChants.length})
               </button>
               <button
                 onClick={() => setActiveChantTab('all')}
@@ -824,14 +824,14 @@ export default function ResourcesPage() {
                     : 'bg-background/50 border border-primary/30 text-foreground hover:border-primary'
                 }`}
               >
-                Tous les Chants ({chants.length})
+                All Chants ({chants.length})
               </button>
             </div>
 
             {/* Chants Grid */}
             {chants.length === 0 ? (
               <div className="text-center py-20">
-                <p className="font-paragraph text-xl text-foreground/70">Aucun chant disponible</p>
+                <p className="font-paragraph text-xl text-foreground/70">No chants available</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -885,7 +885,7 @@ export default function ResourcesPage() {
 
                       {chant.translation && (
                         <div className="mb-6 bg-background/30 border border-secondary/20 p-4 rounded">
-                          <p className="font-paragraph text-sm text-primary mb-2 font-semibold">Traduction Française</p>
+                          <p className="font-paragraph text-sm text-primary mb-2 font-semibold">French Translation</p>
                           <p className="font-paragraph text-foreground/80 leading-relaxed">
                             {chant.translation}
                           </p>

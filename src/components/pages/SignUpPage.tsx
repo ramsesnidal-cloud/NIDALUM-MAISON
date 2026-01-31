@@ -60,42 +60,42 @@ export default function SignUpPage() {
 
     // First Name validation
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'Le prénom est requis';
+      newErrors.firstName = 'First name is required';
     } else if (formData.firstName.trim().length < 2) {
-      newErrors.firstName = 'Le prénom doit contenir au moins 2 caractères';
+      newErrors.firstName = 'First name must contain at least 2 characters';
     }
 
     // Last Name validation
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Le nom est requis';
+      newErrors.lastName = 'Last name is required';
     } else if (formData.lastName.trim().length < 2) {
-      newErrors.lastName = 'Le nom doit contenir au moins 2 caractères';
+      newErrors.lastName = 'Last name must contain at least 2 characters';
     }
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = 'L\'email est requis';
+      newErrors.email = 'Email is required';
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Veuillez entrer une adresse email valide';
+      newErrors.email = 'Please enter a valid email address';
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Le mot de passe est requis';
+      newErrors.password = 'Password is required';
     } else if (!validatePassword(formData.password)) {
-      newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule et 1 chiffre';
+      newErrors.password = 'Password must contain at least 8 characters, 1 uppercase, 1 lowercase, and 1 number';
     }
 
     // Confirm Password validation
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Veuillez confirmer votre mot de passe';
+      newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
     // Terms agreement validation
     if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'Vous devez accepter les conditions d\'utilisation';
+      newErrors.agreeToTerms = 'You must accept the terms of service';
     }
 
     setErrors(newErrors);
@@ -152,7 +152,7 @@ export default function SignUpPage() {
         navigate('/');
       }, 2000);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Une erreur est survenue lors de l\'inscription';
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred during registration';
       setErrors({ submit: errorMessage });
     } finally {
       setIsLoading(false);
@@ -233,7 +233,7 @@ export default function SignUpPage() {
                 {/* First Name */}
                 <div>
                   <label htmlFor="firstName" className="block font-paragraph text-sm text-foreground mb-2">
-                    Prénom
+                    First Name
                   </label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
@@ -243,7 +243,7 @@ export default function SignUpPage() {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      placeholder="Jean"
+                      placeholder="John"
                       className={`w-full pl-10 pr-4 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
                         errors.firstName ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
                       }`}
@@ -260,7 +260,7 @@ export default function SignUpPage() {
                 {/* Last Name */}
                 <div>
                   <label htmlFor="lastName" className="block font-paragraph text-sm text-foreground mb-2">
-                    Nom
+                    Last Name
                   </label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
@@ -270,7 +270,7 @@ export default function SignUpPage() {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      placeholder="Dupont"
+                      placeholder="Smith"
                       className={`w-full pl-10 pr-4 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
                         errors.lastName ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
                       }`}
@@ -297,7 +297,7 @@ export default function SignUpPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="jean@example.com"
+                      placeholder="john@example.com"
                       className={`w-full pl-10 pr-4 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
                         errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
                       }`}
@@ -314,7 +314,7 @@ export default function SignUpPage() {
                 {/* Password */}
                 <div>
                   <label htmlFor="password" className="block font-paragraph text-sm text-foreground mb-2">
-                    Mot de passe
+                    Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
@@ -344,14 +344,14 @@ export default function SignUpPage() {
                     </p>
                   )}
                   <p className="font-paragraph text-xs text-foreground/50 mt-2">
-                    Minimum 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre
+                    Minimum 8 characters, 1 uppercase, 1 lowercase, 1 number
                   </p>
                 </div>
 
                 {/* Confirm Password */}
                 <div>
                   <label htmlFor="confirmPassword" className="block font-paragraph text-sm text-foreground mb-2">
-                    Confirmer le mot de passe
+                    Confirm Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
@@ -393,13 +393,13 @@ export default function SignUpPage() {
                     className="w-5 h-5 mt-0.5 bg-background border border-primary/20 accent-primary cursor-pointer"
                   />
                   <label htmlFor="agreeToTerms" className="font-paragraph text-sm text-foreground/80 cursor-pointer">
-                    J'accepte les{' '}
+                    I agree to the{' '}
                     <a href="/terms" className="text-secondary hover:text-primary transition-colors">
-                      conditions d'utilisation
+                      terms of service
                     </a>{' '}
-                    et la{' '}
+                    and{' '}
                     <a href="/privacy" className="text-secondary hover:text-primary transition-colors">
-                      politique de confidentialité
+                      privacy policy
                     </a>
                   </label>
                 </div>
@@ -453,7 +453,7 @@ export default function SignUpPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-8 border border-secondary/20 bg-secondary/5 p-6"
           >
-            <h3 className="font-heading text-lg text-secondary mb-3">Avantages de l'inscription</h3>
+            <h3 className="font-heading text-lg text-secondary mb-3">Benefits of Registration</h3>
             <ul className="space-y-2 font-paragraph text-sm text-foreground/80">
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-primary rounded-full"></span>
