@@ -72,7 +72,7 @@ export default function Header() {
       <nav className="max-w-[120rem] mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0 mr-16 lg:mr-32">
             <div className="w-8 sm:w-10 h-8 sm:h-10 border border-luxury-gold flex items-center justify-center flex-shrink-0">
               <span className="text-luxury-gold font-heading font-bold text-lg sm:text-xl">◆</span>
             </div>
