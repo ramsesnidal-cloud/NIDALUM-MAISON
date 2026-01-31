@@ -46,7 +46,7 @@ export interface ProgrammesdelAcadmie {
   programName?: string;
   /** @wixFieldType text */
   programDescription?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   programImage?: string;
   /** @wixFieldType text */
   programLevel?: string;
@@ -68,7 +68,7 @@ export interface ProgrammesdelAcadmie {
   description_en?: string;
   /** @wixFieldType text */
   description_de?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   image?: string;
   /** @wixFieldType text */
   level_fr?: string;
@@ -103,7 +103,7 @@ export interface NidalumAlphabet {
   pronunciation?: string;
   /** @wixFieldType text */
   meaning?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   glyphImage?: string;
   /** @wixFieldType number */
   alphabeticalOrder?: number;
@@ -136,7 +136,7 @@ export interface AuthorVideoManagement {
   videoType?: string;
   /** @wixFieldType url */
   videoUrl?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   thumbnailImage?: string;
   /** @wixFieldType boolean */
   isActive?: boolean;
@@ -186,7 +186,7 @@ export interface LanguageCategories {
   gradientColorTo?: string;
   /** @wixFieldType text */
   theme?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   icon?: string;
 }
 
@@ -213,7 +213,7 @@ export interface MusicShowcase {
   description?: string;
   /** @wixFieldType url */
   audioUrl?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   coverImage?: string;
   /** @wixFieldType text */
   artistName?: string;
@@ -367,7 +367,7 @@ export interface OfficialResources {
   resourceType?: string;
   /** @wixFieldType date */
   publicationDate?: Date | string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   thumbnailImage?: string;
 }
 
@@ -386,7 +386,7 @@ export interface OriginsandChronology {
   category?: string;
   /** @wixFieldType text */
   description?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   image?: string;
   /** @wixFieldType text */
   timeframe?: string;
@@ -413,7 +413,7 @@ export interface NidalumPhonetics {
   exampleWord?: string;
   /** @wixFieldType url */
   audioPronunciation?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   visualRepresentation?: string;
   /** @wixFieldType text */
   notes?: string;
@@ -458,7 +458,7 @@ export interface Publications {
   publicationDate?: Date | string;
   /** @wixFieldType text */
   isbn?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   coverImage?: string;
   /** @wixFieldType url */
   purchaseLink?: string;
@@ -493,7 +493,7 @@ export interface RitualChants {
   translation?: string;
   /** @wixFieldType text */
   spiritualContext?: string;
-  /** @wixFieldType image */
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
   chantImage?: string;
   /** @wixFieldType text */
   theme?: string;

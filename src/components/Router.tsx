@@ -29,6 +29,7 @@ import CompleteLexicalDiagnostic from '@/components/pages/CompleteLexicalDiagnos
 import RepertoireLinguistiquePage from '@/components/pages/RepertoireLinguistiquePage';
 import GrammaireNidalumPage from '@/components/pages/GrammaireNidalumPage';
 import ApprendreLangagePage from '@/components/pages/Apprendre LangagePage';
+import NidalumMaisonPage from '@/components/pages/NidalumMaisonPage';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 // Diagnostic
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: <NidalumMaisonPage />,
       },
       {
         path: "alphabet",
