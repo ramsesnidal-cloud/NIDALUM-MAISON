@@ -72,40 +72,34 @@ export default function NidalumMaisonPage() {
               className="h-px bg-gradient-to-r from-transparent via-luxury-gold to-transparent max-w-md mx-auto"
             ></motion.div>
 
-            {/* Core Symbolic Text - International Press Bio */}
+            {/* Core Symbolic Text - Split Visual */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="space-y-4 max-w-3xl mx-auto"
+              className="space-y-6 max-w-3xl mx-auto"
             >
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
-                NIDALUM is a sacred house of creation rooted in language, memory, and ritual. Conceived as a living universe rather than a brand, NIDALUM explores presence beyond sound and form.
+              <p className="font-paragraph text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-luxury-text/80">
+                Born from language, memory, and ritual.
               </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70">
-                Music becomes architecture. Fragrance becomes memory. Creation becomes rite.
+              <p className="font-paragraph text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-luxury-gold/70">
+                Music becomes architecture. Silence becomes signature.
               </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
-                At the core of the House lies a unique language and a cinematic approach to sound, where silence is treated as a signature rather than an absence. Each expression—music, fashion, perfume—unfolds as part of a larger continuum, guided by restraint, intention, and timelessness.
-              </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70">
-                NIDALUM does not follow trends, seasons, or genres. It establishes codes.
-              </p>
-              <p className="font-paragraph text-xs sm:text-sm md:text-base lg:text-lg tracking-widest text-luxury-gold/60 uppercase">
-                More than a house, NIDALUM is a space of resonance—where creation is not produced, but revealed.
+              <p className="font-paragraph text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed text-luxury-text/80">
+                Creation becomes rite. It is not a genre. It is a language. It is a House.
               </p>
             </motion.div>
 
-            {/* Scroll Indicator */}
+            {/* Symbolic CTA */}
             <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
               className="pt-12"
             >
-              <div className="text-xs tracking-widest text-luxury-gold/40 uppercase">Scroll to explore</div>
-              <div className="mt-4 flex justify-center gap-1">
-                <div className="w-px h-8 bg-gradient-to-b from-luxury-gold/50 to-transparent"></div>
-              </div>
+              <button className="font-heading text-sm md:text-base tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors duration-300 uppercase border border-luxury-gold/30 hover:border-luxury-gold/60 px-8 py-3 transition-all duration-300">
+                Begin Presence
+              </button>
             </motion.div>
           </motion.div>
         </div>

@@ -55,7 +55,7 @@ export default function OriginsPage() {
             THE ORIGIN
           </h1>
           <p className="text-base md:text-lg tracking-wide text-stone-400">
-            Born from language, myth, and memory
+            The foundation of all creation.
           </p>
           <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-12"></div>
         </motion.div>

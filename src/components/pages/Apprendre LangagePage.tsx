@@ -78,9 +78,7 @@ export default function ApprendreLangagePage() {
             THE LANGUAGE
           </h1>
           <p className="text-base md:text-lg tracking-wide text-stone-400 mb-4">
-            {language === 'fr' ? 'Découvrez les fondamentaux de la langue Nidalum' :
-              language === 'de' ? 'Entdecken Sie die Grundlagen der Nidalum-Sprache' :
-              'Discover the fundamentals of the Nidalum language'}
+            Words as memory. Presence as code.
           </p>
           <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-12"></div>
         </motion.div>

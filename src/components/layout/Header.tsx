@@ -12,7 +12,6 @@ export default function Header() {
     { label: 'Language', href: '/apprendre-langage' },
     { label: 'Fashion', href: '/fashion' },
     { label: 'Perfume', href: '/perfume' },
-    { label: 'Origins', href: '/origins' },
     { label: 'Contact', href: '/contact' },
   ];
 
