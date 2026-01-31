@@ -48,12 +48,12 @@ export default function NidalumMaisonPage() {
           isScrolled ? 'bg-black/80 backdrop-blur-md border-b border-amber-900/20' : 'bg-transparent'
         }`}
       >
-        <div className="max-w-[120rem] mx-auto px-8 py-6 flex justify-between items-center">
+        <div className="max-w-[120rem] mx-auto px-4 md:px-8 py-4 md:py-6 flex justify-between items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-2xl font-heading tracking-widest text-amber-400"
+            className="text-lg md:text-2xl font-heading tracking-widest text-amber-400"
           >
             NIDALUM
           </motion.div>
@@ -79,7 +79,7 @@ export default function NidalumMaisonPage() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-[100rem] mx-auto px-8 text-center">
+        <div className="relative z-10 max-w-[100rem] mx-auto px-4 md:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,7 +87,7 @@ export default function NidalumMaisonPage() {
             className="space-y-8"
           >
             {/* Main Headline */}
-            <h1 className="font-heading text-7xl md:text-8xl lg:text-9xl tracking-tighter leading-none text-white">
+            <h1 className="font-heading text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tighter leading-none text-white">
               ARCHITECT
               <br />
               OF
@@ -108,7 +108,7 @@ export default function NidalumMaisonPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="font-paragraph text-lg md:text-xl tracking-widest text-amber-400/80 uppercase"
+              className="font-paragraph text-xs sm:text-sm md:text-lg lg:text-xl tracking-widest text-amber-400/80 uppercase"
             >
               NIDALUM MAISON • EST. 2026
             </motion.p>
@@ -129,7 +129,7 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* The Roster Section */}
-      <section id="roster" className="relative py-32 px-8">
+      <section id="roster" className="relative py-16 md:py-32 px-4 md:px-8">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
           <motion.div
@@ -137,16 +137,16 @@ export default function NidalumMaisonPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-24"
+            className="text-center mb-12 md:mb-24"
           >
-            <h2 className="font-heading text-6xl md:text-7xl tracking-tight text-white mb-4">
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl lg:text-7xl tracking-tight text-white mb-4">
               THE INCARNATIONS
             </h2>
             <div className="h-px w-24 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
           </motion.div>
 
           {/* Artist Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8">
             {artists.map((artist, index) => (
               <motion.div
                 key={artist.id}
@@ -156,7 +156,7 @@ export default function NidalumMaisonPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 className="group"
               >
-                <div className="relative aspect-square mb-6 overflow-hidden rounded-lg">
+                <div className="relative aspect-square mb-3 md:mb-6 overflow-hidden rounded-lg">
                   {/* Avatar Background */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${artist.color} opacity-80 group-hover:opacity-100 transition-opacity duration-300`}></div>
 
@@ -165,7 +165,7 @@ export default function NidalumMaisonPage() {
 
                   {/* Center Symbol */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-5xl font-heading text-white/30 group-hover:text-white/50 transition-colors duration-300">
+                    <div className="text-3xl md:text-5xl font-heading text-white/30 group-hover:text-white/50 transition-colors duration-300">
                       ◆
                     </div>
                   </div>
@@ -175,7 +175,7 @@ export default function NidalumMaisonPage() {
                 </div>
 
                 {/* Artist Name */}
-                <h3 className="font-heading text-sm tracking-widest text-white group-hover:text-amber-400 transition-colors duration-300">
+                <h3 className="font-heading text-xs md:text-sm tracking-widest text-white group-hover:text-amber-400 transition-colors duration-300">
                   {artist.name}
                 </h3>
               </motion.div>
@@ -185,14 +185,14 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* Concept Section */}
-      <section className="relative py-32 px-8 bg-gradient-to-b from-black via-black to-amber-950/5">
+      <section className="relative py-16 md:py-32 px-4 md:px-8 bg-gradient-to-b from-black via-black to-amber-950/5">
         <div className="max-w-[100rem] mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 1 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center space-y-16"
+            className="text-center space-y-8 md:space-y-16"
           >
             {/* Central Logo Symbol */}
             <motion.div
@@ -200,21 +200,21 @@ export default function NidalumMaisonPage() {
               transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
               className="flex justify-center"
             >
-              <div className="text-9xl text-amber-400/40">◆</div>
+              <div className="text-6xl md:text-9xl text-amber-400/40">◆</div>
             </motion.div>
 
             {/* Concept Text */}
-            <div className="space-y-6 max-w-2xl mx-auto">
-              <p className="font-paragraph text-2xl md:text-3xl leading-relaxed text-white/90">
+            <div className="space-y-4 md:space-y-6 max-w-2xl mx-auto">
+              <p className="font-paragraph text-base sm:text-lg md:text-2xl lg:text-3xl leading-relaxed text-white/90">
                 Every creation carries the glyphs.
               </p>
-              <p className="font-paragraph text-xl md:text-2xl leading-relaxed text-amber-400/70">
+              <p className="font-paragraph text-sm sm:text-base md:text-xl lg:text-2xl leading-relaxed text-amber-400/70">
                 Learn to read the silence.
               </p>
             </div>
 
             {/* Decorative Elements */}
-            <div className="flex justify-center gap-8 pt-8">
+            <div className="flex justify-center gap-8 pt-4 md:pt-8">
               <div className="w-12 h-px bg-gradient-to-r from-transparent to-amber-400/50"></div>
               <div className="w-12 h-px bg-gradient-to-l from-transparent to-amber-400/50"></div>
             </div>
@@ -223,27 +223,27 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* Footer - Newsletter */}
-      <footer className="relative py-24 px-8 border-t border-amber-900/20">
+      <footer className="relative py-12 md:py-24 px-4 md:px-8 border-t border-amber-900/20">
         <div className="max-w-[100rem] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center space-y-12"
+            className="text-center space-y-8 md:space-y-12"
           >
             {/* Newsletter Title */}
             <div>
-              <h3 className="font-heading text-4xl md:text-5xl tracking-tight text-white mb-4">
+              <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-tight text-white mb-4">
                 JOIN THE INNER CIRCLE
               </h3>
-              <p className="font-paragraph text-sm tracking-widest text-amber-400/60 uppercase">
+              <p className="font-paragraph text-xs sm:text-sm tracking-widest text-amber-400/60 uppercase">
                 Exclusive access to unreleased works
               </p>
             </div>
 
             {/* Newsletter Form */}
-            <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
+            <form onSubmit={handleSubscribe} className="max-w-md mx-auto px-4">
               <div className="relative">
                 <input
                   type="email"
@@ -251,13 +251,13 @@ export default function NidalumMaisonPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your essence"
                   required
-                  className="w-full bg-black border border-amber-400/30 rounded-lg px-6 py-4 text-white placeholder-amber-400/30 focus:outline-none focus:border-amber-400/60 transition-colors duration-300 font-paragraph"
+                  className="w-full bg-black border border-amber-400/30 rounded-lg px-4 md:px-6 py-3 md:py-4 text-sm md:text-base text-white placeholder-amber-400/30 focus:outline-none focus:border-amber-400/60 transition-colors duration-300 font-paragraph"
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-amber-400 hover:text-amber-300 transition-colors duration-300"
+                  className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 text-amber-400 hover:text-amber-300 transition-colors duration-300"
                 >
-                  <Mail size={20} />
+                  <Mail size={18} className="md:w-5 md:h-5" />
                 </button>
               </div>
             </form>
@@ -267,14 +267,14 @@ export default function NidalumMaisonPage() {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-amber-400 text-sm font-paragraph"
+                className="text-amber-400 text-xs md:text-sm font-paragraph"
               >
                 Welcome to the inner circle.
               </motion.p>
             )}
 
             {/* Footer Info */}
-            <div className="pt-12 border-t border-amber-900/20 space-y-4">
+            <div className="pt-8 md:pt-12 border-t border-amber-900/20 space-y-2 md:space-y-4">
               <p className="font-paragraph text-xs tracking-widest text-amber-400/40 uppercase">
                 NIDALUM MAISON
               </p>
