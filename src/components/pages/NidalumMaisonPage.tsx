@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { Image } from '@/components/ui/image';
+import Header from '@/components/layout/Header';
 
 export default function NidalumMaisonPage() {
   const [email, setEmail] = useState('');
@@ -40,33 +41,8 @@ export default function NidalumMaisonPage() {
 
   return (
     <div className="bg-black text-white overflow-hidden">
-      {/* Navigation */}
-      <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-black/80 backdrop-blur-md border-b border-amber-900/20' : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-[120rem] mx-auto px-4 md:px-8 py-4 md:py-6 flex justify-between items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg md:text-2xl font-heading tracking-widest text-amber-400"
-          >
-            NIDALUM
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xs tracking-[0.2em] text-amber-400/60 uppercase"
-          >
-            Est. 2026
-          </motion.div>
-        </div>
-      </motion.nav>
+      {/* Header Navigation */}
+      <Header />
 
       {/* Hero Section */}
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20">
