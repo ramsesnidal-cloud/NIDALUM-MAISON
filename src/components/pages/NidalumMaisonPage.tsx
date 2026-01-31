@@ -181,7 +181,7 @@ export default function NidalumMaisonPage() {
       <section className="relative py-16 md:py-24 px-4 md:px-8 bg-deep-black border-t border-b border-luxury-gold/10">
         <div className="max-w-[100rem] mx-auto flex flex-col items-center justify-center space-y-6">
           <Image
-            src="https://static.wixstatic.com/media/9c8aea_2558c93f86234782a89034fb87152eef~mv2.png"
+            src="https://static.wixstatic.com/media/9c8aea_fd135d0ad42a4065b1414ce0a7f4db9f~mv2.png"
             alt="NIDALUM seal"
             width={64}
             height={64}
