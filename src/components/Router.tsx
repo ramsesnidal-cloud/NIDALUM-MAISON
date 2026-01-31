@@ -32,6 +32,7 @@ import ApprendreLangagePage from '@/components/pages/Apprendre LangagePage';
 import NidalumMaisonPage from '@/components/pages/NidalumMaisonPage';
 import ArtistPortfolioPage from '@/components/pages/ArtistPortfolioPage';
 import VideoShowcasePage from '@/components/pages/VideoShowcasePage';
+import DiagnosticPage from '@/components/pages/DiagnosticPage';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 // Diagnostic
@@ -168,6 +169,10 @@ const router = createBrowserRouter([
       {
         path: "videos",
         element: <VideoShowcasePage />,
+      },
+      {
+        path: "diagnostic",
+        element: <DiagnosticPage />,
       },
       {
         path: "*",
