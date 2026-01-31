@@ -177,6 +177,20 @@ export default function NidalumMaisonPage() {
         </div>
       </section>
 
+      {/* NIDALUM MUSIC Seal Divider */}
+      <section className="relative py-16 md:py-24 px-4 md:px-8 bg-deep-black border-t border-b border-luxury-gold/10">
+        <div className="max-w-[100rem] mx-auto flex flex-col items-center justify-center space-y-6">
+          <Image
+            src="https://static.wixstatic.com/media/9c8aea_2558c93f86234782a89034fb87152eef~mv2.png"
+            alt="NIDALUM seal"
+            width={64}
+            height={64}
+            className="opacity-50"
+          />
+          <p className="text-xs tracking-widest text-luxury-gold/60 uppercase">NIDALUM MUSIC</p>
+        </div>
+      </section>
+
       {/* The Incarnations Section */}
       <section id="incarnations" className="relative py-16 md:py-32 px-4 md:px-8 bg-deep-black border-t border-luxury-gold/10">
         <div className="max-w-[120rem] mx-auto">

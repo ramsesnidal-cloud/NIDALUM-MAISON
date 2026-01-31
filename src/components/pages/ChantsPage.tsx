@@ -4,7 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { RitualChants } from '@/entities';
-import { Image } from '@/components/ui/image';
+import { Image as UIImage } from '@/components/ui/image';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -41,7 +41,7 @@ export default function ChantsPage() {
             NIDALUM MUSIC
           </h1>
           <p className="text-base md:text-lg tracking-wide text-stone-400 mb-4">
-            Sacred compositions and ritual performances
+            The operational artistic arm of the House
           </p>
           <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-12"></div>
         </motion.div>
@@ -75,7 +75,7 @@ export default function ChantsPage() {
                 >
                   <div className="relative overflow-hidden mb-6 aspect-square">
                     {chant.chantImage && (
-                      <Image
+                      <UIImage
                         src={chant.chantImage}
                         alt={chant.chantTitle || 'Chant'}
                         width={500}
@@ -135,7 +135,7 @@ export default function ChantsPage() {
 
             {selectedChant.chantImage && (
               <div className="mb-8 aspect-video overflow-hidden">
-                <Image
+                <UIImage
                   src={selectedChant.chantImage}
                   alt={selectedChant.chantTitle || 'Chant'}
                   width={800}

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Image } from '@/components/ui/image';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -6,6 +7,19 @@ export default function Footer() {
   return (
     <footer className="bg-black border-t border-white border-opacity-10">
       <div className="max-w-[100rem] mx-auto px-4 md:px-8 py-16 md:py-20">
+        {/* NIDALUM MUSIC Seal */}
+        <div className="flex flex-col items-center justify-center mb-16 pb-8 border-b border-white border-opacity-10">
+          <Image
+            src="https://static.wixstatic.com/media/9c8aea_2558c93f86234782a89034fb87152eef~mv2.png"
+            alt="NIDALUM seal"
+            width={48}
+            height={48}
+            className="mb-4 opacity-60"
+          />
+          <p className="text-xs tracking-widest text-stone-500 uppercase mb-1">NIDALUM MUSIC</p>
+          <p className="text-xs tracking-widest text-stone-600">The operational artistic arm of the House</p>
+        </div>
+
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-8 mb-16">
           {/* Brand */}
