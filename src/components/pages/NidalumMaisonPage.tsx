@@ -19,16 +19,16 @@ export default function NidalumMaisonPage() {
   };
 
   const incarnations = [
-    { id: 1, name: 'ETHEREAL', color: 'from-amber-600 to-amber-900' },
-    { id: 2, name: 'CIPHER', color: 'from-blue-600 to-blue-900' },
-    { id: 3, name: 'LUMINESCENCE', color: 'from-cyan-600 to-cyan-900' },
-    { id: 4, name: 'VOID', color: 'from-purple-600 to-purple-900' },
-    { id: 5, name: 'RESONANCE', color: 'from-pink-600 to-pink-900' },
-    { id: 6, name: 'NEXUS', color: 'from-emerald-600 to-emerald-900' },
-    { id: 7, name: 'PHANTOM', color: 'from-slate-600 to-slate-900' },
-    { id: 8, name: 'AURORA', color: 'from-orange-600 to-orange-900' },
-    { id: 9, name: 'ECLIPSE', color: 'from-indigo-600 to-indigo-900' },
-    { id: 10, name: 'ZENITH', color: 'from-rose-600 to-rose-900' },
+    { id: 1, name: 'ORIGINE', poetic: 'Where silence begins', image: 'https://static.wixstatic.com/media/9c8aea_9a44e5db855f417897dbfb2ba2220468~mv2.png' },
+    { id: 2, name: 'SOUFFLE', poetic: 'Breath becomes form', image: 'https://static.wixstatic.com/media/9c8aea_854e879180c345b2942407cd6e95bb18~mv2.png' },
+    { id: 3, name: 'MÉMOIRE', poetic: 'Time held in trace', image: 'https://static.wixstatic.com/media/9c8aea_10c90976294c466b9acbe452f2bfca4d~mv2.png' },
+    { id: 4, name: 'LANGUAGE', poetic: 'Symbols speak truth', image: 'https://static.wixstatic.com/media/9c8aea_336642ef24364de8bc4d2b55da6124d6~mv2.png' },
+    { id: 5, name: 'SOUND', poetic: 'Vibration through void', image: 'https://static.wixstatic.com/media/9c8aea_2516eb65a8764d628ab227067983c822~mv2.png' },
+    { id: 6, name: 'FORM', poetic: 'Structure of essence', image: 'https://static.wixstatic.com/media/9c8aea_9737c58f74ed452e8b522d450868f6e8~mv2.png' },
+    { id: 7, name: 'SCENT', poetic: 'Memory in air', image: 'https://static.wixstatic.com/media/9c8aea_818661dfe0e846a2837c3bc38f537d1e~mv2.png' },
+    { id: 8, name: 'RITE', poetic: 'Sacred repetition', image: 'https://static.wixstatic.com/media/9c8aea_f7d006661dda43bebac755e55f5620fd~mv2.png' },
+    { id: 9, name: 'ARCHIVE', poetic: 'Layers of becoming', image: 'https://static.wixstatic.com/media/9c8aea_8882705288764033a27f2c56dbe8619a~mv2.png' },
+    { id: 10, name: 'THE HOUSE', poetic: 'All returns here', image: 'https://static.wixstatic.com/media/9c8aea_6236e7268a7d45e4ac86bf416e422157~mv2.png' },
   ];
 
   return (
@@ -191,7 +191,7 @@ export default function NidalumMaisonPage() {
         </div>
       </section>
 
-      {/* The Incarnations Section */}
+      {/* The Incarnations Section - Museum-like Display */}
       <section id="incarnations" className="relative py-16 md:py-32 px-4 md:px-8 bg-deep-black border-t border-luxury-gold/10">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
@@ -208,8 +208,8 @@ export default function NidalumMaisonPage() {
             <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
           </motion.div>
 
-          {/* Incarnations Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8">
+          {/* Incarnations Grid - Museum-like Display */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-12">
             {incarnations.map((incarnation, index) => (
               <motion.div
                 key={incarnation.id}
@@ -217,27 +217,30 @@ export default function NidalumMaisonPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.08 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="group"
+                className="flex flex-col items-center space-y-4 md:space-y-6"
               >
-                <div className="relative aspect-square mb-3 md:mb-6 overflow-hidden border border-luxury-gold/20 group-hover:border-luxury-gold/50 transition-colors duration-300">
-                  {/* Avatar Background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${incarnation.color} opacity-40 group-hover:opacity-60 transition-opacity duration-300`}></div>
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
-
-                  {/* Center Symbol */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-3xl md:text-5xl font-heading text-white/30 group-hover:text-white/50 transition-colors duration-300">
-                      ◆
-                    </div>
-                  </div>
+                {/* Image - Abstract and Symbolic */}
+                <div className="relative w-full aspect-square overflow-hidden border border-luxury-gold/20">
+                  <Image
+                    src={incarnation.image}
+                    alt={incarnation.name}
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Subtle Overlay */}
+                  <div className="absolute inset-0 bg-black/10"></div>
                 </div>
 
-                {/* Name */}
-                <h3 className="font-heading text-xs md:text-sm tracking-widest text-luxury-text/80 group-hover:text-luxury-gold transition-colors duration-300">
+                {/* Title */}
+                <h3 className="font-heading text-sm md:text-base tracking-widest text-luxury-text uppercase text-center">
                   {incarnation.name}
                 </h3>
+
+                {/* Poetic Line */}
+                <p className="font-paragraph text-xs md:text-sm text-luxury-gold/70 text-center leading-relaxed italic">
+                  {incarnation.poetic}
+                </p>
               </motion.div>
             ))}
           </div>
