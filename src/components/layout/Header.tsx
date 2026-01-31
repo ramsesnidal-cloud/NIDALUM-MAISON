@@ -10,6 +10,7 @@ export default function Header() {
   const navigationLinks = [
     { label: 'Music', href: '/chants' },
     { label: 'Language', href: '/apprendre-langage' },
+    { label: 'Perfume', href: '/perfume' },
     { label: 'Origins', href: '/origins' },
     { label: 'Contact', href: '/contact' },
   ];

@@ -32,6 +32,7 @@ import NidalumMaisonPage from '@/components/pages/NidalumMaisonPage';
 import ArtistPortfolioPage from '@/components/pages/ArtistPortfolioPage';
 import VideoShowcasePage from '@/components/pages/VideoShowcasePage';
 import DiagnosticPage from '@/components/pages/DiagnosticPage';
+import PerfumePage from '@/components/pages/PerfumePage';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 // Diagnostic
@@ -166,6 +167,10 @@ const router = createBrowserRouter([
       {
         path: "diagnostic",
         element: <DiagnosticPage />,
+      },
+      {
+        path: "perfume",
+        element: <PerfumePage />,
       },
       {
         path: "*",

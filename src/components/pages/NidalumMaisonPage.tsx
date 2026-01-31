@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { Image } from '@/components/ui/image';
@@ -55,12 +55,12 @@ export default function NidalumMaisonPage() {
             className="space-y-8"
           >
             {/* Main Headline */}
-            <div className="space-y-4 md:space-y-6">
-              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tighter leading-tight text-luxury-text">
-                THE ARCHITECT
+            <div className="space-y-6 md:space-y-8">
+              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest leading-tight text-luxury-text uppercase">
+                NIDALUM
               </h1>
-              <p className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-luxury-gold">
-                OF REALITIES
+              <p className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-widest text-luxury-gold uppercase">
+                A Sacred House of Creation
               </p>
             </div>
 
@@ -72,15 +72,23 @@ export default function NidalumMaisonPage() {
               className="h-px bg-gradient-to-r from-transparent via-luxury-gold to-transparent max-w-md mx-auto"
             ></motion.div>
 
-            {/* Sub-headline */}
-            <motion.p
+            {/* Core Symbolic Text */}
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
-              className="font-paragraph text-xs sm:text-sm md:text-lg lg:text-xl tracking-widest text-luxury-gold/70 uppercase"
+              className="space-y-4 max-w-2xl mx-auto"
             >
-              NIDALUM MAISON • EST. 2026
-            </motion.p>
+              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
+                Born from language, memory, and ritual, NIDALUM explores presence beyond sound and form.
+              </p>
+              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70">
+                Music becomes architecture. Silence becomes signature. Creation becomes rite.
+              </p>
+              <p className="font-paragraph text-xs sm:text-sm md:text-base lg:text-lg tracking-widest text-luxury-gold/60 uppercase">
+                It is not a genre. It is a language. It is a House.
+              </p>
+            </motion.div>
 
             {/* Scroll Indicator */}
             <motion.div
@@ -97,6 +105,78 @@ export default function NidalumMaisonPage() {
         </div>
       </section>
 
+      {/* The House Section - Fashion & Perfume */}
+      <section className="relative py-16 md:py-32 px-4 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
+        <div className="max-w-[100rem] mx-auto">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-center space-y-12 md:space-y-16"
+          >
+            {/* Section Title */}
+            <div>
+              <h2 className="font-heading text-4xl sm:text-5xl md:text-7xl tracking-widest text-luxury-gold mb-4 uppercase">
+                THE HOUSE
+              </h2>
+              <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
+            </div>
+
+            {/* Two Column Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 max-w-4xl mx-auto">
+              {/* Fashion */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="space-y-6"
+              >
+                <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
+                  Fashion
+                </h3>
+                <div className="space-y-4">
+                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-text/80">
+                    Garment as ritual.
+                  </p>
+                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-gold/70">
+                    Identity as form.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Perfume */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="space-y-6"
+              >
+                <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
+                  Perfume
+                </h3>
+                <div className="space-y-4">
+                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-text/80">
+                    Fragrance as memory.
+                  </p>
+                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-gold/70">
+                    Presence as trace.
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Decorative Elements */}
+            <div className="flex justify-center gap-8 pt-4 md:pt-8">
+              <div className="w-12 h-px bg-gradient-to-r from-transparent to-luxury-gold/40"></div>
+              <div className="w-12 h-px bg-gradient-to-l from-transparent to-luxury-gold/40"></div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* The Incarnations Section */}
       <section id="incarnations" className="relative py-16 md:py-32 px-4 md:px-8 bg-deep-black border-t border-luxury-gold/10">
         <div className="max-w-[120rem] mx-auto">
@@ -108,7 +188,7 @@ export default function NidalumMaisonPage() {
             viewport={{ once: true, margin: '-100px' }}
             className="text-center mb-12 md:mb-24"
           >
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl lg:text-7xl tracking-tight text-luxury-text mb-4">
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl lg:text-7xl tracking-widest text-luxury-text mb-4 uppercase">
               THE INCARNATIONS
             </h2>
             <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
@@ -162,7 +242,7 @@ export default function NidalumMaisonPage() {
           >
             {/* Section Title */}
             <div>
-              <h2 className="font-heading text-4xl sm:text-5xl md:text-7xl tracking-tight text-luxury-gold mb-4">
+              <h2 className="font-heading text-4xl sm:text-5xl md:text-7xl tracking-widest text-luxury-gold mb-4 uppercase">
                 THE VISION
               </h2>
               <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
@@ -214,7 +294,7 @@ export default function NidalumMaisonPage() {
           >
             {/* Newsletter Title */}
             <div>
-              <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-tight text-luxury-text mb-4">
+              <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-widest text-luxury-text mb-4 uppercase">
                 JOIN THE INNER CIRCLE
               </h3>
               <p className="font-paragraph text-xs sm:text-sm tracking-widest text-luxury-gold/50 uppercase">

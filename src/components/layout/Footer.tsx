@@ -43,6 +43,14 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
+                    to="/perfume"
+                    className="text-xs text-stone-500 hover:text-white transition-colors duration-300"
+                  >
+                    Perfume
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to="/origins"
                     className="text-xs text-stone-500 hover:text-white transition-colors duration-300"
                   >
