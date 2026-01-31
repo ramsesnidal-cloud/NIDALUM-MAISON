@@ -23,15 +23,19 @@ export default {
                 paragraph: "montserrat"
             },
             colors: {
-                'dark-amber-shadow': '#4A340E',
+                'dark-amber-shadow': '#1a1a1a',
                 destructive: '#FF4136',
                 'destructive-foreground': '#FFFFFF',
-                background: '#00172E',
-                secondary: '#00D0FF',
+                background: '#000000',
+                secondary: '#D4AF37',
                 foreground: '#FFFFFF',
                 'secondary-foreground': '#000000',
-                'primary-foreground': '#000000',
-                primary: '#FBBF24'
+                'primary-foreground': '#FFFFFF',
+                primary: '#D4AF37',
+                'dark-grey': '#1a1a1a',
+                'darker-grey': '#0d0d0d',
+                'luxury-gold': '#D4AF37',
+                'luxury-text': '#FFFFFF'
             },
         },
     },

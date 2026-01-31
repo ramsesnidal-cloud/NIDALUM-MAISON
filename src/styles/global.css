@@ -3,3 +3,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Dark Luxury Theme */
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #0d0d0d;
+  --text-primary: #ffffff;
+  --text-secondary: #d4af37;
+  --accent-gold: #d4af37;
+  --border-color: #333333;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Premium Button Styling */
+button, a.button {
+  border: 1px solid var(--accent-gold);
+  border-radius: 0;
+  transition: all 0.3s ease;
+}
+
+button:hover, a.button:hover {
+  background-color: var(--accent-gold);
+  color: var(--bg-primary);
+}
+
+/* Remove all bright backgrounds */
+.bg-white, .bg-gray-50, .bg-blue-50, .bg-cyan-50 {
+  background-color: var(--bg-secondary) !important;
+}
+
+.text-gray-900, .text-gray-800 {
+  color: var(--text-primary) !important;
+}
