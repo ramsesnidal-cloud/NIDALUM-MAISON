@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Mail, MapPin, Send, Phone, Clock, CheckCircle } from 'lucide-react';
+import { BaseCrudService } from '@/integrations';
+import { ContactMessages } from '@/entities';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ContactPage() {
@@ -41,267 +39,176 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
       return;
     }
-    
+
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      await BaseCrudService.create<ContactMessages>('contactmessages', {
+        _id: crypto.randomUUID(),
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        submissionDate: new Date()
+      });
+
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
+
       setTimeout(() => {
         setSubmitStatus('idle');
       }, 5000);
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black text-white font-paragraph">
       <Header />
-      
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-primary/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/30 rounded-full blur-3xl"></div>
-        </div>
 
-        <div className="relative max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+      {/* Hero Section */}
+      <section className="pt-32 pb-24 px-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="max-w-4xl mx-auto text-center"
+        >
+          <h1 className="font-heading text-6xl md:text-7xl tracking-widest mb-8 font-light">
+            CONTACT
+          </h1>
+          <p className="text-base md:text-lg tracking-wide text-stone-400">
+            Reach the inner circle
+          </p>
+          <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-12"></div>
+        </motion.div>
+      </section>
+
+      {/* Contact Form */}
+      <section className="px-4 md:px-8 py-20">
+        <div className="max-w-2xl mx-auto">
+          <motion.form
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            onSubmit={handleSubmit}
+            className="space-y-8"
           >
-            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6">
-              {t('pages.contact.title')}
-            </h1>
-            <p className="font-paragraph text-xl text-foreground/80 max-w-4xl mx-auto leading-relaxed">
-              {t('pages.contact.description')}
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Contact Form Section */}
-      <section className="py-16 px-6 lg:px-12">
-        <div className="max-w-[120rem] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Contact Information */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="font-heading text-3xl md:text-4xl text-primary mb-8">
-                Informations de Contact
-              </h2>
-              <div className="space-y-6 mb-12">
-                <div className="flex items-start">
-                  <Mail className="w-6 h-6 text-secondary mr-4 mt-1" />
-                  <div>
-                    <h3 className="font-heading text-xl text-secondary mb-2">Email</h3>
-                    <p className="font-paragraph text-foreground/70">contact@nidalum.com</p>
-                    <p className="font-paragraph text-foreground/70">academy@nidalum.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <MapPin className="w-6 h-6 text-secondary mr-4 mt-1" />
-                  <div>
-                    <h3 className="font-heading text-xl text-secondary mb-2">Localisation</h3>
-                    <p className="font-paragraph text-foreground/70">Institut Nidalum</p>
-                    <p className="font-paragraph text-foreground/70">Univers Souma-Ra</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border border-primary/20 p-8 bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm">
-                <h3 className="font-heading text-2xl text-primary mb-4">Horaires de Réponse</h3>
-                <p className="font-paragraph text-foreground/70 leading-relaxed mb-4">
-                  Nous répondons généralement aux messages dans un délai de 24 à 48 heures.
-                </p>
-                <p className="font-paragraph text-sm text-foreground/60">
-                  Pour les questions urgentes concernant l'Academy, veuillez utiliser l'adresse academy@nidalum.com
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="border border-primary/20 p-8 bg-background/50 backdrop-blur-sm">
-                <h2 className="font-heading text-3xl text-primary mb-6">
-                  Envoyez-nous un Message
-                </h2>
-                
-                {submitStatus === 'success' && (
-                  <div className="mb-6 p-4 bg-secondary/10 border border-secondary/30">
-                    <p className="font-paragraph text-secondary">
-                      Merci pour votre message! Nous vous répondrons bientôt.
-                    </p>
-                  </div>
-                )}
-
-                {submitStatus === 'error' && (
-                  <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30">
-                    <p className="font-paragraph text-red-400">
-                      ❌ Veuillez vérifier vos informations:
-                    </p>
-                    <ul className="font-paragraph text-red-400 text-sm mt-2 space-y-1">
-                      {!formData.name.trim() && <li>• Nom requis</li>}
-                      {!validateEmail(formData.email) && <li>• Email invalide</li>}
-                      {!formData.subject.trim() && <li>• Sujet requis</li>}
-                      {formData.message.trim().length < 10 && <li>• Message trop court (min. 10 caractères)</li>}
-                    </ul>
-                  </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="font-paragraph text-sm text-foreground/70 mb-2 block">
-                      Nom Complet *
-                    </label>
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="bg-background border-primary/20 text-foreground font-paragraph"
-                      placeholder="Votre nom"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="font-paragraph text-sm text-foreground/70 mb-2 block">
-                      Email *
-                    </label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="bg-background border-primary/20 text-foreground font-paragraph"
-                      placeholder="votre@email.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="subject" className="font-paragraph text-sm text-foreground/70 mb-2 block">
-                      Sujet *
-                    </label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      type="text"
-                      required
-                      value={formData.subject}
-                      onChange={handleChange}
-                      className="bg-background border-primary/20 text-foreground font-paragraph"
-                      placeholder="Sujet de votre message"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="font-paragraph text-sm text-foreground/70 mb-2 block">
-                      Message *
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      required
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows={6}
-                      className="bg-background border-primary/20 text-foreground font-paragraph resize-none"
-                      placeholder="Écrivez votre message ici..."
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-primary text-primary-foreground font-paragraph font-semibold px-8 py-6 hover:bg-primary/90 transition-all duration-300 flex items-center justify-center"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin mr-2"></div>
-                        Envoi en cours...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5 mr-2" />
-                        Envoyer le Message
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
-        <div className="max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading text-3xl md:text-4xl text-primary mb-12 text-center">
-              Questions Fréquentes
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="border border-primary/20 p-6 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-xl text-secondary mb-3">
-                  Comment puis-je apprendre Nidalum?
-                </h3>
-                <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Inscrivez-vous à l'Academy Nidalum pour accéder à nos programmes structurés, du niveau débutant au niveau expert.
-                </p>
-              </div>
-              <div className="border border-primary/20 p-6 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-xl text-secondary mb-3">
-                  Les publications sont-elles disponibles?
-                </h3>
-                <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Oui, consultez notre page Publications pour découvrir le dictionnaire Nidalum et d'autres ouvrages disponibles à l'achat.
-                </p>
-              </div>
-              <div className="border border-primary/20 p-6 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-xl text-secondary mb-3">
-                  Puis-je utiliser Nidalum dans mes projets?
-                </h3>
-                <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Contactez-nous pour discuter des licences et autorisations d'utilisation de la langue Nidalum dans vos créations.
-                </p>
-              </div>
-              <div className="border border-primary/20 p-6 bg-background/50 backdrop-blur-sm">
-                <h3 className="font-heading text-xl text-secondary mb-3">
-                  Comment contacter Ramses Nidal?
-                </h3>
-                <p className="font-paragraph text-foreground/70 leading-relaxed">
-                  Pour les demandes professionnelles ou collaborations artistiques, utilisez le formulaire de contact ci-dessus.
-                </p>
-              </div>
+            {/* Name */}
+            <div>
+              <label className="text-xs tracking-widest uppercase text-stone-500 mb-3 block">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                className="w-full bg-transparent border-b border-white border-opacity-30 focus:border-opacity-100 py-3 px-0 text-base tracking-wide placeholder-stone-600 focus:outline-none transition-all duration-300"
+                required
+              />
             </div>
-          </motion.div>
+
+            {/* Email */}
+            <div>
+              <label className="text-xs tracking-widest uppercase text-stone-500 mb-3 block">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="your@email.com"
+                className="w-full bg-transparent border-b border-white border-opacity-30 focus:border-opacity-100 py-3 px-0 text-base tracking-wide placeholder-stone-600 focus:outline-none transition-all duration-300"
+                required
+              />
+            </div>
+
+            {/* Subject */}
+            <div>
+              <label className="text-xs tracking-widest uppercase text-stone-500 mb-3 block">
+                Subject
+              </label>
+              <input
+                type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                placeholder="Your subject"
+                className="w-full bg-transparent border-b border-white border-opacity-30 focus:border-opacity-100 py-3 px-0 text-base tracking-wide placeholder-stone-600 focus:outline-none transition-all duration-300"
+                required
+              />
+            </div>
+
+            {/* Message */}
+            <div>
+              <label className="text-xs tracking-widest uppercase text-stone-500 mb-3 block">
+                Message
+              </label>
+              <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Your message"
+                rows={6}
+                className="w-full bg-transparent border border-white border-opacity-30 focus:border-opacity-100 p-4 text-base tracking-wide placeholder-stone-600 focus:outline-none transition-all duration-300 resize-none"
+                required
+              />
+            </div>
+
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-green-950 border border-green-700 p-4 text-center"
+              >
+                <p className="text-sm tracking-wide text-green-300">
+                  Message received. We will be in touch.
+                </p>
+              </motion.div>
+            )}
+
+            {submitStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-red-950 border border-red-700 p-4 text-center"
+              >
+                <p className="text-sm tracking-wide text-red-300">
+                  Please check your information and try again.
+                </p>
+              </motion.div>
+            )}
+
+            {/* Submit Button */}
+            <div className="pt-8">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full text-xs tracking-widest uppercase border border-white px-6 py-4 hover:bg-white hover:text-black transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </div>
+
+            <p className="text-xs text-stone-600 text-center tracking-wide">
+              We respect your privacy. Your message is secure.
+            </p>
+          </motion.form>
         </div>
       </section>
 

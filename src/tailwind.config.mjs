@@ -46,6 +46,15 @@ export default {
                 'sm': '4px',
                 'md': '6px',
                 'lg': '8px',
+            },
+            spacing: {
+                '128': '32rem',
+                '144': '36rem',
+            },
+            maxWidth: {
+                '7xl': '80rem',
+                '8xl': '88rem',
+                '9xl': '96rem',
             }
         },
     },

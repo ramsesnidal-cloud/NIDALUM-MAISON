@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
-import { Globe, Star, Zap, Moon } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { BaseCrudService } from '@/integrations';
 import { OriginsandChronology } from '@/entities';
@@ -21,7 +20,7 @@ export default function OriginsPage() {
     try {
       setIsLoading(true);
       const { items } = await BaseCrudService.getAll<OriginsandChronology>('origineschronologie');
-      
+
       if (!items || items.length === 0) {
         console.warn('No origins items found in CMS');
         setOriginsData([]);
@@ -40,229 +39,148 @@ export default function OriginsPage() {
   const cosmicElements = originsData.filter(item => item.category === 'Cosmic Element');
   const timeline = originsData.filter(item => item.category === 'Chronological Era');
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="inline-block w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
-            <p className="font-paragraph text-foreground/70">{t('common.loading')}</p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black text-white font-paragraph">
       <Header />
+
       {/* Hero Section */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-primary/40 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-secondary/40 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-          </div>
-        </div>
-
-        <div className="relative z-10 text-center px-6 max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
-          >
-            <h1 className="font-heading text-6xl md:text-7xl lg:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary mb-6">
-              SOUMA-RA
-            </h1>
-            <p className="font-heading text-2xl md:text-3xl text-secondary mb-8 tracking-widest">
-              {t('pages.origins.title')}
-            </p>
-            <p className="font-paragraph text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              {t('pages.origins.description')}
-            </p>
-          </motion.div>
-        </div>
+      <section className="pt-32 pb-24 px-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="max-w-4xl mx-auto text-center"
+        >
+          <h1 className="font-heading text-6xl md:text-7xl tracking-widest mb-8 font-light">
+            THE ORIGIN
+          </h1>
+          <p className="text-base md:text-lg tracking-wide text-stone-400">
+            Born from language, myth, and memory
+          </p>
+          <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-12"></div>
+        </motion.div>
       </section>
-      {/* Cosmic Elements Section */}
-      <section className="py-24 px-6 lg:px-12">
-        <div className="max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-heading text-4xl md:text-5xl text-primary mb-6">
-              La Genèse Cosmique
-            </h2>
-            <p className="font-paragraph text-lg text-foreground/70 max-w-3xl mx-auto">
-              L'histoire de la création de Souma-Ra et de l'émergence de la conscience
-            </p>
-          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {cosmicElements.map((element, index) => {
-              const icons = [Star, Globe, Zap, Moon];
-              const Icon = icons[index % icons.length];
-              return (
+      {/* Main Content */}
+      {isLoading ? (
+        <section className="px-4 md:px-8 py-20">
+          <div className="max-w-4xl mx-auto">
+            <div className="h-96 bg-stone-900 rounded-sm animate-pulse"></div>
+          </div>
+        </section>
+      ) : (
+        <>
+          {/* Cosmic Elements */}
+          {cosmicElements.length > 0 && (
+            <section className="px-4 md:px-8 py-20">
+              <div className="max-w-6xl mx-auto">
+                <h2 className="font-heading text-4xl tracking-widest mb-16 font-light text-center">
+                  Cosmic Elements
+                </h2>
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.8 }}
                   viewport={{ once: true }}
-                  className="border border-primary/20 p-8 hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-12"
                 >
-                  <Icon className="w-12 h-12 text-primary mb-6" />
-                  <h3 className="font-heading text-2xl text-primary mb-4">{element.name}</h3>
-                  <p className="font-paragraph text-foreground/70 leading-relaxed">
-                    {element.description}
-                  </p>
-                  {element.significance && (
-                    <div className="mt-4 pt-4 border-t border-primary/10">
-                      <p className="font-paragraph text-sm text-secondary italic">
-                        {element.significance}
+                  {cosmicElements.map((element, index) => (
+                    <motion.div
+                      key={element._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="group"
+                    >
+                      {element.image && (
+                        <div className="mb-6 aspect-square overflow-hidden">
+                          <Image
+                            src={element.image}
+                            alt={element.name || 'Element'}
+                            width={500}
+                            height={500}
+                            className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-500"
+                          />
+                        </div>
+                      )}
+                      <h3 className="font-heading text-2xl tracking-widest mb-3 font-light">
+                        {element.name}
+                      </h3>
+                      <p className="text-sm tracking-wide text-stone-400 mb-4">
+                        {element.description}
                       </p>
-                    </div>
-                  )}
+                      {element.timeframe && (
+                        <p className="text-xs tracking-widest uppercase text-stone-600">
+                          {element.timeframe}
+                        </p>
+                      )}
+                    </motion.div>
+                  ))}
                 </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-      {/* Timeline Section */}
-      <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-dark-amber-shadow/10 to-background">
-        <div className="max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading text-4xl md:text-5xl text-primary mb-12 text-center">
-              Chronologie Cosmique
-            </h2>
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-primary hidden lg:block"></div>
+              </div>
+            </section>
+          )}
 
-              <div className="space-y-12">
-                {timeline.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className={`flex items-center gap-8 ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
-                  >
-                    <div className={`flex-1 ${index % 2 === 0 ? 'lg:text-right' : 'lg:text-left'}`}>
-                      <div className="border border-primary/20 p-6 bg-background/50 backdrop-blur-sm inline-block">
-                        <h3 className="font-heading text-2xl text-secondary mb-2">{item.name}</h3>
-                        <p className="font-paragraph text-foreground/70">{item.description}</p>
-                      </div>
-                    </div>
-                    <div className="hidden lg:block w-4 h-4 bg-primary border-4 border-background rounded-full relative z-10"></div>
-                    <div className="flex-1"></div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-      {/* Mythology Section */}
-      <section className="py-24 px-6 lg:px-12">
-        <div className="max-w-[120rem] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-heading text-4xl md:text-5xl text-primary mb-6">
-                Nidar, le Premier Gardien
-              </h2>
-              <div className="space-y-4">
-                <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
-                  Nidar n'est pas simplement un être, mais une force cosmique incarnée. Il représente la conscience éveillée, le pont entre le néant et l'existence, entre le silence et la parole.
-                </p>
-                <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
-                  Lorsque Nidar ouvrit les yeux pour la première fois, il vit Souma-Ra dans toute sa splendeur chaotique. Pour donner un sens à ce qu'il voyait, il créa la langue Nidalum, nommant chaque étoile, chaque vent, chaque vibration de l'univers.
-                </p>
-                <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
-                  Les Sept Piliers qu'il érigea ne sont pas de simples structures physiques, mais des concepts fondamentaux : Origine, Destinée, Harmonie, Connaissance, Pouvoir, Temps, et Éternité. Chacun ancre une dimension de la réalité.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border border-primary/30">
-                <Image
-                  src="https://static.wixstatic.com/media/9c8aea_c0be0acf874f498298509af864506115~mv2.jpg"
-                  width={600}
-                  className="w-full h-full object-cover"
-                  originWidth={687}
-                  originHeight={1024}
-                  focalPointX={50.072780203784575}
-                  focalPointY={12.01171875} />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-      {/* Seven Pillars Section */}
-      <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-background to-dark-amber-shadow/10">
-        <div className="max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading text-4xl md:text-5xl text-primary mb-12 text-center">
-              Les Sept Piliers Cosmiques
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { name: 'Origine', symbol: 'Ā', meaning: 'Le commencement de toute chose' },
-                { name: 'Destinée', symbol: 'Ḍ', meaning: 'Le chemin tracé par les étoiles' },
-                { name: 'Harmonie', symbol: 'Ṃ', meaning: 'L\'équilibre entre les forces' },
-                { name: 'Connaissance', symbol: 'Ḳ', meaning: 'La sagesse des ancêtres' },
-                { name: 'Pouvoir', symbol: 'Ṗ', meaning: 'La force créatrice' },
-                { name: 'Temps', symbol: 'Ṭ', meaning: 'Le flux éternel' },
-                { name: 'Éternité', symbol: 'Ē', meaning: 'Ce qui transcende le temps' },
-              ].map((pillar, index) => (
+          {/* Timeline */}
+          {timeline.length > 0 && (
+            <section className="px-4 md:px-8 py-20 border-t border-white border-opacity-10">
+              <div className="max-w-4xl mx-auto">
+                <h2 className="font-heading text-4xl tracking-widest mb-16 font-light text-center">
+                  Chronological Era
+                </h2>
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.8 }}
                   viewport={{ once: true }}
-                  className="border border-primary/20 p-6 text-center hover:border-secondary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
+                  className="space-y-12"
                 >
-                  <div className="w-16 h-16 mx-auto mb-4 border-2 border-secondary/30 flex items-center justify-center">
-                    <span className="font-heading text-4xl text-primary">{pillar.symbol}</span>
-                  </div>
-                  <h3 className="font-heading text-xl text-secondary mb-2">{pillar.name}</h3>
-                  <p className="font-paragraph text-sm text-foreground/70">{pillar.meaning}</p>
+                  {timeline.map((era, index) => (
+                    <motion.div
+                      key={era._id}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="border-l-2 border-white border-opacity-20 pl-8 py-4 hover:border-opacity-50 transition-all duration-500"
+                    >
+                      <h3 className="font-heading text-xl tracking-widest mb-2 font-light">
+                        {era.name}
+                      </h3>
+                      {era.timeframe && (
+                        <p className="text-xs tracking-widest uppercase text-stone-600 mb-3">
+                          {era.timeframe}
+                        </p>
+                      )}
+                      <p className="text-sm tracking-wide text-stone-400">
+                        {era.description}
+                      </p>
+                      {era.significance && (
+                        <p className="text-xs tracking-wide text-stone-500 mt-3 italic">
+                          {era.significance}
+                        </p>
+                      )}
+                    </motion.div>
+                  ))}
                 </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
+              </div>
+            </section>
+          )}
+
+          {/* Empty State */}
+          {cosmicElements.length === 0 && timeline.length === 0 && (
+            <section className="px-4 md:px-8 py-20">
+              <div className="max-w-4xl mx-auto text-center">
+                <p className="text-stone-500 tracking-wide">
+                  The origins are being written. Return soon.
+                </p>
+              </div>
+            </section>
+          )}
+        </>
+      )}
+
       <Footer />
     </div>
   );

@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dark Luxury Theme */
+/* Luxury Minimalist Theme */
 :root {
   --bg-primary: #000000;
   --bg-secondary: #1a1a1a;
@@ -13,23 +13,56 @@
   --text-secondary: #d4af37;
   --accent-gold: #d4af37;
   --border-color: #333333;
+  --stone-300: #d4d4d8;
+  --stone-400: #a1a1aa;
+  --stone-500: #71717a;
+  --stone-600: #52525b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
 }
 
-/* Premium Button Styling */
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cinzel', serif;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+/* Luxury Button Styling */
 button, a.button {
-  border: 1px solid var(--accent-gold);
+  border: 1px solid currentColor;
   border-radius: 0;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.05em;
+  font-weight: 400;
 }
 
 button:hover, a.button:hover {
-  background-color: var(--accent-gold);
-  color: var(--bg-primary);
+  background-color: white;
+  color: black;
 }
 
 /* Remove all bright backgrounds */
@@ -39,4 +72,22 @@ button:hover, a.button:hover {
 
 .text-gray-900, .text-gray-800 {
   color: var(--text-primary) !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--stone-500);
 }
