@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, Languages, Music, Sparkles, Globe, Library } from 'lucide-react';
+import { BookOpen, Languages, Music, Sparkles, Globe, Library, Film, Users } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
 import { useTranslation } from '@/hooks/useTranslation';
+import NewsletterSignup from '@/components/NewsletterSignup';
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -381,6 +382,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/* Newsletter Signup Section */}
+      <NewsletterSignup />
+
       {/* CTA Section */}
       <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-12">
         <div className="max-w-4xl mx-auto text-center">

@@ -30,6 +30,8 @@ import RepertoireLinguistiquePage from '@/components/pages/RepertoireLinguistiqu
 import GrammaireNidalumPage from '@/components/pages/GrammaireNidalumPage';
 import ApprendreLangagePage from '@/components/pages/Apprendre LangagePage';
 import NidalumMaisonPage from '@/components/pages/NidalumMaisonPage';
+import ArtistPortfolioPage from '@/components/pages/ArtistPortfolioPage';
+import VideoShowcasePage from '@/components/pages/VideoShowcasePage';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 // Diagnostic
@@ -158,6 +160,14 @@ const router = createBrowserRouter([
             <ProfilePage />
           </MemberProtectedRoute>
         ),
+      },
+      {
+        path: "portfolio",
+        element: <ArtistPortfolioPage />,
+      },
+      {
+        path: "videos",
+        element: <VideoShowcasePage />,
       },
       {
         path: "*",

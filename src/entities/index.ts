@@ -113,6 +113,48 @@ export interface NidalumAlphabet {
 
 
 /**
+ * Collection ID: artistportfolio
+ * Interface for ArtistPortfolio
+ */
+export interface ArtistPortfolio {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  artistName?: string;
+  /** @wixFieldType text */
+  artistBio?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  artistImage?: string;
+  /** @wixFieldType text */
+  artistSpecialty?: string;
+  /** @wixFieldType text */
+  nidalumName?: string;
+}
+
+
+/**
+ * Collection ID: contactmessages
+ * Interface for ContactMessages
+ */
+export interface ContactMessages {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  name?: string;
+  /** @wixFieldType text */
+  email?: string;
+  /** @wixFieldType text */
+  subject?: string;
+  /** @wixFieldType text */
+  message?: string;
+  /** @wixFieldType datetime */
+  submissionDate?: Date | string;
+}
+
+
+/**
  * Collection ID: gestionvideoauteur
  * Interface for AuthorVideoManagement
  */
@@ -225,6 +267,27 @@ export interface MusicShowcase {
   audio1?: string;
   /** @wixFieldType rich_content */
   richcontent?: any;
+}
+
+
+/**
+ * Collection ID: newslettersubscribers
+ * Interface for NewsletterSubscribers
+ */
+export interface NewsletterSubscribers {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  email?: string;
+  /** @wixFieldType text */
+  firstName?: string;
+  /** @wixFieldType text */
+  lastName?: string;
+  /** @wixFieldType datetime */
+  subscriptionDate?: Date | string;
+  /** @wixFieldType boolean */
+  isActive?: boolean;
 }
 
 
@@ -501,4 +564,25 @@ export interface RitualChants {
   audio?: string;
   /** @wixFieldType text */
   text?: string;
+}
+
+
+/**
+ * Collection ID: videoshowcase
+ * Interface for VideoShowcase
+ */
+export interface VideoShowcase {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  videoTitle?: string;
+  /** @wixFieldType text */
+  videoDescription?: string;
+  /** @wixFieldType url */
+  videoUrl?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  thumbnailImage?: string;
+  /** @wixFieldType date */
+  releaseDate?: Date | string;
 }

@@ -41,6 +41,8 @@ export default function Header() {
 
   const navigation = [
     { name: getTranslation(language, 'nav.home'), href: '/' },
+    { name: language === 'fr' ? 'Portfolio' : language === 'de' ? 'Portfolio' : 'Portfolio', href: '/portfolio' },
+    { name: language === 'fr' ? 'Cinéma' : language === 'de' ? 'Kino' : 'Cinema', href: '/videos' },
     { 
       name: getTranslation(language, 'nav.language'), 
       href: '/alphabet',
