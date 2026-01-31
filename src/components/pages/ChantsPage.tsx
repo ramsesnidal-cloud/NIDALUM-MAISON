@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { RitualChants } from '@/entities';
+import { RitualChants, ArtistPortfolio } from '@/entities';
 import { Image as UIImage } from '@/components/ui/image';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -11,11 +11,14 @@ import { useTranslation } from '@/hooks/useTranslation';
 export default function ChantsPage() {
   const { t } = useTranslation();
   const [chants, setChants] = useState<RitualChants[]>([]);
+  const [artists, setArtists] = useState<ArtistPortfolio[]>([]);
   const [selectedChant, setSelectedChant] = useState<RitualChants | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingArtists, setIsLoadingArtists] = useState(true);
 
   useEffect(() => {
     loadChants();
+    loadArtists();
   }, []);
 
   const loadChants = async () => {
@@ -23,6 +26,13 @@ export default function ChantsPage() {
     const { items } = await BaseCrudService.getAll<RitualChants>('ritualchants');
     setChants(items);
     setIsLoading(false);
+  };
+
+  const loadArtists = async () => {
+    setIsLoadingArtists(true);
+    const { items } = await BaseCrudService.getAll<ArtistPortfolio>('artistportfolio');
+    setArtists(items);
+    setIsLoadingArtists(false);
   };
 
   return (
@@ -100,6 +110,83 @@ export default function ChantsPage() {
           ) : (
             <div className="text-center py-20">
               <p className="text-stone-500 tracking-wide">No chants available</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Artists Portfolio Section */}
+      <section className="px-4 md:px-8 py-20 border-t border-white border-opacity-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="font-heading text-5xl md:text-6xl tracking-widest mb-4 font-light">
+              ARTISTS
+            </h2>
+            <div className="h-px bg-gradient-to-r from-white via-white to-transparent opacity-20 w-32"></div>
+          </motion.div>
+
+          {isLoadingArtists ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="space-y-4">
+                  <div className="h-64 bg-stone-900 rounded-sm animate-pulse"></div>
+                  <div className="h-4 bg-stone-900 rounded animate-pulse w-3/4"></div>
+                  <div className="h-3 bg-stone-900 rounded animate-pulse w-1/2"></div>
+                </div>
+              ))}
+            </div>
+          ) : artists.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-12"
+            >
+              {artists.map((artist, index) => (
+                <motion.div
+                  key={artist._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  {artist.artistImage && (
+                    <div className="relative overflow-hidden mb-6 aspect-square">
+                      <UIImage
+                        src={artist.artistImage}
+                        alt={artist.artistName || 'Artist'}
+                        width={400}
+                        height={400}
+                        className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
+                      />
+                    </div>
+                  )}
+                  <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
+                    {artist.artistName}
+                  </h3>
+                  {artist.artistSpecialty && (
+                    <p className="text-xs tracking-widest uppercase text-stone-500 mb-3">
+                      {artist.artistSpecialty}
+                    </p>
+                  )}
+                  {artist.artistBio && (
+                    <p className="text-sm tracking-wide text-stone-400 line-clamp-3">
+                      {artist.artistBio}
+                    </p>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-stone-500 tracking-wide">No entries available.</p>
             </div>
           )}
         </div>
