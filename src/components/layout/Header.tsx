@@ -86,7 +86,6 @@ export default function Header() {
             </div>
             <div className="flex flex-col hidden sm:flex">
               <span className="font-heading text-lg sm:text-xl text-primary tracking-wider">NIDALUM</span>
-              <span className="font-paragraph text-xs text-secondary tracking-widest">LANGUAGE INSTITUTE</span>
             </div>
           </Link>
 
