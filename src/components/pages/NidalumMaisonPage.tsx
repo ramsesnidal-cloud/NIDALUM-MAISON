@@ -63,13 +63,14 @@ export default function NidalumMaisonPage() {
             className="space-y-8"
           >
             {/* Main Headline */}
-            <h1 className="font-heading text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tighter leading-none text-luxury-text">
-              ARCHITECT
-              <br />
-              OF
-              <br />
-              <span className="text-luxury-gold">REALITIES</span>
-            </h1>
+            <div className="space-y-4 md:space-y-6">
+              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tighter leading-tight text-luxury-text">
+                THE ARCHITECT
+              </h1>
+              <p className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-luxury-gold">
+                OF REALITIES
+              </p>
+            </div>
 
             {/* Divider */}
             <motion.div
