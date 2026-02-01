@@ -32,6 +32,14 @@ export default function ChantsPage() {
   const loadArtists = async () => {
     setIsLoadingArtists(true);
     const { items } = await BaseCrudService.getAll<ArtistPortfolio>('artistportfolio');
+    console.log('Artists loaded:', items);
+    items.forEach((artist, idx) => {
+      console.log(`Artist ${idx}:`, {
+        name: artist.artistName,
+        audioUrl: artist.audioUrl,
+        url: artist.url
+      });
+    });
     setArtists(items);
     setIsLoadingArtists(false);
   };
