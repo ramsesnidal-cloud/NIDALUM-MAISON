@@ -185,32 +185,41 @@ export default function ChantsPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedArtist(artist)}
+                  className="group"
                 >
-                  {artist.artistImage && (
-                    <div className="relative overflow-hidden mb-6 aspect-square">
-                      <UIImage
-                        src={artist.artistImage}
-                        alt={artist.artistName || 'Artist'}
-                        width={400}
-                        height={400}
-                        className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
-                      />
+                  <div
+                    onClick={() => setSelectedArtist(artist)}
+                    className="cursor-pointer"
+                  >
+                    {artist.artistImage && (
+                      <div className="relative overflow-hidden mb-6 aspect-square">
+                        <UIImage
+                          src={artist.artistImage}
+                          alt={artist.artistName || 'Artist'}
+                          width={400}
+                          height={400}
+                          className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
+                        />
+                      </div>
+                    )}
+                    <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
+                      {artist.artistName}
+                    </h3>
+                    {artist.artistSpecialty && (
+                      <p className="text-xs tracking-widest uppercase text-stone-500 mb-3">
+                        {artist.artistSpecialty}
+                      </p>
+                    )}
+                    {artist.artistBio && (
+                      <p className="text-sm tracking-wide text-stone-400 line-clamp-3">
+                        {artist.artistBio}
+                      </p>
+                    )}
+                  </div>
+                  {artist.audioUrl && (
+                    <div className="mt-6 pt-6 border-t border-white border-opacity-10">
+                      <ModernAudioPlayer audioUrl={artist.audioUrl} />
                     </div>
-                  )}
-                  <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
-                    {artist.artistName}
-                  </h3>
-                  {artist.artistSpecialty && (
-                    <p className="text-xs tracking-widest uppercase text-stone-500 mb-3">
-                      {artist.artistSpecialty}
-                    </p>
-                  )}
-                  {artist.artistBio && (
-                    <p className="text-sm tracking-wide text-stone-400 line-clamp-3">
-                      {artist.artistBio}
-                    </p>
                   )}
                 </motion.div>
               ))}
