@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Image } from '@/components/ui/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -9,6 +10,7 @@ export default function NidalumMaisonPage() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,7 +108,10 @@ export default function NidalumMaisonPage() {
               transition={{ delay: 1.2 }}
               className="pt-8 md:pt-12"
             >
-              <button className="font-heading text-xs md:text-sm tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors duration-300 uppercase border border-luxury-gold/30 hover:border-luxury-gold/60 px-6 md:px-8 py-2 md:py-3 transition-all duration-300">
+              <button 
+                onClick={() => navigate('/hub')}
+                className="font-heading text-xs md:text-sm tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors duration-300 uppercase border border-luxury-gold/30 hover:border-luxury-gold/60 px-6 md:px-8 py-2 md:py-3 transition-all duration-300"
+              >
                 Enter
               </button>
             </motion.div>
