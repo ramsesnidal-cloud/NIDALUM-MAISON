@@ -131,7 +131,7 @@ export default function NidalumMaisonPage() {
                 className="flex-1"
               >
                 <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
-                  NIDALUM MUSIC
+                  MUSIC
                 </h3>
               </motion.div>
 

@@ -8,7 +8,7 @@ export default function Header() {
   const { member, isAuthenticated, actions } = useMember();
 
   const navigationLinks = [
-    { label: 'Music', href: '/chants' },
+    { label: 'Nidalum Music', href: '/chants' },
     { label: 'Fragments', href: '/apprendre-langage' },
     { label: 'Fashion', href: '/fashion' },
     { label: 'Perfume', href: '/perfume' },
