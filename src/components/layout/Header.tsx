@@ -9,7 +9,7 @@ export default function Header() {
 
   const navigationLinks = [
     { label: 'Music', href: '/chants' },
-    { label: 'Language', href: '/apprendre-langage' },
+    { label: 'Fragments', href: '/apprendre-langage' },
     { label: 'Fashion', href: '/fashion' },
     { label: 'Perfume', href: '/perfume' },
     { label: 'Contact', href: '/contact' },

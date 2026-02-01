@@ -5,10 +5,6 @@ import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 
 // Pages
 import HomePage from '@/components/pages/HomePage';
-import AlphabetPage from '@/components/pages/AlphabetPage';
-import GrammarPage from '@/components/pages/GrammarPage';
-import PhoneticsPage from '@/components/pages/PhoneticsPage';
-import LexiconPage from '@/components/pages/LexiconPage';
 import GrandLexiquePage from '@/components/pages/GrandLexiquePage';
 import ChantsPage from '@/components/pages/ChantsPage';
 import OriginsPage from '@/components/pages/OriginsPage';
@@ -58,22 +54,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <NidalumMaisonPage />,
-      },
-      {
-        path: "alphabet",
-        element: <AlphabetPage />,
-      },
-      {
-        path: "grammar",
-        element: <GrammarPage />,
-      },
-      {
-        path: "phonetics",
-        element: <PhoneticsPage />,
-      },
-      {
-        path: "lexicon",
-        element: <LexiconPage />,
       },
       {
         path: "grand-lexique",
