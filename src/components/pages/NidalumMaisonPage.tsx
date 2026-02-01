@@ -130,7 +130,7 @@ export default function NidalumMaisonPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 className="flex-1"
               >
-                <h3 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-widest text-luxury-text uppercase">
+                <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
                   NIDALUM MUSIC
                 </h3>
               </motion.div>
