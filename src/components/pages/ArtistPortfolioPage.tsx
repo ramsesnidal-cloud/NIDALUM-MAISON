@@ -5,15 +5,11 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import type { NidalumApprendrelaLangue } from '@/entities';
+import ModernAudioPlayer from '@/components/ModernAudioPlayer';
+import type { ArtistPortfolio } from '@/entities';
 
-interface Artist {
-  _id: string;
-  artistName?: string;
-  artistBio?: string;
-  artistImage?: string;
-  artistSpecialty?: string;
-  nidalumName?: string;
+interface Artist extends ArtistPortfolio {
+  audioUrl?: string;
 }
 
 export default function ArtistPortfolioPage() {
@@ -189,6 +185,18 @@ export default function ArtistPortfolioPage() {
                           {selectedArtist.artistBio}
                         </p>
                       )}
+                      
+                      {/* Audio Player */}
+                      {selectedArtist.audioUrl && (
+                        <div className="mb-8 pt-6 border-t border-primary/20">
+                          <h3 className="font-heading text-lg text-secondary mb-4">Écouter</h3>
+                          <ModernAudioPlayer
+                            audioUrl={selectedArtist.audioUrl}
+                            title={selectedArtist.artistName || 'Artiste'}
+                          />
+                        </div>
+                      )}
+                      
                       <button
                         onClick={() => setSelectedArtist(null)}
                         className="bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-3 hover:bg-primary/90 transition-all duration-300 w-fit"
