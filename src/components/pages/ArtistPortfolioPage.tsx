@@ -8,9 +8,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 import type { ArtistPortfolio } from '@/entities';
 
-interface Artist extends ArtistPortfolio {
-  audioUrl?: string;
-}
+interface Artist extends ArtistPortfolio {}
 
 export default function ArtistPortfolioPage() {
   const [artists, setArtists] = useState<Artist[]>([]);
@@ -187,11 +185,11 @@ export default function ArtistPortfolioPage() {
                       )}
                       
                       {/* Audio Player */}
-                      {selectedArtist.audioUrl && (
+                      {selectedArtist.url && (
                         <div className="mb-8 pt-6 border-t border-primary/20">
                           <h3 className="font-heading text-lg text-secondary mb-4">Écouter</h3>
                           <ModernAudioPlayer
-                            audioUrl={selectedArtist.audioUrl}
+                            audioUrl={selectedArtist.url}
                             title={selectedArtist.artistName || 'Artiste'}
                           />
                         </div>

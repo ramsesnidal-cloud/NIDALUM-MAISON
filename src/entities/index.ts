@@ -97,6 +97,8 @@ export interface ArtistPortfolio {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType url */
+  audioUrl?: string;
   /** @wixFieldType text */
   artistName?: string;
   /** @wixFieldType text */
@@ -107,6 +109,8 @@ export interface ArtistPortfolio {
   artistSpecialty?: string;
   /** @wixFieldType text */
   nidalumName?: string;
+  /** @wixFieldType url */
+  url?: string;
 }
 
 
