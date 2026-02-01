@@ -159,17 +159,11 @@ export default function ApprendreLangagePage() {
                   transition={{ duration: 0.4, delay: index * 0.05 }}
                   viewport={{ once: true }}
                   onClick={() => setSelectedWord(word)}
-                  className="group cursor-pointer border border-white border-opacity-20 p-6 hover:border-opacity-100 transition-all duration-500"
+                  className="group cursor-pointer border border-white border-opacity-20 p-6 hover:border-opacity-100 transition-all duration-500 flex items-center justify-center min-h-32"
                 >
-                  <h3 className="font-heading text-xl tracking-widest mb-2 font-light group-hover:text-stone-300 transition-colors">
+                  <h3 className="font-heading text-xl tracking-widest font-light group-hover:text-stone-300 transition-colors text-center">
                     {word.nidalumWord}
                   </h3>
-                  <p className="text-xs tracking-widest uppercase text-stone-600 mb-3">
-                    {word.category}
-                  </p>
-                  <p className="text-sm tracking-wide text-stone-400 line-clamp-2">
-                    {word.definition}
-                  </p>
                 </motion.div>
               ))}
             </motion.div>
