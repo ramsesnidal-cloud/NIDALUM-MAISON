@@ -49,10 +49,10 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/apprendre-langage"
+                    to="/fashion"
                     className="text-xs text-stone-500 hover:text-white transition-colors duration-300"
                   >
-                    Language
+                    Fashion
                   </Link>
                 </li>
                 <li>
@@ -129,10 +129,10 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/fashion"
+                    to="/apprendre-langage"
                     className="text-xs text-stone-500 hover:text-white transition-colors duration-300"
                   >
-                    Fashion
+                    Language
                   </Link>
                 </li>
               </ul>
