@@ -393,6 +393,15 @@ export default function ChantsPage() {
               )}
             </div>
 
+            {selectedArtist.audioUrl && (
+              <div className="border-t border-white border-opacity-10 pt-8 mb-8">
+                <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
+                  Listen
+                </h3>
+                <ModernAudioPlayer audioUrl={selectedArtist.audioUrl} />
+              </div>
+            )}
+
             <button
               onClick={() => setSelectedArtist(null)}
               className="mt-8 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500"
