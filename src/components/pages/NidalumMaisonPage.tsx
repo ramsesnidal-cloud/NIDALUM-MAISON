@@ -50,13 +50,15 @@ export default function NidalumMaisonPage() {
             className="space-y-8"
           >
             {/* Main Headline */}
-            <div className="space-y-6 md:space-y-8">
-              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest leading-tight text-luxury-text uppercase">
-                NIDALUM
+            <div className="space-y-8 md:space-y-12">
+              <h1 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-9xl tracking-widest leading-tight text-luxury-text uppercase">
+                NIDALUM MAISON
               </h1>
-              <p className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-widest text-luxury-gold uppercase">
-                A Sacred House of Creation
-              </p>
+              <div className="space-y-6">
+                <p className="font-heading text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-widest text-luxury-text uppercase">
+                  A SACRED HOUSE OF CREATION
+                </p>
+              </div>
             </div>
 
             {/* Divider */}
@@ -101,14 +103,14 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* The House Section - Fashion & Perfume */}
-      <section className="relative py-16 md:py-32 px-4 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
+      <section className="relative py-24 md:py-48 px-4 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
         <div className="max-w-[100rem] mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 1 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center space-y-12 md:space-y-16"
+            className="text-center space-y-16 md:space-y-24"
           >
             {/* Section Title */}
             <div>
@@ -118,28 +120,39 @@ export default function NidalumMaisonPage() {
               <div className="h-px w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
             </div>
 
-            {/* Two Column Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 max-w-4xl mx-auto">
-              {/* Fashion */}
+            {/* Three Column Layout - Horizontal */}
+            <div className="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-20 max-w-5xl mx-auto">
+              {/* Music */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="space-y-6"
+                className="flex-1"
               >
                 <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
-                  Fashion
+                  MUSIC
                 </h3>
-                <div className="space-y-4">
-                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-text/80">
-                    Garment as ritual.
-                  </p>
-                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-gold/70">
-                    Identity as form.
-                  </p>
-                </div>
               </motion.div>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px h-12 bg-luxury-gold/30"></div>
+
+              {/* Fashion */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="flex-1"
+              >
+                <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
+                  FASHION
+                </h3>
+              </motion.div>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px h-12 bg-luxury-gold/30"></div>
 
               {/* Perfume */}
               <motion.div
@@ -147,19 +160,11 @@ export default function NidalumMaisonPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="space-y-6"
+                className="flex-1"
               >
                 <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
-                  Perfume
+                  PERFUME
                 </h3>
-                <div className="space-y-4">
-                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-text/80">
-                    Fragrance as memory.
-                  </p>
-                  <p className="font-paragraph text-base sm:text-lg md:text-xl leading-relaxed text-luxury-gold/70">
-                    Presence as trace.
-                  </p>
-                </div>
               </motion.div>
             </div>
 
