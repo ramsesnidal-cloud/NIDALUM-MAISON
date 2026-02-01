@@ -13,6 +13,7 @@ export default function ChantsPage() {
   const [chants, setChants] = useState<RitualChants[]>([]);
   const [artists, setArtists] = useState<ArtistPortfolio[]>([]);
   const [selectedChant, setSelectedChant] = useState<RitualChants | null>(null);
+  const [selectedArtist, setSelectedArtist] = useState<ArtistPortfolio | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingArtists, setIsLoadingArtists] = useState(true);
 
@@ -156,7 +157,8 @@ export default function ChantsPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group"
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedArtist(artist)}
                 >
                   {artist.artistImage && (
                     <div className="relative overflow-hidden mb-6 aspect-square">
@@ -290,6 +292,91 @@ export default function ChantsPage() {
 
             <button
               onClick={() => setSelectedChant(null)}
+              className="mt-8 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500"
+            >
+              Close
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Selected Artist Modal */}
+      {selectedArtist && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedArtist(null)}
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 p-8 md:p-12 max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex justify-between items-start mb-8">
+              <h2 className="font-heading text-3xl md:text-4xl tracking-widest font-light flex-1">
+                {selectedArtist.artistName}
+              </h2>
+              <button
+                onClick={() => setSelectedArtist(null)}
+                className="text-2xl hover:opacity-50 transition-opacity ml-4"
+              >
+                ✕
+              </button>
+            </div>
+
+            {selectedArtist.artistImage && (
+              <div className="mb-8 aspect-video overflow-hidden">
+                <UIImage
+                  src={selectedArtist.artistImage}
+                  alt={selectedArtist.artistName || 'Artist'}
+                  width={800}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            <div className="space-y-6 mb-8">
+              {selectedArtist.artistSpecialty && (
+                <div>
+                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                    Specialty
+                  </h3>
+                  <p className="text-base tracking-wide text-stone-300">
+                    {selectedArtist.artistSpecialty}
+                  </p>
+                </div>
+              )}
+
+              {selectedArtist.artistBio && (
+                <div>
+                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                    Biography
+                  </h3>
+                  <p className="text-base tracking-wide text-stone-300 leading-relaxed">
+                    {selectedArtist.artistBio}
+                  </p>
+                </div>
+              )}
+
+              {selectedArtist.nidalumName && (
+                <div>
+                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                    Nidalum Name
+                  </h3>
+                  <p className="text-base tracking-wide text-stone-300">
+                    {selectedArtist.nidalumName}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={() => setSelectedArtist(null)}
               className="mt-8 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500"
             >
               Close
