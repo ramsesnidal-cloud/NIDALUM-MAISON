@@ -229,93 +229,91 @@ export default function ChantsPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             onClick={(e) => e.stopPropagation()}
-            className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 p-8 md:p-12"
+            className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 max-h-[90vh] overflow-y-auto"
           >
-            <div className="flex justify-between items-start mb-8">
-              <h2 className="font-heading text-3xl md:text-4xl tracking-widest font-light flex-1">
-                {selectedChant.chantTitle}
-              </h2>
-              <button
-                onClick={() => setSelectedChant(null)}
-                className="text-2xl hover:opacity-50 transition-opacity ml-4"
-              >
-                ✕
-              </button>
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 md:p-12">
+              {/* Image */}
+              {selectedChant.chantImage && (
+                <div className="aspect-square overflow-hidden">
+                  <UIImage
+                    src={selectedChant.chantImage}
+                    alt={selectedChant.chantTitle || 'Chant'}
+                    width={400}
+                    height={400}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
 
-            {selectedChant.chantImage && (
-              <div className="mb-8 aspect-video overflow-hidden">
-                <UIImage
-                  src={selectedChant.chantImage}
-                  alt={selectedChant.chantTitle || 'Chant'}
-                  width={800}
-                  height={450}
-                  className="w-full h-full object-cover"
-                />
+              {/* Info */}
+              <div className="flex flex-col justify-center">
+                <h2 className="font-heading text-3xl md:text-4xl tracking-widest font-light mb-6">
+                  {selectedChant.chantTitle}
+                </h2>
+
+                <div className="space-y-6 mb-8">
+                  {selectedChant.theme && (
+                    <div>
+                      <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                        Theme
+                      </h3>
+                      <p className="text-base tracking-wide text-stone-300">
+                        {selectedChant.theme}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedChant.spiritualContext && (
+                    <div>
+                      <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                        Spiritual Context
+                      </h3>
+                      <p className="text-base tracking-wide text-stone-300">
+                        {selectedChant.spiritualContext}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedChant.originalText && (
+                    <div>
+                      <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                        Original Text
+                      </h3>
+                      <p className="text-base tracking-wide text-stone-300 italic">
+                        {selectedChant.originalText}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedChant.translation && (
+                    <div>
+                      <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                        Translation
+                      </h3>
+                      <p className="text-base tracking-wide text-stone-300">
+                        {selectedChant.translation}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {selectedChant.audio && (
+                  <div className="border-t border-white border-opacity-10 pt-8 mb-8">
+                    <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
+                      Listen
+                    </h3>
+                    <ModernAudioPlayer audioUrl={selectedChant.audio} />
+                  </div>
+                )}
+
+                <button
+                  onClick={() => setSelectedChant(null)}
+                  className="text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500 w-fit"
+                >
+                  Close
+                </button>
               </div>
-            )}
-
-            <div className="space-y-6 mb-8">
-              {selectedChant.spiritualContext && (
-                <div>
-                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
-                    Spiritual Context
-                  </h3>
-                  <p className="text-base tracking-wide text-stone-300">
-                    {selectedChant.spiritualContext}
-                  </p>
-                </div>
-              )}
-
-              {selectedChant.originalText && (
-                <div>
-                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
-                    Original Text
-                  </h3>
-                  <p className="text-base tracking-wide text-stone-300 italic">
-                    {selectedChant.originalText}
-                  </p>
-                </div>
-              )}
-
-              {selectedChant.translation && (
-                <div>
-                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
-                    Translation
-                  </h3>
-                  <p className="text-base tracking-wide text-stone-300">
-                    {selectedChant.translation}
-                  </p>
-                </div>
-              )}
-
-              {selectedChant.theme && (
-                <div>
-                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
-                    Theme
-                  </h3>
-                  <p className="text-base tracking-wide text-stone-300">
-                    {selectedChant.theme}
-                  </p>
-                </div>
-              )}
             </div>
-
-            {selectedChant.audio && (
-              <div className="border-t border-white border-opacity-10 pt-8">
-                <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
-                  Listen
-                </h3>
-                <ModernAudioPlayer audioUrl={selectedChant.audio} />
-              </div>
-            )}
-
-            <button
-              onClick={() => setSelectedChant(null)}
-              className="mt-8 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500"
-            >
-              Close
-            </button>
           </motion.div>
         </motion.div>
       )}
