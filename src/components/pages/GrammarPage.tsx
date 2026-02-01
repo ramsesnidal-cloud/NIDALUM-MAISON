@@ -26,14 +26,11 @@ export default function GrammarPage() {
       const { items } = await BaseCrudService.getAll<RglesdeGrammaireNidalum>('grammairenidalum');
       
       if (!items || items.length === 0) {
-        console.warn('No grammar items found in CMS');
         setGrammarRules([]);
       } else {
         setGrammarRules(items);
-        console.log(`Loaded ${items.length} grammar rules from CMS`);
       }
     } catch (error) {
-      console.error('Error loading grammar data:', error);
       setGrammarRules([]);
     } finally {
       setIsLoading(false);

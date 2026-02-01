@@ -75,8 +75,6 @@ export default function LexicalArchivesPage() {
       if (categoriesWithIcons.length > 0) {
         setExpandedCategories(new Set([categoriesWithIcons[0].categoryName || '']));
       }
-      
-      console.log(`✓ Final state: ${lexiconItems.length} words, ${categoriesWithIcons.length} categories`);
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error);
       setLexicon([]);

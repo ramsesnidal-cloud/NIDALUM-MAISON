@@ -8,7 +8,7 @@ export default function Header() {
   const { member, isAuthenticated, actions } = useMember();
 
   const navigationLinks = [
-    { label: 'Nidalum Music', href: '/chants' },
+    { label: 'Music', href: '/chants' },
     { label: 'Fragments', href: '/apprendre-langage' },
     { label: 'Fashion', href: '/fashion' },
     { label: 'Perfume', href: '/perfume' },
@@ -17,14 +17,14 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-95 backdrop-blur-sm border-b border-white border-opacity-10">
-      <div className="max-w-[100rem] mx-auto px-4 md:px-8 py-6 flex items-center justify-between">
+      <div className="max-w-[100rem] mx-auto px-4 sm:px-6 md:px-8 py-4 md:py-6 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="font-heading text-2xl tracking-widest font-light hover:opacity-70 transition-opacity">
+        <Link to="/" className="font-heading text-lg md:text-2xl tracking-widest font-light hover:opacity-70 transition-opacity">
           NIDALUM
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-12">
+        <nav className="hidden md:flex items-center gap-8 lg:gap-12">
           {navigationLinks.map((link) => (
             <Link
               key={link.href}
@@ -35,7 +35,7 @@ export default function Header() {
             </Link>
           ))}
           {isAuthenticated ? (
-            <div className="flex items-center gap-6 border-l border-white border-opacity-20 pl-12">
+            <div className="flex items-center gap-4 lg:gap-6 border-l border-white border-opacity-20 pl-8 lg:pl-12">
               <Link
                 to="/profile"
                 className="text-xs tracking-widest uppercase hover:text-stone-400 transition-colors duration-300"
@@ -63,6 +63,7 @@ export default function Header() {
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden p-2 hover:opacity-70 transition-opacity"
+          aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -71,13 +72,13 @@ export default function Header() {
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <nav className="md:hidden border-t border-white border-opacity-10 bg-black bg-opacity-98">
-          <div className="max-w-[100rem] mx-auto px-4 py-6 flex flex-col gap-6">
+          <div className="max-w-[100rem] mx-auto px-4 sm:px-6 py-4 flex flex-col gap-4">
             {navigationLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-xs tracking-widest uppercase hover:text-stone-400 transition-colors duration-300"
+                className="text-xs tracking-widest uppercase hover:text-stone-400 transition-colors duration-300 py-2"
               >
                 {link.label}
               </Link>
@@ -87,7 +88,7 @@ export default function Header() {
                 <Link
                   to="/profile"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-xs tracking-widest uppercase hover:text-stone-400 transition-colors duration-300"
+                  className="text-xs tracking-widest uppercase hover:text-stone-400 transition-colors duration-300 py-2"
                 >
                   {member?.profile?.nickname || 'Profile'}
                 </Link>
@@ -96,7 +97,7 @@ export default function Header() {
                     actions.logout();
                     setMobileMenuOpen(false);
                   }}
-                  className="text-xs tracking-widest uppercase hover:text-stone-400 transition-colors duration-300 text-left"
+                  className="text-xs tracking-widest uppercase hover:text-stone-400 transition-colors duration-300 text-left py-2"
                 >
                   Sign Out
                 </button>

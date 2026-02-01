@@ -90,29 +90,6 @@ export interface ProgrammesdelAcadmie {
 
 
 /**
- * Collection ID: alphabetnidalum
- * Interface for NidalumAlphabet
- */
-export interface NidalumAlphabet {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  letter?: string;
-  /** @wixFieldType text */
-  pronunciation?: string;
-  /** @wixFieldType text */
-  meaning?: string;
-  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
-  glyphImage?: string;
-  /** @wixFieldType number */
-  alphabeticalOrder?: number;
-  /** @wixFieldType text */
-  letterType?: string;
-}
-
-
-/**
  * Collection ID: artistportfolio
  * Interface for ArtistPortfolio
  */
@@ -184,52 +161,6 @@ export interface AuthorVideoManagement {
   isActive?: boolean;
   /** @wixFieldType video */
   video?: string;
-}
-
-
-/**
- * Collection ID: grammairenidalum
- * Interface for RglesdeGrammaireNidalum
- */
-export interface RglesdeGrammaireNidalum {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  ruleTitle?: string;
-  /** @wixFieldType text */
-  category?: string;
-  /** @wixFieldType text */
-  explanation?: string;
-  /** @wixFieldType text */
-  nidalumExample?: string;
-  /** @wixFieldType text */
-  exampleTranslation?: string;
-  /** @wixFieldType text */
-  additionalNotes?: string;
-}
-
-
-/**
- * Collection ID: languagecategories
- * Interface for LanguageCategories
- */
-export interface LanguageCategories {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  categoryName?: string;
-  /** @wixFieldType text */
-  description?: string;
-  /** @wixFieldType text */
-  gradientColorFrom?: string;
-  /** @wixFieldType text */
-  gradientColorTo?: string;
-  /** @wixFieldType text */
-  theme?: string;
-  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
-  icon?: string;
 }
 
 
@@ -455,31 +386,6 @@ export interface OriginsandChronology {
   timeframe?: string;
   /** @wixFieldType text */
   significance?: string;
-}
-
-
-/**
- * Collection ID: phonetiquenidalum
- * Interface for NidalumPhonetics
- */
-export interface NidalumPhonetics {
-  _id: string;
-  _createdDate?: Date;
-  _updatedDate?: Date;
-  /** @wixFieldType text */
-  character?: string;
-  /** @wixFieldType text */
-  type?: string;
-  /** @wixFieldType text */
-  pronunciationGuide?: string;
-  /** @wixFieldType text */
-  exampleWord?: string;
-  /** @wixFieldType url */
-  audioPronunciation?: string;
-  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
-  visualRepresentation?: string;
-  /** @wixFieldType text */
-  notes?: string;
 }
 
 

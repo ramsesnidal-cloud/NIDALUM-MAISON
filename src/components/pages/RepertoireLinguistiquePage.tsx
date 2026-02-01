@@ -25,7 +25,6 @@ export default function RepertoireLinguistiquePage() {
       const { items } = await BaseCrudService.getAll<RpertoireLinguistiqueNidalumSectionQuotidienne>('Import1');
       setItems(items || []);
     } catch (error) {
-      console.error('Error loading repertoire:', error);
       setItems([]);
     } finally {
       setIsLoading(false);

@@ -733,18 +733,15 @@ export default function InitializeLexicalData() {
         let failureCount = 0;
 
         // First, sync categories
-        console.log('📁 Syncing categories...');
         for (const category of CATEGORIES_DATA) {
           try {
             await BaseCrudService.create('languagecategories', category);
-            console.log(`✓ Category created: ${category.categoryName}`);
           } catch (error) {
-            console.warn(`⚠ Category already exists or error: ${category.categoryName}`, error);
+            // Category already exists or error
           }
         }
 
         // Then sync words
-        console.log('📝 Syncing words...');
         for (let i = 0; i < NIDALUM_WORDS_DATA.length; i++) {
           const wordData = NIDALUM_WORDS_DATA[i];
           try {

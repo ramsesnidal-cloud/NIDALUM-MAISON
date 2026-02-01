@@ -22,14 +22,11 @@ export default function PhoneticsPage() {
       const { items } = await BaseCrudService.getAll<NidalumPhonetics>('phonetiquenidalum');
       
       if (!items || items.length === 0) {
-        console.warn('No phonetic items found in CMS');
         setPhoneticItems([]);
       } else {
         setPhoneticItems(items);
-        console.log(`Loaded ${items.length} phonetic items from CMS`);
       }
     } catch (error) {
-      console.error('Error loading phonetics data:', error);
       setPhoneticItems([]);
     } finally {
       setIsLoading(false);

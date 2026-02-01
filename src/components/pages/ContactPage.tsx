@@ -65,7 +65,6 @@ export default function ContactPage() {
         setSubmitStatus('idle');
       }, 5000);
     } catch (error) {
-      console.error('Error submitting form:', error);
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {

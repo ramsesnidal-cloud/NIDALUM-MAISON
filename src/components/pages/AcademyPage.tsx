@@ -37,10 +37,8 @@ export default function AcademyPage() {
           program.enrollmentLink
         );
         setPrograms(completePrograms);
-        console.log(`Loaded ${completePrograms.length} complete academy programs from CMS (${items.length} total)`);
       }
     } catch (error) {
-      console.error('Error loading academy programs:', error);
       setPrograms([]);
     } finally {
       setIsLoading(false);

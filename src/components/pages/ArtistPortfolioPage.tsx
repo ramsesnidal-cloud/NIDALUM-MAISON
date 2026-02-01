@@ -31,7 +31,7 @@ export default function ArtistPortfolioPage() {
       const result = await BaseCrudService.getAll<Artist>('artistportfolio', {}, { limit: 50 });
       setArtists(result.items || []);
     } catch (error) {
-      console.error('Error loading artists:', error);
+      setArtists([]);
     } finally {
       setIsLoading(false);
     }

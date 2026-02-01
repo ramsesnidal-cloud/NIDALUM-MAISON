@@ -28,10 +28,8 @@ export default function AlphabetPage() {
         // Sort by alphabetical order if available
         const sorted = items.sort((a, b) => (a.alphabeticalOrder || 0) - (b.alphabeticalOrder || 0));
         setAlphabetLetters(sorted);
-        console.log(`Loaded ${sorted.length} alphabet letters from CMS`);
       }
     } catch (error) {
-      console.error('Error loading alphabet data:', error);
       setAlphabetLetters([]);
     } finally {
       setIsLoading(false);

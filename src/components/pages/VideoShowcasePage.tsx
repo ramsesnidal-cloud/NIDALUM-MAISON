@@ -31,7 +31,7 @@ export default function VideoShowcasePage() {
       const result = await BaseCrudService.getAll<Video>('videoshowcase', {}, { limit: 50 });
       setVideos(result.items || []);
     } catch (error) {
-      console.error('Error loading videos:', error);
+      setVideos([]);
     } finally {
       setIsLoading(false);
     }

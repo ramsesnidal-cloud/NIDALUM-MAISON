@@ -23,9 +23,7 @@ export default function GrandLexiquePage() {
     try {
       const { items } = await BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon');
       setLexiconItems(items || []);
-      console.log(`Loaded ${items?.length || 0} lexicon items from CMS`);
     } catch (error) {
-      console.error('Error loading lexicon:', error);
       setLexiconItems([]);
     } finally {
       setIsLoading(false);
