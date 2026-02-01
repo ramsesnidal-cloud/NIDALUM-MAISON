@@ -38,7 +38,7 @@ export default function ApprendreLangagePage() {
           transition={{ duration: 1 }}
           className="max-w-6xl mx-auto text-center"
         >
-          <h1 className="font-heading text-6xl md:text-7xl tracking-widest mb-8 font-light">
+          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest mb-8 uppercase">
             FRAGMENTS
           </h1>
           <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-12"></div>
