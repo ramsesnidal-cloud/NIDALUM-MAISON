@@ -62,10 +62,27 @@ export default function ChantsPage() {
       {/* Chants Grid */}
       <section className="px-4 md:px-8 py-20">
         <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="font-heading text-5xl md:text-6xl tracking-widest mb-4 font-light">
+              SACRED CHANTS
+            </h2>
+            <div className="h-px bg-gradient-to-r from-white via-white to-transparent opacity-20 w-32"></div>
+          </motion.div>
+
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-96 bg-stone-900 rounded-sm animate-pulse"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="space-y-4">
+                  <div className="h-64 bg-stone-900 rounded-sm animate-pulse"></div>
+                  <div className="h-4 bg-stone-900 rounded animate-pulse w-3/4"></div>
+                  <div className="h-3 bg-stone-900 rounded animate-pulse w-1/2"></div>
+                </div>
               ))}
             </div>
           ) : chants.length > 0 ? (
@@ -73,7 +90,7 @@ export default function ChantsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-12"
+              className="grid grid-cols-1 md:grid-cols-3 gap-12"
             >
               {chants.map((chant, index) => (
                 <motion.div
@@ -85,27 +102,30 @@ export default function ChantsPage() {
                   onClick={() => setSelectedChant(chant)}
                   className="group cursor-pointer"
                 >
-                  <div className="relative overflow-hidden mb-6 aspect-square">
-                    {chant.chantImage && (
+                  {chant.chantImage && (
+                    <div className="relative overflow-hidden mb-6 aspect-square">
                       <UIImage
                         src={chant.chantImage}
                         alt={chant.chantTitle || 'Chant'}
-                        width={500}
-                        height={500}
-                        className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-500"
+                        width={400}
+                        height={400}
+                        className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
                       />
-                    )}
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-500"></div>
-                  </div>
-                  <h3 className="font-heading text-2xl tracking-widest mb-3 font-light group-hover:text-stone-400 transition-colors duration-300">
+                    </div>
+                  )}
+                  <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
                     {chant.chantTitle}
                   </h3>
-                  <p className="text-sm tracking-wide text-stone-500 mb-4 line-clamp-2">
-                    {chant.spiritualContext}
-                  </p>
-                  <p className="text-xs tracking-widest uppercase text-stone-600">
-                    {chant.theme}
-                  </p>
+                  {chant.theme && (
+                    <p className="text-xs tracking-widest uppercase text-stone-500 mb-3">
+                      {chant.theme}
+                    </p>
+                  )}
+                  {chant.spiritualContext && (
+                    <p className="text-sm tracking-wide text-stone-400 line-clamp-3">
+                      {chant.spiritualContext}
+                    </p>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
