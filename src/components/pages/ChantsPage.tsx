@@ -401,14 +401,18 @@ export default function ChantsPage() {
               )}
             </div>
 
-            {selectedArtist.audioUrl && (
-              <div className="border-t border-white border-opacity-10 pt-8 mb-8">
-                <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
-                  Listen
-                </h3>
+            <div className="border-t border-white border-opacity-10 pt-8 mb-8">
+              <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
+                Listen
+              </h3>
+              {selectedArtist.audioUrl ? (
                 <ModernAudioPlayer audioUrl={selectedArtist.audioUrl} />
-              </div>
-            )}
+              ) : (
+                <div className="p-4 bg-stone-900/50 border border-stone-700 rounded text-center">
+                  <p className="text-sm text-stone-400">No audio available for this artist</p>
+                </div>
+              )}
+            </div>
 
             <button
               onClick={() => setSelectedArtist(null)}
