@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import type { DropResult } from '@hello-pangea/dnd';
 import Header from '@/components/layout/Header';
@@ -7,7 +7,7 @@ import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
 import { MusicShowcase, AuthorVideoManagement } from '@/entities';
 import { Image } from '@/components/ui/image';
-import { Music, Play, Pause } from 'lucide-react';
+import { Music, Play, Pause, X } from 'lucide-react';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -18,6 +18,7 @@ export default function AuthorPage() {
   const [epicVideo, setEpicVideo] = useState<AuthorVideoManagement | null>(null);
   const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [items, setItems] = useState<Array<{ id: string; type: 'video' | 'track'; data: MusicShowcase | AuthorVideoManagement }>>([]);
+  const [selectedItem, setSelectedItem] = useState<{ id: string; type: 'video' | 'track'; data: MusicShowcase | AuthorVideoManagement } | null>(null);
 
   useEffect(() => {
     loadMusic();
@@ -85,6 +86,119 @@ export default function AuthorPage() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      
+      {/* Modal for enlarged view */}
+      <AnimatePresence>
+        {selectedItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedItem(null)}
+            className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center p-6"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-background border border-primary/30 max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            >
+              <div className="sticky top-0 flex justify-between items-center p-6 border-b border-primary/20 bg-background/80 backdrop-blur-sm">
+                <h2 className="font-heading text-2xl md:text-3xl text-primary">
+                  {selectedItem.type === 'video' 
+                    ? (selectedItem.data as AuthorVideoManagement).videoTitle 
+                    : (selectedItem.data as MusicShowcase).trackTitle}
+                </h2>
+                <button
+                  onClick={() => setSelectedItem(null)}
+                  className="p-2 hover:bg-primary/10 transition-colors"
+                >
+                  <X className="w-6 h-6 text-primary" />
+                </button>
+              </div>
+              
+              <div className="p-6 md:p-8">
+                {selectedItem.type === 'video' ? (
+                  <div className="space-y-6">
+                    {(selectedItem.data as AuthorVideoManagement).thumbnailImage && (
+                      <div className="aspect-video overflow-hidden border border-primary/20">
+                        <Image
+                          src={(selectedItem.data as AuthorVideoManagement).thumbnailImage!}
+                          alt={(selectedItem.data as AuthorVideoManagement).videoTitle || 'Epic Video'}
+                          width={800}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    {(selectedItem.data as AuthorVideoManagement).videoDescription && (
+                      <div>
+                        <h3 className="font-heading text-xl text-secondary mb-4">Description</h3>
+                        <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
+                          {(selectedItem.data as AuthorVideoManagement).videoDescription}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    {(selectedItem.data as MusicShowcase).coverImage && (
+                      <div className="aspect-square overflow-hidden border border-primary/20 max-w-md mx-auto">
+                        <Image
+                          src={(selectedItem.data as MusicShowcase).coverImage!}
+                          alt={(selectedItem.data as MusicShowcase).trackTitle || 'Track cover'}
+                          width={600}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="space-y-4">
+                      {(selectedItem.data as MusicShowcase).artistName && (
+                        <div>
+                          <h3 className="font-heading text-lg text-secondary mb-2">Artist</h3>
+                          <p className="font-paragraph text-lg text-foreground/80">
+                            {(selectedItem.data as MusicShowcase).artistName}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {(selectedItem.data as MusicShowcase).genre && (
+                        <div>
+                          <h3 className="font-heading text-lg text-secondary mb-2">Genre</h3>
+                          <p className="font-paragraph text-lg text-foreground/80">
+                            {(selectedItem.data as MusicShowcase).genre}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {(selectedItem.data as MusicShowcase).description && (
+                        <div>
+                          <h3 className="font-heading text-lg text-secondary mb-2">Description</h3>
+                          <p className="font-paragraph text-lg text-foreground/80 leading-relaxed">
+                            {(selectedItem.data as MusicShowcase).description}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {(selectedItem.data as MusicShowcase).audio && (
+                        <div className="pt-4 border-t border-primary/20">
+                          <h3 className="font-heading text-lg text-secondary mb-4">Listen</h3>
+                          <ModernAudioPlayer
+                            audioUrl={(selectedItem.data as MusicShowcase).audio!}
+                            title={(selectedItem.data as MusicShowcase).trackTitle || 'Musique'}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background">
@@ -253,7 +367,8 @@ export default function AuthorPage() {
                                   whileInView={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.5, delay: 0 }}
                                   viewport={{ once: true }}
-                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full"
+                                  onClick={() => setSelectedItem(item)}
+                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full cursor-pointer"
                                 >
                                   <div className="aspect-square overflow-hidden relative bg-gradient-to-br from-primary/10 to-secondary/10">
                                     {(item.data as AuthorVideoManagement).thumbnailImage ? (
@@ -278,7 +393,7 @@ export default function AuthorPage() {
                                       {(item.data as AuthorVideoManagement).videoTitle || 'Musique Épique'}
                                     </h3>
                                     {(item.data as AuthorVideoManagement).videoDescription && (
-                                      <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
+                                      <p className="font-paragraph text-sm text-foreground/70 leading-relaxed line-clamp-2">
                                         {(item.data as AuthorVideoManagement).videoDescription}
                                       </p>
                                     )}
@@ -290,7 +405,8 @@ export default function AuthorPage() {
                                   whileInView={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
                                   viewport={{ once: true }}
-                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full flex flex-col"
+                                  onClick={() => setSelectedItem(item)}
+                                  className="border border-primary/20 overflow-hidden hover:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm group h-full flex flex-col cursor-pointer"
                                 >
                                   {(item.data as MusicShowcase).coverImage && (
                                     <div className="aspect-square overflow-hidden relative">
@@ -322,7 +438,7 @@ export default function AuthorPage() {
                                         </span>
                                       )}
                                       {(item.data as MusicShowcase).description && (
-                                        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed">
+                                        <p className="font-paragraph text-sm text-foreground/70 leading-relaxed line-clamp-2">
                                           {(item.data as MusicShowcase).description}
                                         </p>
                                       )}
