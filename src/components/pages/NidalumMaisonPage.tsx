@@ -55,7 +55,7 @@ export default function NidalumMaisonPage() {
                 NIDALUM MAISON
               </h1>
               <div className="space-y-6">
-                <p className="font-heading text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-widest text-luxury-text uppercase">
+                <p className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-widest text-luxury-gold uppercase">
                   A SACRED HOUSE OF CREATION
                 </p>
               </div>
@@ -130,8 +130,8 @@ export default function NidalumMaisonPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 className="flex-1"
               >
-                <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-widest text-luxury-text uppercase">
-                  MUSIC
+                <h3 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-widest text-luxury-text uppercase">
+                  NIDALUM MUSIC
                 </h3>
               </motion.div>
 
