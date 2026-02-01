@@ -143,27 +143,124 @@ export default function HomePage() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
-          className="max-w-2xl text-center"
+          className="max-w-4xl w-full"
         >
-          <h2 className="font-heading text-4xl md:text-5xl tracking-widest mb-12 font-light">
+          <h2 className="font-heading text-4xl md:text-5xl tracking-widest mb-16 font-light text-center">
             The Language
           </h2>
-          <p className="text-base md:text-lg leading-relaxed tracking-wide text-stone-300 mb-8">
+          <p className="text-base md:text-lg leading-relaxed tracking-wide text-stone-300 mb-16 text-center">
             Luxury houses have codes. NIDALUM has a language.
           </p>
-          <p className="text-sm tracking-widest text-stone-400 mb-12">
+          
+          {/* Fragmentary Language Grid - Museum-like */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 mb-16">
+            {/* NIDALUM Fragments */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-6 md:p-8 text-center hover:border-opacity-50 transition-all duration-500"
+            >
+              <p className="font-heading text-3xl md:text-4xl tracking-widest mb-2 font-light">
+                ORA
+              </p>
+              <p className="text-xs tracking-widest text-stone-500 uppercase">
+                Origin
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-6 md:p-8 text-center hover:border-opacity-50 transition-all duration-500"
+            >
+              <p className="font-heading text-3xl md:text-4xl tracking-widest mb-2 font-light">
+                VENTUS
+              </p>
+              <p className="text-xs tracking-widest text-stone-500 uppercase">
+                Movement
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-6 md:p-8 text-center hover:border-opacity-50 transition-all duration-500"
+            >
+              <p className="font-heading text-3xl md:text-4xl tracking-widest mb-2 font-light">
+                MEK
+              </p>
+              <p className="text-xs tracking-widest text-stone-500 uppercase">
+                Form
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-6 md:p-8 text-center hover:border-opacity-50 transition-all duration-500"
+            >
+              <p className="font-heading text-3xl md:text-4xl tracking-widest mb-2 font-light">
+                NIDAL
+              </p>
+              <p className="text-xs tracking-widest text-stone-500 uppercase">
+                House
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-6 md:p-8 text-center hover:border-opacity-50 transition-all duration-500"
+            >
+              <p className="font-heading text-3xl md:text-4xl tracking-widest mb-2 font-light">
+                TÉ-LUMÉ
+              </p>
+              <p className="text-xs tracking-widest text-stone-500 uppercase">
+                Light
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-6 md:p-8 text-center hover:border-opacity-50 transition-all duration-500"
+            >
+              <p className="font-heading text-3xl md:text-4xl tracking-widest mb-2 font-light">
+                SOUMA
+              </p>
+              <p className="text-xs tracking-widest text-stone-500 uppercase">
+                Sound
+              </p>
+            </motion.div>
+          </div>
+
+          <p className="text-sm tracking-widest text-stone-400 mb-12 text-center italic">
             A living system of symbols, sounds, and meanings that define the house.
           </p>
-          <Link
-            to="/apprendre-langage"
-            className="inline-block text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-2 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500"
-          >
-            Discover
-          </Link>
+          <div className="flex justify-center">
+            <Link
+              to="/apprendre-langage"
+              className="inline-block text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-2 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500"
+            >
+              Explore Further
+            </Link>
+          </div>
         </motion.div>
       </section>
 
-      {/* SECTION 6 - THE LABEL */}
+      {/* SECTION 6 - EXPLORE */}
       <section className="min-h-screen flex items-center justify-center px-4 py-20">
         <motion.div
           initial={{ opacity: 0 }}
@@ -173,28 +270,101 @@ export default function HomePage() {
           className="max-w-4xl w-full"
         >
           <h2 className="font-heading text-4xl md:text-5xl tracking-widest mb-16 font-light text-center">
-            The Artistic Arm
+            Explore
           </h2>
           <p className="text-center text-sm tracking-widest text-stone-400 mb-16 uppercase">
-            NIDALUM MUSIC — The operational artistic foundation of the house
+            Conceptual entries into the NIDALUM universe
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500"
+            >
               <h3 className="font-heading text-xl tracking-widest mb-3 font-light">
-                Sacred Compositions
+                The Glyphs
               </h3>
               <p className="text-xs tracking-wide text-stone-400">
-                Cinematic soundscapes that define the house aesthetic.
+                Sixteen sacred letters that form the foundation of NIDALUM's written language.
               </p>
-            </div>
-            <div className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500">
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500"
+            >
               <h3 className="font-heading text-xl tracking-widest mb-3 font-light">
-                Ritual Performances
+                The Rituals
               </h3>
               <p className="text-xs tracking-wide text-stone-400">
-                Curated artists and collaborators of the inner circle.
+                Sacred chants and ceremonial compositions that bind the house together.
               </p>
-            </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500"
+            >
+              <h3 className="font-heading text-xl tracking-widest mb-3 font-light">
+                The Archives
+              </h3>
+              <p className="text-xs tracking-wide text-stone-400">
+                Layered collections of knowledge, memory, and creative evolution.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500"
+            >
+              <h3 className="font-heading text-xl tracking-widest mb-3 font-light">
+                The Incarnations
+              </h3>
+              <p className="text-xs tracking-wide text-stone-400">
+                Ten manifestations of NIDALUM's essence across music, fashion, and form.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500"
+            >
+              <h3 className="font-heading text-xl tracking-widest mb-3 font-light">
+                The Origins
+              </h3>
+              <p className="text-xs tracking-wide text-stone-400">
+                Chronological and mythological foundations of the NIDALUM universe.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="border border-white border-opacity-20 p-8 hover:border-opacity-50 transition-all duration-500"
+            >
+              <h3 className="font-heading text-xl tracking-widest mb-3 font-light">
+                The Publications
+              </h3>
+              <p className="text-xs tracking-wide text-stone-400">
+                Curated writings, research, and artistic documentation of the house.
+              </p>
+            </motion.div>
           </div>
         </motion.div>
       </section>
