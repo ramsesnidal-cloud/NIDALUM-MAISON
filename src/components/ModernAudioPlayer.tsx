@@ -133,7 +133,7 @@ export default function ModernAudioPlayer({
     try {
       setError(null);
 
-      if (!audioUrl) {
+      if (!audioUrl || audioUrl.trim() === '') {
         setError('Aucun fichier audio disponible');
         return;
       }
@@ -218,7 +218,7 @@ export default function ModernAudioPlayer({
   };
 
   // No audio URL
-  if (!audioUrl) {
+  if (!audioUrl || audioUrl.trim() === '') {
     return (
       <motion.div
         initial={{ opacity: 0, y: 10 }}
