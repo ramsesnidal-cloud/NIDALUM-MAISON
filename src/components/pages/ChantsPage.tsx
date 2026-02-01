@@ -41,21 +41,21 @@ export default function ChantsPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-24 px-4 md:px-8">
+      <section className="pt-20 sm:pt-32 pb-16 sm:pb-24 px-4 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest mb-8 font-light whitespace-nowrap flex justify-center">
-            <span className="mr-12">NIDALUM</span>
+          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-widest mb-6 sm:mb-8 font-light flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-8">
+            <span>NIDALUM</span>
             <span>MUSIC</span>
           </h1>
-          <p className="text-base md:text-lg tracking-wide text-stone-400 mb-4">
+          <p className="text-sm sm:text-base md:text-lg tracking-wide text-stone-400 mb-4 px-2">
             The operational artistic arm of the House
           </p>
-          <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-12"></div>
+          <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-8 sm:mt-12"></div>
         </motion.div>
       </section>
 
