@@ -47,8 +47,9 @@ export default function ChantsPage() {
           transition={{ duration: 1 }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest mb-8 font-light whitespace-nowrap">
-            NIDALUM MUSIC
+          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest mb-8 font-light whitespace-nowrap flex justify-center">
+            <span className="mr-12">NIDALUM</span>
+            <span>MUSIC</span>
           </h1>
           <p className="text-base md:text-lg tracking-wide text-stone-400 mb-4">
             The operational artistic arm of the House
