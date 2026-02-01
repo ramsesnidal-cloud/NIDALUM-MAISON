@@ -157,6 +157,7 @@ export default function ModernAudioPlayer({
         // Play
         if (audio.src !== audioUrl) {
           audio.src = audioUrl;
+          console.log('Audio source set to:', audioUrl);
         }
 
         setIsLoading(true);
@@ -166,6 +167,7 @@ export default function ModernAudioPlayer({
             await playPromise;
           }
           setIsPlaying(true);
+          console.log('Audio playback started');
         } catch (err: any) {
           console.error('Play error:', err);
 
