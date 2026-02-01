@@ -185,11 +185,11 @@ export default function ArtistPortfolioPage() {
                       )}
                       
                       {/* Audio Player */}
-                      {selectedArtist.url && (
+                      {selectedArtist.audioUrl && (
                         <div className="mb-8 pt-6 border-t border-primary/20">
                           <h3 className="font-heading text-lg text-secondary mb-4">Écouter</h3>
                           <ModernAudioPlayer
-                            audioUrl={selectedArtist.url}
+                            audioUrl={selectedArtist.audioUrl}
                             title={selectedArtist.artistName || 'Artiste'}
                           />
                         </div>

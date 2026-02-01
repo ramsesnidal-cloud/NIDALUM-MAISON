@@ -173,7 +173,9 @@ export default function ModernAudioPlayer({
           if (err.name === 'NotAllowedError') {
             setError('Lecture non autorisée');
           } else if (err.name === 'NotSupportedError') {
-            setError('Format audio non supporté');
+            setError('Format audio non supporté - Vérifiez que le fichier est en MP3, WAV ou OGG');
+          } else if (err.name === 'AbortError') {
+            setError('Chargement interrompu');
           } else {
             setError('Impossible de lire l\'audio');
           }
