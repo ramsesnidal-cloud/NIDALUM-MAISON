@@ -94,8 +94,8 @@ export default function NidalumMaisonPage() {
                 NIDALUM MAISON
               </h1>
               <div className="space-y-4 md:space-y-6">
-                <p className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-widest text-luxury-gold uppercase">
-                  A SACRED HOUSE OF CREATION
+                <p className="font-heading text-sm sm:text-base md:text-lg lg:text-xl tracking-widest text-luxury-gold/40 uppercase">
+                  A Sacred House of Creation
                 </p>
               </div>
             </div>

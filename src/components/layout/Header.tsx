@@ -20,7 +20,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-95 backdrop-blur-sm border-b border-white border-opacity-10">
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 md:px-8 py-4 md:py-6 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="hover:opacity-70 transition-opacity">
+        <Link to="/" className="hover:opacity-70 transition-opacity flex items-center gap-2">
           <Image
             src="https://static.wixstatic.com/media/9c8aea_ad93494c882d449c95b3437b2433feaf~mv2.png"
             alt="NIDALUM MUSIC - The operational artistic foundation of the House"
@@ -28,6 +28,9 @@ export default function Header() {
             height={26}
             className="h-[20px] sm:h-[22px] md:h-[26px] w-auto"
           />
+          <span className="hidden sm:inline text-xs md:text-sm tracking-widest uppercase font-heading text-luxury-gold">
+            NIDALUM
+          </span>
         </Link>
 
         {/* Desktop Navigation */}

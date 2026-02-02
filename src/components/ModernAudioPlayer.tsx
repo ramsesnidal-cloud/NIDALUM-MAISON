@@ -203,7 +203,7 @@ export default function ModernAudioPlayer({
       console.error('[AUDIO PLAYER] Unexpected error:', err);
       setError('Erreur lors de la lecture');
     }
-  }, [audioUrl, isPlaying, volume]);
+  }, [audioUrl, isPlaying, volume, audioRef]);
 
   // Handle volume change
   const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
