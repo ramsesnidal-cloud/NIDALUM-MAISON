@@ -5,11 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { Image } from '@/components/ui/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 
 export default function NidalumMaisonPage() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [selectedIncarnation, setSelectedIncarnation] = useState<any>(null);
   const navigate = useNavigate();
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -239,13 +241,16 @@ export default function NidalumMaisonPage() {
                 className="flex flex-col items-center space-y-3 md:space-y-4"
               >
                 {/* Image - Abstract and Symbolic */}
-                <div className="relative w-full aspect-square overflow-hidden border border-luxury-gold/20">
+                <div 
+                  onClick={() => setSelectedIncarnation(incarnation)}
+                  className="relative w-full aspect-square overflow-hidden border border-luxury-gold/20 cursor-pointer group"
+                >
                   <Image
                     src={incarnation.image}
                     alt={incarnation.name}
                     width={300}
                     height={300}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-300"
                   />
                   {/* Subtle Overlay */}
                   <div className="absolute inset-0 bg-black/10"></div>
@@ -425,6 +430,66 @@ export default function NidalumMaisonPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Selected Incarnation Modal */}
+      {selectedIncarnation && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedIncarnation(null)}
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-2xl w-full bg-dark-grey border border-luxury-gold/20 p-8 md:p-12 max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex justify-between items-start mb-8">
+              <h2 className="font-heading text-3xl md:text-4xl tracking-widest font-light text-luxury-text flex-1">
+                {selectedIncarnation.name}
+              </h2>
+              <button
+                onClick={() => setSelectedIncarnation(null)}
+                className="text-2xl hover:opacity-50 transition-opacity ml-4 text-luxury-gold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {selectedIncarnation.image && (
+              <div className="mb-8 aspect-square overflow-hidden border border-luxury-gold/20">
+                <Image
+                  src={selectedIncarnation.image}
+                  alt={selectedIncarnation.name}
+                  width={600}
+                  height={600}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            <div className="border-t border-luxury-gold/20 pt-8">
+              <h3 className="text-xs tracking-widest uppercase text-luxury-gold/70 mb-4">
+                Audio Experience
+              </h3>
+              <ModernAudioPlayer 
+                audioUrl="https://static.wixstatic.com/media/9c8aea_placeholder_audio.mp3"
+                title={selectedIncarnation.name}
+              />
+            </div>
+
+            <button
+              onClick={() => setSelectedIncarnation(null)}
+              className="mt-8 w-full text-xs tracking-widest uppercase border border-luxury-gold/50 px-6 py-3 hover:border-luxury-gold hover:bg-luxury-gold/10 transition-all duration-300 text-luxury-gold"
+            >
+              Close
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Global Footer */}
       <Footer />
