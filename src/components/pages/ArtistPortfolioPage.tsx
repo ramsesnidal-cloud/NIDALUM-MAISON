@@ -185,11 +185,11 @@ export default function ArtistPortfolioPage() {
                       )}
                       
                       {/* Audio Player */}
-                      {(selectedArtist.audioFile?.trim() || selectedArtist.audioUrl?.trim()) && (
+                      {(selectedArtist.audio?.trim() || selectedArtist.audioFile?.trim() || selectedArtist.audioUrl?.trim()) && (
                         <div className="mb-8 pt-6 border-t border-primary/20">
                           <h3 className="font-heading text-lg text-secondary mb-4">Écouter</h3>
                           <ModernAudioPlayer
-                            audioUrl={selectedArtist.audioFile || selectedArtist.audioUrl || ''}
+                            audioUrl={selectedArtist.audio || selectedArtist.audioFile || selectedArtist.audioUrl || ''}
                             title={selectedArtist.artistName || 'Artiste'}
                           />
                         </div>
