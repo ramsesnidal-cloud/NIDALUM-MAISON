@@ -214,12 +214,20 @@ export default function ModernAudioPlayer({
     }
   }, []);
 
-  // Handle progress bar click
-  const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+  // Handle progress bar click/touch
+  const handleProgressInteraction = useCallback((e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     if (!audioRef.current || duration === 0) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    const percent = (e.clientX - rect.left) / rect.width;
-    const newTime = percent * duration;
+    
+    let clientX: number;
+    if ('touches' in e) {
+      clientX = e.touches[0]?.clientX || 0;
+    } else {
+      clientX = e.clientX;
+    }
+    
+    const percent = (clientX - rect.left) / rect.width;
+    const newTime = Math.max(0, Math.min(percent * duration, duration));
     audioRef.current.currentTime = newTime;
     setCurrentTime(newTime);
   }, [duration]);
@@ -254,10 +262,10 @@ export default function ModernAudioPlayer({
       className={`space-y-4 w-full ${className}`}
     >
       {/* Main Player Container */}
-      <div className="w-full bg-gradient-to-br from-primary/15 to-secondary/15 border border-primary/30 rounded-lg md:rounded-xl p-3 md:p-6 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
+      <div className="w-full bg-gradient-to-br from-primary/15 to-secondary/15 border border-primary/30 rounded-lg md:rounded-xl p-3 md:p-6 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 touch-manipulation">
         
         {/* Title and Status */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4">
           <div className="flex-1 min-w-0">
             <p className="font-heading text-sm md:text-base text-primary truncate">
               {title}
@@ -269,8 +277,8 @@ export default function ModernAudioPlayer({
           
           {/* Duration Display */}
           {duration > 0 && (
-            <div className="text-right ml-4">
-              <p className="font-paragraph text-xs text-foreground/70 font-semibold">
+            <div className="text-right">
+              <p className="font-paragraph text-xs text-foreground/70 font-semibold whitespace-nowrap">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </p>
             </div>
@@ -279,8 +287,9 @@ export default function ModernAudioPlayer({
 
         {/* Progress Bar */}
         <motion.div
-          onClick={handleProgressClick}
-          className="mb-4 cursor-pointer group"
+          onMouseDown={handleProgressInteraction}
+          onTouchStart={handleProgressInteraction}
+          className="mb-4 cursor-pointer group touch-none"
           whileHover={{ scale: 1.02 }}
         >
           <div className="h-2 bg-primary/20 rounded-full overflow-hidden border border-primary/30 group-hover:border-primary/60 transition-colors">
@@ -293,14 +302,14 @@ export default function ModernAudioPlayer({
         </motion.div>
 
         {/* Controls */}
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-3">
           {/* Play/Pause Button */}
           <motion.button
             onClick={handlePlayPause}
             disabled={isLoading}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-gradient-to-br from-primary to-secondary text-primary-foreground rounded-full hover:shadow-lg hover:shadow-primary/50 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-shrink-0 w-full sm:w-12 h-12 md:h-14 md:w-14 flex items-center justify-center bg-gradient-to-br from-primary to-secondary text-primary-foreground rounded-full hover:shadow-lg hover:shadow-primary/50 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
             title={isPlaying ? 'Pause' : 'Lecture'}
             aria-label={isPlaying ? 'Pause' : 'Lecture'}
           >
@@ -314,12 +323,12 @@ export default function ModernAudioPlayer({
           </motion.button>
 
           {/* Volume Control */}
-          <div className="flex-1 flex items-center gap-2">
+          <div className="flex-1 flex items-center gap-2 min-w-0">
             <motion.button
               onClick={() => setShowVolumeControl(!showVolumeControl)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-primary hover:bg-primary/10 rounded-lg transition-colors"
+              className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-primary hover:bg-primary/10 rounded-lg transition-colors touch-manipulation"
               title="Contrôle du volume"
             >
               {volume === 0 ? (
@@ -334,7 +343,7 @@ export default function ModernAudioPlayer({
               initial={{ opacity: 0, width: 0 }}
               animate={{ opacity: showVolumeControl ? 1 : 0, width: showVolumeControl ? 'auto' : 0 }}
               transition={{ duration: 0.2 }}
-              className="overflow-hidden flex items-center gap-2"
+              className="overflow-hidden flex items-center gap-2 min-w-0"
             >
               <input
                 type="range"
@@ -343,11 +352,11 @@ export default function ModernAudioPlayer({
                 step="0.05"
                 value={volume}
                 onChange={handleVolumeChange}
-                className="w-20 md:w-24 h-2 bg-primary/30 rounded-full appearance-none cursor-pointer accent-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0"
+                className="w-16 sm:w-20 md:w-24 h-2 bg-primary/30 rounded-full appearance-none cursor-pointer accent-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-0 touch-manipulation"
                 title="Contrôle du volume"
                 aria-label="Contrôle du volume"
               />
-              <span className="text-xs text-foreground/70 font-semibold w-8 text-right">
+              <span className="text-xs text-foreground/70 font-semibold w-8 text-right flex-shrink-0">
                 {Math.round(volume * 100)}%
               </span>
             </motion.div>
