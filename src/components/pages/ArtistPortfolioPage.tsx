@@ -31,8 +31,9 @@ export default function ArtistPortfolioPage() {
       // Resolve audio URLs for each artist
       const artistsWithResolvedAudio = await Promise.all(
         items.map(async (artist) => {
+          // Priority: audioUpload (new field) > audio (Wix field) > audioFile > audioUrl
           const candidate = resolveAudioCandidate({
-            audio: artist.audio,
+            audio: (artist as any).audioUpload || artist.audio,
             audioFile: artist.audioFile,
             audioUrl: artist.audioUrl
           });
@@ -156,7 +157,8 @@ export default function ArtistPortfolioPage() {
                     )}
                   </div>
                   {(() => {
-                    const audioSource = artist.audio || artist.audioFile || artist.audioUrl;
+                    // Priority: audioUpload (new field) > audio (Wix field) > audioFile > audioUrl
+                    const audioSource = (artist as any).audioUpload || artist.audio || artist.audioFile || artist.audioUrl;
                     if (audioSource) {
                       return (
                         <div className="mt-6 pt-6 border-t border-white border-opacity-10">

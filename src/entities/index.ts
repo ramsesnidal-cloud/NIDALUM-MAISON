@@ -99,6 +99,8 @@ export interface ArtistPortfolio {
   _updatedDate?: Date;
   /** @wixFieldType url */
   audioFile?: string;
+  /** @wixFieldType text */
+  audioUpload?: string;
   /** @wixFieldType url */
   audioUrl?: string;
   /** @wixFieldType text */
