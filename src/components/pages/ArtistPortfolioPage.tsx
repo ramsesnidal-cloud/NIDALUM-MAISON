@@ -157,8 +157,8 @@ export default function ArtistPortfolioPage() {
                     )}
                   </div>
                   {(() => {
-                    // Priority: audioUpload (new field) > audio (Wix field) > audioFile > audioUrl
-                    const audioSource = (artist as any).audioUpload || artist.audio || artist.audioFile || artist.audioUrl;
+                    // Use resolved audio URL if available, otherwise use raw source
+                    const audioSource = artist.resolvedAudioUrl || (artist as any).audioUpload || artist.audio || artist.audioFile || artist.audioUrl;
                     if (audioSource) {
                       return (
                         <div className="mt-6 pt-6 border-t border-white border-opacity-10">

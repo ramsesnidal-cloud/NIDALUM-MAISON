@@ -115,6 +115,8 @@ export interface ArtistPortfolio {
   nidalumName?: string;
   /** @wixFieldType url */
   url?: string;
+  /** @wixFieldType audio */
+  audio?: string;
 }
 
 
