@@ -22,8 +22,8 @@ export default function Header() {
         {/* Logo */}
         <Link to="/" className="hover:opacity-70 transition-opacity">
           <Image
-            src="https://static.wixstatic.com/media/9c8aea_fd135d0ad42a4065b1414ce0a7f4db9f~mv2.png"
-            alt="NIDALUM MUSIC"
+            src="https://static.wixstatic.com/media/9c8aea_ad93494c882d449c95b3437b2433feaf~mv2.png"
+            alt="NIDALUM MUSIC - The operational artistic foundation of the House"
             width={26}
             height={26}
             className="h-[20px] sm:h-[22px] md:h-[26px] w-auto"

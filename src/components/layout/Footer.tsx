@@ -10,8 +10,8 @@ export default function Footer() {
         {/* NIDALUM MUSIC Seal */}
         <div className="flex flex-col items-center justify-center mb-12 md:mb-16 pb-8 border-b border-white border-opacity-10">
           <Image
-            src="https://static.wixstatic.com/media/9c8aea_fd135d0ad42a4065b1414ce0a7f4db9f~mv2.png"
-            alt="NIDALUM seal"
+            src="https://static.wixstatic.com/media/9c8aea_ad93494c882d449c95b3437b2433feaf~mv2.png"
+            alt="NIDALUM MUSIC seal"
             width={40}
             height={40}
             className="mb-3 md:mb-4 opacity-60"
