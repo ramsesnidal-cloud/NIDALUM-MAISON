@@ -3,212 +3,242 @@ import { motion } from 'framer-motion';
 import { BaseCrudService } from '@/integrations';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Image } from '@/components/ui/image';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Image as UIImage } from '@/components/ui/image';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
 import type { ArtistPortfolio } from '@/entities';
 
-interface Artist extends ArtistPortfolio {}
-
 export default function ArtistPortfolioPage() {
-  const [artists, setArtists] = useState<Artist[]>([]);
+  const [artists, setArtists] = useState<ArtistPortfolio[]>([]);
+  const [selectedArtist, setSelectedArtist] = useState<ArtistPortfolio | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
   useEffect(() => {
     loadArtists();
   }, []);
 
   const loadArtists = async () => {
-    try {
-      setIsLoading(true);
-      const result = await BaseCrudService.getAll<Artist>('artistportfolio', {}, { limit: 50 });
-      setArtists(result.items || []);
-    } catch (error) {
-      setArtists([]);
-    } finally {
-      setIsLoading(false);
-    }
+    setIsLoading(true);
+    const { items } = await BaseCrudService.getAll<ArtistPortfolio>('artistportfolio');
+    console.log('Artists loaded:', items);
+    items.forEach((artist, idx) => {
+      console.log(`Artist ${idx}:`, {
+        name: artist.artistName,
+        audio: artist.audio,
+        audioFile: artist.audioFile,
+        audioUrl: artist.audioUrl
+      });
+    });
+    setArtists(items);
+    setIsLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black text-white font-paragraph">
       <Header />
-      
-      {/* Hero Section */}
-      <section className="relative min-h-[50vh] w-full overflow-hidden flex items-center justify-center pt-32 pb-12">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          </div>
-        </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-          >
-            <h1 className="font-heading text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary mb-6">
-              THE 10 INCARNATIONS
-            </h1>
-            <p className="font-paragraph text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">
-              Discover the artists and incarnations that compose the creative universe of NIDALUM MAISON
-            </p>
-          </motion.div>
-        </div>
+      {/* Hero Section */}
+      <section className="pt-20 sm:pt-32 pb-16 sm:pb-24 px-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="max-w-4xl mx-auto text-center"
+        >
+          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest mb-6 sm:mb-8 font-light flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-8">
+            <span>THE 10</span>
+            <span>INCARNATIONS</span>
+          </h1>
+          <p className="text-sm sm:text-base md:text-lg tracking-wide text-stone-400 mb-4 px-2">
+            Discover the artists and incarnations that compose the creative universe of NIDALUM MAISON
+          </p>
+          <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-20 mt-8 sm:mt-12"></div>
+        </motion.div>
       </section>
 
-      {/* Portfolio Grid */}
-      <section className="py-20 px-4 sm:px-6 lg:px-12 max-w-[120rem] mx-auto">
-        {isLoading ? (
-          <div className="flex justify-center items-center min-h-96">
-            <LoadingSpinner />
-          </div>
-        ) : artists.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="font-paragraph text-lg text-foreground/70">
-              Les incarnations seront bientôt révélées...
-            </p>
-          </div>
-        ) : (
-          <>
-            {/* Grid of Artists */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+      {/* Artists Grid */}
+      <section className="px-4 md:px-8 py-20">
+        <div className="max-w-7xl mx-auto">
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="space-y-4">
+                  <div className="h-64 bg-stone-900 rounded-sm animate-pulse"></div>
+                  <div className="h-4 bg-stone-900 rounded animate-pulse w-3/4"></div>
+                  <div className="h-3 bg-stone-900 rounded animate-pulse w-1/2"></div>
+                </div>
+              ))}
+            </div>
+          ) : artists.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-12"
+            >
               {artists.map((artist, index) => (
                 <motion.div
                   key={artist._id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  onClick={() => setSelectedArtist(artist)}
-                  className="group cursor-pointer"
+                  className="group"
                 >
-                  <div className="relative overflow-hidden border border-primary/30 hover:border-primary/70 transition-all duration-300 bg-background/50 backdrop-blur-sm">
-                    {/* Artist Image */}
+                  <div
+                    onClick={() => setSelectedArtist(artist)}
+                    className="cursor-pointer"
+                  >
                     {artist.artistImage && (
-                      <div className="aspect-square overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20">
-                        <Image
+                      <div className="relative overflow-hidden mb-6 aspect-square">
+                        <UIImage
                           src={artist.artistImage}
+                          alt={artist.artistName || 'Artist'}
                           width={400}
                           height={400}
-                          alt={artist.artistName || 'Artist'}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
                         />
                       </div>
                     )}
-
-                    {/* Overlay Info */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                      <h3 className="font-heading text-2xl text-primary mb-2">
-                        {artist.artistName}
-                      </h3>
-                      {artist.nidalumName && (
-                        <p className="font-paragraph text-sm text-secondary mb-3">
-                          {artist.nidalumName}
-                        </p>
-                      )}
-                      {artist.artistSpecialty && (
-                        <p className="font-paragraph text-sm text-foreground/80">
-                          {artist.artistSpecialty}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Static Info */}
-                    <div className="p-6 group-hover:hidden">
-                      <h3 className="font-heading text-xl text-primary mb-2">
-                        {artist.artistName}
-                      </h3>
-                      {artist.artistSpecialty && (
-                        <p className="font-paragraph text-sm text-foreground/70">
-                          {artist.artistSpecialty}
-                        </p>
-                      )}
-                    </div>
+                    <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
+                      {artist.artistName}
+                    </h3>
+                    {artist.artistSpecialty && (
+                      <p className="text-xs tracking-widest uppercase text-stone-500 mb-3">
+                        {artist.artistSpecialty}
+                      </p>
+                    )}
+                    {artist.artistBio && (
+                      <p className="text-sm tracking-wide text-stone-400 line-clamp-3">
+                        {artist.artistBio}
+                      </p>
+                    )}
                   </div>
+                  {(() => {
+                    const audioSource = artist.audio || artist.audioFile || artist.audioUrl;
+                    if (audioSource) {
+                      return (
+                        <div className="mt-6 pt-6 border-t border-white border-opacity-10">
+                          <ModernAudioPlayer audioUrl={audioSource} />
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
                 </motion.div>
               ))}
+            </motion.div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-stone-500 tracking-wide">No entries available.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Selected Artist Modal */}
+      {selectedArtist && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedArtist(null)}
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 p-8 md:p-12 max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex justify-between items-start mb-8">
+              <h2 className="font-heading text-3xl md:text-4xl tracking-widest font-light flex-1">
+                {selectedArtist.artistName}
+              </h2>
+              <button
+                onClick={() => setSelectedArtist(null)}
+                className="text-2xl hover:opacity-50 transition-opacity ml-4"
+              >
+                ✕
+              </button>
             </div>
 
-            {/* Selected Artist Detail Modal */}
-            {selectedArtist && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setSelectedArtist(null)}
-                className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-              >
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.9, opacity: 0 }}
-                  onClick={(e) => e.stopPropagation()}
-                  className="bg-background border border-primary/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-                    {/* Image */}
-                    {selectedArtist.artistImage && (
-                      <div className="aspect-square overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20">
-                        <Image
-                          src={selectedArtist.artistImage}
-                          width={400}
-                          height={400}
-                          alt={selectedArtist.artistName || 'Artist'}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-
-                    {/* Info */}
-                    <div className="flex flex-col justify-center">
-                      <h2 className="font-heading text-4xl text-primary mb-2">
-                        {selectedArtist.artistName}
-                      </h2>
-                      {selectedArtist.nidalumName && (
-                        <p className="font-paragraph text-lg text-secondary mb-6">
-                          {selectedArtist.nidalumName}
-                        </p>
-                      )}
-                      {selectedArtist.artistSpecialty && (
-                        <p className="font-paragraph text-sm text-foreground/70 mb-6 uppercase tracking-widest">
-                          {selectedArtist.artistSpecialty}
-                        </p>
-                      )}
-                      {selectedArtist.artistBio && (
-                        <p className="font-paragraph text-base text-foreground/80 leading-relaxed mb-8">
-                          {selectedArtist.artistBio}
-                        </p>
-                      )}
-                      
-                      {/* Audio Player */}
-                      {(selectedArtist.audio?.trim() || selectedArtist.audioFile?.trim() || selectedArtist.audioUrl?.trim()) && (
-                        <div className="mb-8 pt-6 border-t border-primary/20">
-                          <h3 className="font-heading text-lg text-secondary mb-4">Écouter</h3>
-                          <ModernAudioPlayer
-                            audioUrl={selectedArtist.audio || selectedArtist.audioFile || selectedArtist.audioUrl || ''}
-                            title={selectedArtist.artistName || 'Artiste'}
-                          />
-                        </div>
-                      )}
-                      
-                      <button
-                        onClick={() => setSelectedArtist(null)}
-                        className="bg-primary text-primary-foreground font-paragraph font-semibold px-6 py-3 hover:bg-primary/90 transition-all duration-300 w-fit"
-                      >
-                        Fermer
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
+            {selectedArtist.artistImage && (
+              <div className="mb-8 aspect-video overflow-hidden">
+                <UIImage
+                  src={selectedArtist.artistImage}
+                  alt={selectedArtist.artistName || 'Artist'}
+                  width={800}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
+              </div>
             )}
-          </>
-        )}
-      </section>
+
+            <div className="space-y-6 mb-8">
+              {selectedArtist.artistSpecialty && (
+                <div>
+                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                    Specialty
+                  </h3>
+                  <p className="text-base tracking-wide text-stone-300">
+                    {selectedArtist.artistSpecialty}
+                  </p>
+                </div>
+              )}
+
+              {selectedArtist.artistBio && (
+                <div>
+                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                    Biography
+                  </h3>
+                  <p className="text-base tracking-wide text-stone-300 leading-relaxed">
+                    {selectedArtist.artistBio}
+                  </p>
+                </div>
+              )}
+
+              {selectedArtist.nidalumName && (
+                <div>
+                  <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">
+                    Nidalum Name
+                  </h3>
+                  <p className="text-base tracking-wide text-stone-300">
+                    {selectedArtist.nidalumName}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {(() => {
+              const audioSource = selectedArtist.audio || selectedArtist.audioFile || selectedArtist.audioUrl;
+              if (audioSource) {
+                console.log(`[ARTIST AUDIO] ${selectedArtist.artistName}: ${audioSource}`);
+                return (
+                  <div className="border-t border-white border-opacity-10 pt-8 mb-8">
+                    <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
+                      Listen
+                    </h3>
+                    <ModernAudioPlayer audioUrl={audioSource} />
+                  </div>
+                );
+              }
+              return (
+                <div className="p-4 bg-stone-900/50 border border-stone-700 rounded text-center">
+                  <p className="text-sm text-stone-400">No audio available for this artist</p>
+                </div>
+              );
+            })()}
+
+            <button
+              onClick={() => setSelectedArtist(null)}
+              className="mt-8 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500"
+            >
+              Close
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
 
       <Footer />
     </div>
