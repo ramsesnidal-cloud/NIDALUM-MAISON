@@ -11,7 +11,7 @@ const fragments: Fragment[] = [
   { word: 'ORA', meaning: 'Origin' },
   { word: 'VENTUS', meaning: 'Movement' },
   { word: 'MEK', meaning: 'Form' },
-  { word: 'NIDAL', meaning: 'House' },
+  { word: 'NIDAL', meaning: 'Guerrier courageux' },
   { word: 'TÉ-LUMÉ', meaning: 'Light' },
   { word: 'SOUMA', meaning: 'Sound' },
 ];
