@@ -122,32 +122,28 @@ export default function ArtistPortfolioPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group"
+                  className="group cursor-pointer"
+                  onClick={() => handleArtistClick(artist)}
                 >
-                  <div
-                    onClick={() => handleArtistClick(artist)}
-                    className="cursor-pointer"
-                  >
-                    {artist.artistImage && (
-                      <div className="relative overflow-hidden mb-6 aspect-square">
-                        <UIImage
-                          src={artist.artistImage}
-                          alt={artist.artistName || 'Artist'}
-                          width={400}
-                          height={400}
-                          className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
-                        />
-                      </div>
-                    )}
-                    <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
-                      {artist.artistName}
-                    </h3>
-                    {artist.artistSpecialty && (
-                      <p className="text-xs tracking-widest uppercase text-stone-500">
-                        {artist.artistSpecialty}
-                      </p>
-                    )}
-                  </div>
+                  {artist.artistImage && (
+                    <div className="relative overflow-hidden mb-6 aspect-square">
+                      <UIImage
+                        src={artist.artistImage}
+                        alt={artist.artistName || 'Artist'}
+                        width={400}
+                        height={400}
+                        className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
+                      />
+                    </div>
+                  )}
+                  <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
+                    {artist.artistName}
+                  </h3>
+                  {artist.artistSpecialty && (
+                    <p className="text-xs tracking-widest uppercase text-stone-500">
+                      {artist.artistSpecialty}
+                    </p>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
