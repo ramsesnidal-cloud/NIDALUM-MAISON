@@ -135,3 +135,39 @@ export default function ChantsPage() {
                 </div>
               ))}
             </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+              {chants.map((chant) => (
+                <motion.div
+                  key={chant._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedChant(chant)}
+                >
+                  <div className="relative overflow-hidden rounded-sm mb-4 h-64 bg-stone-900">
+                    {chant.chantImage && (
+                      <UIImage
+                        src={chant.chantImage}
+                        alt={chant.chantTitle || 'Chant'}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    )}
+                  </div>
+                  <h3 className="font-heading text-lg sm:text-xl tracking-wide mb-2 group-hover:text-secondary transition-colors">
+                    {chant.chantTitle}
+                  </h3>
+                  <p className="text-sm text-stone-400 line-clamp-2">{chant.spiritualContext}</p>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+}
