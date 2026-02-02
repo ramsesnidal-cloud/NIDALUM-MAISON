@@ -212,16 +212,11 @@ export default function ChantsPage() {
                       </p>
                     )}
                     {artist.artistBio && (
-                      <p className="text-sm tracking-wide text-stone-400 line-clamp-3">
-                        {artist.artistBio}
-                      </p>
-                    )}
-                  </div>
-                  {artist.audioUrl && (
-                    <div className="mt-6 pt-6 border-t border-white border-opacity-10">
-                      <ModernAudioPlayer audioUrl={artist.audioUrl} />
-                    </div>
-                  )}
+                      {artist.audioUrl && (
+  <div className="mt-6 pt-6 border-t border-white border-opacity-10">
+    <ModernAudioPlayer audioUrl={artist.audioUrl} />
+  </div>
+)}
                 </motion.div>
               ))}
             </motion.div>
