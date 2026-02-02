@@ -315,7 +315,7 @@ export default function ChantsPage() {
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
                       Listen
                     </h3>
-                    <ModernAudioPlayer 
+                    
                       audioUrl={selectedChant.audio}
                       title={selectedChant.chantTitle || 'Sacred Chant'}
                     />
