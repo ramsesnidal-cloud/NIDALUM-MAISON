@@ -55,6 +55,14 @@ export default function ChantsPage() {
     }
   };
 
+  // 🧠 FONCTION INTELLIGENTE (Valable pour Chants ET Artistes)
+  const getAudioSource = (item: any) => {
+    if (!item) return null;
+    // Cherche dans l'ordre : audio -> url -> audioUrl
+    const source = item.audio || item.url || item.audioUrl;
+    return source;
+  };
+
   return (
     <div className="min-h-screen bg-black text-white font-paragraph">
       <Header />
@@ -244,7 +252,6 @@ export default function ChantsPage() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 p-8 md:p-12 max-h-[90vh] overflow-y-auto rounded-sm"
             >
-              {/* Header with Title and Close Button */}
               <div className="flex justify-between items-start mb-8">
                 <h2 className="font-heading text-2xl md:text-3xl tracking-widest font-light flex-1 pr-4">
                   {selectedChant.chantTitle}
@@ -257,7 +264,6 @@ export default function ChantsPage() {
                 </button>
               </div>
 
-              {/* Image in Video Format */}
               {selectedChant.chantImage && (
                 <div className="mb-8 aspect-video overflow-hidden rounded-sm">
                   <UIImage
@@ -270,48 +276,39 @@ export default function ChantsPage() {
                 </div>
               )}
 
-              {/* Text Content */}
               <div className="space-y-6 mb-8">
                 {selectedChant.theme && (
                   <div>
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Theme</h3>
-                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
-                      {selectedChant.theme}
-                    </p>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">{selectedChant.theme}</p>
                   </div>
                 )}
                 {selectedChant.spiritualContext && (
                   <div>
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Spiritual Context</h3>
-                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
-                      {selectedChant.spiritualContext}
-                    </p>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">{selectedChant.spiritualContext}</p>
                   </div>
                 )}
                 {selectedChant.originalText && (
                   <div>
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Original Text</h3>
-                    <p className="text-base tracking-wide text-stone-300 italic leading-relaxed">
-                      {selectedChant.originalText}
-                    </p>
+                    <p className="text-base tracking-wide text-stone-300 italic leading-relaxed">{selectedChant.originalText}</p>
                   </div>
                 )}
                 {selectedChant.translation && (
                   <div>
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Translation</h3>
-                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
-                      {selectedChant.translation}
-                    </p>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">{selectedChant.translation}</p>
                   </div>
                 )}
               </div>
 
-              {/* Audio Player */}
+              {/* Lecteur Audio CHANTS */}
               <div className="border-t border-white border-opacity-10 pt-8 mb-8">
                 <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">Listen</h3>
-                {(selectedChant.audio || selectedChant.audioUrl) ? (
+                {getAudioSource(selectedChant) ? (
                   <ModernAudioPlayer 
-                    audioUrl={selectedChant.audio || selectedChant.audioUrl} 
+                    audioUrl={getAudioSource(selectedChant)} 
                     title={selectedChant.chantTitle}
                   />
                 ) : (
@@ -349,7 +346,6 @@ export default function ChantsPage() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 p-8 md:p-12 max-h-[90vh] overflow-y-auto rounded-sm"
             >
-              {/* Header with Title and Close Button */}
               <div className="flex justify-between items-start mb-8">
                 <h2 className="font-heading text-2xl md:text-3xl tracking-widest font-light flex-1 pr-4">
                   {selectedArtist.artistName}
@@ -362,7 +358,6 @@ export default function ChantsPage() {
                 </button>
               </div>
 
-              {/* Artist Image */}
               {selectedArtist.artistImage && (
                 <div className="mb-8 aspect-video overflow-hidden rounded-sm">
                   <UIImage
@@ -375,40 +370,33 @@ export default function ChantsPage() {
                 </div>
               )}
 
-              {/* Artist Content */}
               <div className="space-y-6 mb-8">
                 {selectedArtist.artistSpecialty && (
                   <div>
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Specialty</h3>
-                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
-                      {selectedArtist.artistSpecialty}
-                    </p>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">{selectedArtist.artistSpecialty}</p>
                   </div>
                 )}
                 {selectedArtist.artistBio && (
                   <div>
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Biography</h3>
-                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
-                      {selectedArtist.artistBio}
-                    </p>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">{selectedArtist.artistBio}</p>
                   </div>
                 )}
                 {selectedArtist.nidalumName && (
                   <div>
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Nidalum Name</h3>
-                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
-                      {selectedArtist.nidalumName}
-                    </p>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">{selectedArtist.nidalumName}</p>
                   </div>
                 )}
               </div>
 
-              {/* Audio Player */}
+              {/* Lecteur Audio ARTISTES - CORRIGÉ POUR UTILISER getAudioSource */}
               <div className="border-t border-white border-opacity-10 pt-8 mb-8">
                 <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">Listen</h3>
-                {(selectedArtist.audio || selectedArtist.audioUrl) ? (
+                {getAudioSource(selectedArtist) ? (
                   <ModernAudioPlayer 
-                    audioUrl={selectedArtist.audio || selectedArtist.audioUrl} 
+                    audioUrl={getAudioSource(selectedArtist)} 
                     title={selectedArtist.artistName}
                   />
                 ) : (
@@ -420,7 +408,7 @@ export default function ChantsPage() {
 
               <button
                 onClick={() => setSelectedArtist(null)}
-                className="mt-4 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500 rounded-sm"
+                className="mt-8 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500 rounded-sm"
               >
                 Close
               </button>
