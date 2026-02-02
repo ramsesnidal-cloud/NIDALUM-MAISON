@@ -117,6 +117,41 @@ export interface ArtistPortfolio {
   url?: string;
   /** @wixFieldType audio */
   audio?: string;
+  /** @wixFieldType url */
+  audioUrl1?: string;
+}
+
+
+/**
+ * Collection ID: chants
+ * Interface for RItualChants
+ */
+export interface RItualChants {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType url */
+  audioFile?: string;
+  /** @wixFieldType text */
+  audioUpload?: string;
+  /** @wixFieldType url */
+  audioUrl?: string;
+  /** @wixFieldType text */
+  artistName?: string;
+  /** @wixFieldType text */
+  artistBio?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  artistImage?: string;
+  /** @wixFieldType text */
+  artistSpecialty?: string;
+  /** @wixFieldType text */
+  nidalumName?: string;
+  /** @wixFieldType url */
+  url?: string;
+  /** @wixFieldType audio */
+  audio?: string;
+  /** @wixFieldType url */
+  audioUrl1?: string;
 }
 
 
