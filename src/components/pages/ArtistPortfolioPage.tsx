@@ -156,18 +156,6 @@ export default function ArtistPortfolioPage() {
                       </p>
                     )}
                   </div>
-                  {(() => {
-                    // Use resolved audio URL if available, otherwise use raw source
-                    const audioSource = artist.resolvedAudioUrl || (artist as any).audioUpload || artist.audio || artist.audioFile || artist.audioUrl;
-                    if (audioSource) {
-                      return (
-                        <div className="mt-6 pt-6 border-t border-white border-opacity-10">
-                          <ModernAudioPlayer audioUrl={audioSource} />
-                        </div>
-                      );
-                    }
-                    return null;
-                  })()}
                 </motion.div>
               ))}
             </motion.div>
