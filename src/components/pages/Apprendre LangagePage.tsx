@@ -1,30 +1,22 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { BaseCrudService } from '@/integrations';
-import { NidalumApprendrelaLangue } from '@/entities';
+
+interface Fragment {
+  word: string;
+  meaning: string;
+}
+
+const fragments: Fragment[] = [
+  { word: 'ORA', meaning: 'Origin' },
+  { word: 'VENTUS', meaning: 'Movement' },
+  { word: 'MEK', meaning: 'Form' },
+  { word: 'NIDAL', meaning: 'House' },
+  { word: 'TÉ-LUMÉ', meaning: 'Light' },
+  { word: 'SOUMA', meaning: 'Sound' },
+];
 
 export default function ApprendreLangagePage() {
-  const [items, setItems] = useState<NidalumApprendrelaLangue[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadItems();
-  }, []);
-
-  const loadItems = async () => {
-    setIsLoading(true);
-    try {
-      const { items } = await BaseCrudService.getAll<NidalumApprendrelaLangue>('nidalumlexicon');
-      setItems(items || []);
-    } catch (error) {
-      console.error('Error loading language items:', error);
-      setItems([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-black text-white font-paragraph">
@@ -45,44 +37,33 @@ export default function ApprendreLangagePage() {
         </motion.div>
       </section>
 
-      {/* Fragments Grid - Pure Display */}
+      {/* Fragments Grid - Museum-like */}
       <section className="px-4 md:px-8 py-20">
         <div className="max-w-6xl mx-auto">
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-40 bg-stone-900 rounded-sm animate-pulse"></div>
-              ))}
-            </div>
-          ) : items.length > 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {items.map((word, index) => (
-                <motion.div
-                  key={word._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                  className="border border-white border-opacity-20 p-6 hover:border-opacity-100 transition-all duration-500 flex items-center justify-center min-h-32"
-                >
-                  <h3 className="font-heading text-xl tracking-widest font-light hover:text-stone-300 transition-colors text-center">
-                    {word.nidalumWord}
-                  </h3>
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <div className="text-center py-20">
-              <p className="text-stone-500 tracking-wide">
-                No fragments available
-              </p>
-            </div>
-          )}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12"
+          >
+            {fragments.map((fragment, index) => (
+              <motion.div
+                key={fragment.word}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="border border-white border-opacity-20 p-6 md:p-8 text-center hover:border-opacity-50 transition-all duration-500"
+              >
+                <p className="font-heading text-3xl md:text-4xl tracking-widest mb-2 font-light">
+                  {fragment.word}
+                </p>
+                <p className="text-xs tracking-widest text-stone-500 uppercase">
+                  {fragment.meaning}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
