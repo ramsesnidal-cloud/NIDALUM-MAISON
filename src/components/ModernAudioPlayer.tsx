@@ -25,6 +25,7 @@ interface ModernAudioPlayerProps {
  * - Animations fluides avec Framer Motion
  * - Support CORS
  * - Cleanup automatique
+ * - Logging détaillé pour debug
  */
 export default function ModernAudioPlayer({
   audioUrl,
@@ -77,35 +78,43 @@ export default function ModernAudioPlayer({
     if (!audio) return;
 
     const handleLoadStart = () => {
+      console.log('[AUDIO PLAYER] onLoadStart event fired');
       setIsLoading(true);
       setError(null);
     };
 
     const handleCanPlay = () => {
+      console.log('[AUDIO PLAYER] onCanPlay event fired - audio is ready to play');
       setIsLoading(false);
     };
 
     const handleEnded = () => {
+      console.log('[AUDIO PLAYER] onEnded event fired - playback completed');
       setIsPlaying(false);
       setCurrentTime(0);
     };
 
     const handleError = (e: Event) => {
-      console.error('Audio error:', e);
+      console.error('[AUDIO PLAYER] onError event fired:', e);
+      console.error('[AUDIO PLAYER] Audio element error code:', audio.error?.code);
+      console.error('[AUDIO PLAYER] Audio element error message:', audio.error?.message);
       setError('Erreur de chargement audio');
       setIsPlaying(false);
       setIsLoading(false);
     };
 
     const handleDurationChange = () => {
+      console.log('[AUDIO PLAYER] onDurationChange event fired, duration:', audio.duration);
       setDuration(audio.duration || 0);
     };
 
     const handlePlay = () => {
+      console.log('[AUDIO PLAYER] onPlay event fired - playback started');
       setIsPlaying(true);
     };
 
     const handlePause = () => {
+      console.log('[AUDIO PLAYER] onPause event fired - playback paused');
       setIsPlaying(false);
     };
 
@@ -157,7 +166,9 @@ export default function ModernAudioPlayer({
         // Play
         if (audio.src !== audioUrl) {
           audio.src = audioUrl;
-          console.log('Audio source set to:', audioUrl);
+          console.log('[AUDIO PLAYER] Audio source set to:', audioUrl);
+          console.log('[AUDIO PLAYER] Audio element readyState:', audio.readyState);
+          console.log('[AUDIO PLAYER] Audio element networkState:', audio.networkState);
         }
 
         setIsLoading(true);
@@ -167,9 +178,11 @@ export default function ModernAudioPlayer({
             await playPromise;
           }
           setIsPlaying(true);
-          console.log('Audio playback started');
+          console.log('[AUDIO PLAYER] Audio playback started successfully');
         } catch (err: any) {
-          console.error('Play error:', err);
+          console.error('[AUDIO PLAYER] Play error:', err);
+          console.error('[AUDIO PLAYER] Error name:', err.name);
+          console.error('[AUDIO PLAYER] Error message:', err.message);
 
           // Handle specific errors
           if (err.name === 'NotAllowedError') {
@@ -187,7 +200,7 @@ export default function ModernAudioPlayer({
         }
       }
     } catch (err) {
-      console.error('Unexpected error:', err);
+      console.error('[AUDIO PLAYER] Unexpected error:', err);
       setError('Erreur lors de la lecture');
     }
   }, [audioUrl, isPlaying, volume]);

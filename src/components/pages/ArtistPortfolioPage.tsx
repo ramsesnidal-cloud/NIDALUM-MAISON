@@ -5,11 +5,17 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image as UIImage } from '@/components/ui/image';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
+import { getPlayableAudioUrl } from '@/lib/media-service';
+import { resolveAudioCandidate, logAudioResolution } from '@/lib/audio-resolver';
 import type { ArtistPortfolio } from '@/entities';
 
+interface ArtistWithResolvedAudio extends ArtistPortfolio {
+  resolvedAudioUrl?: string;
+}
+
 export default function ArtistPortfolioPage() {
-  const [artists, setArtists] = useState<ArtistPortfolio[]>([]);
-  const [selectedArtist, setSelectedArtist] = useState<ArtistPortfolio | null>(null);
+  const [artists, setArtists] = useState<ArtistWithResolvedAudio[]>([]);
+  const [selectedArtist, setSelectedArtist] = useState<ArtistWithResolvedAudio | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -18,18 +24,54 @@ export default function ArtistPortfolioPage() {
 
   const loadArtists = async () => {
     setIsLoading(true);
-    const { items } = await BaseCrudService.getAll<ArtistPortfolio>('artistportfolio');
-    console.log('Artists loaded:', items);
-    items.forEach((artist, idx) => {
-      console.log(`Artist ${idx}:`, {
-        name: artist.artistName,
-        audio: artist.audio,
-        audioFile: artist.audioFile,
-        audioUrl: artist.audioUrl
-      });
-    });
-    setArtists(items);
-    setIsLoading(false);
+    try {
+      const { items } = await BaseCrudService.getAll<ArtistPortfolio>('artistportfolio');
+      console.log('[ARTIST PORTFOLIO] Artists loaded:', items);
+      
+      // Resolve audio URLs for each artist
+      const artistsWithResolvedAudio = await Promise.all(
+        items.map(async (artist) => {
+          const candidate = resolveAudioCandidate({
+            audio: artist.audio,
+            audioFile: artist.audioFile,
+            audioUrl: artist.audioUrl
+          });
+
+          let resolvedAudioUrl: string | undefined;
+
+          if (candidate) {
+            console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Audio candidate found`);
+            logAudioResolution(artist.artistName || 'Unknown', candidate.raw);
+
+            // If it's already a direct HTTPS URL, use it
+            if (typeof candidate.raw === 'string' && candidate.raw.startsWith('https://')) {
+              resolvedAudioUrl = candidate.raw;
+              console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Using direct HTTPS URL`);
+            } else if (candidate.isWixRef || candidate.mediaRef) {
+              // Try to resolve Wix reference
+              try {
+                resolvedAudioUrl = await getPlayableAudioUrl(candidate.raw);
+                console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Resolved Wix reference to:`, resolvedAudioUrl);
+                logAudioResolution(artist.artistName || 'Unknown', candidate.raw, resolvedAudioUrl);
+              } catch (err) {
+                console.error(`[ARTIST PORTFOLIO] ${artist.artistName} - Failed to resolve audio:`, err);
+              }
+            }
+          }
+
+          return {
+            ...artist,
+            resolvedAudioUrl
+          };
+        })
+      );
+
+      setArtists(artistsWithResolvedAudio);
+    } catch (err) {
+      console.error('[ARTIST PORTFOLIO] Error loading artists:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -211,15 +253,15 @@ export default function ArtistPortfolioPage() {
             </div>
 
             {(() => {
-              const audioSource = selectedArtist.audio || selectedArtist.audioFile || selectedArtist.audioUrl;
-              if (audioSource) {
-                console.log(`[ARTIST AUDIO] ${selectedArtist.artistName}: ${audioSource}`);
+              const audioUrl = selectedArtist.resolvedAudioUrl;
+              if (audioUrl) {
+                console.log(`[ARTIST PORTFOLIO MODAL] ${selectedArtist.artistName}: Opening with audio URL:`, audioUrl);
                 return (
                   <div className="border-t border-white border-opacity-10 pt-8 mb-8">
                     <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">
                       Listen
                     </h3>
-                    <ModernAudioPlayer audioUrl={audioSource} />
+                    <ModernAudioPlayer audioUrl={audioUrl} />
                   </div>
                 );
               }
