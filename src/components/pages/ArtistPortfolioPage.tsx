@@ -227,7 +227,7 @@ export default function ChantsPage() {
         </div>
       </section>
 
-      {/* Selected Chant Modal - STRUCTURE CORRIGÉE (IDENTIQUE A ARTISTS) */}
+      {/* Selected Chant Modal */}
       <AnimatePresence>
         {selectedChant && (
           <motion.div
@@ -244,7 +244,7 @@ export default function ChantsPage() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 p-8 md:p-12 max-h-[90vh] overflow-y-auto rounded-sm"
             >
-              {/* Header avec Titre réduit et Croix */}
+              {/* Header with Title and Close Button */}
               <div className="flex justify-between items-start mb-8">
                 <h2 className="font-heading text-2xl md:text-3xl tracking-widest font-light flex-1 pr-4">
                   {selectedChant.chantTitle}
@@ -257,7 +257,7 @@ export default function ChantsPage() {
                 </button>
               </div>
 
-              {/* Image en format Vidéo (comme Artistes) pour l'uniformité */}
+              {/* Image in Video Format */}
               {selectedChant.chantImage && (
                 <div className="mb-8 aspect-video overflow-hidden rounded-sm">
                   <UIImage
@@ -270,7 +270,7 @@ export default function ChantsPage() {
                 </div>
               )}
 
-              {/* Contenu Texte */}
+              {/* Text Content */}
               <div className="space-y-6 mb-8">
                 {selectedChant.theme && (
                   <div>
@@ -306,7 +306,7 @@ export default function ChantsPage() {
                 )}
               </div>
 
-              {/* Lecteur Audio avec Gestion d'Erreur "Pas d'audio" */}
+              {/* Audio Player */}
               <div className="border-t border-white border-opacity-10 pt-8 mb-8">
                 <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">Listen</h3>
                 {(selectedChant.audio || selectedChant.audioUrl) ? (
@@ -349,3 +349,87 @@ export default function ChantsPage() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-2xl w-full bg-stone-950 border border-white border-opacity-20 p-8 md:p-12 max-h-[90vh] overflow-y-auto rounded-sm"
             >
+              {/* Header with Title and Close Button */}
+              <div className="flex justify-between items-start mb-8">
+                <h2 className="font-heading text-2xl md:text-3xl tracking-widest font-light flex-1 pr-4">
+                  {selectedArtist.artistName}
+                </h2>
+                <button
+                  onClick={() => setSelectedArtist(null)}
+                  className="text-2xl hover:opacity-50 transition-opacity"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Artist Image */}
+              {selectedArtist.artistImage && (
+                <div className="mb-8 aspect-video overflow-hidden rounded-sm">
+                  <UIImage
+                    src={selectedArtist.artistImage}
+                    alt={selectedArtist.artistName || 'Artist'}
+                    width={800}
+                    height={450}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
+              {/* Artist Content */}
+              <div className="space-y-6 mb-8">
+                {selectedArtist.artistSpecialty && (
+                  <div>
+                    <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Specialty</h3>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
+                      {selectedArtist.artistSpecialty}
+                    </p>
+                  </div>
+                )}
+                {selectedArtist.artistBio && (
+                  <div>
+                    <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Biography</h3>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
+                      {selectedArtist.artistBio}
+                    </p>
+                  </div>
+                )}
+                {selectedArtist.nidalumName && (
+                  <div>
+                    <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-2">Nidalum Name</h3>
+                    <p className="text-base tracking-wide text-stone-300 leading-relaxed">
+                      {selectedArtist.nidalumName}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Audio Player */}
+              <div className="border-t border-white border-opacity-10 pt-8 mb-8">
+                <h3 className="text-xs tracking-widest uppercase text-stone-500 mb-4">Listen</h3>
+                {(selectedArtist.audio || selectedArtist.audioUrl) ? (
+                  <ModernAudioPlayer 
+                    audioUrl={selectedArtist.audio || selectedArtist.audioUrl} 
+                    title={selectedArtist.artistName}
+                  />
+                ) : (
+                  <div className="p-4 bg-stone-900/50 border border-stone-700 rounded text-center">
+                    <p className="text-sm text-stone-400">No audio available for this artist</p>
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={() => setSelectedArtist(null)}
+                className="mt-4 w-full text-xs tracking-widest uppercase border border-white border-opacity-50 px-6 py-3 hover:border-opacity-100 hover:bg-white hover:text-black transition-all duration-500 rounded-sm"
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <Footer />
+    </div>
+  );
+}
