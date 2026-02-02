@@ -238,10 +238,10 @@ export default function ModernAudioPlayer({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className={`space-y-4 ${className}`}
+      className={`space-y-4 w-full ${className}`}
     >
       {/* Main Player Container */}
-      <div className="bg-gradient-to-br from-primary/15 to-secondary/15 border border-primary/30 rounded-xl p-4 md:p-6 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
+      <div className="w-full bg-gradient-to-br from-primary/15 to-secondary/15 border border-primary/30 rounded-lg md:rounded-xl p-3 md:p-6 backdrop-blur-sm hover:border-primary/50 transition-all duration-300">
         
         {/* Title and Status */}
         <div className="flex items-center justify-between mb-4">

@@ -33,12 +33,14 @@ export default function NidalumMaisonPage() {
   };
 
   const incarnations = [
-    { id: 1, name: 'ORAA', image: 'https://static.wixstatic.com/media/9c8aea_9a44e5db855f417897dbfb2ba2220468~mv2.png' },
-    { id: 2, name: 'LUMÉ', image: 'https://static.wixstatic.com/media/9c8aea_854e879180c345b2942407cd6e95bb18~mv2.png' },
-    { id: 3, name: 'LUMERA', image: 'https://static.wixstatic.com/media/9c8aea_10c90976294c466b9acbe452f2bfca4d~mv2.png' },
-    { id: 4, name: 'ASHÂLIM', image: 'https://static.wixstatic.com/media/9c8aea_2516eb65a8764d628ab227067983c822~mv2.png' },
+    { id: 1, name: 'ORIGIN', image: 'https://static.wixstatic.com/media/9c8aea_9a44e5db855f417897dbfb2ba2220468~mv2.png' },
+    { id: 2, name: 'BREATH', image: 'https://static.wixstatic.com/media/9c8aea_854e879180c345b2942407cd6e95bb18~mv2.png' },
+    { id: 3, name: 'MEMORY', image: 'https://static.wixstatic.com/media/9c8aea_10c90976294c466b9acbe452f2bfca4d~mv2.png' },
+    { id: 4, name: 'SOUND', image: 'https://static.wixstatic.com/media/9c8aea_2516eb65a8764d628ab227067983c822~mv2.png' },
     { id: 5, name: 'FORM', image: 'https://static.wixstatic.com/media/9c8aea_9737c58f74ed452e8b522d450868f6e8~mv2.png' },
   ];
+
+  const fragmentsPreview = ['ORAA', 'LUMÉ', 'LUMERA', 'ASHÂLIMORA', 'TÉ-LUMÉ', 'SOUMA'];
 
   return (
     <div className="bg-deep-black text-luxury-text overflow-hidden">
@@ -259,8 +261,8 @@ export default function NidalumMaisonPage() {
         </div>
       </section>
 
-      {/* FRAGMENTS Section - Museum-Grade Display */}
-      <section id="fragments" className="relative py-16 md:py-32 lg:py-48 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-b border-luxury-gold/10">
+      {/* FRAGMENTS PREVIEW Section - Homepage Preview */}
+      <section id="fragments-preview" className="relative py-12 md:py-20 lg:py-28 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-luxury-gold/10">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
           <motion.div
@@ -268,41 +270,47 @@ export default function NidalumMaisonPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-16 md:mb-24 lg:mb-32"
+            className="text-center mb-12 md:mb-16 lg:mb-20"
           >
-            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl tracking-widest text-luxury-text mb-3 md:mb-4 uppercase">
+            <h2 className="font-heading text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-widest text-luxury-text/70 mb-2 md:mb-3 uppercase">
               FRAGMENTS
             </h2>
-            <div className="h-px w-20 md:w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
+            <div className="h-px w-16 md:w-20 bg-gradient-to-r from-transparent via-luxury-text/30 to-transparent mx-auto"></div>
           </motion.div>
 
-          {/* Fragments Grid - Museum-Grade Minimal Display */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8 md:gap-12 lg:gap-16">
-            {[
-              'ORAA', 'LUMÉ', 'LUMERA', 'ASHÂLIM', 'KINTATÉ', 'SOUMA-RA',
-              'AMUNÉ', 'KEMETRA', 'MERUN', 'HÉKALUM', 'RA-LUM', 'KA-LUM',
-              'BA-NIDAL', 'SEKHEM', 'ANKHUM', 'ZETHRA', 'TERA-FERUM', 'ASHEM-URA',
-              'NOUNA', 'AKHET-LUM', 'KARAÉ', 'SHIM', 'YENDAR', 'ORA-KA',
-              'SHEMU', 'NETERU', 'SAHU', 'REN-LUM', 'DJE-LUM', 'VENTUS-LUM',
-              'MA\'ATUM', 'HETEP-LUM', 'SENU-RA', 'TEF-LUM', 'MERA-KA', 'DJEH-RA',
-              'HOREM-LUM', 'KHEPER-RA', 'SATU-LUM', 'NEM-URA', 'IRU-KA', 'SEBA-RA',
-              'MEN-LUM', 'ANU-KA', 'SUT-RA', 'KHEOS', 'TATU-LUM', 'HENU-RA',
-              'PER-ANKH', 'NIDALUM'
-            ].map((fragment, index) => (
+          {/* Fragments Preview Grid - 6 Words Only */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto">
+            {fragmentsPreview.map((fragment, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: (index % 6) * 0.05 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
                 viewport={{ once: true, margin: '-50px' }}
-                className="flex items-center justify-center aspect-square border border-luxury-gold/20 hover:border-luxury-gold/50 transition-all duration-300 group"
+                className="flex items-center justify-center aspect-square border border-luxury-text/20 hover:border-luxury-text/40 transition-all duration-300 group"
               >
-                <p className="font-heading text-center text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl tracking-widest text-luxury-gold/80 group-hover:text-luxury-gold transition-colors duration-300 uppercase px-2">
+                <p className="font-heading text-center text-xs sm:text-sm md:text-base lg:text-lg tracking-widest text-luxury-text/60 group-hover:text-luxury-text/80 transition-colors duration-300 uppercase px-2">
                   {fragment}
                 </p>
               </motion.div>
             ))}
           </div>
+
+          {/* Link to Full Fragments Page */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-center mt-8 md:mt-12 lg:mt-16"
+          >
+            <button
+              onClick={() => navigate('/apprendre-langage')}
+              className="font-heading text-xs md:text-sm tracking-widest text-luxury-text/50 hover:text-luxury-text/80 transition-colors duration-300 uppercase border border-luxury-text/20 hover:border-luxury-text/40 px-6 md:px-8 py-2 md:py-3"
+            >
+              Voir tous les fragments
+            </button>
+          </motion.div>
         </div>
       </section>
 
