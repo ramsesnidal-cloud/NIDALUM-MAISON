@@ -23,7 +23,7 @@ import ProfilePage from '@/components/pages/ProfilePage';
 import CompleteLexicalDiagnostic from '@/components/pages/CompleteLexicalDiagnostic';
 import RepertoireLinguistiquePage from '@/components/pages/RepertoireLinguistiquePage';
 import GrammaireNidalumPage from '@/components/pages/GrammaireNidalumPage';
-import ApprendreLangagePage from '@/components/pages/Apprendre LangagePage';
+import ApprendreLangagePage from '@/components/pages/ApprendreLangagePage';
 import NidalumMaisonPage from '@/components/pages/NidalumMaisonPage';
 import NidalumFashionPage from '@/components/pages/NidalumFashionPage';
 import ArtistPortfolioPage from '@/components/pages/ArtistPortfolioPage';
