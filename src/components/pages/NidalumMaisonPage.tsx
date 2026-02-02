@@ -128,7 +128,7 @@ export default function NidalumMaisonPage() {
               <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed tracking-wide text-luxury-text/85">
                 Where language transcends into art. Where silence becomes signature.
               </p>
-              <p className="font-paragraph text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed tracking-widest text-luxury-gold/60 uppercase">
+              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed tracking-widest text-luxury-gold/90 uppercase font-light">
                 A Sacred House of Creation
               </p>
             </motion.div>
