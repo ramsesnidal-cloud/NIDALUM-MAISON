@@ -260,7 +260,7 @@ export default function ChantsPage() {
 
               {/* Info */}
               <div className="flex flex-col justify-center">
-                <h2 className="font-heading text-3xl md:text-4xl tracking-widest font-light mb-6">
+                <h2 className="font-heading text-xl md:text-2xl tracking-widest font-light mb-6">
                   {selectedChant.chantTitle}
                 </h2>
 
