@@ -317,7 +317,7 @@ export default function ChantsPage() {
                     </h3>
                     {artist.audioUrl && (
    ...
-   <ModernAudioPlayer ... />
+   
    ...
 )}
                       audioUrl={selectedChant.audio}
