@@ -480,6 +480,10 @@ export interface RitualChants {
   audio?: string;
   /** @wixFieldType text */
   text?: string;
+  /** @wixFieldType audio */
+  audio1?: string;
+  /** @wixFieldType url */
+  url?: string;
 }
 
 

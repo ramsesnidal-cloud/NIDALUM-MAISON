@@ -122,7 +122,7 @@ export default function ChantsPage() {
                       />
                     </div>
                   )}
-                  <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
+                  <h3 className="font-heading text-lg sm:text-xl md:text-2xl tracking-wide mb-2 font-light">
                     {chant.chantTitle}
                   </h3>
                   {chant.theme && (
@@ -203,7 +203,7 @@ export default function ChantsPage() {
                         />
                       </div>
                     )}
-                    <h3 className="font-heading text-xl tracking-widest mb-2 font-light uppercase">
+                    <h3 className="font-heading text-lg sm:text-xl md:text-2xl tracking-wide mb-2 font-light">
                       {artist.artistName}
                     </h3>
                     {artist.artistSpecialty && (
