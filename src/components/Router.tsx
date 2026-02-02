@@ -31,6 +31,7 @@ import VideoShowcasePage from '@/components/pages/VideoShowcasePage';
 import DiagnosticPage from '@/components/pages/DiagnosticPage';
 import PerfumePage from '@/components/pages/PerfumePage';
 import SiteHubPage from '@/components/pages/SiteHubPage';
+import AudioTestPage from '@/components/pages/AudioTestPage';
 import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
 
 // Diagnostic
@@ -161,6 +162,10 @@ const router = createBrowserRouter([
       {
         path: "hub",
         element: <SiteHubPage />,
+      },
+      {
+        path: "audio-test",
+        element: <AudioTestPage />,
       },
       {
         path: "*",
