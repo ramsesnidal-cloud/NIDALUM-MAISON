@@ -14,7 +14,7 @@ interface ArtistWithResolvedAudio extends ArtistPortfolio {
 }
 
 export default function ArtistPortfolioPage() {
-  const [artists, setArtists] = useState<ArtistWithResolvedAudio[]>([]);
+  const [artists, setArtists] = useState<ArtistPortfolio[]>([]);
   const [selectedArtist, setSelectedArtist] = useState<ArtistWithResolvedAudio | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,52 +27,49 @@ export default function ArtistPortfolioPage() {
     try {
       const { items } = await BaseCrudService.getAll<ArtistPortfolio>('artistportfolio');
       console.log('[ARTIST PORTFOLIO] Artists loaded:', items);
-      
-      // Resolve audio URLs for each artist
-      const artistsWithResolvedAudio = await Promise.all(
-        items.map(async (artist) => {
-          // Priority: audioUpload (new field) > audio (Wix field) > audioFile > audioUrl
-          const candidate = resolveAudioCandidate({
-            audio: (artist as any).audioUpload || artist.audio,
-            audioFile: artist.audioFile,
-            audioUrl: artist.audioUrl
-          });
-
-          let resolvedAudioUrl: string | undefined;
-
-          if (candidate) {
-            console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Audio candidate found`);
-            logAudioResolution(artist.artistName || 'Unknown', candidate.raw);
-
-            // If it's already a direct HTTPS URL, use it
-            if (typeof candidate.raw === 'string' && candidate.raw.startsWith('https://')) {
-              resolvedAudioUrl = candidate.raw;
-              console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Using direct HTTPS URL`);
-            } else if (candidate.isWixRef || candidate.mediaRef) {
-              // Try to resolve Wix reference
-              try {
-                resolvedAudioUrl = await getPlayableAudioUrl(candidate.raw);
-                console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Resolved Wix reference to:`, resolvedAudioUrl);
-                logAudioResolution(artist.artistName || 'Unknown', candidate.raw, resolvedAudioUrl);
-              } catch (err) {
-                console.error(`[ARTIST PORTFOLIO] ${artist.artistName} - Failed to resolve audio:`, err);
-              }
-            }
-          }
-
-          return {
-            ...artist,
-            resolvedAudioUrl
-          };
-        })
-      );
-
-      setArtists(artistsWithResolvedAudio);
+      setArtists(items);
     } catch (err) {
       console.error('[ARTIST PORTFOLIO] Error loading artists:', err);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const resolveAudioForArtist = async (artist: ArtistPortfolio): Promise<string | undefined> => {
+    const candidate = resolveAudioCandidate({
+      audio: (artist as any).audioUpload || artist.audio,
+      audioFile: artist.audioFile,
+      audioUrl: artist.audioUrl
+    });
+
+    if (!candidate) return undefined;
+
+    console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Audio candidate found`);
+    logAudioResolution(artist.artistName || 'Unknown', candidate.raw);
+
+    if (typeof candidate.raw === 'string' && candidate.raw.startsWith('https://')) {
+      console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Using direct HTTPS URL`);
+      return candidate.raw;
+    } else if (candidate.isWixRef || candidate.mediaRef) {
+      try {
+        const resolvedUrl = await getPlayableAudioUrl(candidate.raw);
+        console.log(`[ARTIST PORTFOLIO] ${artist.artistName} - Resolved Wix reference to:`, resolvedUrl);
+        logAudioResolution(artist.artistName || 'Unknown', candidate.raw, resolvedUrl);
+        return resolvedUrl;
+      } catch (err) {
+        console.error(`[ARTIST PORTFOLIO] ${artist.artistName} - Failed to resolve audio:`, err);
+      }
+    }
+
+    return undefined;
+  };
+
+  const handleArtistClick = async (artist: ArtistPortfolio) => {
+    const resolvedAudioUrl = await resolveAudioForArtist(artist);
+    setSelectedArtist({
+      ...artist,
+      resolvedAudioUrl
+    });
   };
 
   return (
@@ -128,7 +125,7 @@ export default function ArtistPortfolioPage() {
                   className="group"
                 >
                   <div
-                    onClick={() => setSelectedArtist(artist)}
+                    onClick={() => handleArtistClick(artist)}
                     className="cursor-pointer"
                   >
                     {artist.artistImage && (
@@ -146,13 +143,8 @@ export default function ArtistPortfolioPage() {
                       {artist.artistName}
                     </h3>
                     {artist.artistSpecialty && (
-                      <p className="text-xs tracking-widest uppercase text-stone-500 mb-3">
+                      <p className="text-xs tracking-widest uppercase text-stone-500">
                         {artist.artistSpecialty}
-                      </p>
-                    )}
-                    {artist.artistBio && (
-                      <p className="text-sm tracking-wide text-stone-400 line-clamp-3">
-                        {artist.artistBio}
                       </p>
                     )}
                   </div>
