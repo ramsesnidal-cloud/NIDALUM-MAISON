@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useMember } from '@/integrations';
+import { Image } from '@/components/ui/image';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,8 +20,14 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-95 backdrop-blur-sm border-b border-white border-opacity-10">
       <div className="max-w-[100rem] mx-auto px-4 sm:px-6 md:px-8 py-4 md:py-6 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="font-heading text-lg md:text-2xl tracking-widest font-light hover:opacity-70 transition-opacity">
-          NIDALUM
+        <Link to="/" className="hover:opacity-70 transition-opacity">
+          <Image
+            src="https://static.wixstatic.com/media/9c8aea_fd135d0ad42a4065b1414ce0a7f4db9f~mv2.png"
+            alt="NIDALUM MUSIC"
+            width={26}
+            height={26}
+            className="h-[20px] sm:h-[22px] md:h-[26px] w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}
