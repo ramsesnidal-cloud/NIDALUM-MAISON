@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -6,13 +6,34 @@ import { Image } from '@/components/ui/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ModernAudioPlayer from '@/components/ModernAudioPlayer';
+import { BaseCrudService } from '@/integrations';
+import { RitualChants } from '@/entities';
 
 export default function NidalumMaisonPage() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [selectedIncarnation, setSelectedIncarnation] = useState<any>(null);
+  const [chants, setChants] = useState<RitualChants[]>([]);
+  const [isLoadingChants, setIsLoadingChants] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    loadChants();
+  }, []);
+
+  const loadChants = async () => {
+    setIsLoadingChants(true);
+    try {
+      const { items } = await BaseCrudService.getAll<RitualChants>('ritualchants');
+      setChants(items || []);
+    } catch (e) {
+      console.error(e);
+      setChants([]);
+    } finally {
+      setIsLoadingChants(false);
+    }
+  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -263,6 +284,87 @@ export default function NidalumMaisonPage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SACRED CHANTS Section */}
+      <section id="sacred-chants" className="relative py-12 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
+        <div className="max-w-[120rem] mx-auto">
+          {/* Section Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-center mb-12 md:mb-16 lg:mb-24"
+          >
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl tracking-widest text-luxury-text mb-3 md:mb-4 uppercase">
+              SACRED CHANTS
+            </h2>
+            <div className="h-px w-20 md:w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
+          </motion.div>
+
+          {/* Chants Grid */}
+          {isLoadingChants ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="space-y-4">
+                  <div className="h-64 bg-charcoal rounded-sm animate-pulse"></div>
+                  <div className="h-4 bg-charcoal rounded animate-pulse w-3/4"></div>
+                </div>
+              ))}
+            </div>
+          ) : chants.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
+            >
+              {chants.map((chant, index) => (
+                <motion.div
+                  key={chant._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group cursor-pointer"
+                >
+                  {chant.chantImage && (
+                    <div className="relative overflow-hidden mb-6 aspect-square border border-luxury-gold/20 group-hover:border-luxury-gold/40 transition-all duration-300">
+                      <Image
+                        src={chant.chantImage}
+                        alt={chant.chantTitle || 'Chant'}
+                        width={400}
+                        height={400}
+                        className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
+                      />
+                    </div>
+                  )}
+                  <h3 className="font-heading text-lg md:text-xl tracking-widest mb-2 font-light uppercase text-luxury-text">
+                    {chant.chantTitle}
+                  </h3>
+                  {chant.theme && (
+                    <p className="text-xs tracking-widest uppercase text-luxury-gold/60 mb-3">
+                      {chant.theme}
+                    </p>
+                  )}
+                  {(chant.audio || chant.audioUrl) && (
+                    <div className="mt-4 pt-4 border-t border-luxury-gold/20">
+                      <ModernAudioPlayer 
+                        audioUrl={chant.audio || chant.audioUrl} 
+                        title={chant.chantTitle}
+                      />
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-luxury-gold/60 tracking-wide">No chants available</p>
+            </div>
+          )}
         </div>
       </section>
 
