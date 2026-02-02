@@ -70,171 +70,248 @@ export default function NidalumMaisonPage() {
       {/* Header Navigation */}
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section - Luxury Cinematic */}
       <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-32 md:pt-20 bg-deep-black">
-        {/* Cinematic Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-dark-grey-bg to-deep-black">
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-0 left-1/4 w-64 md:w-96 h-64 md:h-96 bg-luxury-gold rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-luxury-gold rounded-full blur-3xl"></div>
+        {/* Sophisticated Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-charcoal to-deep-black">
+          <div className="absolute inset-0 opacity-3">
+            <div className="absolute top-20 left-1/3 w-80 md:w-[600px] h-80 md:h-[600px] bg-luxury-gold rounded-full blur-[120px]\"></div>
+            <div className="absolute bottom-20 right-1/3 w-80 md:w-[600px] h-80 md:h-[600px] bg-luxury-gold rounded-full blur-[120px]\"></div>
           </div>
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-[100rem] mx-auto px-4 sm:px-6 md:px-8 text-center">
+        <div className="relative z-10 max-w-[120rem] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 text-center w-full">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="space-y-8"
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="space-y-12 md:space-y-16 lg:space-y-20"
           >
-            {/* Main Headline */}
-            <div className="space-y-6 md:space-y-8 lg:space-y-12">
-              <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl tracking-widest leading-tight text-luxury-text uppercase">
-                NIDALUM MAISON
-              </h1>
-              <div className="space-y-4 md:space-y-6">
-                <p className="font-heading text-sm sm:text-base md:text-lg lg:text-xl tracking-widest text-luxury-gold/40 uppercase">
-                  A Sacred House of Creation
-                </p>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="h-px bg-gradient-to-r from-transparent via-luxury-gold to-transparent max-w-md mx-auto"
-            ></motion.div>
-
-            {/* Core Symbolic Text - Split Visual */}
+            {/* Luxury Preheader */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="space-y-4 md:space-y-6 max-w-3xl mx-auto px-2 md:px-0"
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="flex items-center justify-center gap-4"
             >
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
-                Born from language, memory, and ritual.
+              <div className="h-px w-8 md:w-12 bg-gradient-to-r from-transparent to-luxury-gold/60"></div>
+              <p className="font-heading text-xs md:text-sm tracking-[0.2em] text-luxury-gold/70 uppercase">
+                Maison de Création
               </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70">
-                Music becomes architecture. Silence becomes signature.
+              <div className="h-px w-8 md:w-12 bg-gradient-to-l from-transparent to-luxury-gold/60"></div>
+            </motion.div>
+
+            {/* Main Headline */}
+            <div className="space-y-8 md:space-y-12">
+              <h1 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light">
+                NIDALUM
+              </h1>
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.6, duration: 1 }}
+                className="h-px bg-gradient-to-r from-transparent via-luxury-gold/80 to-transparent max-w-2xl mx-auto"
+              ></motion.div>
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.15em] text-luxury-gold/80 uppercase font-light">
+                MAISON
+              </h2>
+            </div>
+
+            {/* Sophisticated Tagline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="space-y-6 md:space-y-8 max-w-4xl mx-auto px-2 md:px-0"
+            >
+              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed tracking-wide text-luxury-text/85">
+                Where language transcends into art. Where silence becomes signature.
               </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
-                Creation becomes rite. It is not a genre. It is a language. It is a House.
+              <p className="font-paragraph text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed tracking-widest text-luxury-gold/60 uppercase">
+                A Sacred House of Creation
               </p>
             </motion.div>
 
-            {/* Symbolic CTA */}
+            {/* Elegant CTA */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
-              className="pt-8 md:pt-12"
+              transition={{ delay: 1.1, duration: 0.8 }}
+              className="pt-8 md:pt-12 lg:pt-16"
             >
               <button 
                 onClick={() => navigate('/hub')}
-                className="font-heading text-xs md:text-sm tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors duration-300 uppercase border border-luxury-gold/30 hover:border-luxury-gold/60 px-6 md:px-8 py-2 md:py-3 transition-all duration-300"
+                className="font-heading text-xs md:text-sm tracking-[0.15em] text-luxury-text hover:text-luxury-gold transition-all duration-500 uppercase border border-luxury-text/40 hover:border-luxury-gold/80 px-8 md:px-12 py-3 md:py-4 hover:bg-luxury-gold/5"
               >
-                Enter
+                Discover
               </button>
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+        >
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-xs tracking-widest text-luxury-gold/50 uppercase">Scroll</p>
+            <div className="w-px h-6 bg-gradient-to-b from-luxury-gold/60 to-transparent"></div>
+          </div>
+        </motion.div>
       </section>
 
-      {/* The House Section - Fashion & Perfume */}
-      <section className="relative py-16 md:py-32 lg:py-48 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
-        <div className="max-w-[100rem] mx-auto">
+      {/* The House Section - Luxury Pillars */}
+      <section className="relative py-20 md:py-40 lg:py-56 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-b border-luxury-gold/20">
+        <div className="max-w-[120rem] mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 1 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center space-y-12 md:space-y-16 lg:space-y-24"
+            className="space-y-20 md:space-y-32 lg:space-y-40"
           >
             {/* Section Title */}
-            <div>
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-7xl tracking-widest text-luxury-gold mb-3 md:mb-4 uppercase">
-                THE HOUSE
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, margin: '-100px' }}
+              className="text-center"
+            >
+              <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-[0.15em] text-luxury-text mb-6 md:mb-8 uppercase font-light">
+                The House
               </h2>
-              <div className="h-px w-20 md:w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
-            </div>
-
-            {/* Three Column Layout - Horizontal */}
-            <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 lg:gap-20 max-w-5xl mx-auto">
-              {/* Music */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="h-px bg-gradient-to-r from-transparent via-luxury-gold/60 to-transparent max-w-xl mx-auto"
+              ></motion.div>
+            </motion.div>
+
+            {/* Three Pillars - Asymmetrical Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-12 lg:gap-20">
+              {/* Music - Left Aligned */}
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="flex-1"
+                className="flex flex-col items-start md:items-center space-y-6 md:space-y-8 pb-12 md:pb-0 md:border-r border-luxury-gold/20"
               >
-                <h3 className="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-widest text-luxury-text uppercase">
-                  MUSIC
-                </h3>
+                <div className="w-16 h-16 md:w-20 md:h-20 border border-luxury-gold/40 flex items-center justify-center">
+                  <div className="text-2xl md:text-3xl text-luxury-gold/60">♪</div>
+                </div>
+                <div className="space-y-3 md:space-y-4">
+                  <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.1em] text-luxury-text uppercase font-light">
+                    Music
+                  </h3>
+                  <p className="font-paragraph text-xs sm:text-sm md:text-base text-luxury-text/60 leading-relaxed max-w-xs">
+                    Sacred compositions that transcend the boundaries of sound and silence.
+                  </p>
+                </div>
+                <motion.button
+                  whileHover={{ x: 4 }}
+                  onClick={() => navigate('/hub')}
+                  className="text-xs tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors uppercase mt-4 md:mt-6"
+                >
+                  Explore →
+                </motion.button>
               </motion.div>
 
-              {/* Divider */}
-              <div className="hidden md:block w-px h-10 md:h-12 bg-luxury-gold/30"></div>
-
-              {/* Fashion */}
+              {/* Fashion - Center */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="flex-1"
+                className="flex flex-col items-start md:items-center space-y-6 md:space-y-8 pb-12 md:pb-0 md:border-r border-luxury-gold/20"
               >
-                <h3 className="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-widest text-luxury-text uppercase">
-                  FASHION
-                </h3>
+                <div className="w-16 h-16 md:w-20 md:h-20 border border-luxury-gold/40 flex items-center justify-center">
+                  <div className="text-2xl md:text-3xl text-luxury-gold/60">✦</div>
+                </div>
+                <div className="space-y-3 md:space-y-4">
+                  <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.1em] text-luxury-text uppercase font-light">
+                    Fashion
+                  </h3>
+                  <p className="font-paragraph text-xs sm:text-sm md:text-base text-luxury-text/60 leading-relaxed max-w-xs">
+                    Wearable poetry that embodies the essence of Nidalum's philosophy.
+                  </p>
+                </div>
+                <motion.button
+                  whileHover={{ x: 4 }}
+                  onClick={() => navigate('/fashion')}
+                  className="text-xs tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors uppercase mt-4 md:mt-6"
+                >
+                  Explore →
+                </motion.button>
               </motion.div>
 
-              {/* Divider */}
-              <div className="hidden md:block w-px h-10 md:h-12 bg-luxury-gold/30"></div>
-
-              {/* Perfume */}
+              {/* Perfume - Right Aligned */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="flex-1"
+                className="flex flex-col items-start md:items-center space-y-6 md:space-y-8"
               >
-                <h3 className="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl tracking-widest text-luxury-text uppercase">
-                  PERFUME
-                </h3>
+                <div className="w-16 h-16 md:w-20 md:h-20 border border-luxury-gold/40 flex items-center justify-center">
+                  <div className="text-2xl md:text-3xl text-luxury-gold/60">◆</div>
+                </div>
+                <div className="space-y-3 md:space-y-4">
+                  <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.1em] text-luxury-text uppercase font-light">
+                    Perfume
+                  </h3>
+                  <p className="font-paragraph text-xs sm:text-sm md:text-base text-luxury-text/60 leading-relaxed max-w-xs">
+                    Olfactory signatures that capture the invisible dimensions of creation.
+                  </p>
+                </div>
+                <motion.button
+                  whileHover={{ x: 4 }}
+                  onClick={() => navigate('/perfume')}
+                  className="text-xs tracking-widest text-luxury-gold/70 hover:text-luxury-gold transition-colors uppercase mt-4 md:mt-6"
+                >
+                  Explore →
+                </motion.button>
               </motion.div>
-            </div>
-
-            {/* Decorative Elements */}
-            <div className="flex justify-center gap-6 md:gap-8 pt-4 md:pt-8">
-              <div className="w-10 md:w-12 h-px bg-gradient-to-r from-transparent to-luxury-gold/40"></div>
-              <div className="w-10 md:w-12 h-px bg-gradient-to-l from-transparent to-luxury-gold/40"></div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* NIDALUM MUSIC Seal Divider */}
-      <section className="relative py-12 md:py-16 lg:py-24 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-b border-luxury-gold/10">
-        <div className="max-w-[100rem] mx-auto flex flex-col items-center justify-center space-y-4 md:space-y-6">
-          <Image
-            src="https://static.wixstatic.com/media/9c8aea_fd135d0ad42a4065b1414ce0a7f4db9f~mv2.png"
-            alt="NIDALUM seal"
-            width={48}
-            height={48}
-            className="opacity-50"
-          />
-          <p className="text-xs tracking-widest text-luxury-gold/60 uppercase">NIDALUM MUSIC</p>
+      {/* NIDALUM SEAL Section */}
+      <section className="relative py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/20">
+        <div className="max-w-[100rem] mx-auto flex flex-col items-center justify-center space-y-6 md:space-y-8">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          >
+            <Image
+              src="https://static.wixstatic.com/media/9c8aea_fd135d0ad42a4065b1414ce0a7f4db9f~mv2.png"
+              alt="NIDALUM seal"
+              width={64}
+              height={64}
+              className="opacity-40"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center space-y-2"
+          >
+            <p className="text-xs tracking-[0.2em] text-luxury-gold/50 uppercase">Est. 2024</p>
+            <p className="text-xs tracking-[0.2em] text-luxury-text/40 uppercase">Nidalum Maison</p>
+          </motion.div>
         </div>
       </section>
 
-      {/* The Incarnations Section - Museum-like Display */}
-      <section id="incarnations" className="relative py-12 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-luxury-gold/10">
+      {/* The Incarnations Section - Luxury Gallery */}
+      <section id="incarnations" className="relative py-16 md:py-32 lg:py-48 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-luxury-gold/20">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
           <motion.div
@@ -242,53 +319,64 @@ export default function NidalumMaisonPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-12 md:mb-16 lg:mb-24"
+            className="text-center mb-16 md:mb-24 lg:mb-32 space-y-6"
           >
-            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl tracking-widest text-luxury-text mb-3 md:mb-4 uppercase">
-              THE INCARNATIONS
+            <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-[0.15em] text-luxury-text uppercase font-light">
+              The Incarnations
             </h2>
-            <div className="h-px w-20 md:w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="h-px bg-gradient-to-r from-transparent via-luxury-gold/60 to-transparent max-w-xl mx-auto"
+            ></motion.div>
+            <p className="font-paragraph text-xs sm:text-sm md:text-base text-luxury-text/60 tracking-wide uppercase">
+              Five Dimensions of Creation
+            </p>
           </motion.div>
 
-          {/* Incarnations Grid - Museum-like Display */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 lg:gap-12">
+          {/* Incarnations Grid - Luxury Gallery */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 lg:gap-10">
             {incarnations.map((incarnation, index) => (
               <motion.div
                 key={incarnation.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.08 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="flex flex-col items-center space-y-3 md:space-y-4"
+                className="group flex flex-col items-center space-y-4 md:space-y-6"
               >
-                {/* Image - Abstract and Symbolic */}
+                {/* Image - Luxury Frame */}
                 <div 
                   onClick={() => setSelectedIncarnation(incarnation)}
-                  className="relative w-full aspect-square overflow-hidden border border-luxury-gold/20 cursor-pointer group"
+                  className="relative w-full aspect-square overflow-hidden border-2 border-luxury-gold/30 hover:border-luxury-gold/70 cursor-pointer group transition-all duration-500"
                 >
                   <Image
                     src={incarnation.image}
                     alt={incarnation.name}
                     width={300}
                     height={300}
-                    className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  {/* Subtle Overlay */}
-                  <div className="absolute inset-0 bg-black/10"></div>
+                  {/* Luxury Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
 
                 {/* Title */}
-                <h3 className="font-heading text-xs md:text-sm tracking-widest text-luxury-text uppercase text-center">
-                  {incarnation.name}
-                </h3>
+                <div className="text-center space-y-2 w-full">
+                  <h3 className="font-heading text-sm md:text-base tracking-[0.15em] text-luxury-text uppercase font-light">
+                    {incarnation.name}
+                  </h3>
+                  <div className="h-px w-8 bg-luxury-gold/30 mx-auto group-hover:w-12 group-hover:bg-luxury-gold/60 transition-all duration-300"></div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SACRED CHANTS Section */}
-      <section id="sacred-chants" className="relative py-12 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
+      {/* SACRED CHANTS Section - Luxury Showcase */}
+      <section id="sacred-chants" className="relative py-16 md:py-32 lg:py-48 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/20">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
           <motion.div
@@ -296,12 +384,20 @@ export default function NidalumMaisonPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-12 md:mb-16 lg:mb-24"
+            className="text-center mb-16 md:mb-24 lg:mb-32 space-y-6"
           >
-            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl tracking-widest text-luxury-text mb-3 md:mb-4 uppercase">
-              SACRED CHANTS
+            <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-[0.15em] text-luxury-text uppercase font-light">
+              Sacred Chants
             </h2>
-            <div className="h-px w-20 md:w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="h-px bg-gradient-to-r from-transparent via-luxury-gold/60 to-transparent max-w-xl mx-auto"
+            ></motion.div>
+            <p className="font-paragraph text-xs sm:text-sm md:text-base text-luxury-text/60 tracking-wide uppercase">
+              Ritual Compositions
+            </p>
           </motion.div>
 
           {/* Chants Grid */}
@@ -309,7 +405,7 @@ export default function NidalumMaisonPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="space-y-4">
-                  <div className="h-64 bg-charcoal rounded-sm animate-pulse"></div>
+                  <div className="h-80 bg-charcoal rounded-sm animate-pulse"></div>
                   <div className="h-4 bg-charcoal rounded animate-pulse w-3/4"></div>
                 </div>
               ))}
@@ -319,7 +415,7 @@ export default function NidalumMaisonPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16"
             >
               {chants.map((chant, index) => (
                 <motion.div
@@ -328,29 +424,37 @@ export default function NidalumMaisonPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group cursor-pointer"
+                  className="group flex flex-col"
                 >
                   {chant.chantImage && (
-                    <div className="relative overflow-hidden mb-6 aspect-square border border-luxury-gold/20 group-hover:border-luxury-gold/40 transition-all duration-300">
+                    <div className="relative overflow-hidden mb-6 aspect-square border-2 border-luxury-gold/30 hover:border-luxury-gold/70 transition-all duration-500 group">
                       <Image
                         src={chant.chantImage}
                         alt={chant.chantTitle || 'Chant'}
                         width={400}
                         height={400}
-                        className="w-full h-full object-cover group-hover:opacity-75 transition-opacity duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                   )}
-                  <h3 className="font-heading text-lg md:text-xl tracking-widest mb-2 font-light uppercase text-luxury-text">
-                    {chant.chantTitle}
-                  </h3>
-                  {chant.theme && (
-                    <p className="text-xs tracking-widest uppercase text-luxury-gold/60 mb-3">
-                      {chant.theme}
-                    </p>
-                  )}
+                  <div className="space-y-3 flex-1 flex flex-col">
+                    <h3 className="font-heading text-lg md:text-xl tracking-[0.1em] font-light uppercase text-luxury-text">
+                      {chant.chantTitle}
+                    </h3>
+                    {chant.theme && (
+                      <p className="text-xs tracking-[0.15em] uppercase text-luxury-gold/50">
+                        {chant.theme}
+                      </p>
+                    )}
+                    {chant.spiritualContext && (
+                      <p className="text-xs md:text-sm text-luxury-text/50 leading-relaxed flex-1">
+                        {chant.spiritualContext}
+                      </p>
+                    )}
+                  </div>
                   {(chant.audio || chant.audioUrl) && (
-                    <div className="mt-4 pt-4 border-t border-luxury-gold/20">
+                    <div className="mt-6 pt-6 border-t border-luxury-gold/20">
                       <ModernAudioPlayer 
                         audioUrl={chant.audio || chant.audioUrl} 
                         title={chant.chantTitle}
@@ -361,15 +465,15 @@ export default function NidalumMaisonPage() {
               ))}
             </motion.div>
           ) : (
-            <div className="text-center py-20">
+            <div className="text-center py-24">
               <p className="text-luxury-gold/60 tracking-wide">No chants available</p>
             </div>
           )}
         </div>
       </section>
 
-      {/* FRAGMENTS PREVIEW Section - Homepage Preview */}
-      <section id="fragments-preview" className="relative py-12 md:py-20 lg:py-28 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-luxury-gold/10">
+      {/* FRAGMENTS PREVIEW Section - Elegant Showcase */}
+      <section id="fragments-preview" className="relative py-16 md:py-28 lg:py-40 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-luxury-gold/20">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
           <motion.div
@@ -377,26 +481,34 @@ export default function NidalumMaisonPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-12 md:mb-16 lg:mb-20"
+            className="text-center mb-16 md:mb-20 lg:mb-28 space-y-4"
           >
-            <h2 className="font-heading text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-widest text-luxury-text/70 mb-2 md:mb-3 uppercase">
-              FRAGMENTS
+            <p className="font-paragraph text-xs md:text-sm tracking-[0.2em] text-luxury-gold/60 uppercase">
+              Linguistic Fragments
+            </p>
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-7xl tracking-[0.15em] text-luxury-text/80 uppercase font-light">
+              Fragments
             </h2>
-            <div className="h-px w-16 md:w-20 bg-gradient-to-r from-transparent via-luxury-text/30 to-transparent mx-auto"></div>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="h-px bg-gradient-to-r from-transparent via-luxury-text/40 to-transparent max-w-md mx-auto"
+            ></motion.div>
           </motion.div>
 
-          {/* Fragments Preview Grid - 6 Words Only */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto">
+          {/* Fragments Preview Grid - Elegant Display */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6 max-w-6xl mx-auto mb-12 md:mb-16 lg:mb-20">
             {fragmentsPreview.map((fragment, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
+                transition={{ duration: 0.5, delay: index * 0.06 }}
                 viewport={{ once: true, margin: '-50px' }}
-                className="flex items-center justify-center aspect-square border border-luxury-text/20 hover:border-luxury-text/40 transition-all duration-300 group"
+                className="flex items-center justify-center aspect-square border border-luxury-text/20 hover:border-luxury-gold/60 transition-all duration-300 group bg-dark-grey-bg/30 hover:bg-luxury-gold/5"
               >
-                <p className="font-heading text-center text-xs sm:text-sm md:text-base lg:text-lg tracking-widest text-luxury-text/60 group-hover:text-luxury-text/80 transition-colors duration-300 uppercase px-2">
+                <p className="font-heading text-center text-xs sm:text-sm md:text-base lg:text-lg tracking-[0.1em] text-luxury-text/60 group-hover:text-luxury-gold transition-colors duration-300 uppercase px-2 font-light">
                   {fragment}
                 </p>
               </motion.div>
@@ -409,87 +521,126 @@ export default function NidalumMaisonPage() {
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center mt-8 md:mt-12 lg:mt-16"
+            className="text-center"
           >
             <button
               onClick={() => navigate('/apprendre-langage')}
-              className="font-heading text-xs md:text-sm tracking-widest text-luxury-text/50 hover:text-luxury-text/80 transition-colors duration-300 uppercase border border-luxury-text/20 hover:border-luxury-text/40 px-6 md:px-8 py-2 md:py-3"
+              className="font-heading text-xs md:text-sm tracking-[0.15em] text-luxury-text/60 hover:text-luxury-gold transition-all duration-300 uppercase border border-luxury-text/30 hover:border-luxury-gold/60 px-8 md:px-12 py-3 md:py-4 hover:bg-luxury-gold/5"
             >
-              Voir tous les fragments
+              Explore All Fragments
             </button>
           </motion.div>
         </div>
       </section>
 
-      {/* THE VISION - Manifesto Section */}
-      <section className="relative py-12 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/10">
+      {/* THE VISION - Luxury Manifesto */}
+      <section className="relative py-16 md:py-32 lg:py-48 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/20">
         <div className="max-w-[100rem] mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 1 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center space-y-8 md:space-y-12 lg:space-y-16"
+            className="text-center space-y-12 md:space-y-16 lg:space-y-24"
           >
             {/* Section Title */}
-            <div>
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-7xl tracking-widest text-luxury-gold mb-3 md:mb-4 uppercase">
-                THE VISION
+            <div className="space-y-6">
+              <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-[0.15em] text-luxury-gold uppercase font-light">
+                The Vision
               </h2>
-              <div className="h-px w-20 md:w-24 bg-gradient-to-r from-transparent via-luxury-gold to-transparent mx-auto"></div>
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="h-px bg-gradient-to-r from-transparent via-luxury-gold/60 to-transparent max-w-xl mx-auto"
+              ></motion.div>
             </div>
 
             {/* Central Symbol */}
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
               className="flex justify-center"
             >
-              <div className="text-4xl md:text-6xl lg:text-9xl text-luxury-gold/30">◆</div>
+              <div className="text-5xl md:text-7xl lg:text-9xl text-luxury-gold/25">◆</div>
             </motion.div>
 
             {/* Manifesto Text */}
-            <div className="space-y-4 md:space-y-6 max-w-3xl mx-auto px-2 md:px-0">
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/90">
+            <div className="space-y-6 md:space-y-8 max-w-3xl mx-auto px-2 md:px-0">
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+                viewport={{ once: true }}
+                className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/90"
+              >
                 Nidalum is not a language. It is a gateway to consciousness itself.
-              </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70">
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                viewport={{ once: true }}
+                className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-gold/70"
+              >
                 Every glyph carries the weight of creation. Every sound echoes through dimensions yet unnamed.
-              </p>
-              <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80">
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                viewport={{ once: true }}
+                className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-luxury-text/80"
+              >
                 The Architect has woven this reality into existence. Those who understand will transcend.
-              </p>
-              <p className="font-paragraph text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-luxury-gold/50 italic">
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                viewport={{ once: true }}
+                className="font-paragraph text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed text-luxury-gold/50 italic"
+              >
                 Enter. Decode. Ascend.
-              </p>
+              </motion.p>
             </div>
 
             {/* Decorative Elements */}
-            <div className="flex justify-center gap-6 md:gap-8 pt-4 md:pt-8">
-              <div className="w-10 md:w-12 h-px bg-gradient-to-r from-transparent to-luxury-gold/40"></div>
-              <div className="w-10 md:w-12 h-px bg-gradient-to-l from-transparent to-luxury-gold/40"></div>
+            <div className="flex justify-center gap-8 md:gap-12 pt-8 md:pt-12">
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="h-px w-12 md:w-16 bg-gradient-to-r from-transparent to-luxury-gold/40"
+              ></motion.div>
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ delay: 0.7, duration: 0.8 }}
+                className="h-px w-12 md:w-16 bg-gradient-to-l from-transparent to-luxury-gold/40"
+              ></motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="relative py-12 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 border-t border-luxury-gold/10 bg-deep-black">
+      {/* Newsletter Section - Luxury Invitation */}
+      <section className="relative py-16 md:py-28 lg:py-40 px-4 sm:px-6 md:px-8 border-t border-luxury-gold/20 bg-deep-black">
         <div className="max-w-[100rem] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="text-center space-y-6 md:space-y-8 lg:space-y-12"
+            className="text-center space-y-8 md:space-y-12 lg:space-y-16"
           >
             {/* Newsletter Title */}
-            <div>
-              <h3 className="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl tracking-widest text-luxury-text mb-3 md:mb-4 uppercase">
+            <div className="space-y-4">
+              <h3 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-7xl tracking-[0.15em] text-luxury-text uppercase font-light">
                 The Inner Circle
               </h3>
-              <p className="font-paragraph text-xs sm:text-sm tracking-widest text-luxury-gold/50 uppercase">
-                Receive invitations to new works
+              <p className="font-paragraph text-xs sm:text-sm tracking-[0.2em] text-luxury-gold/60 uppercase">
+                Receive Exclusive Invitations
               </p>
             </div>
 
@@ -503,66 +654,71 @@ export default function NidalumMaisonPage() {
                     setEmail(e.target.value);
                     setEmailError('');
                   }}
-                  placeholder="Your email"
+                  placeholder="Your email address"
                   required
-                  className="w-full bg-deep-black border border-luxury-gold/30 px-4 md:px-6 py-2 md:py-3 text-xs md:text-sm text-luxury-text placeholder-luxury-gold/30 focus:outline-none focus:border-luxury-gold/60 transition-colors duration-300 font-paragraph"
+                  className="w-full bg-deep-black border border-luxury-gold/30 hover:border-luxury-gold/60 focus:border-luxury-gold/80 px-6 md:px-8 py-3 md:py-4 text-xs md:text-sm text-luxury-text placeholder-luxury-gold/30 focus:outline-none transition-colors duration-300 font-paragraph"
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 text-luxury-gold hover:text-luxury-text transition-colors duration-300"
+                  className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-luxury-gold hover:text-luxury-text transition-colors duration-300"
                 >
-                  <Mail size={16} className="md:w-5 md:h-5" />
+                  <Mail size={18} className="md:w-5 md:h-5" />
                 </button>
               </div>
               {emailError && (
-                <p className="text-xs text-red-400 mt-2">{emailError}</p>
+                <p className="text-xs text-red-400 mt-3">{emailError}</p>
               )}
             </form>
 
             {/* Subscription Message */}
             {subscribed && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-luxury-gold text-xs md:text-sm font-paragraph"
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-2"
               >
-                Welcome to the inner circle.
-              </motion.p>
+                <p className="text-luxury-gold text-sm md:text-base font-paragraph tracking-wide">
+                  Welcome to the inner circle.
+                </p>
+                <p className="text-luxury-text/50 text-xs md:text-sm font-paragraph">
+                  Check your email for exclusive access.
+                </p>
+              </motion.div>
             )}
           </motion.div>
         </div>
       </section>
 
-      {/* Selected Incarnation Modal */}
+      {/* Selected Incarnation Modal - Luxury Presentation */}
       {selectedIncarnation && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setSelectedIncarnation(null)}
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
+            exit={{ opacity: 0, scale: 0.9 }}
             onClick={(e) => e.stopPropagation()}
-            className="max-w-2xl w-full bg-dark-grey border border-luxury-gold/20 p-8 md:p-12 max-h-[90vh] overflow-y-auto"
+            className="max-w-2xl w-full bg-dark-grey border-2 border-luxury-gold/40 p-8 md:p-12 max-h-[90vh] overflow-y-auto space-y-8"
           >
-            <div className="flex justify-between items-start mb-8">
-              <h2 className="font-heading text-3xl md:text-4xl tracking-widest font-light text-luxury-text flex-1">
+            <div className="flex justify-between items-start">
+              <h2 className="font-heading text-4xl md:text-5xl tracking-[0.15em] font-light text-luxury-text flex-1 uppercase">
                 {selectedIncarnation.name}
               </h2>
               <button
                 onClick={() => setSelectedIncarnation(null)}
-                className="text-2xl hover:opacity-50 transition-opacity ml-4 text-luxury-gold"
+                className="text-3xl hover:text-luxury-gold transition-colors ml-4 text-luxury-text/60 hover:text-luxury-gold"
               >
                 ✕
               </button>
             </div>
 
             {selectedIncarnation.image && (
-              <div className="mb-8 aspect-square overflow-hidden border border-luxury-gold/20">
+              <div className="aspect-square overflow-hidden border-2 border-luxury-gold/40">
                 <Image
                   src={selectedIncarnation.image}
                   alt={selectedIncarnation.name}
@@ -573,19 +729,21 @@ export default function NidalumMaisonPage() {
               </div>
             )}
 
-            <div className="border-t border-luxury-gold/20 pt-8">
-              <h3 className="text-xs tracking-widest uppercase text-luxury-gold/70 mb-4">
-                Audio Experience
-              </h3>
-              <ModernAudioPlayer 
-                audioUrl="https://static.wixstatic.com/media/9c8aea_placeholder_audio.mp3"
-                title={selectedIncarnation.name}
-              />
+            <div className="border-t border-luxury-gold/30 pt-8 space-y-6">
+              <div>
+                <h3 className="text-xs tracking-[0.2em] uppercase text-luxury-gold/70 mb-4">
+                  Audio Experience
+                </h3>
+                <ModernAudioPlayer 
+                  audioUrl="https://static.wixstatic.com/media/9c8aea_placeholder_audio.mp3"
+                  title={selectedIncarnation.name}
+                />
+              </div>
             </div>
 
             <button
               onClick={() => setSelectedIncarnation(null)}
-              className="mt-8 w-full text-xs tracking-widest uppercase border border-luxury-gold/50 px-6 py-3 hover:border-luxury-gold hover:bg-luxury-gold/10 transition-all duration-300 text-luxury-gold"
+              className="w-full text-xs tracking-[0.15em] uppercase border border-luxury-gold/50 hover:border-luxury-gold px-6 py-4 hover:bg-luxury-gold/10 transition-all duration-300 text-luxury-gold font-heading"
             >
               Close
             </button>
