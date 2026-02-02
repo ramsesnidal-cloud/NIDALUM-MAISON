@@ -27,7 +27,7 @@ export async function getPlayableAudioUrl(fileRef: any): Promise<string> {
       
       // Call backend function to get download URL
       try {
-        const response = await fetch('/api/media/get-download-url', {
+        const response = await fetch('/_functions/media_get_download_url', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -40,9 +40,9 @@ export async function getPlayableAudioUrl(fileRef: any): Promise<string> {
         }
 
         const data = await response.json();
-        if (data.url) {
-          console.log('[MEDIA SERVICE] Converted to playable URL:', data.url);
-          return data.url;
+        if (data.downloadUrl) {
+          console.log('[MEDIA SERVICE] Converted to playable URL:', data.downloadUrl);
+          return data.downloadUrl;
         }
       } catch (err) {
         console.error('[MEDIA SERVICE] Backend conversion failed:', err);
