@@ -1,13 +1,37 @@
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import SacredChantList from '@/components/SacredChantList';
-import { axes } from '@/content/axes';
-import { fragments } from '@/content/fragments';
-import { artists } from '@/content/artists';
-import { discography } from '@/content/discography';
 import { Image } from '@/components/ui/image';
+import { BaseCrudService } from '@/integrations';
+import { SacredChants, Artists } from '@/entities/index';
 
 export default function SacredMusicPage() {
+  const [chants, setChants] = useState<SacredChants[]>([]);
+  const [artists, setArtists] = useState<Artists[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const chantsResult = await BaseCrudService.getAll<SacredChants>('sacredchants', [], { limit: 100 });
+        const publishedChants = (chantsResult.items || [])
+          .filter(c => c.isPublished === true)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+        setChants(publishedChants);
+
+        const artistsResult = await BaseCrudService.getAll<Artists>('artists', [], { limit: 100 });
+        const publishedArtists = (artistsResult.items || [])
+          .filter(a => a.isPublished === true)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+        setArtists(publishedArtists);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
+  }, []);
   return (
     <div className="min-h-screen bg-obsidian text-ivory" onContextMenu={(e) => e.preventDefault()}>
       <Header />
@@ -20,7 +44,7 @@ export default function SacredMusicPage() {
           </h1>
           <div className="space-y-3">
             <p className="text-lg font-body text-muted">
-              Six Sacred Chants. Public excerpts only.
+              {chants.length} Sacred Chants. Public excerpts only.
             </p>
             <p className="text-sm font-body text-muted">
               No lyrics are published.
@@ -32,7 +56,53 @@ export default function SacredMusicPage() {
       {/* Chants Grid */}
       <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
         <div className="mx-auto max-w-[1320px]">
-          <SacredChantList />
+          {isLoading ? (
+            <div className="text-center text-muted">Loading...</div>
+          ) : chants.length === 0 ? (
+            <div className="text-center text-muted">No chants available.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {chants.map((chant) => (
+                <div key={chant._id} className="flex flex-col h-full">
+                  {/* Cover Image */}
+                  <div className="mb-6 aspect-[4/5] overflow-hidden bg-night border border-border">
+                    <Image
+                      src={chant.coverImage || 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg'}
+                      alt={chant.title || 'Chant'}
+                      width={400}
+                      height={500}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Title and Description */}
+                  <h3 className="text-sm md:text-base font-heading text-ivory mb-2">
+                    {chant.title}
+                  </h3>
+                  <p className="text-xs md:text-sm font-body text-muted mb-2">
+                    {chant.duration}
+                  </p>
+                  <p className="text-xs md:text-sm font-body text-muted mb-6 flex-grow">
+                    {chant.shortDescription}
+                  </p>
+                  
+                  {/* Audio Player */}
+                  {chant.audioPreviewUrl && (
+                    <audio
+                      controls
+                      controlsList="nodownload noplaybackrate noremoteplayback"
+                      disablePictureInPicture
+                      preload="none"
+                      className="w-full h-8 md:h-10 bg-night border border-border mt-auto"
+                      onContextMenu={(e) => e.preventDefault()}
+                    >
+                      <source src={chant.audioPreviewUrl} type="audio/mpeg" />
+                    </audio>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -45,12 +115,12 @@ export default function SacredMusicPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
             {artists.map((artist) => (
-              <div key={artist.id} className="flex flex-col h-full">
+              <div key={artist._id} className="flex flex-col h-full">
                 {/* Portrait - 4:5 aspect ratio */}
                 <div className="mb-6 aspect-[4/5] overflow-hidden bg-night border border-border">
                   <Image
-                    src={artist.portraitUrl}
-                    alt={artist.name}
+                    src={artist.portraitImage || 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg'}
+                    alt={artist.name || 'Artist'}
                     width={400}
                     height={500}
                     className="w-full h-full object-cover"
@@ -66,89 +136,20 @@ export default function SacredMusicPage() {
                 </p>
                 
                 {/* Audio Player */}
-                <audio
-                  controls
-                  controlsList="nodownload noplaybackrate noremoteplayback"
-                  disablePictureInPicture
-                  preload="none"
-                  className="w-full h-8 md:h-10 bg-night border border-border mt-auto"
-                  onContextMenu={(e) => e.preventDefault()}
-                >
-                  <source src={artist.audioPreviewUrl} type="audio/mpeg" />
-                </audio>
+                {artist.audioPreviewUrl && (
+                  <audio
+                    controls
+                    controlsList="nodownload noplaybackrate noremoteplayback"
+                    disablePictureInPicture
+                    preload="none"
+                    className="w-full h-8 md:h-10 bg-night border border-border mt-auto"
+                    onContextMenu={(e) => e.preventDefault()}
+                  >
+                    <source src={artist.audioPreviewUrl} type="audio/mpeg" />
+                  </audio>
+                )}
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Discography Section */}
-      <section className="py-20 md:py-24 lg:py-28 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1320px]">
-          <h2 className="text-xs md:text-sm font-body tracking-widest uppercase text-muted mb-12 md:mb-16">
-            DISCOGRAPHY
-          </h2>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            {discography.map((item) => (
-              <div key={item.id} className="flex flex-col">
-                {/* 1:1 aspect ratio for covers */}
-                <div className="mb-4 aspect-square overflow-hidden bg-night border border-border">
-                  <Image
-                    src={item.coverImageUrl}
-                    alt={item.title}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <p className="text-xs md:text-sm font-body text-ivory">
-                  {item.title}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Language Section - Five Axes */}
-      <section className="py-20 md:py-24 lg:py-28 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1320px]">
-          <h2 className="text-xs md:text-sm font-body tracking-widest uppercase text-muted mb-12 md:mb-16">
-            LANGUAGE
-          </h2>
-          
-          {/* Five Axes Row - Centered, no wrap on desktop */}
-          <div className="mb-16 md:mb-20">
-            <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap md:flex-nowrap">
-              {axes.map((axis, idx) => (
-                <div key={idx} className="flex items-center gap-4 md:gap-6">
-                  <p className="text-xs font-body tracking-[0.2em] uppercase text-ivory">
-                    {axis}
-                  </p>
-                  {idx < axes.length - 1 && (
-                    <span className="text-border h-px w-4 md:w-6"></span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Fragments Pills */}
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex gap-3 md:gap-4 flex-nowrap justify-center">
-              {fragments.map((fragment, idx) => (
-                <div
-                  key={idx}
-                  className="flex-shrink-0 h-9 px-4 md:px-5 border border-border bg-night text-ivory text-xs font-body tracking-widest uppercase flex items-center transition-colors duration-300 hover:border-gold group rounded-lg"
-                >
-                  <span className="relative">
-                    {fragment}
-                    <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
