@@ -215,6 +215,8 @@ export interface DailyExpressions {
   _updatedDate?: Date;
   /** @wixFieldType text */
   phraseNidalum?: string;
+  /** @wixFieldType boolean */
+  isFeatured?: boolean;
   /** @wixFieldType text */
   translationFrench?: string;
   /** @wixFieldType text */
@@ -250,6 +252,33 @@ export interface Discography {
 
 
 /**
+ * Collection ID: divisions
+ * Interface for Divisions
+ */
+export interface Divisions {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  divisionKey?: string;
+  /** @wixFieldType text */
+  pageTitle?: string;
+  /** @wixFieldType text */
+  pageSubtitle?: string;
+  /** @wixFieldType text */
+  statusLine?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  heroImage?: string;
+  /** @wixFieldType text */
+  bodyShort?: string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
  * Collection ID: fragmentslexicon
  * Interface for FragmentsLexicon
  */
@@ -257,6 +286,8 @@ export interface FragmentsLexicon {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType boolean */
+  isFeatured?: boolean;
   /** @wixFieldType text */
   termNidalum?: string;
   /** @wixFieldType text */
@@ -649,6 +680,8 @@ export interface SacredChants {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType boolean */
+  isFeatured?: boolean;
   /** @wixFieldType text */
   title?: string;
   /** @wixFieldType text */
@@ -678,6 +711,10 @@ export interface SiteSettings {
   _updatedDate?: Date;
   /** @wixFieldType text */
   homeTitle?: string;
+  /** @wixFieldType text */
+  homeHeroAlignment?: string;
+  /** @wixFieldType text */
+  featuredFragmentsField?: string;
   /** @wixFieldType text */
   homeSlogan?: string;
   /** @wixFieldType text */
