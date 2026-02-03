@@ -15,26 +15,25 @@ export default function HomePage() {
     <div className="min-h-screen bg-obsidian text-ivory">
       <Header />
       
-      {/* Hero Section - Wide and Structural */}
+      {/* Hero Section - Left Aligned Architectural */}
       <section className="pt-32 pb-10 md:pb-14 lg:pb-18 px-6 sm:px-10 lg:px-14 min-h-[50vh] sm:min-h-[58vh] md:min-h-[62vh] lg:min-h-[70vh] flex items-center">
-        <div className="mx-auto max-w-[1120px] w-full">
-          {/* Title - Increased size, slightly offset left */}
+        <div className="mx-auto max-w-[1120px] w-full flex flex-col items-start justify-center">
+          {/* Title - Left Aligned, One Line */}
           <h1 
-            className="font-heading font-bold leading-[1.1] mb-12 text-ivory"
+            className="font-heading font-bold leading-[1.1] mb-12 text-ivory text-left"
             style={{
               fontSize: 'clamp(2.6rem, 8.8vw, 7.2rem)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'clip',
               letterSpacing: 'clamp(-0.02em, -0.5vw, -0.01em)',
-              marginLeft: 'clamp(0rem, 2vw, 3rem)',
             }}
           >
             NIDALUM MAISON
           </h1>
 
-          {/* Brand Portals - Horizontal Editorial Row - No Wrap */}
-          <div className="mb-12 overflow-x-auto scrollbar-hide">
+          {/* Brand Portals - Left Aligned Horizontal Row - No Wrap */}
+          <div className="mb-12 w-full overflow-x-auto scrollbar-hide">
             <div className="flex gap-4 md:gap-6 items-center whitespace-nowrap">
               <Link 
                 to="/sacred" 
@@ -70,10 +69,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Enter Action - Text Link */}
+          {/* Enter Action - Left Aligned Text Link */}
           <Link 
             to="/house" 
-            className="text-sm md:text-base font-body text-ivory hover:text-gold transition-colors duration-300 tracking-wide inline-block"
+            className="text-sm md:text-base font-body text-ivory hover:text-gold transition-colors duration-300 tracking-wide inline-block text-left"
           >
             ENTER THE HOUSE →
           </Link>
