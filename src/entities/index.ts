@@ -123,6 +123,35 @@ export interface ArtistPortfolio {
 
 
 /**
+ * Collection ID: artists
+ * Interface for Artists
+ */
+export interface Artists {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  name?: string;
+  /** @wixFieldType text */
+  slug?: string;
+  /** @wixFieldType text */
+  role?: string;
+  /** @wixFieldType text */
+  shortDescription?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  portraitImage?: string;
+  /** @wixFieldType url */
+  audioPreviewUrl?: string;
+  /** @wixFieldType text */
+  audioPreviewTitle?: string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
  * Collection ID: chants
  * Interface for RItualChants
  */
@@ -177,6 +206,73 @@ export interface ContactMessages {
 
 
 /**
+ * Collection ID: dailyexpressions
+ * Interface for DailyExpressions
+ */
+export interface DailyExpressions {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  phraseNidalum?: string;
+  /** @wixFieldType text */
+  translationFrench?: string;
+  /** @wixFieldType text */
+  translationEnglish?: string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
+ * Collection ID: discography
+ * Interface for Discography
+ */
+export interface Discography {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  title?: string;
+  /** @wixFieldType text */
+  artistRef?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  coverImage?: string;
+  /** @wixFieldType date */
+  releaseDate?: Date | string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
+ * Collection ID: fragmentslexicon
+ * Interface for FragmentsLexicon
+ */
+export interface FragmentsLexicon {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  termNidalum?: string;
+  /** @wixFieldType text */
+  translationFrench?: string;
+  /** @wixFieldType text */
+  translationEnglish?: string;
+  /** @wixFieldType text */
+  category?: string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
  * Collection ID: gestionvideoauteur
  * Interface for AuthorVideoManagement
  */
@@ -206,6 +302,29 @@ export interface AuthorVideoManagement {
   isActive?: boolean;
   /** @wixFieldType video */
   video?: string;
+}
+
+
+/**
+ * Collection ID: literaturebooks
+ * Interface for LiteratureBooks
+ */
+export interface LiteratureBooks {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  title?: string;
+  /** @wixFieldType text */
+  subtitle?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  coverImage?: string;
+  /** @wixFieldType text */
+  shortDescription?: string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
 }
 
 
@@ -519,6 +638,60 @@ export interface RitualChants {
   audio1?: string;
   /** @wixFieldType url */
   url?: string;
+}
+
+
+/**
+ * Collection ID: sacredchants
+ * Interface for SacredChants
+ */
+export interface SacredChants {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  title?: string;
+  /** @wixFieldType text */
+  slug?: string;
+  /** @wixFieldType text */
+  shortDescription?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  coverImage?: string;
+  /** @wixFieldType url */
+  audioPreviewUrl?: string;
+  /** @wixFieldType text */
+  duration?: string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
+ * Collection ID: sitesettings
+ * Interface for SiteSettings
+ */
+export interface SiteSettings {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  homeTitle?: string;
+  /** @wixFieldType text */
+  homeSlogan?: string;
+  /** @wixFieldType text */
+  homeManifestoLine1?: string;
+  /** @wixFieldType text */
+  homeManifestoLine2?: string;
+  /** @wixFieldType text */
+  homeManifestoLine3?: string;
+  /** @wixFieldType text */
+  homeEnterLabel?: string;
+  /** @wixFieldType text */
+  homePortals?: string;
+  /** @wixFieldType text */
+  headerStampText?: string;
 }
 
 
