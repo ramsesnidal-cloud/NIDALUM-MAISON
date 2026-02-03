@@ -8,8 +8,8 @@ export default function HomePage() {
       <Header />
       
       {/* Hero Section - Responsive height without full screen */}
-      <section className="pt-32 pb-12 px-8 min-h-[50vh] sm:min-h-[58vh] md:min-h-[62vh] lg:min-h-[70vh] flex items-center">
-        <div className="max-w-content mx-auto text-center w-full">
+      <section className="pt-32 pb-10 md:pb-14 lg:pb-18 px-6 sm:px-10 lg:px-14 min-h-[50vh] sm:min-h-[58vh] md:min-h-[62vh] lg:min-h-[70vh] flex items-center">
+        <div className="mx-auto max-w-[1120px] text-center w-full">
           <h1 
             className="font-heading font-bold leading-[1.1] mb-8 text-ivory"
             style={{
@@ -46,18 +46,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Institutional Stamp - Ultra-thin editorial strip */}
-      <section className="py-4 px-8 border-t border-border bg-night">
-        <div className="max-w-content mx-auto">
-          <p className="text-[0.65rem] font-body text-muted tracking-[0.15em] uppercase text-center border-t border-b border-border py-2" style={{ letterSpacing: '0.15em' }}>
-            NIDALUM MUSIC
-          </p>
-        </div>
-      </section>
-
       {/* Editorial Block */}
-      <section className="py-16 sm:py-24 px-8 border-t border-border bg-obsidian">
-        <div className="max-w-content mx-auto text-center">
+      <section className="py-10 md:py-14 lg:py-18 px-6 sm:px-10 lg:px-14 border-t border-border bg-obsidian">
+        <div className="mx-auto max-w-[1120px] text-center">
           <p className="text-lg sm:text-xl font-heading font-light tracking-wide text-ivory">
             Private access is limited. Requests may not receive a reply.
           </p>

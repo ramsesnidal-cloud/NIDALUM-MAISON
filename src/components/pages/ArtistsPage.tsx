@@ -127,8 +127,8 @@ export default function ArtistsPage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-8 border-b border-border">
-        <div className="max-w-content mx-auto">
+      <section className="pt-32 pb-10 md:pb-14 lg:pb-18 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="mx-auto max-w-[1120px]">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             ARTISTS
           </h1>
@@ -138,44 +138,48 @@ export default function ArtistsPage() {
         </div>
       </section>
 
-      {/* Artists Grid */}
-      <section className="py-24 px-8">
-        <div className="max-w-content mx-auto">
+      {/* Artists List - Editorial Row Layout */}
+      <section className="py-10 md:py-14 lg:py-18 px-6 sm:px-10 lg:px-14">
+        <div className="mx-auto max-w-[1120px]">
           {!isLoading && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-4 md:space-y-6">
               {artists.map((artist) => (
-                <div key={artist.id} className="flex flex-col">
-                  {/* Portrait - 4:5 aspect ratio */}
-                  <div className="aspect-[4/5] mb-6 overflow-hidden bg-night border border-border">
+                <div key={artist.id} className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 pb-4 md:pb-6 border-b border-border last:border-b-0">
+                  {/* Portrait - Responsive sizing */}
+                  <div className="flex-shrink-0 w-24 md:w-[120px] lg:w-[140px] aspect-[4/5] overflow-hidden bg-night border border-border">
                     <Image
                       src={artist.portraitUrl}
                       alt={artist.portraitAlt}
-                      width={400}
-                      height={500}
+                      width={140}
+                      height={175}
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   </div>
                   
-                  {/* Info */}
-                  <div>
-                    <h3 className="text-lg font-heading tracking-wide text-ivory mb-2">
-                      {artist.name}
-                    </h3>
-                    <p className="text-xs font-body text-gold tracking-widest uppercase mb-3">
-                      {artist.role}
-                    </p>
-                    <p className="text-sm font-body text-muted leading-relaxed mb-4">
-                      {artist.description}
-                    </p>
+                  {/* Info - Right side on desktop */}
+                  <div className="flex-1 flex flex-col justify-between min-w-0">
+                    <div>
+                      <h3 className="text-base md:text-lg font-heading tracking-wide text-ivory mb-1">
+                        {artist.name}
+                      </h3>
+                      <p className="text-xs font-body text-gold tracking-widest uppercase mb-2">
+                        {artist.role}
+                      </p>
+                      <p className="text-sm font-body text-muted leading-relaxed mb-3">
+                        {artist.description}
+                      </p>
+                    </div>
                     
-                    {/* Audio Player */}
-                    <ArtistAudioPlayer
-                      previewMp3Url={artist.previewMp3Url}
-                      hiResWavUrl={artist.hiResWavUrl}
-                      artistName={artist.name}
-                      playerId={`artist-${artist.id}`}
-                    />
+                    {/* Audio Player - Compact */}
+                    <div className="mt-2">
+                      <ArtistAudioPlayer
+                        previewMp3Url={artist.previewMp3Url}
+                        hiResWavUrl={artist.hiResWavUrl}
+                        artistName={artist.name}
+                        playerId={`artist-${artist.id}`}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}

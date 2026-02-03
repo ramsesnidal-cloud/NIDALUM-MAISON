@@ -117,7 +117,7 @@ export default function ArtistAudioPlayer({
   const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="mt-6 pt-6 border-t border-border">
+    <div className="pt-3 border-t border-border">
       {/* Audio Element */}
       <audio
         ref={audioRef}
@@ -131,29 +131,29 @@ export default function ArtistAudioPlayer({
         <source src={currentSource} type={useWav ? 'audio/wav' : 'audio/mpeg'} />
       </audio>
 
-      {/* Player Controls */}
-      <div className="flex items-center gap-4 mb-4">
+      {/* Player Controls - Compact single line */}
+      <div className="flex items-center gap-3 mb-2">
         {/* Play/Pause Button with Loading State */}
         <button
           onClick={handlePlayPause}
-          className="flex-shrink-0 w-10 h-10 flex items-center justify-center border border-gold text-gold hover:bg-gold hover:text-obsidian transition-all duration-200 rounded-sm"
+          className="flex-shrink-0 w-8 h-8 flex items-center justify-center border border-gold text-gold hover:bg-gold hover:text-obsidian transition-all duration-200 rounded-sm"
           aria-label={isPlaying ? 'Pause' : 'Play'}
           disabled={isBuffering}
         >
           {isBuffering ? (
-            <Loader size={18} className="animate-spin" />
+            <Loader size={16} className="animate-spin" />
           ) : isPlaying ? (
-            <Pause size={18} />
+            <Pause size={16} />
           ) : (
-            <Play size={18} className="ml-0.5" />
+            <Play size={16} className="ml-0.5" />
           )}
         </button>
 
-        {/* Progress Bar */}
-        <div className="flex-1 flex flex-col gap-2">
+        {/* Progress Bar - Slim */}
+        <div className="flex-1 flex flex-col gap-1">
           <div
             onClick={handleProgressClick}
-            className="h-1 bg-border rounded-full cursor-pointer hover:bg-muted transition-colors"
+            className="h-0.5 bg-border rounded-full cursor-pointer hover:bg-muted transition-colors"
             role="slider"
             aria-label="Audio progress"
             aria-valuemin={0}
@@ -174,16 +174,16 @@ export default function ArtistAudioPlayer({
 
       {/* WAV Toggle and Download - Only show download when WAV is active */}
       {hiResWavUrl && (
-        <div className="flex items-center gap-3 text-xs font-body">
+        <div className="flex items-center gap-2 text-xs font-body">
           <button
             onClick={handleSourceChange}
-            className={`px-3 py-1 border rounded-sm transition-all ${
+            className={`px-2 py-0.5 border rounded-sm transition-all text-xs ${
               useWav
                 ? 'border-gold text-gold bg-gold bg-opacity-10'
                 : 'border-muted text-muted hover:border-gold hover:text-gold'
             }`}
           >
-            HI-RES WAV
+            HI-RES
           </button>
           {useWav && (
             <a
@@ -192,7 +192,7 @@ export default function ArtistAudioPlayer({
               className="flex items-center gap-1 text-muted hover:text-gold transition-colors"
               aria-label={`Download WAV for ${artistName}`}
             >
-              <Download size={14} />
+              <Download size={12} />
               <span>Download</span>
             </a>
           )}
