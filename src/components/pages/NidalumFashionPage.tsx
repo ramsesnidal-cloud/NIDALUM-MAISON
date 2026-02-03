@@ -34,10 +34,10 @@ export default function NidalumFashionPage() {
         <div className="max-w-[1320px] mx-auto">
           <div className="max-w-2xl mx-auto">
             <Image
-              src="https://static.wixstatic.com/media/9c8aea_2f50fd17c60f4343ae46ccb9804020f1~mv2.png?originWidth=384&originHeight=448"
+              src="https://static.wixstatic.com/media/9c8aea_71970d1d2ca84d088e3c22b150beb604~mv2.png?originWidth=384&originHeight=576"
               alt="NIDALUM Fashion"
               width={400}
-              height={500}
+              height={600}
               className="w-full h-auto object-cover rounded-lg"
             />
           </div>

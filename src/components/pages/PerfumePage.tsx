@@ -34,10 +34,10 @@ export default function PerfumePage() {
         <div className="max-w-[1320px] mx-auto">
           <div className="max-w-2xl mx-auto">
             <Image
-              src="https://static.wixstatic.com/media/9c8aea_b15faa64e3534d99963c035cd688c649~mv2.png?originWidth=384&originHeight=448"
+              src="https://static.wixstatic.com/media/9c8aea_a5faff4be923489284587525ded5e829~mv2.png?originWidth=384&originHeight=576"
               alt="NIDALUM Perfume"
               width={400}
-              height={500}
+              height={600}
               className="w-full h-auto object-cover rounded-lg"
             />
           </div>
