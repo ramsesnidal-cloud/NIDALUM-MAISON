@@ -77,7 +77,7 @@ export default function NewsletterSignup() {
             Rejoignez le Cercle Intérieur
           </h2>
           <p className="font-paragraph text-base sm:text-lg text-foreground/80">
-            Recevez les actualités exclusives, les sorties musicales et les invitations spéciales de NIDALUM MAISON
+            Recevez les actualités exclusives, les sorties musicales et les invitations spéciales
           </p>
         </motion.div>
 
