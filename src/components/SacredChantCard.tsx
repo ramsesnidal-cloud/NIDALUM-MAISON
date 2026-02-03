@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Download } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { SacredChant } from '@/content/sacredChants';
 
@@ -189,19 +189,6 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
               >
                 HI-RES WAV
               </button>
-            )}
-
-            {/* Download Link */}
-            {chant.hiResWavUrl && (
-              <a
-                href={chant.hiResWavUrl}
-                download
-                className="text-xs text-muted hover:text-gold transition-colors flex items-center gap-1 ml-auto"
-                aria-label="Download WAV"
-              >
-                <Download size={12} />
-                <span>Download</span>
-              </a>
             )}
           </div>
         </div>

@@ -24,7 +24,7 @@ export default function NidalumFashionPage() {
       <section className="py-16 px-6 sm:px-10 lg:px-14 border-b border-border bg-night">
         <div className="max-w-[1320px] mx-auto">
           <p className="text-base font-body text-ivory">
-            In development. Pieces are being prototyped as ritual garments, with controlled drops and strict material codes.
+            In confection.
           </p>
         </div>
       </section>

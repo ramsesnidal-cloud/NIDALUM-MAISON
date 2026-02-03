@@ -9,8 +9,8 @@ export default function HomePage() {
     <div className="min-h-screen bg-obsidian text-ivory flex flex-col">
       <Header />
       
-      {/* Hero Section - Ceremonial Entry */}
-      <section className="h-[55vh] md:h-[60vh] lg:h-[70vh] px-6 sm:px-10 lg:px-16 flex items-center justify-center">
+      {/* Hero Section - Ceremonial Entry - Vertically Centered */}
+      <section className="min-h-[calc(100vh-80px)] px-6 sm:px-10 lg:px-16 flex items-center justify-center">
         <div className="w-full max-w-[1320px] flex flex-col items-center justify-center text-center">
           {/* Title - Single line, no wrap, fixed size */}
           <h1 
@@ -23,21 +23,23 @@ export default function HomePage() {
             NIDALUM MAISON
           </h1>
 
-          {/* Slogan - Slightly larger than before */}
+          {/* Slogan - Increased font size */}
           <p 
             className="font-body tracking-[0.25em] uppercase text-muted mb-8 md:mb-12 font-light"
             style={{
-              fontSize: 'clamp(1.2rem, 2vw, 1.6rem)',
+              fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)',
               fontVariant: 'small-caps',
             }}
           >
             A SACRED HOUSE OF CREATION
           </p>
 
-          {/* Manifesto Block - Slightly larger than before */}
+          {/* Manifesto Block - Three lines centered */}
           <div className="mb-10 md:mb-14 max-w-[58ch]">
-            <p className="font-body leading-relaxed text-ivory" style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}>
-              Born of language, memory, and ritual. Music becomes architecture. Silence becomes signature. Creation becomes rite. Not a genre. A language. A House.
+            <p className="font-body leading-relaxed text-ivory" style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)' }}>
+              Born from language, memory, and ritual.<br />
+              Music becomes architecture. Silence becomes signature.<br />
+              Creation becomes rite. It is not a genre. It is a language. It is a House.
             </p>
           </div>
 

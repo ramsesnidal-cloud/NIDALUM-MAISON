@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Download, Loader } from 'lucide-react';
+import { Play, Pause, Loader } from 'lucide-react';
 import { useAudioPlayback } from '@/lib/audio-playback-store';
 
 interface ArtistAudioPlayerProps {
@@ -172,7 +172,7 @@ export default function ArtistAudioPlayer({
         </div>
       </div>
 
-      {/* WAV Toggle and Download - Only show download when WAV is active */}
+      {/* WAV Toggle - Only show toggle, no download */}
       {hiResWavUrl && (
         <div className="flex items-center gap-2 text-xs font-body">
           <button
@@ -185,17 +185,6 @@ export default function ArtistAudioPlayer({
           >
             HI-RES
           </button>
-          {useWav && (
-            <a
-              href={hiResWavUrl}
-              download={`${artistName}-excerpt.wav`}
-              className="flex items-center gap-1 text-muted hover:text-gold transition-colors"
-              aria-label={`Download WAV for ${artistName}`}
-            >
-              <Download size={12} />
-              <span>Download</span>
-            </a>
-          )}
         </div>
       )}
     </div>

@@ -68,8 +68,10 @@ export default function SacredMusicPage() {
                 {/* Audio Player */}
                 <audio
                   controls
+                  controlsList="nodownload noplaybackrate"
                   preload="none"
                   className="w-full h-8 md:h-10 bg-night border border-border mt-auto"
+                  onContextMenu={(e) => e.preventDefault()}
                 >
                   <source src={artist.audioPreviewUrl} type="audio/mpeg" />
                 </audio>

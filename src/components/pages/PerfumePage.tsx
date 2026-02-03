@@ -24,7 +24,7 @@ export default function PerfumePage() {
       <section className="py-16 px-6 sm:px-10 lg:px-14 border-b border-border bg-night">
         <div className="max-w-[1320px] mx-auto">
           <p className="text-base font-body text-ivory">
-            In development. Formulation is being composed under controlled research and restrained release principles.
+            In confection.
           </p>
         </div>
       </section>
