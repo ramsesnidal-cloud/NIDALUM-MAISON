@@ -2,27 +2,31 @@ import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import { FragmentsLexicon } from '@/entities/index';
+import { FragmentsLexicon, DailyExpressions } from '@/entities/index';
 
 export default function FragmentsPage() {
   const [lexicon, setLexicon] = useState<FragmentsLexicon[]>([]);
-  const [expressions, setExpressions] = useState<FragmentsLexicon[]>([]);
+  const [expressions, setExpressions] = useState<DailyExpressions[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
+        // Fetch 100 lexicon items, published only, sorted by order
         const lexiconResult = await BaseCrudService.getAll<FragmentsLexicon>('fragmentslexicon', [], { limit: 100 });
         const publishedLexicon = (lexiconResult.items || [])
           .filter(l => l.isPublished === true)
           .sort((a, b) => (a.order || 0) - (b.order || 0));
         setLexicon(publishedLexicon);
+        console.log('Lexicon loaded:', publishedLexicon.length, 'items');
 
-        const expressionsResult = await BaseCrudService.getAll<FragmentsLexicon>('dailyexpressions', [], { limit: 100 });
+        // Fetch 10 daily expressions, published only, sorted by order
+        const expressionsResult = await BaseCrudService.getAll<DailyExpressions>('dailyexpressions', [], { limit: 10 });
         const publishedExpressions = (expressionsResult.items || [])
           .filter(e => e.isPublished === true)
           .sort((a, b) => (a.order || 0) - (b.order || 0));
         setExpressions(publishedExpressions);
+        console.log('Daily expressions loaded:', publishedExpressions.length, 'items');
       } catch (error) {
         console.error('Error loading fragments:', error);
       } finally {
@@ -31,6 +35,7 @@ export default function FragmentsPage() {
     };
     loadData();
   }, []);
+
   return (
     <div className="min-h-screen bg-obsidian text-ivory">
       <Header />
@@ -89,7 +94,7 @@ export default function FragmentsPage() {
             DAILY EXPRESSIONS ({expressions.length})
           </h2>
 
-          {/* Expressions List */}
+          {/* Expressions Grid */}
           {isLoading ? (
             <div className="text-center text-muted">Loading...</div>
           ) : expressions.length === 0 ? (
@@ -102,7 +107,7 @@ export default function FragmentsPage() {
                   className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
                 >
                   <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
-                    {item.termNidalum}
+                    {item.phraseNidalum}
                   </p>
                   <p className="text-xs md:text-sm text-blue-300/90">
                     {item.translationFrench}

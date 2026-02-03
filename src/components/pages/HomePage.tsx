@@ -1,10 +1,42 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { fragments } from '@/content/fragments';
-import { fragmentsLexicon100 } from '@/content/fragments_lexicon_100';
+import { BaseCrudService } from '@/integrations';
+import { FragmentsLexicon } from '@/entities/index';
 
 export default function HomePage() {
+  const [featuredFragments, setFeaturedFragments] = useState<FragmentsLexicon[]>([]);
+  const [isLoadingFragments, setIsLoadingFragments] = useState(true);
+
+  useEffect(() => {
+    const loadFragments = async () => {
+      try {
+        const result = await BaseCrudService.getAll<FragmentsLexicon>('fragmentslexicon', [], { limit: 6 });
+        const featured = (result.items || [])
+          .filter(f => f.isFeatured === true && f.isPublished === true)
+          .sort((a, b) => (a.order || 0) - (b.order || 0))
+          .slice(0, 6);
+        
+        // Fallback: if fewer than 6 featured, take first 6 published
+        if (featured.length < 6) {
+          const allPublished = (result.items || [])
+            .filter(f => f.isPublished === true)
+            .sort((a, b) => (a.order || 0) - (b.order || 0))
+            .slice(0, 6);
+          setFeaturedFragments(allPublished);
+        } else {
+          setFeaturedFragments(featured);
+        }
+      } catch (error) {
+        console.error('Error loading featured fragments:', error);
+      } finally {
+        setIsLoadingFragments(false);
+      }
+    };
+    loadFragments();
+  }, []);
+
   return (
     <div className="min-h-screen bg-obsidian text-ivory flex flex-col">
       <Header />
@@ -105,40 +137,27 @@ export default function HomePage() {
             FRAGMENTS
           </h2>
           
-          {/* Fragments Grid - Words with NIDALUM, French, English */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 mb-12 md:mb-16">
-            {fragments.map((fragment, idx) => {
-              const lexiconEntry = fragmentsLexicon100.find(item => item.nidalum === fragment);
-              return (
+          {/* Fragments Pills - 6 on one line, white only, no translations */}
+          {!isLoadingFragments && featuredFragments.length > 0 && (
+            <div className="flex flex-wrap gap-3 md:gap-4 mb-12 md:mb-16 justify-center md:justify-start">
+              {featuredFragments.map((fragment) => (
                 <div
-                  key={idx}
-                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
+                  key={fragment._id}
+                  className="px-4 py-2 rounded-full border border-white/20 bg-black/10 text-ivory text-sm md:text-base font-body tracking-wide"
                 >
-                  <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
-                    {fragment}
-                  </p>
-                  {lexiconEntry && (
-                    <>
-                      <p className="text-xs md:text-sm text-blue-300/90">
-                        {lexiconEntry.french}
-                      </p>
-                      <p className="text-xs md:text-sm text-white/85">
-                        {lexiconEntry.english}
-                      </p>
-                    </>
-                  )}
+                  {fragment.termNidalum}
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* See More Fragments Link */}
-          <div className="flex justify-center">
+          <div className="flex justify-center md:justify-start">
             <Link 
               to="/fragments" 
               className="text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
             >
-              See more fragments
+              See more FRAGMENTS
               <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
             </Link>
           </div>
