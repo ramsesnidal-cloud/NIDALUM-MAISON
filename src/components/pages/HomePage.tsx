@@ -10,11 +10,11 @@ export default function HomePage() {
       <Header />
       
       {/* Hero Section - Ceremonial Entry */}
-      <section className="flex-1 px-6 sm:px-10 lg:px-16 flex items-center justify-center pt-32 pb-20 md:pt-40 md:pb-24">
+      <section className="h-[55vh] md:h-[60vh] lg:h-[70vh] px-6 sm:px-10 lg:px-16 flex items-center justify-center">
         <div className="w-full max-w-[1320px] flex flex-col items-center justify-center text-center">
-          {/* Title - Single line, no wrap */}
+          {/* Title - Single line, no wrap, fixed size */}
           <h1 
-            className="font-heading font-light leading-[1.05] mb-8 text-ivory whitespace-nowrap"
+            className="font-heading font-light leading-[1.05] mb-6 md:mb-8 text-ivory whitespace-nowrap"
             style={{
               fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
               letterSpacing: '-0.01em',
@@ -23,20 +23,20 @@ export default function HomePage() {
             NIDALUM MAISON
           </h1>
 
-          {/* Slogan - Slightly larger, small caps, high tracking */}
+          {/* Slogan - Slightly larger than before */}
           <p 
-            className="font-body tracking-[0.25em] uppercase text-muted mb-14 font-light"
+            className="font-body tracking-[0.25em] uppercase text-muted mb-8 md:mb-12 font-light"
             style={{
-              fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)',
+              fontSize: 'clamp(1.2rem, 2vw, 1.6rem)',
               fontVariant: 'small-caps',
             }}
           >
             A SACRED HOUSE OF CREATION
           </p>
 
-          {/* Manifesto Block - Centered, calm line height */}
-          <div className="mb-14 max-w-[58ch]">
-            <p className="font-body text-base md:text-lg leading-relaxed text-ivory">
+          {/* Manifesto Block - Slightly larger than before */}
+          <div className="mb-10 md:mb-14 max-w-[58ch]">
+            <p className="font-body leading-relaxed text-ivory" style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}>
               Born of language, memory, and ritual. Music becomes architecture. Silence becomes signature. Creation becomes rite. Not a genre. A language. A House.
             </p>
           </div>
@@ -44,49 +44,49 @@ export default function HomePage() {
           {/* Enter Button - Hairline border */}
           <Link 
             to="/house" 
-            className="mb-16 px-10 py-3 border border-ivory text-ivory font-body text-sm md:text-base tracking-widest uppercase hover:border-gold hover:text-gold transition-colors duration-300 inline-block"
+            className="mb-10 md:mb-14 px-10 py-3 border border-ivory text-ivory font-body text-sm md:text-base tracking-widest uppercase hover:border-gold hover:text-gold transition-colors duration-300 inline-block"
           >
             ENTER
           </Link>
 
-          {/* Portals Row - Text only, no wrap on desktop */}
+          {/* Portals Row - No wrap on desktop, swipe on mobile */}
           <div className="w-full">
-            <div className="flex gap-4 md:gap-6 items-center justify-center flex-wrap px-4 md:flex-nowrap md:overflow-x-auto md:scrollbar-hide">
+            <div className="flex gap-3 md:gap-4 items-center justify-center px-4 md:px-0 overflow-x-auto md:overflow-x-visible scrollbar-hide">
               <Link 
                 to="/sacred" 
-                className="text-sm md:text-base font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM MUSIC
                 <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <span className="text-muted text-sm md:text-base flex-shrink-0">·</span>
+              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
               <Link 
                 to="/literature" 
-                className="text-sm md:text-base font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM LITERATURE
                 <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <span className="text-muted text-sm md:text-base flex-shrink-0">·</span>
+              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
               <Link 
                 to="/" 
-                className="text-sm md:text-base font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM FASHION
                 <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <span className="text-muted text-sm md:text-base flex-shrink-0">·</span>
+              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
               <Link 
                 to="/" 
-                className="text-sm md:text-base font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM PERFUME
                 <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <span className="text-muted text-sm md:text-base flex-shrink-0">·</span>
+              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
               <Link 
                 to="/" 
-                className="text-sm md:text-base font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM LANGUAGE
                 <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
