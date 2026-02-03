@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { fragments } from '@/content/fragments';
+import { fragmentsLexicon100 } from '@/content/fragments_lexicon_100';
 
 export default function HomePage() {
   return (
@@ -102,25 +103,30 @@ export default function HomePage() {
             FRAGMENTS
           </h2>
           
-          {/* Fragments Pills - Horizontal row, scrollable on mobile */}
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex gap-3 md:gap-4 flex-nowrap">
-              {fragments.map((fragment, idx) => (
+          {/* Fragments Grid - Words with translations */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 mb-12 md:mb-16">
+            {fragments.map((fragment, idx) => {
+              const lexiconEntry = fragmentsLexicon100.find(item => item.nidalum === fragment);
+              return (
                 <div
                   key={idx}
-                  className="flex-shrink-0 h-12 px-5 md:px-6 border border-border bg-obsidian text-ivory text-xs font-body tracking-widest uppercase flex items-center transition-colors duration-300 hover:border-gold group rounded-lg"
+                  className="text-center group"
                 >
-                  <span className="relative">
+                  <p className="text-base md:text-lg font-heading text-ivory mb-2 tracking-widest transition-colors duration-300 group-hover:text-gold">
                     {fragment}
-                    <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-                  </span>
+                  </p>
+                  {lexiconEntry && (
+                    <p className="text-xs md:text-sm font-body text-muted">
+                      {lexiconEntry.english}
+                    </p>
+                  )}
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
           {/* See More Fragments Link */}
-          <div className="flex justify-center mt-12 md:mt-16">
+          <div className="flex justify-center">
             <Link 
               to="/fragments" 
               className="text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"

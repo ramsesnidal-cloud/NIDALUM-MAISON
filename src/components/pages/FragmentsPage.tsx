@@ -1,7 +1,7 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { fragmentsLexicon } from '@/content/fragments_lexicon';
-import { fragmentsExpressions } from '@/content/fragments_expressions';
+import { fragmentsLexicon100 } from '@/content/fragments_lexicon_100';
+import { fragmentsDaily10 } from '@/content/fragments_daily_10';
 
 export default function FragmentsPage() {
   return (
@@ -11,11 +11,11 @@ export default function FragmentsPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
         <div className="max-w-[1320px] mx-auto">
-          <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
+          <h1 className="text-5xl font-heading font-bold tracking-widest mb-6">
             FRAGMENTS
           </h1>
-          <p className="text-lg font-body text-muted">
-            Selected words and expressions from the Nidalum language.
+          <p className="text-base md:text-lg font-body text-muted max-w-2xl leading-relaxed">
+            Nidalum draws inspiration from ancient Egyptian aesthetics and sacred language principles. It is a constructed language for the NIDALUM universe.
           </p>
         </div>
       </section>
@@ -23,29 +23,22 @@ export default function FragmentsPage() {
       {/* Lexicon Section */}
       <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
         <div className="max-w-[1320px] mx-auto">
-          <h2 className="text-2xl font-heading font-bold tracking-widest mb-4">
-            LEXICON
+          <h2 className="text-2xl font-heading font-bold tracking-widest mb-12">
+            LEXICON (100 WORDS)
           </h2>
-          
-          {/* Note */}
-          <div className="mb-12 max-w-2xl">
-            <p className="text-sm font-body text-muted leading-relaxed mb-4">
-              Selected fragments only. Not a full dictionary.
-            </p>
-            <p className="text-xs font-body text-muted leading-relaxed italic">
-              Inspired by ancient Egyptian resonance and ceremonial language. No historical claims.
-            </p>
-          </div>
 
           {/* Lexicon Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-            {fragmentsLexicon.map((item, idx) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
+            {fragmentsLexicon100.map((item, idx) => (
               <div
                 key={idx}
-                className="border border-border p-4 md:p-5 text-center hover:border-gold transition-colors duration-300"
+                className="text-center group"
               >
-                <p className="text-sm md:text-base font-heading text-ivory mb-2 tracking-widest">
+                <p className="text-sm md:text-base font-heading text-ivory mb-2 tracking-widest transition-colors duration-300 group-hover:text-gold">
                   {item.nidalum}
+                </p>
+                <p className="text-xs md:text-sm font-body text-muted mb-1">
+                  {item.french}
                 </p>
                 <p className="text-xs md:text-sm font-body text-muted">
                   {item.english}
@@ -60,18 +53,21 @@ export default function FragmentsPage() {
       <section className="py-24 px-6 sm:px-10 lg:px-14">
         <div className="max-w-[1320px] mx-auto">
           <h2 className="text-2xl font-heading font-bold tracking-widest mb-12">
-            DAILY EXPRESSIONS
+            DAILY EXPRESSIONS (10)
           </h2>
 
-          {/* Expressions Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {fragmentsExpressions.map((item, idx) => (
+          {/* Expressions List */}
+          <div className="space-y-6 md:space-y-8 max-w-2xl">
+            {fragmentsDaily10.map((item, idx) => (
               <div
                 key={idx}
-                className="border border-border p-6 md:p-8 hover:border-gold transition-colors duration-300"
+                className="group"
               >
-                <p className="text-base md:text-lg font-heading text-ivory mb-3 tracking-widest">
+                <p className="text-base md:text-lg font-heading text-ivory mb-2 tracking-widest transition-colors duration-300 group-hover:text-gold">
                   {item.nidalum}
+                </p>
+                <p className="text-sm md:text-base font-body text-muted mb-1">
+                  {item.french}
                 </p>
                 <p className="text-sm md:text-base font-body text-muted">
                   {item.english}
