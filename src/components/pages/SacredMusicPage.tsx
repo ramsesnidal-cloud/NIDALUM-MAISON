@@ -45,9 +45,9 @@ export default function SacredMusicPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
             {artists.map((artist) => (
-              <div key={artist.id} className="flex flex-col">
+              <div key={artist.id} className="flex flex-col h-full">
                 {/* Portrait */}
-                <div className="mb-6 aspect-square overflow-hidden bg-night">
+                <div className="mb-6 aspect-square overflow-hidden bg-night border border-border">
                   <Image
                     src={artist.portraitUrl}
                     alt={artist.name}
@@ -69,7 +69,7 @@ export default function SacredMusicPage() {
                 <audio
                   controls
                   preload="none"
-                  className="w-full h-8 md:h-10 bg-night border border-border rounded-none"
+                  className="w-full h-8 md:h-10 bg-night border border-border mt-auto"
                 >
                   <source src={artist.audioPreviewUrl} type="audio/mpeg" />
                 </audio>
@@ -89,7 +89,7 @@ export default function SacredMusicPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
             {discography.map((item) => (
               <div key={item.id} className="flex flex-col">
-                <div className="mb-4 aspect-square overflow-hidden bg-night">
+                <div className="mb-4 aspect-square overflow-hidden bg-night border border-border">
                   <Image
                     src={item.coverImageUrl}
                     alt={item.title}
@@ -119,7 +119,7 @@ export default function SacredMusicPage() {
             <div className="flex items-center justify-start gap-4 md:gap-6 overflow-x-auto scrollbar-hide">
               {axes.map((axis, idx) => (
                 <div key={idx} className="flex items-center gap-4 md:gap-6 flex-shrink-0">
-                  <p className="text-xs md:text-sm font-body tracking-[0.15em] uppercase text-ivory whitespace-nowrap">
+                  <p className="text-xs font-body tracking-[0.2em] uppercase text-ivory whitespace-nowrap">
                     {axis}
                   </p>
                   {idx < axes.length - 1 && (
@@ -136,7 +136,7 @@ export default function SacredMusicPage() {
               {fragments.map((fragment, idx) => (
                 <div
                   key={idx}
-                  className="flex-shrink-0 px-4 md:px-5 py-2 md:py-3 border border-border bg-night text-ivory text-xs md:text-sm font-body tracking-wide uppercase transition-all duration-300 hover:border-gold group"
+                  className="flex-shrink-0 h-9 px-4 md:px-5 border border-border bg-night text-ivory text-xs font-body tracking-widest uppercase flex items-center transition-colors duration-300 hover:border-gold group"
                 >
                   <span className="relative">
                     {fragment}

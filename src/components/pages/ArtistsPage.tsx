@@ -206,11 +206,11 @@ export default function ArtistsPage() {
       {/* Grid of Remaining Artists */}
       <section className="py-14 md:py-18 lg:py-24 px-6 sm:px-10 lg:px-14">
         <div className="mx-auto max-w-[1120px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {gridArtists.map((artist) => (
-              <div key={artist.id} className="border border-border p-4 md:p-5 bg-night/30 hover:border-gold/40 transition-colors duration-300">
+              <div key={artist.id} className="border border-border p-6 bg-night/30 hover:border-gold/40 transition-colors duration-300 flex flex-col h-full">
                 {/* Portrait */}
-                <div className="w-full aspect-[4/5] overflow-hidden bg-obsidian border border-border mb-4 hover:border-gold/40 transition-colors duration-300">
+                <div className="w-full aspect-[4/5] overflow-hidden bg-obsidian border border-border mb-6 hover:border-gold/40 transition-colors duration-300">
                   <Image
                     src={artist.portraitUrl}
                     alt={artist.portraitAlt}
@@ -222,7 +222,7 @@ export default function ArtistsPage() {
                 </div>
                 
                 {/* Info */}
-                <div className="space-y-2">
+                <div className="space-y-3 flex-grow">
                   <h3 className="text-base md:text-lg font-heading tracking-wide text-ivory truncate">
                     {artist.name}
                   </h3>
@@ -235,7 +235,7 @@ export default function ArtistsPage() {
                 </div>
                 
                 {/* Audio Player - Compact */}
-                <div className="mt-4">
+                <div className="mt-6">
                   <ArtistAudioPlayer
                     previewMp3Url={artist.previewMp3Url}
                     hiResWavUrl={artist.hiResWavUrl}
