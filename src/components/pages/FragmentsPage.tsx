@@ -1,40 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { BaseCrudService } from '@/integrations';
-import { FragmentsLexicon, DailyExpressions } from '@/entities/index';
+import { fragmentsLexicon100 } from '@/content/fragments_lexicon_100';
+import { fragmentsDaily10 } from '@/content/fragments_daily_10';
 
 export default function FragmentsPage() {
-  const [lexicon, setLexicon] = useState<FragmentsLexicon[]>([]);
-  const [expressions, setExpressions] = useState<DailyExpressions[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        // Fetch 100 lexicon items, published only, sorted by order
-        const lexiconResult = await BaseCrudService.getAll<FragmentsLexicon>('fragmentslexicon', [], { limit: 100 });
-        const publishedLexicon = (lexiconResult.items || [])
-          .filter(l => l.isPublished === true)
-          .sort((a, b) => (a.order || 0) - (b.order || 0));
-        setLexicon(publishedLexicon);
-        console.log('publishedLexicon.length =', publishedLexicon.length);
-
-        // Fetch 10 daily expressions, published only, sorted by order
-        const expressionsResult = await BaseCrudService.getAll<DailyExpressions>('dailyexpressions', [], { limit: 10 });
-        const publishedExpressions = (expressionsResult.items || [])
-          .filter(e => e.isPublished === true)
-          .sort((a, b) => (a.order || 0) - (b.order || 0));
-        setExpressions(publishedExpressions);
-        console.log('publishedExpressions.length =', publishedExpressions.length);
-      } catch (error) {
-        console.error('Error loading fragments:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadData();
-  }, []);
+  // Use official datasets - exactly 100 lexicon items and 10 expressions
+  const [lexicon] = useState(fragmentsLexicon100.slice(0, 100));
+  const [expressions] = useState(fragmentsDaily10.slice(0, 10));
 
   return (
     <div className="min-h-screen bg-obsidian text-ivory">
@@ -60,25 +33,23 @@ export default function FragmentsPage() {
           </h2>
 
           {/* Lexicon Grid */}
-          {isLoading ? (
-            <div className="text-center text-muted">Loading...</div>
-          ) : lexicon.length === 0 ? (
+          {lexicon.length === 0 ? (
             <div className="text-center text-muted">No lexicon available.</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
-              {lexicon.map((item) => (
+              {lexicon.map((item, idx) => (
                 <div
-                  key={item._id}
+                  key={idx}
                   className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
                 >
                   <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
-                    {item.termNidalum}
+                    {item.nidalum}
                   </p>
                   <p className="text-xs md:text-sm text-blue-300/90">
-                    {item.translationFrench}
+                    {item.french}
                   </p>
                   <p className="text-xs md:text-sm text-white/85">
-                    {item.translationEnglish}
+                    {item.english}
                   </p>
                 </div>
               ))}
@@ -95,25 +66,23 @@ export default function FragmentsPage() {
           </h2>
 
           {/* Expressions Grid */}
-          {isLoading ? (
-            <div className="text-center text-muted">Loading...</div>
-          ) : expressions.length === 0 ? (
+          {expressions.length === 0 ? (
             <div className="text-center text-muted">No expressions available.</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
-              {expressions.map((item) => (
+              {expressions.map((item, idx) => (
                 <div
-                  key={item._id}
+                  key={idx}
                   className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
                 >
                   <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
-                    {item.phraseNidalum}
+                    {item.nidalum}
                   </p>
                   <p className="text-xs md:text-sm text-blue-300/90">
-                    {item.translationFrench}
+                    {item.french}
                   </p>
                   <p className="text-xs md:text-sm text-white/85">
-                    {item.translationEnglish}
+                    {item.english}
                   </p>
                 </div>
               ))}

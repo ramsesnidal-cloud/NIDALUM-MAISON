@@ -1,41 +1,12 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { BaseCrudService } from '@/integrations';
-import { FragmentsLexicon } from '@/entities/index';
+import { fragmentsLexicon100 } from '@/content/fragments_lexicon_100';
 
 export default function HomePage() {
-  const [featuredFragments, setFeaturedFragments] = useState<FragmentsLexicon[]>([]);
-  const [isLoadingFragments, setIsLoadingFragments] = useState(true);
-
-  useEffect(() => {
-    const loadFragments = async () => {
-      try {
-        const result = await BaseCrudService.getAll<FragmentsLexicon>('fragmentslexicon', [], { limit: 6 });
-        const featured = (result.items || [])
-          .filter(f => f.isFeatured === true && f.isPublished === true)
-          .sort((a, b) => (a.order || 0) - (b.order || 0))
-          .slice(0, 6);
-        
-        // Fallback: if fewer than 6 featured, take first 6 published
-        if (featured.length < 6) {
-          const allPublished = (result.items || [])
-            .filter(f => f.isPublished === true)
-            .sort((a, b) => (a.order || 0) - (b.order || 0))
-            .slice(0, 6);
-          setFeaturedFragments(allPublished);
-        } else {
-          setFeaturedFragments(featured);
-        }
-      } catch (error) {
-        console.error('Error loading featured fragments:', error);
-      } finally {
-        setIsLoadingFragments(false);
-      }
-    };
-    loadFragments();
-  }, []);
+  // Use first 6 items from official dataset
+  const [featuredFragments] = useState(fragmentsLexicon100.slice(0, 6));
 
   return (
     <div className="min-h-screen bg-obsidian text-ivory flex flex-col">
@@ -137,22 +108,30 @@ export default function HomePage() {
             FRAGMENTS
           </h2>
           
-          {/* Fragments Pills - 6 on one line, white only, no translations */}
-          {!isLoadingFragments && featuredFragments.length > 0 && (
-            <div className="flex flex-wrap gap-3 md:gap-4 mb-12 md:mb-16 justify-center">
-              {featuredFragments.map((fragment) => (
+          {/* Fragments Grid - 6 items, centered, white only */}
+          {featuredFragments.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-12 md:mb-16 max-w-[900px] mx-auto">
+              {featuredFragments.map((fragment, idx) => (
                 <div
-                  key={fragment._id}
-                  className="px-4 py-2 rounded-full border border-white/20 bg-black/10 text-ivory text-sm md:text-base font-body tracking-wide"
+                  key={idx}
+                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1 text-center"
                 >
-                  {fragment.termNidalum}
+                  <p className="text-base md:text-lg font-medium tracking-wide text-white">
+                    {fragment.nidalum}
+                  </p>
+                  <p className="text-xs md:text-sm text-white/70">
+                    {fragment.french}
+                  </p>
+                  <p className="text-xs md:text-sm text-white/60">
+                    {fragment.english}
+                  </p>
                 </div>
               ))}
             </div>
           )}
 
           {/* See More Fragments Link */}
-          <div className="flex justify-center md:justify-start">
+          <div className="flex justify-center">
             <Link 
               to="/fragments" 
               className="text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
