@@ -10,8 +10,17 @@ export default function HomePage() {
       {/* Hero Section - Responsive height without full screen */}
       <section className="pt-32 pb-12 px-8 min-h-[50vh] sm:min-h-[58vh] md:min-h-[62vh] lg:min-h-[70vh] flex items-center">
         <div className="max-w-content mx-auto text-center w-full">
-          <h1 className="text-[clamp(2.5rem,8vw,5.5rem)] font-heading font-bold tracking-tight leading-[1.1] mb-8 text-ivory">
-            NIDALUM<br />MAISON
+          <h1 
+            className="font-heading font-bold leading-[1.1] mb-8 text-ivory"
+            style={{
+              fontSize: 'clamp(2.1rem, 7.2vw, 5.6rem)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'clip',
+              letterSpacing: 'clamp(-0.02em, -0.5vw, -0.01em)',
+            }}
+          >
+            NIDALUM MAISON
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl font-heading font-light tracking-wide mb-6 text-gold">
             A House of Literature and Sacred Sound.
