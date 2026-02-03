@@ -10,7 +10,7 @@ export default function HomePage() {
       {/* Hero Section - Responsive height without full screen */}
       <section className="pt-32 pb-12 px-8 min-h-[50vh] sm:min-h-[58vh] md:min-h-[62vh] lg:min-h-[70vh] flex items-center">
         <div className="max-w-content mx-auto text-center w-full">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tight leading-tight mb-8 text-ivory">
+          <h1 className="text-[clamp(2.5rem,8vw,5.5rem)] font-heading font-bold tracking-tight leading-[1.1] mb-8 text-ivory">
             NIDALUM<br />MAISON
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl font-heading font-light tracking-wide mb-6 text-gold">
@@ -37,11 +37,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Production Label */}
-      <section className="py-8 px-8 border-t border-border bg-night">
+      {/* Institutional Stamp - Ultra-thin editorial strip */}
+      <section className="py-4 px-8 border-t border-border bg-night">
         <div className="max-w-content mx-auto">
-          <p className="text-xs sm:text-sm font-body text-muted tracking-widest uppercase text-center">
-            Production Label: NIDALUM MUSIC
+          <p className="text-[0.65rem] font-body text-muted tracking-[0.15em] uppercase text-center border-t border-b border-border py-2" style={{ letterSpacing: '0.15em' }}>
+            NIDALUM MUSIC
           </p>
         </div>
       </section>

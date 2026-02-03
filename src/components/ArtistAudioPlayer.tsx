@@ -1,33 +1,59 @@
-import { useState, useRef } from 'react';
-import { Play, Pause, Download } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Play, Pause, Download, Loader } from 'lucide-react';
+import { useAudioPlayback } from '@/lib/audio-playback-store';
 
 interface ArtistAudioPlayerProps {
   previewMp3Url: string;
   hiResWavUrl?: string;
   artistName: string;
+  playerId: string;
 }
 
 export default function ArtistAudioPlayer({
   previewMp3Url,
   hiResWavUrl,
   artistName,
+  playerId,
 }: ArtistAudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [useWav, setUseWav] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(false);
+  
+  const { activePlayerId, setActivePlayer, isPlayerActive } = useAudioPlayback();
+  const isThisPlayerActive = isPlayerActive(playerId);
 
   const currentSource = useWav && hiResWavUrl ? hiResWavUrl : previewMp3Url;
+
+  // Stop other players when this one plays
+  useEffect(() => {
+    if (isPlaying && !isThisPlayerActive) {
+      setActivePlayer(playerId);
+    }
+  }, [isPlaying, isThisPlayerActive, playerId, setActivePlayer]);
+
+  // Pause this player if another player starts
+  useEffect(() => {
+    if (activePlayerId && activePlayerId !== playerId && isPlaying) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      setIsPlaying(false);
+    }
+  }, [activePlayerId, playerId, isPlaying]);
 
   const handlePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
+        setActivePlayer(null);
       } else {
         audioRef.current.play();
+        setIsPlaying(true);
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -40,11 +66,13 @@ export default function ArtistAudioPlayer({
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
+      setIsBuffering(false);
     }
   };
 
   const handleEnded = () => {
     setIsPlaying(false);
+    setActivePlayer(null);
   };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -75,6 +103,10 @@ export default function ArtistAudioPlayer({
     }
   };
 
+  const handleWaitingForData = () => {
+    setIsBuffering(true);
+  };
+
   const formatTime = (time: number) => {
     if (!time || isNaN(time)) return '0:00';
     const minutes = Math.floor(time / 60);
@@ -92,6 +124,8 @@ export default function ArtistAudioPlayer({
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleEnded}
+        onWaiting={handleWaitingForData}
+        onCanPlay={() => setIsBuffering(false)}
         preload="none"
       >
         <source src={currentSource} type={useWav ? 'audio/wav' : 'audio/mpeg'} />
@@ -99,13 +133,16 @@ export default function ArtistAudioPlayer({
 
       {/* Player Controls */}
       <div className="flex items-center gap-4 mb-4">
-        {/* Play/Pause Button */}
+        {/* Play/Pause Button with Loading State */}
         <button
           onClick={handlePlayPause}
           className="flex-shrink-0 w-10 h-10 flex items-center justify-center border border-gold text-gold hover:bg-gold hover:text-obsidian transition-all duration-200 rounded-sm"
           aria-label={isPlaying ? 'Pause' : 'Play'}
+          disabled={isBuffering}
         >
-          {isPlaying ? (
+          {isBuffering ? (
+            <Loader size={18} className="animate-spin" />
+          ) : isPlaying ? (
             <Pause size={18} />
           ) : (
             <Play size={18} className="ml-0.5" />
@@ -135,7 +172,7 @@ export default function ArtistAudioPlayer({
         </div>
       </div>
 
-      {/* WAV Toggle and Download */}
+      {/* WAV Toggle and Download - Only show download when WAV is active */}
       {hiResWavUrl && (
         <div className="flex items-center gap-3 text-xs font-body">
           <button
@@ -148,15 +185,17 @@ export default function ArtistAudioPlayer({
           >
             HI-RES WAV
           </button>
-          <a
-            href={hiResWavUrl}
-            download={`${artistName}-excerpt.wav`}
-            className="flex items-center gap-1 text-muted hover:text-gold transition-colors"
-            aria-label={`Download WAV for ${artistName}`}
-          >
-            <Download size={14} />
-            <span>Download</span>
-          </a>
+          {useWav && (
+            <a
+              href={hiResWavUrl}
+              download={`${artistName}-excerpt.wav`}
+              className="flex items-center gap-1 text-muted hover:text-gold transition-colors"
+              aria-label={`Download WAV for ${artistName}`}
+            >
+              <Download size={14} />
+              <span>Download</span>
+            </a>
+          )}
         </div>
       )}
     </div>

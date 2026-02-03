@@ -174,6 +174,7 @@ export default function ArtistsPage() {
                       previewMp3Url={artist.previewMp3Url}
                       hiResWavUrl={artist.hiResWavUrl}
                       artistName={artist.name}
+                      playerId={`artist-${artist.id}`}
                     />
                   </div>
                 </div>
