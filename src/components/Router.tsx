@@ -5,38 +5,13 @@ import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
 
 // Pages
 import HomePage from '@/components/pages/HomePage';
-import GrandLexiquePage from '@/components/pages/GrandLexiquePage';
-import ChantsPage from '@/components/pages/ChantsPage';
-import OriginsPage from '@/components/pages/OriginsPage';
-import AcademyPage from '@/components/pages/AcademyPage';
-import PublicationsPage from '@/components/pages/PublicationsPage';
-import ResourcesPage from '@/components/pages/ResourcesPage';
-import LexicalArchivesPage from '@/components/pages/LexicalArchivesPage';
-import AuthorPage from '@/components/pages/AuthorPage';
+import HousePage from '@/components/pages/HousePage';
+import LiteraturePage from '@/components/pages/LiteraturePage';
+import SacredMusicPage from '@/components/pages/SacredMusicPage';
+import ArtistsPage from '@/components/pages/ArtistsPage';
 import ContactPage from '@/components/pages/ContactPage';
-import SignUpPage from '@/components/pages/SignUpPage';
-import InitializeLexicalData from '@/components/pages/InitializeLexicalData';
-import TermsPage from '@/components/pages/TermsPage';
+import ImprintPage from '@/components/pages/ImprintPage';
 import PrivacyPage from '@/components/pages/PrivacyPage';
-import DictionaryPage from '@/components/pages/DictionaryPage';
-import ProfilePage from '@/components/pages/ProfilePage';
-import CompleteLexicalDiagnostic from '@/components/pages/CompleteLexicalDiagnostic';
-import RepertoireLinguistiquePage from '@/components/pages/RepertoireLinguistiquePage';
-import GrammaireNidalumPage from '@/components/pages/GrammaireNidalumPage';
-import ApprendreLangagePage from '@/components/pages/ApprendreLangagePage';
-import NidalumMaisonPage from '@/components/pages/NidalumMaisonPage';
-import NidalumFashionPage from '@/components/pages/NidalumFashionPage';
-import ArtistPortfolioPage from '@/components/pages/ArtistPortfolioPage';
-import VideoShowcasePage from '@/components/pages/VideoShowcasePage';
-import DiagnosticPage from '@/components/pages/DiagnosticPage';
-import PerfumePage from '@/components/pages/PerfumePage';
-import SiteHubPage from '@/components/pages/SiteHubPage';
-import AudioTestPage from '@/components/pages/AudioTestPage';
-import AudioPlayerTestPage from '@/components/pages/AudioPlayerTestPage';
-import { MemberProtectedRoute } from '@/components/ui/member-protected-route';
-
-// Diagnostic
-import LexicalArchivesDiagnostic from '@/components/LexicalArchivesDiagnostic';
 
 // Layout component that includes ScrollToTop
 function Layout() {
@@ -56,121 +31,35 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <NidalumMaisonPage />,
+        element: <HomePage />,
       },
       {
-        path: "grand-lexique",
-        element: <GrandLexiquePage />,
+        path: "house",
+        element: <HousePage />,
       },
       {
-        path: "repertoire-linguistique",
-        element: <RepertoireLinguistiquePage />,
+        path: "literature",
+        element: <LiteraturePage />,
       },
       {
-        path: "grammaire-nidalum",
-        element: <GrammaireNidalumPage />,
+        path: "sacred",
+        element: <SacredMusicPage />,
       },
       {
-        path: "apprendre-langage",
-        element: <ApprendreLangagePage />,
-      },
-      {
-        path: "chants",
-        element: <ChantsPage />,
-      },
-      {
-        path: "origins",
-        element: <OriginsPage />,
-      },
-
-      {
-        path: "publications",
-        element: <PublicationsPage />,
-      },
-      {
-        path: "resources",
-        element: <ResourcesPage />,
-      },
-      {
-        path: "lexical-archives",
-        element: <LexicalArchivesPage />,
-      },
-      {
-        path: "diagnostic-lexical",
-        element: <LexicalArchivesDiagnostic />,
-      },
-      {
-        path: "diagnostic-complet",
-        element: <CompleteLexicalDiagnostic />,
-      },
-      {
-        path: "author",
-        element: <AuthorPage />,
+        path: "artists",
+        element: <ArtistsPage />,
       },
       {
         path: "contact",
         element: <ContactPage />,
       },
       {
-        path: "signup",
-        element: <SignUpPage />,
-      },
-      {
-        path: "initialize-lexical",
-        element: <InitializeLexicalData />,
-      },
-      {
-        path: "terms",
-        element: <TermsPage />,
+        path: "imprint",
+        element: <ImprintPage />,
       },
       {
         path: "privacy",
         element: <PrivacyPage />,
-      },
-      {
-        path: "dictionary",
-        element: <DictionaryPage />,
-      },
-
-      {
-        path: "profile",
-        element: (
-          <MemberProtectedRoute>
-            <ProfilePage />
-          </MemberProtectedRoute>
-        ),
-      },
-      {
-        path: "portfolio",
-        element: <ArtistPortfolioPage />,
-      },
-      {
-        path: "videos",
-        element: <VideoShowcasePage />,
-      },
-      {
-        path: "diagnostic",
-        element: <DiagnosticPage />,
-      },
-      {
-        path: "perfume",
-        element: <PerfumePage />,
-      },
-      {
-        path: "fashion",
-        element: <NidalumFashionPage />,
-      },
-      {
-        path: "hub",
-        element: <SiteHubPage />,
-      },
-      {
-        path: "audio-test",
-        element: <AudioTestPage />,
-      },
-      {
-        path: "audio-player-test",
-        element: <AudioPlayerTestPage />,
       },
       {
         path: "*",

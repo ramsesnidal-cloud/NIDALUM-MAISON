@@ -4,19 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Luxury Minimalist Theme */
+/* NIDALUM Design System */
 :root {
-  --bg-primary: #000000;
-  --bg-secondary: #1a1a1a;
-  --bg-tertiary: #0d0d0d;
-  --text-primary: #ffffff;
-  --text-secondary: #d4af37;
-  --accent-gold: #d4af37;
-  --border-color: #333333;
-  --stone-300: #d4d4d8;
-  --stone-400: #a1a1aa;
-  --stone-500: #71717a;
-  --stone-600: #52525b;
+  --bg-obsidian: #050505;
+  --bg-night: #0B0B0B;
+  --border-hairline: #1A1A1A;
+  --text-ivory: #F3EFE6;
+  --text-muted: #B8B2A6;
+  --accent-gold: #C6A35B;
+  --accent-oxblood: #3B0F16;
 }
 
 * {
@@ -30,48 +26,70 @@ html {
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: 'Montserrat', sans-serif;
-  line-height: 1.6;
-  letter-spacing: 0.02em;
+  background-color: var(--bg-obsidian);
+  color: var(--text-ivory);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0em;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cinzel', serif;
-  font-weight: 300;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 3.75rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 2.25rem;
+  font-weight: 400;
   letter-spacing: 0.05em;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
 }
 
 p {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  letter-spacing: 0.01em;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0em;
+  line-height: 1.7;
 }
 
-/* Luxury Button Styling */
+/* Button Styling */
 button, a.button {
-  border: 1px solid currentColor;
-  border-radius: 0;
-  transition: all 0.5s ease;
-  font-family: 'Montserrat', sans-serif;
-  letter-spacing: 0.05em;
-  font-weight: 400;
+  border: 1px solid var(--text-ivory);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  padding: 12px 32px;
+  background-color: transparent;
+  color: var(--text-ivory);
+  cursor: pointer;
 }
 
 button:hover, a.button:hover {
-  background-color: white;
-  color: black;
+  background-color: var(--accent-gold);
+  color: var(--bg-obsidian);
+  border-color: var(--accent-gold);
 }
 
-/* Remove all bright backgrounds */
-.bg-white, .bg-gray-50, .bg-blue-50, .bg-cyan-50 {
-  background-color: var(--bg-secondary) !important;
-}
-
-.text-gray-900, .text-gray-800 {
-  color: var(--text-primary) !important;
+button:focus, a.button:focus {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
 }
 
 /* Scrollbar styling */
@@ -80,14 +98,20 @@ button:hover, a.button:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: var(--bg-obsidian);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: var(--border-hairline);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--stone-500);
+  background: var(--text-muted);
+}
+
+/* Accessibility */
+a:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
 }
