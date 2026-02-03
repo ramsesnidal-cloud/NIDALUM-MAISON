@@ -7,6 +7,7 @@ export const fragmentsLexicon100 = [
   { nidalum: 'ASHÂLIM', french: 'Parole sacrée', english: 'Sacred utterance' },
   { nidalum: 'ASHÂLIMORA', french: 'Mémoire de l\'origine', english: 'Memory of origin' },
   { nidalum: 'TÉ', french: 'À toi, vers toi', english: 'To you, toward you' },
+  { nidalum: 'TÉ-LUMÉ', french: 'Lumière vers toi, chant de lumière personnel', english: 'Light toward you, personal light song' },
   { nidalum: 'KINTAYA', french: 'Harmonie, paix profonde', english: 'Harmony, deep peace' },
   { nidalum: 'AMUNÉ', french: 'Force invisible', english: 'Invisible strength' },
   { nidalum: 'HEKA', french: 'Courage sacré', english: 'Sacred courage' },
