@@ -139,7 +139,7 @@ export default function HomePage() {
           
           {/* Fragments Pills - 6 on one line, white only, no translations */}
           {!isLoadingFragments && featuredFragments.length > 0 && (
-            <div className="flex flex-wrap gap-3 md:gap-4 mb-12 md:mb-16 justify-center md:justify-start">
+            <div className="flex flex-wrap gap-3 md:gap-4 mb-12 md:mb-16 justify-center">
               {featuredFragments.map((fragment) => (
                 <div
                   key={fragment._id}

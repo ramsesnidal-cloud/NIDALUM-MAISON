@@ -18,7 +18,7 @@ export default function FragmentsPage() {
           .filter(l => l.isPublished === true)
           .sort((a, b) => (a.order || 0) - (b.order || 0));
         setLexicon(publishedLexicon);
-        console.log('Lexicon loaded:', publishedLexicon.length, 'items');
+        console.log('publishedLexicon.length =', publishedLexicon.length);
 
         // Fetch 10 daily expressions, published only, sorted by order
         const expressionsResult = await BaseCrudService.getAll<DailyExpressions>('dailyexpressions', [], { limit: 10 });
@@ -26,7 +26,7 @@ export default function FragmentsPage() {
           .filter(e => e.isPublished === true)
           .sort((a, b) => (a.order || 0) - (b.order || 0));
         setExpressions(publishedExpressions);
-        console.log('Daily expressions loaded:', publishedExpressions.length, 'items');
+        console.log('publishedExpressions.length =', publishedExpressions.length);
       } catch (error) {
         console.error('Error loading fragments:', error);
       } finally {
