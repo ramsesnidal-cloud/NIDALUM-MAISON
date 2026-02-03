@@ -39,7 +39,7 @@ export default function Header() {
         {/* Production Label - Institutional Stamp - Visible on all sizes */}
         <div className="flex items-center border-l border-border pl-4 md:pl-8 ml-auto md:ml-8 flex-shrink-0">
           <p className="text-[0.5rem] md:text-[0.6rem] font-body text-muted tracking-[0.12em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.12em' }}>
-            <span className="hidden md:inline">Production label<br /></span>NIDALUM MUSIC
+            <span className="hidden md:inline">Label<br /></span>NIDALUM MUSIC
           </p>
         </div>
       </nav>

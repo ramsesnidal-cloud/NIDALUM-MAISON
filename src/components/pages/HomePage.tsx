@@ -4,11 +4,11 @@ import Footer from '@/components/layout/Footer';
 
 export default function HomePage() {
   const nidalumExpressions = [
-    { nidalum: "Vel'thar", english: 'The silence between words' },
-    { nidalum: "Shen'mora", english: 'A house that remembers' },
-    { nidalum: "Keth'ala", english: 'The sound of becoming' },
-    { nidalum: "Mir'ven", english: 'Sacred threshold' },
-    { nidalum: "Thal'esh", english: 'The breath of time' },
+    { nidalum: "ORAA", english: 'Water. Source. Continuity.' },
+    { nidalum: "RA", english: 'Sun. Presence. Origin.' },
+    { nidalum: "Term III", english: '' },
+    { nidalum: "Term IV", english: '' },
+    { nidalum: "Term V", english: '' },
   ];
 
   return (
@@ -22,7 +22,7 @@ export default function HomePage() {
           <h1 
             className="font-heading font-bold leading-[1.1] mb-12 text-ivory"
             style={{
-              fontSize: 'clamp(2.52rem, 8.64vw, 6.72rem)',
+              fontSize: 'clamp(2.6rem, 8.8vw, 7.2rem)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'clip',
@@ -33,39 +33,41 @@ export default function HomePage() {
             NIDALUM MAISON
           </h1>
 
-          {/* Brand Portals - Horizontal Editorial Row */}
-          <div className="flex flex-wrap gap-6 md:gap-8 mb-12 items-center">
-            <Link 
-              to="/sacred" 
-              className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
-            >
-              NIDALUM MUSIC
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-            </Link>
-            <span className="w-px h-4 bg-border hidden md:block"></span>
-            <Link 
-              to="/literature" 
-              className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
-            >
-              NIDALUM LITERATURE
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-            </Link>
-            <span className="w-px h-4 bg-border hidden md:block"></span>
-            <Link 
-              to="/" 
-              className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
-            >
-              NIDALUM FASHION
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-            </Link>
-            <span className="w-px h-4 bg-border hidden md:block"></span>
-            <Link 
-              to="/" 
-              className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
-            >
-              NIDALUM PERFUME
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-            </Link>
+          {/* Brand Portals - Horizontal Editorial Row - No Wrap */}
+          <div className="mb-12 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-4 md:gap-6 items-center whitespace-nowrap">
+              <Link 
+                to="/sacred" 
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+              >
+                NIDALUM MUSIC
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
+              <Link 
+                to="/literature" 
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+              >
+                NIDALUM LITERATURE
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
+              <Link 
+                to="/" 
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+              >
+                NIDALUM FASHION
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
+              <Link 
+                to="/" 
+                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0"
+              >
+                NIDALUM FRAGRANCE
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+              </Link>
+            </div>
           </div>
 
           {/* Enter Action - Text Link */}
@@ -85,15 +87,17 @@ export default function HomePage() {
             Selected Nidalum Expressions
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-10">
             {nidalumExpressions.map((expr, idx) => (
               <div key={idx} className="border-l border-border pl-4 md:pl-6">
                 <p className="text-xs md:text-sm font-heading text-gold mb-2">
                   {expr.nidalum}
                 </p>
-                <p className="text-xs md:text-sm font-body text-muted leading-relaxed">
-                  {expr.english}
-                </p>
+                {expr.english && (
+                  <p className="text-xs md:text-sm font-body text-muted leading-relaxed">
+                    {expr.english}
+                  </p>
+                )}
               </div>
             ))}
           </div>
