@@ -136,7 +136,7 @@ export default function ArtistsPage() {
   const gridArtists = artists.slice(1);
 
   return (
-    <div className="min-h-screen bg-obsidian text-ivory">
+    <div className="min-h-screen bg-obsidian text-ivory" onContextMenu={(e) => e.preventDefault()}>
       <Header />
       
       {/* Hero */}

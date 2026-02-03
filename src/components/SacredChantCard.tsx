@@ -134,6 +134,9 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
           ref={audioRef}
           preload="none"
           crossOrigin="anonymous"
+          controlsList="nodownload noplaybackrate noremoteplayback"
+          disablePictureInPicture
+          onContextMenu={(e) => e.preventDefault()}
         >
           <source src={currentSource} type={sourceType} />
         </audio>

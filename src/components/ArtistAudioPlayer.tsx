@@ -127,6 +127,9 @@ export default function ArtistAudioPlayer({
         onWaiting={handleWaitingForData}
         onCanPlay={() => setIsBuffering(false)}
         preload="none"
+        controlsList="nodownload noplaybackrate noremoteplayback"
+        disablePictureInPicture
+        onContextMenu={(e) => e.preventDefault()}
       >
         <source src={currentSource} type={useWav ? 'audio/wav' : 'audio/mpeg'} />
       </audio>

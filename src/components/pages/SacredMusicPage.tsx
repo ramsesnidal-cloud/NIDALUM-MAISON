@@ -9,7 +9,7 @@ import { Image } from '@/components/ui/image';
 
 export default function SacredMusicPage() {
   return (
-    <div className="min-h-screen bg-obsidian text-ivory">
+    <div className="min-h-screen bg-obsidian text-ivory" onContextMenu={(e) => e.preventDefault()}>
       <Header />
       
       {/* Hero */}
@@ -68,7 +68,8 @@ export default function SacredMusicPage() {
                 {/* Audio Player */}
                 <audio
                   controls
-                  controlsList="nodownload noplaybackrate"
+                  controlsList="nodownload noplaybackrate noremoteplayback"
+                  disablePictureInPicture
                   preload="none"
                   className="w-full h-8 md:h-10 bg-night border border-border mt-auto"
                   onContextMenu={(e) => e.preventDefault()}
