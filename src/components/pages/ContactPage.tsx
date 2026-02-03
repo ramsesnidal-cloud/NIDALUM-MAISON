@@ -7,12 +7,11 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    type: 'professional',
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -24,12 +23,12 @@ export default function ContactPage() {
         _id: crypto.randomUUID(),
         name: formData.name,
         email: formData.email,
-        subject: formData.type,
+        subject: 'Direct Contact',
         message: formData.message,
         submissionDate: new Date(),
       });
       setSubmitted(true);
-      setFormData({ name: '', email: '', type: 'professional', message: '' });
+      setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setSubmitted(false), 3000);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -47,14 +46,14 @@ export default function ContactPage() {
             CONTACT
           </h1>
           <p className="text-lg font-body text-muted">
-            Select your inquiry with precision.
+            Direct contact with the House.
           </p>
         </div>
       </section>
 
       {/* Form */}
       <section className="py-24 px-6 sm:px-10 lg:px-14">
-        <div className="max-w-[1320px] mx-auto max-w-2xl">
+        <div className="max-w-2xl mx-auto">
           {submitted ? (
             <div className="text-center py-12">
               <p className="text-lg font-heading text-gold tracking-wide">
@@ -93,22 +92,6 @@ export default function ContactPage() {
                 />
               </div>
 
-              {/* Type */}
-              <div>
-                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
-                  INQUIRY TYPE
-                </label>
-                <select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleChange}
-                  className="w-full bg-night border border-border px-4 py-3 text-ivory focus:outline-none focus:border-gold transition-colors"
-                >
-                  <option value="professional">Professional Inquiry</option>
-                  <option value="private">Private Access Request</option>
-                </select>
-              </div>
-
               {/* Message */}
               <div>
                 <label className="block text-sm font-body text-ivory tracking-wide mb-3">
@@ -122,13 +105,6 @@ export default function ContactPage() {
                   rows={6}
                   className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors resize-none"
                 />
-              </div>
-
-              {/* Note */}
-              <div className="pt-4 border-t border-border">
-                <p className="text-xs font-body text-muted">
-                  Not all requests receive an answer.
-                </p>
               </div>
 
               {/* Submit */}

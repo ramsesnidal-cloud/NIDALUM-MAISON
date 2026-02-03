@@ -1,478 +1,111 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Mail, Lock, User, AlertCircle, CheckCircle, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { useTranslation } from '@/hooks/useTranslation';
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  agreeToTerms: boolean;
-}
-
-interface FormErrors {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  agreeToTerms?: string;
-  submit?: string;
-}
+import { BaseCrudService } from '@/integrations';
 
 export default function SignUpPage() {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
+  const [formData, setFormData] = useState({
     email: '',
-    password: '',
-    confirmPassword: '',
-    agreeToTerms: false,
+    firstName: '',
   });
+  const [submitted, setSubmitted] = useState(false);
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  // Validation functions
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const validatePassword = (password: string): boolean => {
-    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    return passwordRegex.test(password);
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    // First Name validation
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
-    } else if (formData.firstName.trim().length < 2) {
-      newErrors.firstName = 'First name must contain at least 2 characters';
-    }
-
-    // Last Name validation
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
-    } else if (formData.lastName.trim().length < 2) {
-      newErrors.lastName = 'Last name must contain at least 2 characters';
-    }
-
-    // Email validation
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-
-    // Password validation
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (!validatePassword(formData.password)) {
-      newErrors.password = 'Password must contain at least 8 characters, 1 uppercase, 1 lowercase, and 1 number';
-    }
-
-    // Confirm Password validation
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    // Terms agreement validation
-    if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'You must accept the terms of service';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-    // Clear error for this field when user starts typing
-    if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: undefined,
-      }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsLoading(true);
-    setErrors({});
-
     try {
-      // Simulate API call to register user
-      // In production, this would call your backend API
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Store user data in localStorage (for demo purposes)
-      // In production, this would be handled by your backend
-      const userData = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+      await BaseCrudService.create('newslettersubscribers', {
+        _id: crypto.randomUUID(),
         email: formData.email,
-        registeredAt: new Date().toISOString(),
-        emailVerified: false,
-      };
-
-      localStorage.setItem(`user_${formData.email}`, JSON.stringify(userData));
-
-      // Show success message
-      setIsSuccess(true);
-
-      // Redirect to login page after 2 seconds
-      setTimeout(() => {
-        navigate('/');
-      }, 2000);
+        firstName: formData.firstName || undefined,
+        subscriptionDate: new Date(),
+        isActive: true,
+      });
+      setSubmitted(true);
+      setFormData({ email: '', firstName: '' });
+      setTimeout(() => setSubmitted(false), 3000);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred during registration';
-      setErrors({ submit: errorMessage });
-    } finally {
-      setIsLoading(false);
+      console.error('Error submitting form:', error);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-obsidian text-ivory">
       <Header />
-
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-12 px-6 lg:px-12 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="relative max-w-[120rem] mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <h1 className="font-heading text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-6">
-              {t('pages.signup.title')}
-            </h1>
-            <p className="font-paragraph text-xl text-foreground/80 max-w-2xl mx-auto">
-              {t('pages.signup.description')}
-            </p>
-          </motion.div>
+      
+      {/* Hero */}
+      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="max-w-[1320px] mx-auto">
+          <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
+            SIGN UP
+          </h1>
+          <p className="text-lg font-body text-muted">
+            Subscribe for updates.
+          </p>
         </div>
       </section>
 
-      {/* Sign Up Form Section */}
-      <section className="py-16 px-6 lg:px-12">
-        <div className="max-w-md mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="border border-primary/20 bg-background/50 backdrop-blur-sm p-8"
-          >
-            {isSuccess ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="text-center py-8"
+      {/* Form */}
+      <section className="py-24 px-6 sm:px-10 lg:px-14">
+        <div className="max-w-2xl mx-auto">
+          {submitted ? (
+            <div className="text-center py-12">
+              <p className="text-lg font-heading text-gold tracking-wide">
+                Subscribed.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                  EMAIL <span className="text-gold">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
+                />
+              </div>
+
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                  NAME <span className="text-muted">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
+                />
+              </div>
+
+              {/* Note */}
+              <div className="pt-4 border-t border-border">
+                <p className="text-xs font-body text-muted leading-relaxed">
+                  Updates are occasional. No spam. Unsubscribe anytime.<br />
+                  No tracking and no cookies by default.
+                </p>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                className="w-full px-8 py-3 border border-ivory text-ivory hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-300 rounded-lg font-body text-sm tracking-wide"
               >
-                <div className="flex justify-center mb-4">
-                  <CheckCircle className="w-16 h-16 text-green-500" />
-                </div>
-                <h2 className="font-heading text-2xl text-primary mb-4">Sign Up Successful!</h2>
-                <p className="font-paragraph text-foreground/80 mb-6">
-                  Welcome to the Nidalum Institute! A confirmation email has been sent to your address.
-                </p>
-                <p className="font-paragraph text-sm text-foreground/60">
-                  Redirecting to home...
-                </p>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <h2 className="font-heading text-3xl text-primary mb-8 text-center">Create Account</h2>
-
-                {/* Submit Error */}
-                {errors.submit && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 p-4"
-                  >
-                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                    <p className="font-paragraph text-sm text-red-100">{errors.submit}</p>
-                  </motion.div>
-                )}
-
-                {/* First Name */}
-                <div>
-                  <label htmlFor="firstName" className="block font-paragraph text-sm text-foreground mb-2">
-                    First Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      placeholder="John"
-                      className={`w-full pl-10 pr-4 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
-                        errors.firstName ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
-                      }`}
-                    />
-                  </div>
-                  {errors.firstName && (
-                    <p className="font-paragraph text-xs text-red-400 mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.firstName}
-                    </p>
-                  )}
-                </div>
-
-                {/* Last Name */}
-                <div>
-                  <label htmlFor="lastName" className="block font-paragraph text-sm text-foreground mb-2">
-                    Last Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      placeholder="Smith"
-                      className={`w-full pl-10 pr-4 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
-                        errors.lastName ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
-                      }`}
-                    />
-                  </div>
-                  {errors.lastName && (
-                    <p className="font-paragraph text-xs text-red-400 mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.lastName}
-                    </p>
-                  )}
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label htmlFor="email" className="block font-paragraph text-sm text-foreground mb-2">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="john@example.com"
-                      className={`w-full pl-10 pr-4 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
-                        errors.email ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
-                      }`}
-                    />
-                  </div>
-                  {errors.email && (
-                    <p className="font-paragraph text-xs text-red-400 mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
-
-                {/* Password */}
-                <div>
-                  <label htmlFor="password" className="block font-paragraph text-sm text-foreground mb-2">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="••••••••"
-                      className={`w-full pl-10 pr-12 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
-                        errors.password ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
-                      }`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/60 hover:text-foreground transition-colors"
-                    >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <p className="font-paragraph text-xs text-red-400 mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.password}
-                    </p>
-                  )}
-                  <p className="font-paragraph text-xs text-foreground/50 mt-2">
-                    Minimum 8 characters, 1 uppercase, 1 lowercase, 1 number
-                  </p>
-                </div>
-
-                {/* Confirm Password */}
-                <div>
-                  <label htmlFor="confirmPassword" className="block font-paragraph text-sm text-foreground mb-2">
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary pointer-events-none" />
-                    <input
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      placeholder="••••••••"
-                      className={`w-full pl-10 pr-12 py-3 bg-background border font-paragraph text-foreground placeholder-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
-                        errors.confirmPassword ? 'border-red-500/50 focus:ring-red-500' : 'border-primary/20 focus:border-primary'
-                      }`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/60 hover:text-foreground transition-colors"
-                    >
-                      {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                  {errors.confirmPassword && (
-                    <p className="font-paragraph text-xs text-red-400 mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      {errors.confirmPassword}
-                    </p>
-                  )}
-                </div>
-
-                {/* Terms Agreement */}
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    id="agreeToTerms"
-                    name="agreeToTerms"
-                    checked={formData.agreeToTerms}
-                    onChange={handleInputChange}
-                    className="w-5 h-5 mt-0.5 bg-background border border-primary/20 accent-primary cursor-pointer"
-                  />
-                  <label htmlFor="agreeToTerms" className="font-paragraph text-sm text-foreground/80 cursor-pointer">
-                    I agree to the{' '}
-                    <a href="/terms" className="text-secondary hover:text-primary transition-colors">
-                      terms of service
-                    </a>{' '}
-                    and{' '}
-                    <a href="/privacy" className="text-secondary hover:text-primary transition-colors">
-                      privacy policy
-                    </a>
-                  </label>
-                </div>
-                {errors.agreeToTerms && (
-                  <p className="font-paragraph text-xs text-red-400 flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3" />
-                    {errors.agreeToTerms}
-                  </p>
-                )}
-
-                {/* Submit Button */}
-                <motion.button
-                  type="submit"
-                  disabled={isLoading}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full py-3 font-paragraph font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${
-                    isLoading
-                      ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
-                      : 'bg-primary text-primary-foreground hover:bg-primary/90'
-                  }`}
-                >
-                  {isLoading ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin"></div>
-                      Signing Up...
-                    </>
-                  ) : (
-                    <>
-                      Create My Account
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </motion.button>
-
-                {/* Login Link */}
-                <p className="text-center font-paragraph text-sm text-foreground/70">
-                  Already have an account?{' '}
-                  <a href="/" className="text-secondary hover:text-primary transition-colors font-semibold">
-                    Sign In
-                  </a>
-                </p>
-              </form>
-            )}
-          </motion.div>
-
-          {/* Info Box */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-8 border border-secondary/20 bg-secondary/5 p-6"
-          >
-            <h3 className="font-heading text-lg text-secondary mb-3">Benefits of Registration</h3>
-            <ul className="space-y-2 font-paragraph text-sm text-foreground/80">
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Access to all courses and resources
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Track your progress
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Download publications
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-primary rounded-full"></span>
-                Access to exclusive community
-              </li>
-            </ul>
-          </motion.div>
+                SUBSCRIBE
+              </button>
+            </form>
+          )}
         </div>
       </section>
 

@@ -47,16 +47,16 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/contact" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
-              S'INSCRIRE
+            <Link to="/signup" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
+              SIGN UP
             </Link>
           </li>
         </ul>
 
         {/* Right: Institutional Stamp */}
-        <div className="flex items-center border-l border-border pl-6 lg:pl-8 flex-shrink-0">
-          <p className="text-[0.55rem] lg:text-[0.65rem] font-body text-muted tracking-[0.12em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.12em' }}>
-            NIDALUM<br />MUSIC
+        <div className="hidden md:flex items-center border-l border-border pl-6 lg:pl-8 flex-shrink-0">
+          <p className="text-[0.5rem] lg:text-[0.6rem] font-body text-muted tracking-[0.1em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.1em' }}>
+            NIDALUM MUSIC<br />PRODUCTION
           </p>
         </div>
       </nav>

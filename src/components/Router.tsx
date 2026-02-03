@@ -10,6 +10,8 @@ import LiteraturePage from '@/components/pages/LiteraturePage';
 import SacredMusicPage from '@/components/pages/SacredMusicPage';
 import ArtistsPage from '@/components/pages/ArtistsPage';
 import ContactPage from '@/components/pages/ContactPage';
+import SignUpPage from '@/components/pages/SignUpPage';
+import FragmentsPage from '@/components/pages/FragmentsPage';
 import ImprintPage from '@/components/pages/ImprintPage';
 import PrivacyPage from '@/components/pages/PrivacyPage';
 
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
       {
         path: "contact",
         element: <ContactPage />,
+      },
+      {
+        path: "signup",
+        element: <SignUpPage />,
+      },
+      {
+        path: "fragments",
+        element: <FragmentsPage />,
       },
       {
         path: "imprint",

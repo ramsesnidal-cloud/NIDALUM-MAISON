@@ -118,6 +118,17 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+
+          {/* See More Fragments Link */}
+          <div className="flex justify-center mt-12 md:mt-16">
+            <Link 
+              to="/fragments" 
+              className="text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
+            >
+              See more fragments
+              <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+            </Link>
+          </div>
         </div>
       </section>
 
