@@ -87,7 +87,7 @@ export default function HomePage() {
               </Link>
               <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
               <Link 
-                to="/" 
+                to="/fragments" 
                 className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM LANGUAGE
@@ -105,7 +105,7 @@ export default function HomePage() {
             FRAGMENTS
           </h2>
           
-          {/* Fragments Grid - Words with translations */}
+          {/* Fragments Grid - Words with NIDALUM, French, English */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 mb-12 md:mb-16">
             {fragments.map((fragment, idx) => {
               const lexiconEntry = fragmentsLexicon100.find(item => item.nidalum === fragment);
@@ -118,9 +118,14 @@ export default function HomePage() {
                     {fragment}
                   </p>
                   {lexiconEntry && (
-                    <p className="text-xs md:text-sm font-body text-muted">
-                      {lexiconEntry.english}
-                    </p>
+                    <>
+                      <p className="text-xs md:text-sm font-body text-muted mb-1">
+                        {lexiconEntry.french}
+                      </p>
+                      <p className="text-xs md:text-sm font-body text-muted">
+                        {lexiconEntry.english}
+                      </p>
+                    </>
                   )}
                 </div>
               );

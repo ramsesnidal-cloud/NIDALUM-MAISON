@@ -32,12 +32,12 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
+            <Link to="/perfume" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
               PERFUME
             </Link>
           </li>
           <li>
-            <Link to="/" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
+            <Link to="/fashion" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
               FASHION
             </Link>
           </li>
