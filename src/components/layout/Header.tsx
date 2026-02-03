@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-obsidian border-b border-border">
-      <nav className="mx-auto max-w-[1120px] px-6 sm:px-10 lg:px-14 py-6 flex items-center justify-between gap-4">
+      <nav className="w-full px-6 sm:px-10 lg:px-16 py-6 flex items-center justify-between gap-8">
+        {/* Left: NIDALUM Logo */}
         <Link to="/" className="text-ivory text-2xl font-heading font-bold tracking-widest hover:text-gold transition-colors flex-shrink-0">
           NIDALUM
         </Link>
         
-        <ul className="hidden md:flex gap-12 items-center flex-1">
+        {/* Center: Navigation Links - Spread horizontally */}
+        <ul className="hidden lg:flex gap-8 items-center flex-1 justify-center">
           <li>
             <Link to="/house" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
               THE HOUSE
@@ -30,16 +32,31 @@ export default function Header() {
             </Link>
           </li>
           <li>
+            <Link to="/" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
+              PERFUME
+            </Link>
+          </li>
+          <li>
+            <Link to="/" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
+              FASHION
+            </Link>
+          </li>
+          <li>
             <Link to="/contact" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
               CONTACT
             </Link>
           </li>
+          <li>
+            <Link to="/contact" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
+              S'INSCRIRE
+            </Link>
+          </li>
         </ul>
 
-        {/* Production Label - Institutional Stamp - Visible on all sizes */}
-        <div className="flex items-center border-l border-border pl-4 md:pl-8 ml-auto md:ml-8 flex-shrink-0">
-          <p className="text-[0.5rem] md:text-[0.6rem] font-body text-muted tracking-[0.12em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.12em' }}>
-            <span className="hidden md:inline">Label<br /></span>NIDALUM MUSIC
+        {/* Right: Production Label */}
+        <div className="flex items-center border-l border-border pl-6 lg:pl-8 flex-shrink-0">
+          <p className="text-[0.55rem] lg:text-[0.65rem] font-body text-muted tracking-[0.12em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.12em' }}>
+            <span className="hidden lg:inline">LABEL<br /></span>NIDALUM
           </p>
         </div>
       </nav>
