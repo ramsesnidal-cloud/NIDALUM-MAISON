@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Image } from '@/components/ui/image';
+import ArtistAudioPlayer from '@/components/ArtistAudioPlayer';
 
 interface Artist {
   id: number;
@@ -9,6 +10,9 @@ interface Artist {
   role: string;
   description: string;
   portraitUrl: string;
+  portraitAlt: string;
+  previewMp3Url: string;
+  hiResWavUrl?: string;
 }
 
 export default function ArtistsPage() {
@@ -16,7 +20,7 @@ export default function ArtistsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize with placeholder data
+    // Initialize with placeholder data including audio URLs
     const artistData: Artist[] = [
       {
         id: 1,
@@ -24,6 +28,9 @@ export default function ArtistsPage() {
         role: 'Voice',
         description: 'Keeper of the first utterance.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 01, Voice',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_01.mp3',
+        hiResWavUrl: 'https://static.wixstatic.com/media/12d367_audio_excerpt_01_hires.wav',
       },
       {
         id: 2,
@@ -31,6 +38,9 @@ export default function ArtistsPage() {
         role: 'Weaver',
         description: 'Threads the sacred into form.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 02, Weaver',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_02.mp3',
+        hiResWavUrl: 'https://static.wixstatic.com/media/12d367_audio_excerpt_02_hires.wav',
       },
       {
         id: 3,
@@ -38,6 +48,8 @@ export default function ArtistsPage() {
         role: 'Herald',
         description: 'Announces what cannot be named.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 03, Herald',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_03.mp3',
       },
       {
         id: 4,
@@ -45,6 +57,8 @@ export default function ArtistsPage() {
         role: 'Scribe',
         description: 'Records the unrecordable.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 04, Scribe',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_04.mp3',
       },
       {
         id: 5,
@@ -52,6 +66,9 @@ export default function ArtistsPage() {
         role: 'Keeper',
         description: 'Guards the threshold.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 05, Keeper',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_05.mp3',
+        hiResWavUrl: 'https://static.wixstatic.com/media/12d367_audio_excerpt_05_hires.wav',
       },
       {
         id: 6,
@@ -59,6 +76,8 @@ export default function ArtistsPage() {
         role: 'Voice',
         description: 'Echoes the ancient silence.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 06, Voice',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_06.mp3',
       },
       {
         id: 7,
@@ -66,6 +85,9 @@ export default function ArtistsPage() {
         role: 'Weaver',
         description: 'Binds the invisible together.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 07, Weaver',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_07.mp3',
+        hiResWavUrl: 'https://static.wixstatic.com/media/12d367_audio_excerpt_07_hires.wav',
       },
       {
         id: 8,
@@ -73,6 +95,8 @@ export default function ArtistsPage() {
         role: 'Herald',
         description: 'Speaks in tongues of light.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 08, Herald',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_08.mp3',
       },
       {
         id: 9,
@@ -80,6 +104,9 @@ export default function ArtistsPage() {
         role: 'Scribe',
         description: 'Writes in the margins of time.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 09, Scribe',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_09.mp3',
+        hiResWavUrl: 'https://static.wixstatic.com/media/12d367_audio_excerpt_09_hires.wav',
       },
       {
         id: 10,
@@ -87,6 +114,8 @@ export default function ArtistsPage() {
         role: 'Keeper',
         description: 'Holds what must not be lost.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
+        portraitAlt: 'Artist 10, Keeper',
+        previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_10.mp3',
       },
     ];
     setArtists(artistData);
@@ -120,7 +149,7 @@ export default function ArtistsPage() {
                   <div className="aspect-[4/5] mb-6 overflow-hidden bg-night border border-border">
                     <Image
                       src={artist.portraitUrl}
-                      alt={`${artist.name}, ${artist.role}`}
+                      alt={artist.portraitAlt}
                       width={400}
                       height={500}
                       className="w-full h-full object-cover"
@@ -136,9 +165,16 @@ export default function ArtistsPage() {
                     <p className="text-xs font-body text-gold tracking-widest uppercase mb-3">
                       {artist.role}
                     </p>
-                    <p className="text-sm font-body text-muted leading-relaxed">
+                    <p className="text-sm font-body text-muted leading-relaxed mb-4">
                       {artist.description}
                     </p>
+                    
+                    {/* Audio Player */}
+                    <ArtistAudioPlayer
+                      previewMp3Url={artist.previewMp3Url}
+                      hiResWavUrl={artist.hiResWavUrl}
+                      artistName={artist.name}
+                    />
                   </div>
                 </div>
               ))}
