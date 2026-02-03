@@ -8,8 +8,8 @@ export default function SacredMusicPage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-8 border-b border-border">
-        <div className="max-w-content mx-auto">
+      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="mx-auto max-w-[1120px]">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             SACRED MUSIC
           </h1>
@@ -25,8 +25,8 @@ export default function SacredMusicPage() {
       </section>
 
       {/* Chants Grid */}
-      <section className="py-24 px-8">
-        <div className="max-w-content mx-auto">
+      <section className="py-24 px-6 sm:px-10 lg:px-14">
+        <div className="mx-auto max-w-[1120px]">
           <SacredChantList />
         </div>
       </section>

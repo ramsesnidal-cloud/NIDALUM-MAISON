@@ -8,7 +8,7 @@ interface Artist {
   id: number;
   name: string;
   role: string;
-  description: string;
+  oneLine: string;
   portraitUrl: string;
   portraitAlt: string;
   previewMp3Url: string;
@@ -26,7 +26,7 @@ export default function ArtistsPage() {
         id: 1,
         name: 'Artist 01',
         role: 'Voice',
-        description: 'Keeper of the first utterance.',
+        oneLine: 'Keeper of the first utterance.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 01, Voice',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_01.mp3',
@@ -36,7 +36,7 @@ export default function ArtistsPage() {
         id: 2,
         name: 'Artist 02',
         role: 'Weaver',
-        description: 'Threads the sacred into form.',
+        oneLine: 'Threads the sacred into form.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 02, Weaver',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_02.mp3',
@@ -46,7 +46,7 @@ export default function ArtistsPage() {
         id: 3,
         name: 'Artist 03',
         role: 'Herald',
-        description: 'Announces what cannot be named.',
+        oneLine: 'Announces what cannot be named.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 03, Herald',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_03.mp3',
@@ -55,7 +55,7 @@ export default function ArtistsPage() {
         id: 4,
         name: 'Artist 04',
         role: 'Scribe',
-        description: 'Records the unrecordable.',
+        oneLine: 'Records the unrecordable.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 04, Scribe',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_04.mp3',
@@ -64,7 +64,7 @@ export default function ArtistsPage() {
         id: 5,
         name: 'Artist 05',
         role: 'Keeper',
-        description: 'Guards the threshold.',
+        oneLine: 'Guards the threshold.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 05, Keeper',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_05.mp3',
@@ -74,7 +74,7 @@ export default function ArtistsPage() {
         id: 6,
         name: 'Artist 06',
         role: 'Voice',
-        description: 'Echoes the ancient silence.',
+        oneLine: 'Echoes the ancient silence.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 06, Voice',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_06.mp3',
@@ -83,7 +83,7 @@ export default function ArtistsPage() {
         id: 7,
         name: 'Artist 07',
         role: 'Weaver',
-        description: 'Binds the invisible together.',
+        oneLine: 'Binds the invisible together.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 07, Weaver',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_07.mp3',
@@ -93,7 +93,7 @@ export default function ArtistsPage() {
         id: 8,
         name: 'Artist 08',
         role: 'Herald',
-        description: 'Speaks in tongues of light.',
+        oneLine: 'Speaks in tongues of light.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 08, Herald',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_08.mp3',
@@ -102,7 +102,7 @@ export default function ArtistsPage() {
         id: 9,
         name: 'Artist 09',
         role: 'Scribe',
-        description: 'Writes in the margins of time.',
+        oneLine: 'Writes in the margins of time.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 09, Scribe',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_09.mp3',
@@ -112,7 +112,7 @@ export default function ArtistsPage() {
         id: 10,
         name: 'Artist 10',
         role: 'Keeper',
-        description: 'Holds what must not be lost.',
+        oneLine: 'Holds what must not be lost.',
         portraitUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
         portraitAlt: 'Artist 10, Keeper',
         previewMp3Url: 'https://static.wixstatic.com/media/12d367_audio_excerpt_10.mp3',
@@ -121,6 +121,19 @@ export default function ArtistsPage() {
     setArtists(artistData);
     setIsLoading(false);
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-obsidian text-ivory">
+        <Header />
+        <div className="pt-32" />
+        <Footer />
+      </div>
+    );
+  }
+
+  const featuredArtist = artists[0];
+  const gridArtists = artists.slice(1);
 
   return (
     <div className="min-h-screen bg-obsidian text-ivory">
@@ -138,53 +151,93 @@ export default function ArtistsPage() {
         </div>
       </section>
 
-      {/* Artists List - Editorial Row Layout */}
-      <section className="py-10 md:py-14 lg:py-18 px-6 sm:px-10 lg:px-14">
+      {/* Featured Artist */}
+      <section className="py-14 md:py-18 lg:py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
         <div className="mx-auto max-w-[1120px]">
-          {!isLoading && (
-            <div className="space-y-4 md:space-y-6">
-              {artists.map((artist) => (
-                <div key={artist.id} className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 pb-4 md:pb-6 border-b border-border last:border-b-0">
-                  {/* Portrait - Responsive sizing */}
-                  <div className="flex-shrink-0 w-24 md:w-[120px] lg:w-[140px] aspect-[4/5] overflow-hidden bg-night border border-border">
-                    <Image
-                      src={artist.portraitUrl}
-                      alt={artist.portraitAlt}
-                      width={140}
-                      height={175}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  
-                  {/* Info - Right side on desktop */}
-                  <div className="flex-1 flex flex-col justify-between min-w-0">
-                    <div>
-                      <h3 className="text-base md:text-lg font-heading tracking-wide text-ivory mb-1">
-                        {artist.name}
-                      </h3>
-                      <p className="text-xs font-body text-gold tracking-widest uppercase mb-2">
-                        {artist.role}
-                      </p>
-                      <p className="text-sm font-body text-muted leading-relaxed mb-3">
-                        {artist.description}
-                      </p>
-                    </div>
-                    
-                    {/* Audio Player - Compact */}
-                    <div className="mt-2">
-                      <ArtistAudioPlayer
-                        previewMp3Url={artist.previewMp3Url}
-                        hiResWavUrl={artist.hiResWavUrl}
-                        artistName={artist.name}
-                        playerId={`artist-${artist.id}`}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
+            {/* Portrait - Left on desktop */}
+            <div className="flex-shrink-0 w-full md:w-auto">
+              <div className="w-full md:w-[280px] lg:w-[340px] aspect-[4/5] overflow-hidden bg-night border border-border">
+                <Image
+                  src={featuredArtist.portraitUrl}
+                  alt={featuredArtist.portraitAlt}
+                  width={340}
+                  height={425}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+              </div>
             </div>
-          )}
+            
+            {/* Info - Right on desktop */}
+            <div className="flex flex-col justify-start">
+              <h2 className="text-3xl md:text-4xl font-heading tracking-wide text-ivory mb-2">
+                {featuredArtist.name}
+              </h2>
+              <p className="text-sm font-body text-gold tracking-widest uppercase mb-4">
+                {featuredArtist.role}
+              </p>
+              <p className="text-base font-body text-muted leading-relaxed mb-8">
+                {featuredArtist.oneLine}
+              </p>
+              
+              {/* Audio Player */}
+              <div>
+                <ArtistAudioPlayer
+                  previewMp3Url={featuredArtist.previewMp3Url}
+                  hiResWavUrl={featuredArtist.hiResWavUrl}
+                  artistName={featuredArtist.name}
+                  playerId={`artist-featured`}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Grid of Remaining Artists */}
+      <section className="py-14 md:py-18 lg:py-24 px-6 sm:px-10 lg:px-14">
+        <div className="mx-auto max-w-[1120px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {gridArtists.map((artist) => (
+              <div key={artist.id} className="border border-border p-4 md:p-5 bg-night/30">
+                {/* Portrait */}
+                <div className="w-full aspect-[4/5] overflow-hidden bg-obsidian border border-border mb-4">
+                  <Image
+                    src={artist.portraitUrl}
+                    alt={artist.portraitAlt}
+                    width={260}
+                    height={325}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                
+                {/* Info */}
+                <div className="space-y-2">
+                  <h3 className="text-base md:text-lg font-heading tracking-wide text-ivory">
+                    {artist.name}
+                  </h3>
+                  <p className="text-xs font-body text-gold tracking-widest uppercase">
+                    {artist.role}
+                  </p>
+                  <p className="text-sm font-body text-muted leading-relaxed">
+                    {artist.oneLine}
+                  </p>
+                </div>
+                
+                {/* Audio Player - Compact */}
+                <div className="mt-4">
+                  <ArtistAudioPlayer
+                    previewMp3Url={artist.previewMp3Url}
+                    hiResWavUrl={artist.hiResWavUrl}
+                    artistName={artist.name}
+                    playerId={`artist-${artist.id}`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
