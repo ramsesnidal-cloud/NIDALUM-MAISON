@@ -24,7 +24,7 @@ export default function PerfumePage() {
       <section className="py-16 px-6 sm:px-10 lg:px-14 border-b border-border bg-night">
         <div className="max-w-[1320px] mx-auto">
           <p className="text-base font-body text-ivory">
-            In development. Formulation under controlled research.
+            In development. Formulation is being composed under controlled research and restrained release principles.
           </p>
         </div>
       </section>
@@ -34,7 +34,7 @@ export default function PerfumePage() {
         <div className="max-w-[1320px] mx-auto">
           <div className="max-w-2xl mx-auto">
             <Image
-              src="https://static.wixstatic.com/media/9c8aea_f787d4f8c79447ccacd5c1b993ff6c48~mv2.png?originWidth=384&originHeight=448"
+              src="https://static.wixstatic.com/media/9c8aea_b15faa64e3534d99963c035cd688c649~mv2.png?originWidth=384&originHeight=448"
               alt="NIDALUM Perfume"
               width={400}
               height={500}

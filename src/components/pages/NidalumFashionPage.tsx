@@ -24,7 +24,7 @@ export default function NidalumFashionPage() {
       <section className="py-16 px-6 sm:px-10 lg:px-14 border-b border-border bg-night">
         <div className="max-w-[1320px] mx-auto">
           <p className="text-base font-body text-ivory">
-            In development. Materials and form studies in progress.
+            In development. Pieces are being prototyped as ritual garments, with controlled drops and strict material codes.
           </p>
         </div>
       </section>
@@ -34,7 +34,7 @@ export default function NidalumFashionPage() {
         <div className="max-w-[1320px] mx-auto">
           <div className="max-w-2xl mx-auto">
             <Image
-              src="https://static.wixstatic.com/media/9c8aea_b2ee845d803140b5990696a8286710c8~mv2.png?originWidth=384&originHeight=448"
+              src="https://static.wixstatic.com/media/9c8aea_2f50fd17c60f4343ae46ccb9804020f1~mv2.png?originWidth=384&originHeight=448"
               alt="NIDALUM Fashion"
               width={400}
               height={500}
