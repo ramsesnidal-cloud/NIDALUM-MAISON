@@ -53,10 +53,10 @@ export default function Header() {
           </li>
         </ul>
 
-        {/* Right: Production Label */}
+        {/* Right: Institutional Stamp */}
         <div className="flex items-center border-l border-border pl-6 lg:pl-8 flex-shrink-0">
           <p className="text-[0.55rem] lg:text-[0.65rem] font-body text-muted tracking-[0.12em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.12em' }}>
-            <span className="hidden lg:inline">LABEL<br /></span>NIDALUM
+            NIDALUM<br />MUSIC
           </p>
         </div>
       </nav>

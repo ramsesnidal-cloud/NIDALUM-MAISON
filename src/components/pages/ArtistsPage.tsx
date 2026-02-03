@@ -141,7 +141,7 @@ export default function ArtistsPage() {
       
       {/* Hero */}
       <section className="pt-32 pb-10 md:pb-14 lg:pb-18 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             ARTISTS
           </h1>
@@ -153,7 +153,7 @@ export default function ArtistsPage() {
 
       {/* Featured Artist */}
       <section className="py-14 md:py-18 lg:py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
             {/* Portrait - Left on desktop */}
             <div className="flex-shrink-0 w-full md:w-auto">
@@ -205,7 +205,7 @@ export default function ArtistsPage() {
 
       {/* Grid of Remaining Artists */}
       <section className="py-14 md:py-18 lg:py-24 px-6 sm:px-10 lg:px-14">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {gridArtists.map((artist) => (
               <div key={artist.id} className="border border-border p-6 bg-night/30 hover:border-gold/40 transition-colors duration-300 flex flex-col h-full">

@@ -14,7 +14,7 @@ export default function SacredMusicPage() {
       
       {/* Hero */}
       <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             SACRED MUSIC
           </h1>
@@ -31,14 +31,14 @@ export default function SacredMusicPage() {
 
       {/* Chants Grid */}
       <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <SacredChantList />
         </div>
       </section>
 
       {/* Our Artists Section */}
       <section className="py-20 md:py-24 lg:py-28 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <h2 className="text-xs md:text-sm font-body tracking-widest uppercase text-muted mb-12 md:mb-16">
             OUR ARTISTS
           </h2>
@@ -46,13 +46,13 @@ export default function SacredMusicPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
             {artists.map((artist) => (
               <div key={artist.id} className="flex flex-col h-full">
-                {/* Portrait */}
-                <div className="mb-6 aspect-square overflow-hidden bg-night border border-border">
+                {/* Portrait - 4:5 aspect ratio */}
+                <div className="mb-6 aspect-[4/5] overflow-hidden bg-night border border-border">
                   <Image
                     src={artist.portraitUrl}
                     alt={artist.name}
                     width={400}
-                    height={400}
+                    height={500}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -81,7 +81,7 @@ export default function SacredMusicPage() {
 
       {/* Discography Section */}
       <section className="py-20 md:py-24 lg:py-28 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <h2 className="text-xs md:text-sm font-body tracking-widest uppercase text-muted mb-12 md:mb-16">
             DISCOGRAPHY
           </h2>
@@ -89,6 +89,7 @@ export default function SacredMusicPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
             {discography.map((item) => (
               <div key={item.id} className="flex flex-col">
+                {/* 1:1 aspect ratio for covers */}
                 <div className="mb-4 aspect-square overflow-hidden bg-night border border-border">
                   <Image
                     src={item.coverImageUrl}
@@ -109,21 +110,21 @@ export default function SacredMusicPage() {
 
       {/* Language Section - Five Axes */}
       <section className="py-20 md:py-24 lg:py-28 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="mx-auto max-w-[1120px]">
+        <div className="mx-auto max-w-[1320px]">
           <h2 className="text-xs md:text-sm font-body tracking-widest uppercase text-muted mb-12 md:mb-16">
             LANGUAGE
           </h2>
           
-          {/* Five Axes Row */}
+          {/* Five Axes Row - Centered, no wrap on desktop */}
           <div className="mb-16 md:mb-20">
-            <div className="flex items-center justify-start gap-4 md:gap-6 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap md:flex-nowrap">
               {axes.map((axis, idx) => (
-                <div key={idx} className="flex items-center gap-4 md:gap-6 flex-shrink-0">
-                  <p className="text-xs font-body tracking-[0.2em] uppercase text-ivory whitespace-nowrap">
+                <div key={idx} className="flex items-center gap-4 md:gap-6">
+                  <p className="text-xs font-body tracking-[0.2em] uppercase text-ivory">
                     {axis}
                   </p>
                   {idx < axes.length - 1 && (
-                    <span className="text-border h-px w-4 md:w-6 flex-shrink-0"></span>
+                    <span className="text-border h-px w-4 md:w-6"></span>
                   )}
                 </div>
               ))}
@@ -132,11 +133,11 @@ export default function SacredMusicPage() {
 
           {/* Fragments Pills */}
           <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex gap-3 md:gap-4 flex-nowrap">
+            <div className="flex gap-3 md:gap-4 flex-nowrap justify-center">
               {fragments.map((fragment, idx) => (
                 <div
                   key={idx}
-                  className="flex-shrink-0 h-9 px-4 md:px-5 border border-border bg-night text-ivory text-xs font-body tracking-widest uppercase flex items-center transition-colors duration-300 hover:border-gold group"
+                  className="flex-shrink-0 h-9 px-4 md:px-5 border border-border bg-night text-ivory text-xs font-body tracking-widest uppercase flex items-center transition-colors duration-300 hover:border-gold group rounded-lg"
                 >
                   <span className="relative">
                     {fragment}

@@ -7,8 +7,8 @@ export default function HousePage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-8 border-b border-border">
-        <div className="max-w-content mx-auto">
+      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="max-w-[1320px] mx-auto">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             THE HOUSE
           </h1>
@@ -19,8 +19,8 @@ export default function HousePage() {
       </section>
 
       {/* Origin */}
-      <section className="py-24 px-8 border-b border-border">
-        <div className="max-w-content mx-auto">
+      <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="max-w-[1320px] mx-auto">
           <h2 className="text-2xl font-heading tracking-wide mb-8 text-ivory">ORIGIN</h2>
           <p className="text-base font-body text-muted max-w-2xl leading-relaxed mb-6">
             NIDALUM emerged from the convergence of three ancient practices: the preservation of sacred utterance, the transmission of literary knowledge, and the cultivation of silence as a discipline. We do not claim historical precedent. We claim necessity.
@@ -29,8 +29,8 @@ export default function HousePage() {
       </section>
 
       {/* Values */}
-      <section className="py-24 px-8 border-b border-border bg-night">
-        <div className="max-w-content mx-auto">
+      <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border bg-night">
+        <div className="max-w-[1320px] mx-auto">
           <h2 className="text-2xl font-heading tracking-wide mb-12 text-ivory">VALUES</h2>
           <div className="grid grid-cols-3 gap-12">
             <div>
@@ -56,8 +56,8 @@ export default function HousePage() {
       </section>
 
       {/* Future Divisions */}
-      <section className="py-24 px-8 border-b border-border">
-        <div className="max-w-content mx-auto">
+      <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="max-w-[1320px] mx-auto">
           <h2 className="text-2xl font-heading tracking-wide mb-12 text-ivory">FUTURE DIVISIONS</h2>
           <div className="grid grid-cols-2 gap-12">
             <div className="pb-8 border-b border-border">

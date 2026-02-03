@@ -7,8 +7,8 @@ export default function LiteraturePage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-8 border-b border-border">
-        <div className="max-w-content mx-auto">
+      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="max-w-[1320px] mx-auto">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             LITERATURE
           </h1>
@@ -19,8 +19,8 @@ export default function LiteraturePage() {
       </section>
 
       {/* Content */}
-      <section className="py-24 px-8">
-        <div className="max-w-content mx-auto max-w-2xl">
+      <section className="py-24 px-6 sm:px-10 lg:px-14">
+        <div className="max-w-[1320px] mx-auto max-w-2xl">
           <p className="text-base font-body text-ivory leading-relaxed">
             No excerpts. No plot explanation. No summary. The work remains whole, known only to those who have been chosen to receive it.
           </p>

@@ -41,8 +41,8 @@ export default function ContactPage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-8 border-b border-border">
-        <div className="max-w-content mx-auto">
+      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="max-w-[1320px] mx-auto">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             CONTACT
           </h1>
@@ -53,8 +53,8 @@ export default function ContactPage() {
       </section>
 
       {/* Form */}
-      <section className="py-24 px-8">
-        <div className="max-w-content mx-auto max-w-2xl">
+      <section className="py-24 px-6 sm:px-10 lg:px-14">
+        <div className="max-w-[1320px] mx-auto max-w-2xl">
           {submitted ? (
             <div className="text-center py-12">
               <p className="text-lg font-heading text-gold tracking-wide">
