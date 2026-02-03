@@ -17,7 +17,7 @@ export default function HomePage() {
             A House of Literature and Sacred Sound.
           </p>
           <p className="text-base font-body text-muted max-w-2xl mx-auto mb-12 leading-relaxed">
-            We preserve what cannot be shared. We transmit what cannot be taught. We exist in the space between silence and utterance.
+            A house does not seek attention. It creates a pause.
           </p>
           
           <div className="flex gap-6 justify-center">
@@ -37,49 +37,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pillars Section */}
-      <section className="py-24 px-8 border-t border-border">
-        <div className="max-w-content mx-auto">
-          <div className="grid grid-cols-3 gap-12">
-            <div className="text-center">
-              <h3 className="text-lg font-heading tracking-wide mb-4 text-ivory">THE HOUSE</h3>
-              <p className="text-sm font-body text-muted leading-relaxed">
-                A lineage of silence, held across generations.
-              </p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-heading tracking-wide mb-4 text-ivory">LITERATURE</h3>
-              <p className="text-sm font-body text-muted leading-relaxed">
-                Words that exist only in transmission, never in display.
-              </p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-heading tracking-wide mb-4 text-ivory">SACRED SOUND</h3>
-              <p className="text-sm font-body text-muted leading-relaxed">
-                Ritual utterance preserved beyond the reach of recording.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Editorial Block */}
       <section className="py-24 px-8 border-t border-border bg-night">
         <div className="max-w-content mx-auto text-center">
           <p className="text-xl font-heading font-light tracking-wide text-ivory">
-            A house does not ask for attention. It creates a pause.
-          </p>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 px-8 border-t border-border">
-        <div className="max-w-content mx-auto text-center">
-          <h2 className="text-3xl font-heading tracking-wide mb-6 text-ivory">
-            PRIVATE ACCESS IS LIMITED.
-          </h2>
-          <p className="text-base font-body text-muted max-w-2xl mx-auto">
-            Requests may not receive a reply.
+            Private access is limited. Requests may not receive a reply.
           </p>
         </div>
       </section>

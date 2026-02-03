@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { BaseCrudService } from '@/integrations';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -9,17 +10,30 @@ export default function ContactPage() {
     type: 'professional',
     message: '',
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    setFormData({ name: '', email: '', type: 'professional', message: '' });
+    try {
+      await BaseCrudService.create('contactmessages', {
+        _id: crypto.randomUUID(),
+        name: formData.name,
+        email: formData.email,
+        subject: formData.type,
+        message: formData.message,
+        submissionDate: new Date(),
+      });
+      setSubmitted(true);
+      setFormData({ name: '', email: '', type: 'professional', message: '' });
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (
@@ -33,7 +47,7 @@ export default function ContactPage() {
             CONTACT
           </h1>
           <p className="text-lg font-body text-muted">
-            Two paths of inquiry.
+            Select your inquiry with precision.
           </p>
         </div>
       </section>
@@ -41,83 +55,91 @@ export default function ContactPage() {
       {/* Form */}
       <section className="py-24 px-8">
         <div className="max-w-content mx-auto max-w-2xl">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Name */}
-            <div>
-              <label className="block text-sm font-body text-ivory tracking-wide mb-3">
-                NAME
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-body text-ivory tracking-wide mb-3">
-                EMAIL
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
-              />
-            </div>
-
-            {/* Type */}
-            <div>
-              <label className="block text-sm font-body text-ivory tracking-wide mb-3">
-                INQUIRY TYPE
-              </label>
-              <select
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                className="w-full bg-night border border-border px-4 py-3 text-ivory focus:outline-none focus:border-gold transition-colors"
-              >
-                <option value="professional">Professional Inquiry</option>
-                <option value="private">Private Access Request</option>
-              </select>
-            </div>
-
-            {/* Message */}
-            <div>
-              <label className="block text-sm font-body text-ivory tracking-wide mb-3">
-                MESSAGE
-              </label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={6}
-                className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors resize-none"
-              />
-            </div>
-
-            {/* Note */}
-            <div className="pt-4 border-t border-border">
-              <p className="text-xs font-body text-muted">
-                Not all requests receive an answer.
+          {submitted ? (
+            <div className="text-center py-12">
+              <p className="text-lg font-heading text-gold tracking-wide">
+                Received.
               </p>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                  NAME
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
+                />
+              </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              className="w-full px-8 py-3 border border-ivory text-ivory hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-300 rounded-lg font-body text-sm tracking-wide"
-            >
-              SEND
-            </button>
-          </form>
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                  EMAIL
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
+                />
+              </div>
+
+              {/* Type */}
+              <div>
+                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                  INQUIRY TYPE
+                </label>
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleChange}
+                  className="w-full bg-night border border-border px-4 py-3 text-ivory focus:outline-none focus:border-gold transition-colors"
+                >
+                  <option value="professional">Professional Inquiry</option>
+                  <option value="private">Private Access Request</option>
+                </select>
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                  MESSAGE
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={6}
+                  className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors resize-none"
+                />
+              </div>
+
+              {/* Note */}
+              <div className="pt-4 border-t border-border">
+                <p className="text-xs font-body text-muted">
+                  Not all requests receive an answer.
+                </p>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                className="w-full px-8 py-3 border border-ivory text-ivory hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-300 rounded-lg font-body text-sm tracking-wide"
+              >
+                SEND
+              </button>
+            </form>
+          )}
         </div>
       </section>
 

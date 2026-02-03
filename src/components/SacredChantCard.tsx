@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Download } from 'lucide-react';
+import { Image } from '@/components/ui/image';
 import { SacredChant } from '@/content/sacredChants';
 
 interface SacredChantCardProps {
@@ -102,92 +103,107 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
   };
 
   return (
-    <div className="border border-border rounded-lg p-6 bg-night/50 backdrop-blur-sm">
-      {/* Header */}
-      <div className="mb-4">
-        <h3 className="font-heading text-xl text-ivory mb-2">{chant.title}</h3>
-        <div className="flex items-center gap-3">
-          <span className={`text-xs px-2 py-1 rounded-sm ${getEnergyColor(chant.energyTag)}`}>
-            {chant.energyTag}
-          </span>
-          <span className="text-sm text-muted">{chant.duration}</span>
-        </div>
+    <div className="border border-border rounded-lg overflow-hidden bg-night/50 backdrop-blur-sm">
+      {/* Cover Image - 1:1 aspect ratio */}
+      <div className="aspect-square overflow-hidden bg-obsidian">
+        <Image
+          src={chant.coverImageUrl}
+          alt={chant.title}
+          width={400}
+          height={400}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
       </div>
 
-      {/* Audio Element */}
-      <audio
-        ref={audioRef}
-        preload="none"
-        crossOrigin="anonymous"
-      >
-        <source src={currentSource} type={sourceType} />
-      </audio>
-
-      {/* Player Controls */}
-      <div className="space-y-3">
-        {/* Play/Pause and Progress */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={togglePlayPause}
-            disabled={isLoading}
-            className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-sm border border-gold/30 hover:border-gold hover:bg-gold/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label={isPlaying ? 'Pause' : 'Play'}
-          >
-            {isLoading ? (
-              <div className="w-4 h-4 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
-            ) : isPlaying ? (
-              <Pause size={16} className="text-gold" />
-            ) : (
-              <Play size={16} className="text-gold ml-0.5" />
-            )}
-          </button>
-
-          {/* Progress Bar */}
-          <div className="flex-1 flex items-center gap-2">
-            <input
-              type="range"
-              min="0"
-              max={duration || 0}
-              value={currentTime}
-              onChange={handleProgressChange}
-              className="flex-1 h-1 bg-border rounded-full appearance-none cursor-pointer accent-gold"
-              aria-label="Seek"
-            />
-            <span className="text-xs text-muted whitespace-nowrap w-10 text-right">
-              {formatTime(currentTime)}
+      {/* Content */}
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-4">
+          <h3 className="font-heading text-xl text-ivory mb-2">{chant.title}</h3>
+          <div className="flex items-center gap-3">
+            <span className={`text-xs px-2 py-1 rounded-sm ${getEnergyColor(chant.energyTag)}`}>
+              {chant.energyTag}
             </span>
+            <span className="text-sm text-muted">{chant.duration}</span>
           </div>
         </div>
 
-        {/* Controls Row */}
-        <div className="flex items-center justify-between gap-2">
-          {/* HI-RES WAV Toggle */}
-          {chant.hiResWavUrl && (
-            <button
-              onClick={handleWavToggle}
-              className={`text-xs px-2 py-1 rounded-sm border transition-colors ${
-                useWav
-                  ? 'border-gold bg-gold/10 text-gold'
-                  : 'border-border text-muted hover:border-gold/50 hover:text-ivory'
-              }`}
-              aria-pressed={useWav}
-            >
-              HI-RES WAV
-            </button>
-          )}
+        {/* Audio Element */}
+        <audio
+          ref={audioRef}
+          preload="none"
+          crossOrigin="anonymous"
+        >
+          <source src={currentSource} type={sourceType} />
+        </audio>
 
-          {/* Download Link */}
-          {chant.hiResWavUrl && (
-            <a
-              href={chant.hiResWavUrl}
-              download
-              className="text-xs text-muted hover:text-gold transition-colors flex items-center gap-1 ml-auto"
-              aria-label="Download WAV"
+        {/* Player Controls */}
+        <div className="space-y-3">
+          {/* Play/Pause and Progress */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={togglePlayPause}
+              disabled={isLoading}
+              className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-sm border border-gold/30 hover:border-gold hover:bg-gold/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label={isPlaying ? 'Pause' : 'Play'}
             >
-              <Download size={12} />
-              <span>Download</span>
-            </a>
-          )}
+              {isLoading ? (
+                <div className="w-4 h-4 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+              ) : isPlaying ? (
+                <Pause size={16} className="text-gold" />
+              ) : (
+                <Play size={16} className="text-gold ml-0.5" />
+              )}
+            </button>
+
+            {/* Progress Bar */}
+            <div className="flex-1 flex items-center gap-2">
+              <input
+                type="range"
+                min="0"
+                max={duration || 0}
+                value={currentTime}
+                onChange={handleProgressChange}
+                className="flex-1 h-1 bg-border rounded-full appearance-none cursor-pointer accent-gold"
+                aria-label="Seek"
+              />
+              <span className="text-xs text-muted whitespace-nowrap w-10 text-right">
+                {formatTime(currentTime)}
+              </span>
+            </div>
+          </div>
+
+          {/* Controls Row */}
+          <div className="flex items-center justify-between gap-2">
+            {/* HI-RES WAV Toggle */}
+            {chant.hiResWavUrl && (
+              <button
+                onClick={handleWavToggle}
+                className={`text-xs px-2 py-1 rounded-sm border transition-colors ${
+                  useWav
+                    ? 'border-gold bg-gold/10 text-gold'
+                    : 'border-border text-muted hover:border-gold/50 hover:text-ivory'
+                }`}
+                aria-pressed={useWav}
+              >
+                HI-RES WAV
+              </button>
+            )}
+
+            {/* Download Link */}
+            {chant.hiResWavUrl && (
+              <a
+                href={chant.hiResWavUrl}
+                download
+                className="text-xs text-muted hover:text-gold transition-colors flex items-center gap-1 ml-auto"
+                aria-label="Download WAV"
+              >
+                <Download size={12} />
+                <span>Download</span>
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>

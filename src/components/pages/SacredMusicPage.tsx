@@ -15,7 +15,7 @@ export default function SacredMusicPage() {
           </h1>
           <div className="space-y-3">
             <p className="text-lg font-body text-muted">
-              Six Sacred Chants. Public excerpts only. The full versions remain private.
+              Six Sacred Chants. Public excerpts only.
             </p>
             <p className="text-sm font-body text-muted">
               No lyrics are published.

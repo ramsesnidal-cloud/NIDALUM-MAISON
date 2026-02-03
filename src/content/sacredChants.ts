@@ -5,6 +5,7 @@ export interface SacredChant {
   energyTag: 'Invocation' | 'Veil' | 'Fire' | 'Salt' | 'Memory' | 'Silence';
   previewMp3Url: string;
   hiResWavUrl?: string;
+  coverImageUrl: string;
 }
 
 export const sacredChants: SacredChant[] = [
@@ -15,6 +16,7 @@ export const sacredChants: SacredChant[] = [
     energyTag: 'Invocation',
     previewMp3Url: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.mp3',
     hiResWavUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.wav',
+    coverImageUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
   },
   {
     id: 'chant-ii',
@@ -23,6 +25,7 @@ export const sacredChants: SacredChant[] = [
     energyTag: 'Veil',
     previewMp3Url: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.mp3',
     hiResWavUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.wav',
+    coverImageUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
   },
   {
     id: 'chant-iii',
@@ -31,6 +34,7 @@ export const sacredChants: SacredChant[] = [
     energyTag: 'Fire',
     previewMp3Url: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.mp3',
     hiResWavUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.wav',
+    coverImageUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
   },
   {
     id: 'chant-iv',
@@ -39,6 +43,7 @@ export const sacredChants: SacredChant[] = [
     energyTag: 'Salt',
     previewMp3Url: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.mp3',
     hiResWavUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.wav',
+    coverImageUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
   },
   {
     id: 'chant-v',
@@ -47,6 +52,7 @@ export const sacredChants: SacredChant[] = [
     energyTag: 'Memory',
     previewMp3Url: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.mp3',
     hiResWavUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.wav',
+    coverImageUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
   },
   {
     id: 'chant-vi',
@@ -55,5 +61,6 @@ export const sacredChants: SacredChant[] = [
     energyTag: 'Silence',
     previewMp3Url: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.mp3',
     hiResWavUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.wav',
+    coverImageUrl: 'https://static.wixstatic.com/media/12d367_71ebdd7141d041e4be3d91d80d4578dd~mv2.jpg',
   },
 ];
