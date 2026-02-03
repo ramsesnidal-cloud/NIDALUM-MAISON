@@ -154,6 +154,31 @@ export interface Artists {
 
 
 /**
+ * Collection ID: artists-1
+ * Interface for Artists
+ */
+export interface Artists {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  name?: string;
+  /** @wixFieldType text */
+  slug?: string;
+  /** @wixFieldType text */
+  role?: string;
+  /** @wixFieldType text */
+  shortDescription?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  portraitImage?: string;
+  /** @wixFieldType url */
+  audioPreviewUrl?: string;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
  * Collection ID: chants
  * Interface for RItualChants
  */
@@ -231,6 +256,29 @@ export interface DailyExpressions {
 
 
 /**
+ * Collection ID: dailyexpressions-1
+ * Interface for DailyExpressions
+ */
+export interface DailyExpressions {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  phraseNidalum?: string;
+  /** @wixFieldType text */
+  translationFrench?: string;
+  /** @wixFieldType text */
+  translationEnglish?: string;
+  /** @wixFieldType text */
+  pronunciationGuide?: string;
+  /** @wixFieldType text */
+  exampleSentence?: string;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
  * Collection ID: discography
  * Interface for Discography
  */
@@ -250,6 +298,31 @@ export interface Discography {
   order?: number;
   /** @wixFieldType boolean */
   isPublished?: boolean;
+}
+
+
+/**
+ * Collection ID: discography-1
+ * Interface for Discography
+ */
+export interface Discography {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  title?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  coverImage?: string;
+  /** @wixFieldType text */
+  artistRef?: string;
+  /** @wixFieldType date */
+  releaseDate?: Date | string;
+  /** @wixFieldType text */
+  albumType?: string;
+  /** @wixFieldType text */
+  genre?: string;
+  /** @wixFieldType text */
+  description?: string;
 }
 
 
@@ -281,6 +354,27 @@ export interface Divisions {
 
 
 /**
+ * Collection ID: divisions-1
+ * Interface for Divisions
+ */
+export interface Divisions {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  divisionKey?: string;
+  /** @wixFieldType text */
+  pageTitle?: string;
+  /** @wixFieldType text */
+  statusLine?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  heroImage?: string;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
  * Collection ID: fragmentslexicon
  * Interface for FragmentsLexicon
  */
@@ -300,6 +394,29 @@ export interface FragmentsLexicon {
   category?: string;
   /** @wixFieldType number */
   order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+}
+
+
+/**
+ * Collection ID: fragmentslexicon-1
+ * Interface for FragmentsLexicon
+ */
+export interface FragmentsLexicon {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  termNidalum?: string;
+  /** @wixFieldType text */
+  translationFrench?: string;
+  /** @wixFieldType text */
+  translationEnglish?: string;
+  /** @wixFieldType text */
+  exampleSentence?: string;
+  /** @wixFieldType text */
+  notes?: string;
   /** @wixFieldType boolean */
   isPublished?: boolean;
 }
@@ -358,6 +475,29 @@ export interface LiteratureBooks {
   order?: number;
   /** @wixFieldType boolean */
   isPublished?: boolean;
+}
+
+
+/**
+ * Collection ID: literaturebooks-1
+ * Interface for LiteratureBooks
+ */
+export interface LiteratureBooks {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  title?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  coverImage?: string;
+  /** @wixFieldType text */
+  shortDescription?: string;
+  /** @wixFieldType text */
+  author?: string;
+  /** @wixFieldType date */
+  publicationDate?: Date | string;
+  /** @wixFieldType text */
+  genre?: string;
 }
 
 
@@ -587,6 +727,27 @@ export interface OriginsandChronology {
 
 
 /**
+ * Collection ID: portals
+ * Interface for Portals
+ */
+export interface Portals {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  portalLabel?: string;
+  /** @wixFieldType text */
+  portalRoute?: string;
+  /** @wixFieldType number */
+  order?: number;
+  /** @wixFieldType boolean */
+  isPublished?: boolean;
+  /** @wixFieldType text */
+  description?: string;
+}
+
+
+/**
  * Collection ID: publications
  * Interface for Publications
  */
@@ -706,6 +867,27 @@ export interface SacredChants {
 
 
 /**
+ * Collection ID: sacredchants-1
+ * Interface for SacredChants
+ */
+export interface SacredChants {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  title?: string;
+  /** @wixFieldType text */
+  slug?: string;
+  /** @wixFieldType text */
+  shortDescription?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  coverImage?: string;
+  /** @wixFieldType url */
+  audioPreviewUrl?: string;
+}
+
+
+/**
  * Collection ID: sitesettings
  * Interface for SiteSettings
  */
@@ -735,6 +917,29 @@ export interface SiteSettings {
   homePortals?: string;
   /** @wixFieldType text */
   headerStampText?: string;
+}
+
+
+/**
+ * Collection ID: sitesettings-1
+ * Interface for SiteSettings
+ */
+export interface SiteSettings {
+  _id: string;
+  _createdDate?: Date;
+  _updatedDate?: Date;
+  /** @wixFieldType text */
+  siteName?: string;
+  /** @wixFieldType text */
+  siteDescription?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  logoImage?: string;
+  /** @wixFieldType text */
+  contactEmail?: string;
+  /** @wixFieldType url */
+  socialMediaLink?: string;
+  /** @wixFieldType text */
+  portals?: string;
 }
 
 
