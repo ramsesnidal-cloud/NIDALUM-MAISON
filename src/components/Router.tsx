@@ -14,6 +14,8 @@ import SignUpPage from '@/components/pages/SignUpPage';
 import FragmentsPage from '@/components/pages/FragmentsPage';
 import ImprintPage from '@/components/pages/ImprintPage';
 import PrivacyPage from '@/components/pages/PrivacyPage';
+import PerfumePage from '@/components/pages/PerfumePage';
+import NidalumFashionPage from '@/components/pages/NidalumFashionPage';
 
 // Layout component that includes ScrollToTop
 function Layout() {
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
       {
         path: "privacy",
         element: <PrivacyPage />,
+      },
+      {
+        path: "perfume",
+        element: <PerfumePage />,
+      },
+      {
+        path: "fashion",
+        element: <NidalumFashionPage />,
       },
       {
         path: "*",

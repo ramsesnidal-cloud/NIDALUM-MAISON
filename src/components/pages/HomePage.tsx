@@ -71,7 +71,7 @@ export default function HomePage() {
               </Link>
               <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
               <Link 
-                to="/" 
+                to="/fashion" 
                 className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM FASHION
@@ -79,7 +79,7 @@ export default function HomePage() {
               </Link>
               <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
               <Link 
-                to="/" 
+                to="/perfume" 
                 className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
               >
                 NIDALUM PERFUME
