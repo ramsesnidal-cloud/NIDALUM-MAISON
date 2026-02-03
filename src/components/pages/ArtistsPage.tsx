@@ -157,13 +157,13 @@ export default function ArtistsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
             {/* Portrait - Left on desktop */}
             <div className="flex-shrink-0 w-full md:w-auto">
-              <div className="w-full md:w-[280px] lg:w-[340px] aspect-[4/5] overflow-hidden bg-night border border-border">
+              <div className="w-full md:w-[280px] lg:w-[340px] aspect-[4/5] overflow-hidden bg-night border border-border hover:border-gold/60 transition-colors duration-300">
                 <Image
                   src={featuredArtist.portraitUrl}
                   alt={featuredArtist.portraitAlt}
                   width={340}
                   height={425}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
                   loading="eager"
                 />
               </div>
@@ -171,13 +171,21 @@ export default function ArtistsPage() {
             
             {/* Info - Right on desktop */}
             <div className="flex flex-col justify-start">
+              {/* Featured Label */}
+              <div className="flex items-center gap-2 mb-3">
+                <div className="h-px w-6 bg-gold/40"></div>
+                <p className="text-xs font-body text-gold/60 tracking-[0.15em] uppercase font-light">
+                  The House Voice
+                </p>
+              </div>
+              
               <h2 className="text-3xl md:text-4xl font-heading tracking-wide text-ivory mb-2">
                 {featuredArtist.name}
               </h2>
-              <p className="text-sm font-body text-gold tracking-widest uppercase mb-4">
+              <p className="text-sm font-body text-gold tracking-widest uppercase mb-4 truncate">
                 {featuredArtist.role}
               </p>
-              <p className="text-base font-body text-muted leading-relaxed mb-8">
+              <p className="text-base font-body text-muted leading-relaxed mb-8 line-clamp-2">
                 {featuredArtist.oneLine}
               </p>
               
@@ -200,28 +208,28 @@ export default function ArtistsPage() {
         <div className="mx-auto max-w-[1120px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {gridArtists.map((artist) => (
-              <div key={artist.id} className="border border-border p-4 md:p-5 bg-night/30">
+              <div key={artist.id} className="border border-border p-4 md:p-5 bg-night/30 hover:border-gold/40 transition-colors duration-300">
                 {/* Portrait */}
-                <div className="w-full aspect-[4/5] overflow-hidden bg-obsidian border border-border mb-4">
+                <div className="w-full aspect-[4/5] overflow-hidden bg-obsidian border border-border mb-4 hover:border-gold/40 transition-colors duration-300">
                   <Image
                     src={artist.portraitUrl}
                     alt={artist.portraitAlt}
                     width={260}
                     height={325}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                     loading="lazy"
                   />
                 </div>
                 
                 {/* Info */}
                 <div className="space-y-2">
-                  <h3 className="text-base md:text-lg font-heading tracking-wide text-ivory">
+                  <h3 className="text-base md:text-lg font-heading tracking-wide text-ivory truncate">
                     {artist.name}
                   </h3>
-                  <p className="text-xs font-body text-gold tracking-widest uppercase">
+                  <p className="text-xs font-body text-gold tracking-widest uppercase truncate">
                     {artist.role}
                   </p>
-                  <p className="text-sm font-body text-muted leading-relaxed">
+                  <p className="text-sm font-body text-muted leading-relaxed line-clamp-2">
                     {artist.oneLine}
                   </p>
                 </div>

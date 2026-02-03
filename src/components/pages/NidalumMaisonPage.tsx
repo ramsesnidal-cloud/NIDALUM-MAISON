@@ -102,10 +102,16 @@ export default function NidalumMaisonPage() {
               <div className="h-px w-8 md:w-12 bg-gradient-to-l from-transparent to-luxury-gold/60"></div>
             </motion.div>
 
-            {/* Main Headline */}
+            {/* Main Headline - Single Line */}
             <div className="space-y-8 md:space-y-12">
-              <h1 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light">
-                NIDALUM
+              <h1 
+                className="font-heading tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light whitespace-nowrap overflow-hidden text-overflow-clip"
+                style={{
+                  fontSize: 'clamp(2.1rem, 7.2vw, 5.6rem)',
+                  letterSpacing: 'clamp(0.1em, 0.15vw, 0.15em)',
+                }}
+              >
+                NIDALUM MAISON
               </h1>
               <motion.div
                 initial={{ scaleX: 0 }}
@@ -113,9 +119,6 @@ export default function NidalumMaisonPage() {
                 transition={{ delay: 0.6, duration: 1 }}
                 className="h-px bg-gradient-to-r from-transparent via-luxury-gold/80 to-transparent max-w-2xl mx-auto"
               ></motion.div>
-              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.15em] text-luxury-gold/80 uppercase font-light">
-                MAISON
-              </h2>
             </div>
 
             {/* Sophisticated Tagline */}

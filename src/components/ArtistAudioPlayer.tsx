@@ -136,7 +136,7 @@ export default function ArtistAudioPlayer({
         {/* Play/Pause Button with Loading State */}
         <button
           onClick={handlePlayPause}
-          className="flex-shrink-0 w-8 h-8 flex items-center justify-center border border-gold text-gold hover:bg-gold hover:text-obsidian transition-all duration-200 rounded-sm"
+          className="flex-shrink-0 w-8 h-8 flex items-center justify-center border border-border text-muted hover:border-gold hover:text-gold transition-all duration-200 rounded-sm"
           aria-label={isPlaying ? 'Pause' : 'Play'}
           disabled={isBuffering}
         >
@@ -149,11 +149,11 @@ export default function ArtistAudioPlayer({
           )}
         </button>
 
-        {/* Progress Bar - Slim */}
+        {/* Progress Bar - 1px thickness */}
         <div className="flex-1 flex flex-col gap-1">
           <div
             onClick={handleProgressClick}
-            className="h-0.5 bg-border rounded-full cursor-pointer hover:bg-muted transition-colors"
+            className="h-1 bg-border rounded-full cursor-pointer hover:bg-muted transition-colors"
             role="slider"
             aria-label="Audio progress"
             aria-valuemin={0}
@@ -161,7 +161,7 @@ export default function ArtistAudioPlayer({
             aria-valuenow={currentTime}
           >
             <div
-              className="h-full bg-gold rounded-full transition-all"
+              className="h-full bg-muted rounded-full transition-all"
               style={{ width: `${progressPercent}%` }}
             />
           </div>

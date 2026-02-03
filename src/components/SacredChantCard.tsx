@@ -103,15 +103,15 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
   };
 
   return (
-    <div className="border border-border rounded-lg overflow-hidden bg-night/50 backdrop-blur-sm">
+    <div className="border border-border rounded-lg overflow-hidden bg-night/50 backdrop-blur-sm hover:border-gold/40 transition-colors duration-300">
       {/* Cover Image - 1:1 aspect ratio */}
-      <div className="aspect-square overflow-hidden bg-obsidian">
+      <div className="aspect-square overflow-hidden bg-obsidian border border-border hover:border-gold/40 transition-colors duration-300 group">
         <Image
           src={chant.coverImageUrl}
           alt={chant.title}
           width={400}
           height={400}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
       </div>
@@ -120,7 +120,7 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
       <div className="p-6">
         {/* Header */}
         <div className="mb-4">
-          <h3 className="font-heading text-xl text-ivory mb-2">{chant.title}</h3>
+          <h3 className="font-heading text-xl text-ivory mb-2 truncate">{chant.title}</h3>
           <div className="flex items-center gap-3">
             <span className={`text-xs px-2 py-1 rounded-sm ${getEnergyColor(chant.energyTag)}`}>
               {chant.energyTag}
@@ -145,19 +145,19 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
             <button
               onClick={togglePlayPause}
               disabled={isLoading}
-              className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-sm border border-gold/30 hover:border-gold hover:bg-gold/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-sm border border-border text-muted hover:border-gold hover:text-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label={isPlaying ? 'Pause' : 'Play'}
             >
               {isLoading ? (
-                <div className="w-4 h-4 border-2 border-gold/30 border-t-gold rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-muted/30 border-t-muted rounded-full animate-spin" />
               ) : isPlaying ? (
                 <Pause size={16} className="text-gold" />
               ) : (
-                <Play size={16} className="text-gold ml-0.5" />
+                <Play size={16} className="text-muted ml-0.5" />
               )}
             </button>
 
-            {/* Progress Bar */}
+            {/* Progress Bar - 1px thickness */}
             <div className="flex-1 flex items-center gap-2">
               <input
                 type="range"
@@ -165,7 +165,7 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
                 max={duration || 0}
                 value={currentTime}
                 onChange={handleProgressChange}
-                className="flex-1 h-1 bg-border rounded-full appearance-none cursor-pointer accent-gold"
+                className="flex-1 h-1 bg-border rounded-full appearance-none cursor-pointer accent-muted"
                 aria-label="Seek"
               />
               <span className="text-xs text-muted whitespace-nowrap w-10 text-right">
@@ -183,7 +183,7 @@ export default function SacredChantCard({ chant }: SacredChantCardProps) {
                 className={`text-xs px-2 py-1 rounded-sm border transition-colors ${
                   useWav
                     ? 'border-gold bg-gold/10 text-gold'
-                    : 'border-border text-muted hover:border-gold/50 hover:text-ivory'
+                    : 'border-border text-muted hover:border-gold/50 hover:text-gold'
                 }`}
                 aria-pressed={useWav}
               >
