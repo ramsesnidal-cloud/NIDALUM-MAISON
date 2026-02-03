@@ -42,7 +42,7 @@ export default function FragmentsPage() {
             FRAGMENTS
           </h1>
           <p className="text-base md:text-lg font-body text-muted max-w-2xl leading-relaxed">
-            Nidalum draws inspiration from ancient Egyptian aesthetics and sacred language principles. It is a constructed language for the NIDALUM universe.
+            Selected fragments only. Not a full dictionary. Inspired by ancient Egyptian resonance and ceremonial language. No historical claims.
           </p>
         </div>
       </section>
@@ -60,19 +60,19 @@ export default function FragmentsPage() {
           ) : lexicon.length === 0 ? (
             <div className="text-center text-muted">No lexicon available.</div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
               {lexicon.map((item) => (
                 <div
                   key={item._id}
-                  className="text-center group"
+                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
                 >
-                  <p className="text-sm md:text-base font-heading text-ivory mb-2 tracking-widest transition-colors duration-300 group-hover:text-gold">
+                  <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
                     {item.termNidalum}
                   </p>
-                  <p className="text-xs md:text-sm font-body text-muted mb-1">
+                  <p className="text-xs md:text-sm text-blue-300/90">
                     {item.translationFrench}
                   </p>
-                  <p className="text-xs md:text-sm font-body text-muted">
+                  <p className="text-xs md:text-sm text-white/85">
                     {item.translationEnglish}
                   </p>
                 </div>
@@ -95,19 +95,19 @@ export default function FragmentsPage() {
           ) : expressions.length === 0 ? (
             <div className="text-center text-muted">No expressions available.</div>
           ) : (
-            <div className="space-y-6 md:space-y-8 max-w-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
               {expressions.map((item) => (
                 <div
                   key={item._id}
-                  className="group"
+                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
                 >
-                  <p className="text-base md:text-lg font-heading text-ivory mb-2 tracking-widest transition-colors duration-300 group-hover:text-gold">
+                  <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
                     {item.termNidalum}
                   </p>
-                  <p className="text-sm md:text-base font-body text-muted mb-1">
+                  <p className="text-xs md:text-sm text-blue-300/90">
                     {item.translationFrench}
                   </p>
-                  <p className="text-sm md:text-base font-body text-muted">
+                  <p className="text-xs md:text-sm text-white/85">
                     {item.translationEnglish}
                   </p>
                 </div>

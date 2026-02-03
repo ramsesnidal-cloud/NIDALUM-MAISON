@@ -106,23 +106,23 @@ export default function HomePage() {
           </h2>
           
           {/* Fragments Grid - Words with NIDALUM, French, English */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 mb-12 md:mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 mb-12 md:mb-16">
             {fragments.map((fragment, idx) => {
               const lexiconEntry = fragmentsLexicon100.find(item => item.nidalum === fragment);
               return (
                 <div
                   key={idx}
-                  className="text-center group"
+                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
                 >
-                  <p className="text-base md:text-lg font-heading text-ivory mb-2 tracking-widest transition-colors duration-300 group-hover:text-gold">
+                  <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
                     {fragment}
                   </p>
                   {lexiconEntry && (
                     <>
-                      <p className="text-xs md:text-sm font-body text-muted mb-1">
+                      <p className="text-xs md:text-sm text-blue-300/90">
                         {lexiconEntry.french}
                       </p>
-                      <p className="text-xs md:text-sm font-body text-muted">
+                      <p className="text-xs md:text-sm text-white/85">
                         {lexiconEntry.english}
                       </p>
                     </>
