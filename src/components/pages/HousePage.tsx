@@ -28,6 +28,45 @@ export default function HousePage() {
         </div>
       </section>
 
+      {/* Axes */}
+      <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
+        <div className="max-w-[1320px] mx-auto">
+          <h2 className="text-2xl font-heading tracking-wide mb-12 text-ivory">AXES</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+            <div>
+              <h3 className="text-lg font-heading tracking-wide mb-4 text-gold">ORIGIN</h3>
+              <p className="text-sm font-body text-muted leading-relaxed">
+                NIDALUM emerged from the convergence of three ancient practices: the preservation of sacred utterance, the transmission of literary knowledge, and the cultivation of silence as a discipline. We do not claim historical precedent. We claim necessity.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-heading tracking-wide mb-4 text-gold">BREATH</h3>
+              <p className="text-sm font-body text-muted leading-relaxed">
+                Breath is the first measure. It governs cadence, restraint, and the moment a word is allowed to exist. In NIDALUM, breath is not performance. It is permission. The voice enters only when breath has prepared the space.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-heading tracking-wide mb-4 text-gold">MEMORY</h3>
+              <p className="text-sm font-body text-muted leading-relaxed">
+                Memory is not nostalgia. It is architecture. What is remembered is shaped, protected, and transmitted with precision. In NIDALUM, memory becomes a vessel, carrying meaning across time without dilution, without noise.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-heading tracking-wide mb-4 text-gold">SOUND</h3>
+              <p className="text-sm font-body text-muted leading-relaxed">
+                Sound is material, not decoration. It is vibration with consequence. Sacred chant is treated as structure, not entertainment. What is heard is designed to alter attention, to sharpen presence, to hold the inner line.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-heading tracking-wide mb-4 text-gold">FORM</h3>
+              <p className="text-sm font-body text-muted leading-relaxed">
+                Form is the discipline that makes the invisible legible. It is proportion, constraint, and intention. In NIDALUM, form protects rarity. It turns creation into rite, and keeps the House from becoming a product.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Values */}
       <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border bg-night">
         <div className="max-w-[1320px] mx-auto">
