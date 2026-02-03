@@ -131,6 +131,8 @@ export interface Artists {
   _createdDate?: Date;
   _updatedDate?: Date;
   /** @wixFieldType text */
+  audioTitle?: string;
+  /** @wixFieldType text */
   name?: string;
   /** @wixFieldType text */
   slug?: string;
@@ -680,6 +682,8 @@ export interface SacredChants {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType text */
+  tagline?: string;
   /** @wixFieldType boolean */
   isFeatured?: boolean;
   /** @wixFieldType text */
@@ -711,6 +715,8 @@ export interface SiteSettings {
   _updatedDate?: Date;
   /** @wixFieldType text */
   homeTitle?: string;
+  /** @wixFieldType text */
+  portals?: string;
   /** @wixFieldType text */
   homeHeroAlignment?: string;
   /** @wixFieldType text */
