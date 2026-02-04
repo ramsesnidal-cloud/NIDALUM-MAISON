@@ -108,21 +108,21 @@ export default function HomePage() {
             FRAGMENTS
           </h2>
           
-          {/* Fragments Grid - 6 items, centered, white only */}
+          {/* Fragments Grid - 6 items, centered, colored text */}
           {featuredFragments.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-12 md:mb-16 max-w-[900px] mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16 max-w-[1000px] mx-auto">
               {featuredFragments.map((fragment, idx) => (
                 <div
                   key={idx}
-                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1 text-center"
+                  className="text-center"
                 >
-                  <p className="text-base md:text-lg font-medium tracking-wide text-white">
+                  <p className="text-lg md:text-xl font-medium tracking-wide text-white mb-2">
                     {fragment.nidalum}
                   </p>
-                  <p className="text-xs md:text-sm text-white/70">
+                  <p className="text-sm md:text-base text-blue-400 mb-1">
                     {fragment.french}
                   </p>
-                  <p className="text-xs md:text-sm text-white/60">
+                  <p className="text-sm md:text-base text-white">
                     {fragment.english}
                   </p>
                 </div>

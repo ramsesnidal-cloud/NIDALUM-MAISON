@@ -36,19 +36,19 @@ export default function FragmentsPage() {
           {lexicon.length === 0 ? (
             <div className="text-center text-muted">No lexicon available.</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
               {lexicon.map((item, idx) => (
                 <div
                   key={idx}
-                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
+                  className="text-center"
                 >
-                  <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
+                  <p className="text-lg md:text-xl font-medium tracking-wide text-[#FBBF24] mb-2">
                     {item.nidalum}
                   </p>
-                  <p className="text-xs md:text-sm text-blue-300/90">
+                  <p className="text-sm md:text-base text-blue-400 mb-1">
                     {item.french}
                   </p>
-                  <p className="text-xs md:text-sm text-white/85">
+                  <p className="text-sm md:text-base text-white">
                     {item.english}
                   </p>
                 </div>
@@ -69,19 +69,19 @@ export default function FragmentsPage() {
           {expressions.length === 0 ? (
             <div className="text-center text-muted">No expressions available.</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
               {expressions.map((item, idx) => (
                 <div
                   key={idx}
-                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 space-y-1"
+                  className="text-center"
                 >
-                  <p className="text-base md:text-lg font-medium tracking-wide text-[#C8A45D]">
+                  <p className="text-lg md:text-xl font-medium tracking-wide text-[#FBBF24] mb-2">
                     {item.nidalum}
                   </p>
-                  <p className="text-xs md:text-sm text-blue-300/90">
+                  <p className="text-sm md:text-base text-blue-400 mb-1">
                     {item.french}
                   </p>
-                  <p className="text-xs md:text-sm text-white/85">
+                  <p className="text-sm md:text-base text-white">
                     {item.english}
                   </p>
                 </div>
