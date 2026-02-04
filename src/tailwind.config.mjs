@@ -6,14 +6,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#FBBF24',
-          foreground: '#000000',
-        },
-        secondary: {
-          DEFAULT: '#00D0FF',
-          foreground: '#000000',
-        },
+        primary: '#FBBF24',
+        'primary-foreground': '#000000',
+        secondary: '#00D0FF',
+        'secondary-foreground': '#000000',
         background: '#00172E',
         foreground: '#FFFFFF',
         destructive: '#FF4136',
