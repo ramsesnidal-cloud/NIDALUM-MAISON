@@ -30,63 +30,80 @@ function Layout() {
   );
 }
 
+// Pre-create JSX elements to avoid Babel plugin issues
+const layoutElement = <Layout />;
+const errorElement = <ErrorPage />;
+const homeElement = <HomePage />;
+const houseElement = <HousePage />;
+const literatureElement = <LiteraturePage />;
+const sacredMusicElement = <SacredMusicPage />;
+const artistsElement = <ArtistsPage />;
+const contactElement = <ContactPage />;
+const signUpElement = <SignUpPage />;
+const fragmentsElement = <FragmentsPage />;
+const imprintElement = <ImprintPage />;
+const privacyElement = <PrivacyPage />;
+const perfumeElement = <PerfumePage />;
+const fashionElement = <NidalumFashionPage />;
+const notFoundElement = <Navigate to="/" replace />;
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
-    errorElement: <ErrorPage />,
+    element: layoutElement,
+    errorElement: errorElement,
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: homeElement,
       },
       {
         path: "house",
-        element: <HousePage />,
+        element: houseElement,
       },
       {
         path: "literature",
-        element: <LiteraturePage />,
+        element: literatureElement,
       },
       {
         path: "sacred",
-        element: <SacredMusicPage />,
+        element: sacredMusicElement,
       },
       {
         path: "artists",
-        element: <ArtistsPage />,
+        element: artistsElement,
       },
       {
         path: "contact",
-        element: <ContactPage />,
+        element: contactElement,
       },
       {
         path: "signup",
-        element: <SignUpPage />,
+        element: signUpElement,
       },
       {
         path: "fragments",
-        element: <FragmentsPage />,
+        element: fragmentsElement,
       },
       {
         path: "imprint",
-        element: <ImprintPage />,
+        element: imprintElement,
       },
       {
         path: "privacy",
-        element: <PrivacyPage />,
+        element: privacyElement,
       },
       {
         path: "perfume",
-        element: <PerfumePage />,
+        element: perfumeElement,
       },
       {
         path: "fashion",
-        element: <NidalumFashionPage />,
+        element: fashionElement,
       },
       {
         path: "*",
-        element: <Navigate to="/" replace />,
+        element: notFoundElement,
       },
     ],
   },
