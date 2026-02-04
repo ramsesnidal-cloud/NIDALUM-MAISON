@@ -1,27 +1,31 @@
 import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { ScrollToTop } from '@/lib/scroll-to-top';
 import ErrorPage from '@/integrations/errorHandlers/ErrorPage';
+import { lazy, Suspense } from 'react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
-// Pages
-import HomePage from '@/components/pages/HomePage';
-import HousePage from '@/components/pages/HousePage';
-import LiteraturePage from '@/components/pages/LiteraturePage';
-import SacredMusicPage from '@/components/pages/SacredMusicPage';
-import ArtistsPage from '@/components/pages/ArtistsPage';
-import ContactPage from '@/components/pages/ContactPage';
-import SignUpPage from '@/components/pages/SignUpPage';
-import FragmentsPage from '@/components/pages/FragmentsPage';
-import ImprintPage from '@/components/pages/ImprintPage';
-import PrivacyPage from '@/components/pages/PrivacyPage';
-import PerfumePage from '@/components/pages/PerfumePage';
-import NidalumFashionPage from '@/components/pages/NidalumFashionPage';
+// Lazy load pages for better performance
+const HomePage = lazy(() => import('@/components/pages/HomePage'));
+const HousePage = lazy(() => import('@/components/pages/HousePage'));
+const LiteraturePage = lazy(() => import('@/components/pages/LiteraturePage'));
+const SacredMusicPage = lazy(() => import('@/components/pages/SacredMusicPage'));
+const ArtistsPage = lazy(() => import('@/components/pages/ArtistsPage'));
+const ContactPage = lazy(() => import('@/components/pages/ContactPage'));
+const SignUpPage = lazy(() => import('@/components/pages/SignUpPage'));
+const FragmentsPage = lazy(() => import('@/components/pages/FragmentsPage'));
+const ImprintPage = lazy(() => import('@/components/pages/ImprintPage'));
+const PrivacyPage = lazy(() => import('@/components/pages/PrivacyPage'));
+const PerfumePage = lazy(() => import('@/components/pages/PerfumePage'));
+const NidalumFashionPage = lazy(() => import('@/components/pages/NidalumFashionPage'));
 
 // Layout component that includes ScrollToTop
 function Layout() {
   return (
     <>
       <ScrollToTop />
-      <Outlet />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Outlet />
+      </Suspense>
     </>
   );
 }
