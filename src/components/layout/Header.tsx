@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-obsidian border-b border-border">
-      <nav className="w-full px-4 sm:px-6 lg:px-16 py-4 sm:py-6 flex items-center justify-between gap-4 sm:gap-8">
+      <nav className="w-full px-4 sm:px-6 lg:px-16 py-3 sm:py-4 md:py-6 flex items-center justify-between gap-4 sm:gap-8">
         {/* Left: NIDALUM Logo */}
         <Link to="/" className="text-ivory text-lg sm:text-2xl font-heading font-bold tracking-widest hover:text-gold transition-colors flex-shrink-0">
           NIDALUM

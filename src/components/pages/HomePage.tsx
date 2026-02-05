@@ -38,7 +38,7 @@ export default function HomePage() {
       <Header />
       
       {/* Hero Section - Ceremonial Entry - Vertically Centered */}
-      <section className="min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-16 flex items-center justify-center pt-16 sm:pt-0">
+      <section className="min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-16 flex items-center justify-center pt-24 sm:pt-20 md:pt-0">
         <div className="w-full max-w-[1320px] flex flex-col items-center justify-center text-center">
           {/* Title - Single line, no wrap, fixed size */}
           <div className="flex flex-col items-center">
@@ -91,8 +91,8 @@ export default function HomePage() {
           </Link>
 
           {/* Portals Row - No wrap on desktop, swipe on mobile */}
-          <div className="w-full px-2">
-            <div className="flex gap-2 sm:gap-3 md:gap-4 items-center justify-center overflow-x-auto md:overflow-x-visible scrollbar-hide flex-wrap md:flex-nowrap">
+          <div className="w-full px-2 overflow-x-hidden">
+            <div className="flex gap-2 sm:gap-3 md:gap-4 items-center justify-center overflow-x-auto md:overflow-x-visible scrollbar-hide flex-wrap md:flex-nowrap max-w-full">
               {portals.map((portal, idx) => (
                 <div key={portal._id} className="flex gap-2 sm:gap-3 md:gap-4 items-center">
                   <Link 

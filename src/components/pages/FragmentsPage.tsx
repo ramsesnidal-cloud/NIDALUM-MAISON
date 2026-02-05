@@ -14,7 +14,7 @@ export default function FragmentsPage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+      <section className="pt-24 sm:pt-28 md:pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border overflow-x-hidden">
         <div className="max-w-[1320px] mx-auto">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-6">
             FRAGMENTS
@@ -36,7 +36,7 @@ export default function FragmentsPage() {
           {lexicon.length === 0 ? (
             <div className="text-center text-muted">No lexicon available.</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 overflow-x-hidden">
               {lexicon.map((item, idx) => (
                 <div
                   key={idx}
@@ -69,7 +69,7 @@ export default function FragmentsPage() {
           {expressions.length === 0 ? (
             <div className="text-center text-muted">No expressions available.</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 overflow-x-hidden">
               {expressions.map((item, idx) => (
                 <div
                   key={idx}

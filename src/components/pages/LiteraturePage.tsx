@@ -30,7 +30,7 @@ export default function LiteraturePage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+      <section className="pt-24 sm:pt-28 md:pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border overflow-x-hidden">
         <div className="max-w-[1320px] mx-auto">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             LITERATURE
@@ -42,7 +42,7 @@ export default function LiteraturePage() {
       </section>
 
       {/* Books Grid */}
-      <section className="py-24 px-6 sm:px-10 lg:px-14">
+      <section className="py-24 px-6 sm:px-10 lg:px-14 overflow-x-hidden">
         <div className="max-w-[1320px] mx-auto">
           {isLoading ? (
             <div className="text-center text-muted">Loading...</div>

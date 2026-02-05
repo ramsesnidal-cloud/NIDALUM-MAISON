@@ -7,7 +7,7 @@ export default function HousePage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border">
+      <section className="pt-24 sm:pt-28 md:pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border overflow-x-hidden">
         <div className="max-w-[1320px] mx-auto">
           <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
             THE HOUSE
@@ -29,10 +29,10 @@ export default function HousePage() {
       </section>
 
       {/* Axes */}
-      <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
+      <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border overflow-x-hidden">
         <div className="max-w-[1320px] mx-auto">
           <h2 className="text-2xl font-heading tracking-wide mb-12 text-ivory">AXES</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 overflow-x-hidden">
             <div>
               <h3 className="text-lg font-heading tracking-wide mb-4 text-gold">ORIGIN</h3>
               <p className="text-sm font-body text-muted leading-relaxed">
