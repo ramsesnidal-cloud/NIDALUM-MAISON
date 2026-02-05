@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { fragmentsLexicon100 } from '@/content/fragments_lexicon_100';
 
 export default function HomePage() {
-  // Use first 6 items from official dataset
-  const [featuredFragments] = useState(fragmentsLexicon100.slice(0, 6));
+  // Featured fragments data
+  const featuredFragments = [
+    { nidalum: 'ORAA', french: 'Souffle, vie, essence', english: 'Breath, life essence' },
+    { nidalum: 'RA', french: 'Soleil, présence souveraine', english: 'Sun, sovereign presence' },
+    { nidalum: 'SOUMA', french: 'Source, origine', english: 'Source, origin' },
+    { nidalum: 'LUMÉ', french: 'Lumière', english: 'Light' },
+    { nidalum: 'LUMERA', french: 'Chant de lumière, lumière chantée', english: 'Song of light, luminous chant' },
+    { nidalum: 'ASHÂLIM', french: 'Parole sacrée', english: 'Sacred utterance' },
+  ];
 
   return (
     <div className="min-h-screen bg-obsidian text-ivory flex flex-col">
