@@ -6,7 +6,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-obsidian border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-obsidian border-b border-border overflow-x-hidden w-full">
       {/* Desktop Navigation */}
       <nav className="hidden lg:flex w-full px-16 py-6 items-center justify-between gap-8">
         {/* Left: NIDALUM Logo */}
@@ -62,7 +62,7 @@ export default function Header() {
       </nav>
 
       {/* Tablet Navigation */}
-      <nav className="hidden md:flex lg:hidden w-full px-6 py-4 items-center justify-between gap-4">
+      <nav className="hidden md:flex lg:hidden w-full px-6 py-4 items-center justify-between gap-4 overflow-x-hidden">
         <Link to="/" className="text-ivory text-xl font-heading font-bold tracking-widest hover:text-gold transition-colors flex-shrink-0">
           NIDALUM
         </Link>
@@ -108,7 +108,7 @@ export default function Header() {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden w-full px-4 py-3 flex items-center justify-between">
+      <nav className="md:hidden w-full px-4 py-3 flex items-center justify-between overflow-x-hidden">
         <Link to="/" className="text-ivory text-lg font-heading font-bold tracking-widest hover:text-gold transition-colors flex-shrink-0">
           NIDALUM
         </Link>
@@ -124,7 +124,7 @@ export default function Header() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-obsidian border-t border-border">
+        <div className="md:hidden bg-obsidian border-t border-border overflow-x-hidden">
           <ul className="flex flex-col gap-3 px-4 py-4">
             <li>
               <Link to="/house" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">

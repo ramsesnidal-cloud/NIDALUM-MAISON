@@ -38,7 +38,7 @@ export default function HomePage() {
       <Header />
       
       {/* Hero Section - Ceremonial Entry - Vertically Centered */}
-      <section className="min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-16 flex items-center justify-center pt-32 sm:pt-36 md:pt-0">
+      <section className="min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-16 flex items-center justify-center pt-24 sm:pt-28 md:pt-0 md:min-h-screen">
         <div className="w-full max-w-[1320px] flex flex-col items-center justify-center text-center">
           {/* Title - Single line, no wrap, fixed size */}
           <div className="flex flex-col items-center">
