@@ -21,19 +21,29 @@ export default function HomePage() {
       <section className="min-h-[calc(100vh-80px)] px-6 sm:px-10 lg:px-16 flex items-center justify-center">
         <div className="w-full max-w-[1320px] flex flex-col items-center justify-center text-center">
           {/* Title - Single line, no wrap, fixed size */}
-          <h1 
-            className="font-heading font-light leading-[1.05] mb-6 md:mb-8 text-ivory whitespace-nowrap"
-            style={{
-              fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
-              letterSpacing: '-0.01em',
-            }}
-          >
-            NIDALUM MAISON
-          </h1>
+          <div className="flex flex-col items-center">
+            <h1 
+              className="font-heading font-light leading-[1.05] text-ivory whitespace-nowrap"
+              style={{
+                fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
+                letterSpacing: '-0.01em',
+              }}
+            >
+              NIDALUM MAISON
+            </h1>
+            <div 
+              style={{
+                width: '72px',
+                height: '1px',
+                backgroundColor: 'rgba(198, 163, 91, 0.55)',
+                marginTop: '16px',
+              }}
+            />
+          </div>
 
           {/* Slogan - Increased font size */}
           <p 
-            className="font-body tracking-[0.25em] uppercase text-muted mb-8 md:mb-12 font-light"
+            className="font-body tracking-[0.25em] uppercase text-muted mb-8 md:mb-12 font-light mt-6 md:mt-8"
             style={{
               fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)',
               fontVariant: 'small-caps',
