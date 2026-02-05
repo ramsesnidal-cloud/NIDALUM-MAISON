@@ -94,26 +94,7 @@ export default function HousePage() {
         </div>
       </section>
 
-      {/* Future Divisions */}
-      <section className="py-24 px-6 sm:px-10 lg:px-14 border-b border-border">
-        <div className="max-w-[1320px] mx-auto">
-          <h2 className="text-2xl font-heading tracking-wide mb-12 text-ivory">FUTURE DIVISIONS</h2>
-          <div className="grid grid-cols-2 gap-12">
-            <div className="pb-8 border-b border-border">
-              <h3 className="text-lg font-heading tracking-wide mb-4 text-ivory">NIDALUM PARFUM</h3>
-              <p className="text-sm font-body text-muted">
-                Coming later.
-              </p>
-            </div>
-            <div className="pb-8 border-b border-border">
-              <h3 className="text-lg font-heading tracking-wide mb-4 text-ivory">NIDALUM FASHION</h3>
-              <p className="text-sm font-body text-muted">
-                Coming later.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <Footer />
     </div>
