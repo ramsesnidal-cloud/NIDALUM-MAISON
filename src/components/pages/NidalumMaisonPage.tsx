@@ -102,10 +102,10 @@ export default function NidalumMaisonPage() {
               <div className="h-px w-8 md:w-12 bg-gradient-to-l from-transparent to-luxury-gold/60"></div>
             </motion.div>
 
-            {/* Main Headline - Single Line */}
+            {/* Main Headline - Single Line on Desktop, Stacked on Mobile/Tablet */}
             <div className="space-y-6 md:space-y-8 lg:space-y-10">
               <h1 
-                className="font-heading tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light lg:whitespace-nowrap lg:overflow-hidden lg:text-clip"
+                className="font-heading tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light whitespace-normal md:whitespace-normal lg:whitespace-nowrap"
                 style={{
                   fontSize: 'clamp(2.1rem, 7.2vw, 5.6rem)',
                   letterSpacing: 'clamp(0.1em, 0.15vw, 0.15em)',
