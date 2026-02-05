@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Header from '@/components/layout/Header.tsx';
 import Footer from '@/components/layout/Footer.tsx';
+import { BaseCrudService } from '@/integrations';
+import type { Portals } from '@/entities/index';
 
 export default function HomePage() {
   // Featured fragments data
@@ -12,6 +15,23 @@ export default function HomePage() {
     { nidalum: 'LUMERA', french: 'Chant de lumière, lumière chantée', english: 'Song of light, luminous chant' },
     { nidalum: 'ASHÂLIM', french: 'Parole sacrée', english: 'Sacred utterance' },
   ];
+
+  const [portals, setPortals] = useState<Portals[]>([]);
+
+  useEffect(() => {
+    const fetchPortals = async () => {
+      try {
+        const result = await BaseCrudService.getAll<Portals>('portals');
+        const publishedPortals = (result.items || [])
+          .filter(p => p.isPublished === true)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+        setPortals(publishedPortals);
+      } catch (error) {
+        console.error('Error fetching portals:', error);
+      }
+    };
+    fetchPortals();
+  }, []);
 
   return (
     <div className="min-h-screen bg-obsidian text-ivory flex flex-col">
@@ -74,30 +94,20 @@ export default function HomePage() {
           {/* Portals Row - No wrap on desktop, swipe on mobile */}
           <div className="w-full">
             <div className="flex gap-3 md:gap-4 items-center justify-center px-4 md:px-0 overflow-x-auto md:overflow-x-visible scrollbar-hide">
-              <Link 
-                to="/sacred" 
-                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
-              >
-                NIDALUM MUSIC
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-              </Link>
-              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
-              <Link 
-                to="/literature" 
-                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
-              >
-                NIDALUM LITERATURE
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-              </Link>
-              <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
-
-              <Link 
-                to="/fragments" 
-                className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
-              >
-                NIDALUM LANGUAGE
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
-              </Link>
+              {portals.map((portal, idx) => (
+                <div key={portal._id} className="flex gap-3 md:gap-4 items-center">
+                  <Link 
+                    to={portal.portalRoute || '#'} 
+                    className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
+                  >
+                    {portal.portalLabel}
+                    <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+                  </Link>
+                  {idx < portals.length - 1 && (
+                    <span className="text-muted text-xs md:text-sm flex-shrink-0">·</span>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </div>

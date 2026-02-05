@@ -31,6 +31,11 @@ export default function Header() {
               ARTISTS
             </Link>
           </li>
+          <li>
+            <Link to="/fragments" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
+              LANGUAGE
+            </Link>
+          </li>
           {/* Perfume and Fashion sections hidden - will be re-enabled in 6 months */}
           {/* <li>
             <Link to="/perfume" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
