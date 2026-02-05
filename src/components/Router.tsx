@@ -15,8 +15,9 @@ const SignUpPage = lazy(() => import('@/components/pages/SignUpPage'));
 const FragmentsPage = lazy(() => import('@/components/pages/FragmentsPage'));
 const ImprintPage = lazy(() => import('@/components/pages/ImprintPage'));
 const PrivacyPage = lazy(() => import('@/components/pages/PrivacyPage'));
-const PerfumePage = lazy(() => import('@/components/pages/PerfumePage'));
-const NidalumFashionPage = lazy(() => import('@/components/pages/NidalumFashionPage'));
+// Perfume and Fashion pages hidden - will be re-enabled in 6 months
+// const PerfumePage = lazy(() => import('@/components/pages/PerfumePage'));
+// const NidalumFashionPage = lazy(() => import('@/components/pages/NidalumFashionPage'));
 
 // Layout component that includes ScrollToTop
 function Layout() {
@@ -43,8 +44,9 @@ const signUpElement = <SignUpPage />;
 const fragmentsElement = <FragmentsPage />;
 const imprintElement = <ImprintPage />;
 const privacyElement = <PrivacyPage />;
-const perfumeElement = <PerfumePage />;
-const fashionElement = <NidalumFashionPage />;
+// Perfume and Fashion elements hidden
+// const perfumeElement = <PerfumePage />;
+// const fashionElement = <NidalumFashionPage />;
 const notFoundElement = <Navigate to="/" replace />;
 
 const router = createBrowserRouter([
@@ -93,14 +95,15 @@ const router = createBrowserRouter([
         path: "privacy",
         element: privacyElement,
       },
-      {
-        path: "perfume",
-        element: perfumeElement,
-      },
-      {
-        path: "fashion",
-        element: fashionElement,
-      },
+      // Perfume and Fashion routes hidden - will be re-enabled in 6 months
+      // {
+      //   path: "perfume",
+      //   element: perfumeElement,
+      // },
+      // {
+      //   path: "fashion",
+      //   element: fashionElement,
+      // },
       {
         path: "*",
         element: notFoundElement,
