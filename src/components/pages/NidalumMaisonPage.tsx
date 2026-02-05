@@ -105,13 +105,19 @@ export default function NidalumMaisonPage() {
             {/* Main Headline - Single Line on Desktop, Stacked on Mobile/Tablet */}
             <div className="space-y-6 md:space-y-8 lg:space-y-10">
               <h1 
-                className="font-heading tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light whitespace-normal md:whitespace-normal lg:whitespace-nowrap"
+                className="font-heading tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light"
                 style={{
-                  fontSize: 'clamp(2.1rem, 7.2vw, 5.6rem)',
+                  fontSize: 'clamp(2.8rem, 8.5vw, 5.6rem)',
                   letterSpacing: 'clamp(0.1em, 0.15vw, 0.15em)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.2em',
                 }}
               >
-                NIDALUM MAISON
+                <span className="block lg:inline">NIDALUM</span>
+                <span className="block lg:inline lg:ml-[0.3em]">MAISON</span>
               </h1>
               <motion.div
                 initial={{ scaleX: 0 }}
