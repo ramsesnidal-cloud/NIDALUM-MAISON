@@ -31,7 +31,8 @@ export default function Header() {
               ARTISTS
             </Link>
           </li>
-          <li>
+          {/* Perfume and Fashion sections hidden - will be re-enabled in 6 months */}
+          {/* <li>
             <Link to="/perfume" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
               PERFUME
             </Link>
@@ -40,7 +41,7 @@ export default function Header() {
             <Link to="/fashion" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
               FASHION
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/contact" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors">
               CONTACT

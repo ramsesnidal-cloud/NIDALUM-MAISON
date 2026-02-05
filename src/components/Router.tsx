@@ -93,14 +93,15 @@ const router = createBrowserRouter([
         path: "privacy",
         element: privacyElement,
       },
-      {
-        path: "perfume",
-        element: perfumeElement,
-      },
-      {
-        path: "fashion",
-        element: fashionElement,
-      },
+      // Perfume and Fashion routes hidden - will be re-enabled in 6 months
+      // {
+      //   path: "perfume",
+      //   element: perfumeElement,
+      // },
+      // {
+      //   path: "fashion",
+      //   element: fashionElement,
+      // },
       {
         path: "*",
         element: notFoundElement,
