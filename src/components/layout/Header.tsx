@@ -61,6 +61,22 @@ export default function Header() {
         </div>
       </nav>
 
+      {/* Mobile Navigation - base to sm */}
+      <nav className="flex md:hidden w-full px-3 sm:px-4 py-3 items-center justify-between gap-2">
+        <Link to="/" className="text-ivory text-base sm:text-lg font-heading font-bold tracking-widest hover:text-gold transition-colors flex-shrink-0">
+          NIDALUM
+        </Link>
+        
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="text-ivory hover:text-gold transition-colors flex-shrink-0 p-1"
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </nav>
+
       {/* Tablet Navigation - md to lg */}
       <nav className="hidden md:flex lg:hidden w-full px-4 sm:px-6 py-4 items-center justify-between gap-3">
         <Link to="/" className="text-ivory text-lg sm:text-xl font-heading font-bold tracking-widest hover:text-gold transition-colors flex-shrink-0">
@@ -104,47 +120,53 @@ export default function Header() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="text-ivory hover:text-gold transition-colors flex-shrink-0"
           aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </nav>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Dropdown - base to md */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-obsidian border-t border-border">
-          <ul className="flex flex-col gap-2 px-4 py-3">
+          <ul className="flex flex-col gap-1 px-3 sm:px-4 py-3">
             <li>
-              <Link to="/house" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+              <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+                HOME
+              </Link>
+            </li>
+            <li>
+              <Link to="/house" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
                 THE HOUSE
               </Link>
             </li>
             <li>
-              <Link to="/literature" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
-                LITERATURE
-              </Link>
-            </li>
-            <li>
-              <Link to="/sacred" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+              <Link to="/sacred" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
                 SACRED MUSIC
               </Link>
             </li>
             <li>
-              <Link to="/artists" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+              <Link to="/artists" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
                 ARTISTS
               </Link>
             </li>
             <li>
-              <Link to="/fragments" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+              <Link to="/literature" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+                LITERATURE
+              </Link>
+            </li>
+            <li>
+              <Link to="/fragments" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
                 LANGUAGE
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+              <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
                 CONTACT
               </Link>
             </li>
             <li>
-              <Link to="/signup" className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
+              <Link to="/signup" onClick={() => setMobileMenuOpen(false)} className="text-ivory text-sm font-body tracking-wide hover:text-gold transition-colors block py-2">
                 SIGN UP
               </Link>
             </li>
