@@ -36,7 +36,7 @@ export default function LiteraturePage() {
             LITERATURE
           </h1>
           <p className="text-lg font-body text-muted">
-            The work exists. It is private. It is transmitted, not displayed.
+            The work is in development. Stay attentive. We will keep you informed as it evolves.
           </p>
         </div>
       </section>
