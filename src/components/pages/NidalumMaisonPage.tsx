@@ -71,7 +71,7 @@ export default function NidalumMaisonPage() {
       <Header />
 
       {/* Hero Section - Luxury Cinematic */}
-      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-32 md:pt-20 bg-deep-black">
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20 md:pt-16 lg:pt-20 bg-deep-black">
         {/* Sophisticated Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-charcoal to-deep-black">
           <div className="absolute inset-0 opacity-3">
@@ -103,7 +103,7 @@ export default function NidalumMaisonPage() {
             </motion.div>
 
             {/* Main Headline - Single Line */}
-            <div className="space-y-8 md:space-y-12">
+            <div className="space-y-6 md:space-y-8 lg:space-y-10">
               <h1 
                 className="font-heading tracking-[0.15em] leading-[0.9] text-luxury-text uppercase font-light whitespace-nowrap overflow-hidden text-overflow-clip"
                 style={{
@@ -126,7 +126,7 @@ export default function NidalumMaisonPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
-              className="space-y-6 md:space-y-8 max-w-4xl mx-auto px-2 md:px-0"
+              className="space-y-4 md:space-y-6 lg:space-y-8 max-w-4xl mx-auto px-2 md:px-0"
             >
               <p className="font-paragraph text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed tracking-wide text-luxury-text/85">
                 Where language transcends into art. Where silence becomes signature.
@@ -141,7 +141,7 @@ export default function NidalumMaisonPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1, duration: 0.8 }}
-              className="pt-8 md:pt-12 lg:pt-16"
+              className="pt-6 md:pt-8 lg:pt-12"
             >
               <button 
                 onClick={() => navigate('/hub')}
@@ -167,14 +167,14 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* The House Section - Luxury Pillars */}
-      <section className="relative py-20 md:py-40 lg:py-56 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-b border-luxury-gold/20">
+      <section className="relative py-12 md:py-24 lg:py-40 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-b border-luxury-gold/20">
         <div className="max-w-[120rem] mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 1 }}
             viewport={{ once: true, margin: '-100px' }}
-            className="space-y-20 md:space-y-32 lg:space-y-40"
+            className="space-y-12 md:space-y-20 lg:space-y-28"
           >
             {/* Section Title */}
             <motion.div
@@ -286,7 +286,7 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* NIDALUM SEAL Section */}
-      <section className="relative py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/20">
+      <section className="relative py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 bg-dark-grey-bg border-t border-b border-luxury-gold/20">
         <div className="max-w-[100rem] mx-auto flex flex-col items-center justify-center space-y-6 md:space-y-8">
           <motion.div
             animate={{ rotate: 360 }}
@@ -314,7 +314,7 @@ export default function NidalumMaisonPage() {
       </section>
 
       {/* The Incarnations Section - Luxury Gallery */}
-      <section id="incarnations" className="relative py-16 md:py-32 lg:py-48 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-luxury-gold/20">
+      <section id="incarnations" className="relative py-12 md:py-20 lg:py-32 px-4 sm:px-6 md:px-8 bg-deep-black border-t border-luxury-gold/20">
         <div className="max-w-[120rem] mx-auto">
           {/* Section Title */}
           <motion.div
