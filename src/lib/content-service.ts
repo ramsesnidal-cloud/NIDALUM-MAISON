@@ -79,7 +79,7 @@ export interface DailyExpression {
 
 // Cache for client-side data
 const cache = new Map<string, { data: any; timestamp: number }>();
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 30 * 1000; // 30 seconds - reduced for faster updates
 
 function isCacheValid(key: string): boolean {
   const cached = cache.get(key);
