@@ -69,6 +69,25 @@ export default function HomePage() {
             ENTER
           </Link>
 
+          {/* Nidalum Perfume & Fashion - Below Enter */}
+          <div className="mb-10 md:mb-14 flex gap-6 md:gap-8 items-center justify-center">
+            <Link 
+              to="/perfume" 
+              className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
+            >
+              NIDALUM PERFUME
+              <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <span className="text-muted text-xs md:text-sm">·</span>
+            <Link 
+              to="/fashion" 
+              className="text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group"
+            >
+              NIDALUM FASHION
+              <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+            </Link>
+          </div>
+
           {/* Portals Row - No wrap on desktop, swipe on mobile */}
           <div className="w-full">
             <div className="flex gap-3 md:gap-4 items-center justify-center px-4 md:px-0 overflow-x-auto md:overflow-x-visible scrollbar-hide">
