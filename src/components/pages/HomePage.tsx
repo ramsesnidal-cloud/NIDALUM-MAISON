@@ -40,17 +40,29 @@ export default function HomePage() {
       {/* Hero Section - Ceremonial Entry - Vertically Centered */}
       <section className="min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-screen px-3 sm:px-4 md:px-6 lg:px-8 xl:px-16 flex items-center justify-center pt-12 sm:pt-16 md:pt-20 lg:pt-0">
         <div className="w-full max-w-[1320px] flex flex-col items-center justify-center text-center">
-          {/* Title - Single line, no wrap, fixed size */}
-          <div className="flex flex-col items-center">
+          {/* Title - Responsive: Desktop single line, Mobile/Tablet stacked */}
+          <div className="flex flex-col items-center overflow-x-hidden">
+            {/* Desktop: Single line, no wrap */}
             <h1 
-              className="font-heading font-light leading-[1.05] text-ivory"
+              className="hidden lg:block font-heading font-light leading-[1.05] text-ivory whitespace-nowrap"
               style={{
                 fontSize: 'clamp(2.25rem, 9vw, 9.5rem)',
                 letterSpacing: '-0.01em',
-                wordBreak: 'break-word',
               }}
             >
               NIDALUM MAISON
+            </h1>
+            
+            {/* Mobile/Tablet: Stacked lines */}
+            <h1 
+              className="block lg:hidden font-heading font-light text-ivory leading-[0.9] max-w-full"
+              style={{
+                fontSize: 'clamp(2.5rem, 11vw, 7rem)',
+                letterSpacing: '-0.01em',
+              }}
+            >
+              <span className="block">NIDALUM</span>
+              <span className="block">MAISON</span>
             </h1>
             <div 
               style={{
