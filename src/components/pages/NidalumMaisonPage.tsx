@@ -71,7 +71,7 @@ export default function NidalumMaisonPage() {
       <Header />
 
       {/* Hero Section - Luxury Cinematic */}
-      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20 md:pt-16 lg:pt-20 bg-deep-black">
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-32 md:pt-20 lg:pt-24 bg-deep-black">
         {/* Sophisticated Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-deep-black via-charcoal to-deep-black">
           <div className="absolute inset-0 opacity-3">
