@@ -38,31 +38,31 @@ export default function SignUpPage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-24 sm:pt-28 md:pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border overflow-x-hidden">
+      <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pb-16 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 border-b border-border">
         <div className="max-w-[1320px] mx-auto">
-          <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-heading font-bold tracking-widest mb-3 sm:mb-4">
             SIGN UP
           </h1>
-          <p className="text-lg font-body text-muted">
+          <p className="text-sm sm:text-base md:text-lg font-body text-muted">
             Subscribe for updates.
           </p>
         </div>
       </section>
 
       {/* Form */}
-      <section className="py-24 px-6 sm:px-10 lg:px-14 overflow-x-hidden">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14">
         <div className="max-w-2xl mx-auto">
           {submitted ? (
             <div className="text-center py-12">
-              <p className="text-lg font-heading text-gold tracking-wide">
+              <p className="text-base sm:text-lg md:text-lg font-heading text-gold tracking-wide">
                 Subscribed.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
               {/* Email */}
               <div>
-                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                <label className="block text-xs sm:text-sm md:text-sm font-body text-ivory tracking-wide mb-2 sm:mb-3">
                   EMAIL <span className="text-gold">*</span>
                 </label>
                 <input
@@ -71,13 +71,13 @@ export default function SignUpPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
+                  className="w-full bg-night border border-border px-3 sm:px-4 py-2 sm:py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors text-sm"
                 />
               </div>
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-body text-ivory tracking-wide mb-3">
+                <label className="block text-xs sm:text-sm md:text-sm font-body text-ivory tracking-wide mb-2 sm:mb-3">
                   NAME <span className="text-muted">(optional)</span>
                 </label>
                 <input
@@ -85,13 +85,13 @@ export default function SignUpPage() {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full bg-night border border-border px-4 py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors"
+                  className="w-full bg-night border border-border px-3 sm:px-4 py-2 sm:py-3 text-ivory placeholder-muted focus:outline-none focus:border-gold transition-colors text-sm"
                 />
               </div>
 
               {/* Note */}
-              <div className="pt-4 border-t border-border">
-                <p className="text-xs font-body text-muted leading-relaxed">
+              <div className="pt-3 sm:pt-4 border-t border-border">
+                <p className="text-[0.65rem] sm:text-xs md:text-xs font-body text-muted leading-relaxed">
                   Updates are occasional. No spam. Unsubscribe anytime.<br />
                   No tracking and no cookies by default.
                 </p>
@@ -100,7 +100,7 @@ export default function SignUpPage() {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full px-8 py-3 border border-ivory text-ivory hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-300 rounded-lg font-body text-sm tracking-wide"
+                className="w-full px-6 sm:px-8 py-2 sm:py-3 border border-ivory text-ivory hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-300 font-body text-xs sm:text-sm md:text-sm tracking-wide"
               >
                 SUBSCRIBE
               </button>

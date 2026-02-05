@@ -38,14 +38,14 @@ export default function HomePage() {
       <Header />
       
       {/* Hero Section - Ceremonial Entry - Vertically Centered */}
-      <section className="min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-80px)] px-4 sm:px-6 lg:px-16 flex items-center justify-center pt-24 sm:pt-28 md:pt-0 md:min-h-screen">
+      <section className="min-h-[calc(100vh-56px)] sm:min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] lg:min-h-screen px-3 sm:px-4 md:px-6 lg:px-8 xl:px-16 flex items-center justify-center pt-20 sm:pt-24 md:pt-28 lg:pt-0">
         <div className="w-full max-w-[1320px] flex flex-col items-center justify-center text-center">
           {/* Title - Single line, no wrap, fixed size */}
           <div className="flex flex-col items-center">
             <h1 
               className="font-heading font-light leading-[1.05] text-ivory"
               style={{
-                fontSize: 'clamp(2rem, 8vw, 9.5rem)',
+                fontSize: 'clamp(1.75rem, 7vw, 9.5rem)',
                 letterSpacing: '-0.01em',
                 wordBreak: 'break-word',
               }}
@@ -54,19 +54,19 @@ export default function HomePage() {
             </h1>
             <div 
               style={{
-                width: 'clamp(48px, 10vw, 72px)',
+                width: 'clamp(40px, 9vw, 72px)',
                 height: '1px',
                 backgroundColor: 'rgba(198, 163, 91, 0.55)',
-                marginTop: 'clamp(12px, 3vw, 16px)',
+                marginTop: 'clamp(10px, 2.5vw, 16px)',
               }}
             />
           </div>
 
           {/* Slogan - Increased font size */}
           <p 
-            className="font-body tracking-[0.25em] uppercase text-muted mb-6 sm:mb-8 md:mb-12 font-light mt-4 sm:mt-6 md:mt-8 px-2"
+            className="font-body tracking-[0.25em] uppercase text-muted mb-4 sm:mb-6 md:mb-8 lg:mb-12 font-light mt-3 sm:mt-4 md:mt-6 lg:mt-8 px-2"
             style={{
-              fontSize: 'clamp(0.9rem, 2vw, 1.8rem)',
+              fontSize: 'clamp(0.75rem, 1.8vw, 1.8rem)',
               fontVariant: 'small-caps',
             }}
           >
@@ -74,8 +74,8 @@ export default function HomePage() {
           </p>
 
           {/* Manifesto Block - Three lines centered */}
-          <div className="mb-6 sm:mb-10 md:mb-14 max-w-[58ch] px-4">
-            <p className="font-body leading-relaxed text-ivory" style={{ fontSize: 'clamp(0.85rem, 1.2vw, 1.15rem)' }}>
+          <div className="mb-4 sm:mb-6 md:mb-8 lg:mb-14 max-w-[58ch] px-3 sm:px-4">
+            <p className="font-body leading-relaxed text-ivory" style={{ fontSize: 'clamp(0.75rem, 1.1vw, 1.15rem)' }}>
               Born from language, memory, and ritual.<br />
               Music becomes architecture. Silence becomes signature.<br />
               Creation becomes rite. It is not a genre. It is a language. It is a House.
@@ -85,19 +85,19 @@ export default function HomePage() {
           {/* Enter Button - Hairline border */}
           <Link 
             to="/house" 
-            className="mb-6 sm:mb-10 md:mb-14 px-6 sm:px-10 py-2 sm:py-3 border border-ivory text-ivory font-body text-xs sm:text-sm md:text-base tracking-widest uppercase hover:border-gold hover:text-gold transition-colors duration-300 inline-block"
+            className="mb-4 sm:mb-6 md:mb-8 lg:mb-14 px-5 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 border border-ivory text-ivory font-body text-[0.7rem] sm:text-xs md:text-sm lg:text-base tracking-widest uppercase hover:border-gold hover:text-gold transition-colors duration-300 inline-block"
           >
             ENTER
           </Link>
 
           {/* Portals Row - No wrap on desktop, swipe on mobile */}
           <div className="w-full overflow-x-hidden">
-            <div className="flex gap-2 sm:gap-3 md:gap-4 items-center justify-center overflow-x-auto md:overflow-x-visible scrollbar-hide flex-wrap md:flex-nowrap max-w-full px-0">
+            <div className="flex gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 items-center justify-center overflow-x-auto md:overflow-x-visible scrollbar-hide flex-wrap md:flex-nowrap max-w-full px-2 sm:px-0">
               {portals.map((portal, idx) => (
-                <div key={portal._id} className="flex gap-2 sm:gap-3 md:gap-4 items-center">
+                <div key={portal._id} className="flex gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 items-center">
                   <Link 
                     to={portal.portalRoute || '#'} 
-                    className="text-[0.65rem] sm:text-xs md:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
+                    className="text-[0.6rem] sm:text-[0.65rem] md:text-xs lg:text-sm font-body tracking-widest uppercase text-ivory hover:text-gold transition-colors duration-300 relative group flex-shrink-0 whitespace-nowrap"
                   >
                     {portal.portalLabel}
                     <span className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>

@@ -7,41 +7,41 @@ export default function ImprintPage() {
       <Header />
       
       {/* Hero */}
-      <section className="pt-24 sm:pt-28 md:pt-32 pb-16 px-6 sm:px-10 lg:px-14 border-b border-border overflow-x-hidden">
+      <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pb-16 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 border-b border-border">
         <div className="max-w-[1320px] mx-auto">
-          <h1 className="text-5xl font-heading font-bold tracking-widest mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-heading font-bold tracking-widest mb-3 sm:mb-4">
             IMPRINT
           </h1>
         </div>
       </section>
 
       {/* Content */}
-      <section className="py-24 px-6 sm:px-10 lg:px-14 overflow-x-hidden">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14">
         <div className="max-w-[1320px] mx-auto max-w-2xl">
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h2 className="text-lg font-heading tracking-wide mb-4 text-ivory">
+              <h2 className="text-base sm:text-lg md:text-lg font-heading tracking-wide mb-3 sm:mb-4 text-ivory">
                 PUBLISHER INFORMATION
               </h2>
-              <p className="text-base font-body text-muted leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base font-body text-muted leading-relaxed">
                 NIDALUM is a House dedicated to the preservation and transmission of rare literary and musical works. This website serves as a portal to our practice.
               </p>
             </div>
 
             <div>
-              <h2 className="text-lg font-heading tracking-wide mb-4 text-ivory">
+              <h2 className="text-base sm:text-lg md:text-lg font-heading tracking-wide mb-3 sm:mb-4 text-ivory">
                 CONTACT
               </h2>
-              <p className="text-base font-body text-muted leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base font-body text-muted leading-relaxed">
                 For inquiries, please use the contact form on our Contact page.
               </p>
             </div>
 
             <div>
-              <h2 className="text-lg font-heading tracking-wide mb-4 text-ivory">
+              <h2 className="text-base sm:text-lg md:text-lg font-heading tracking-wide mb-3 sm:mb-4 text-ivory">
                 LIABILITY
               </h2>
-              <p className="text-base font-body text-muted leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base font-body text-muted leading-relaxed">
                 This website is provided as is. NIDALUM is not liable for any damages arising from the use or inability to use this site.
               </p>
             </div>
