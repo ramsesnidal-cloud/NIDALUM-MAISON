@@ -1,32 +1,97 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { Image } from '@/components/ui/image';
+import { useState, useEffect } from 'react';
+import { BaseCrudService } from '@/integrations';
+import { Divisions } from '@/entities';
 
 export default function HousePage() {
+  const [heroImage, setHeroImage] = useState<string>('https://static.wixstatic.com/media/9c8aea_bb6fddb1cd6d415caaa8d61661c6bda3~mv2.png?originWidth=384&originHeight=576');
+
+  useEffect(() => {
+    const fetchHeroImage = async () => {
+      try {
+        const divisions = await BaseCrudService.getAll<Divisions>('divisions');
+        const houseDiv = divisions.items?.find((d) => d.divisionKey === 'house');
+        if (houseDiv?.heroImage) {
+          setHeroImage(houseDiv.heroImage);
+        }
+      } catch (error) {
+        console.error('Error fetching hero image:', error);
+      }
+    };
+    fetchHeroImage();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-obsidian text-ivory">
+    <div className="min-h-screen bg-obsidian text-ivory overflow-x-hidden">
       <Header />
       
-      {/* Hero */}
-      <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pb-16 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 border-b border-border">
-        <div className="max-w-[1320px] mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-heading font-bold tracking-widest mb-3 sm:mb-4">
-            THE HOUSE
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg font-body text-muted">
-            Legitimacy through vision. Mythology, not history.
-          </p>
-        </div>
-      </section>
+      {/* Hero + Origin wrapper with grid layout */}
+      <div className="relative">
+        {/* Desktop grid layout (lg and up) */}
+        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 border-b border-border">
+          {/* Left column - text content */}
+          <div className="lg:col-span-8">
+            {/* Hero */}
+            <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-14 md:pb-16 lg:pb-16">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-heading font-bold tracking-widest mb-3 sm:mb-4">
+                THE HOUSE
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg font-body text-muted">
+                Legitimacy through vision. Mythology, not history.
+              </p>
+            </section>
 
-      {/* Origin */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 border-b border-border">
-        <div className="max-w-[1320px] mx-auto">
-          <h2 className="text-xl sm:text-2xl md:text-2xl lg:text-2xl font-heading tracking-wide mb-6 sm:mb-8 text-ivory">ORIGIN</h2>
-          <p className="text-xs sm:text-sm md:text-base font-body text-muted max-w-2xl leading-relaxed mb-4 sm:mb-6">
-            NIDALUM emerged from the convergence of three ancient practices: the preservation of sacred utterance, the transmission of literary knowledge, and the cultivation of silence as a discipline. We do not claim historical precedent. We claim necessity.
-          </p>
+            {/* Origin */}
+            <section className="py-12 sm:py-16 md:py-20 lg:py-24">
+              <h2 className="text-xl sm:text-2xl md:text-2xl lg:text-2xl font-heading tracking-wide mb-6 sm:mb-8 text-ivory">ORIGIN</h2>
+              <p className="text-xs sm:text-sm md:text-base font-body text-muted max-w-2xl leading-relaxed mb-4 sm:mb-6">
+                NIDALUM emerged from the convergence of three ancient practices: the preservation of sacred utterance, the transmission of literary knowledge, and the cultivation of silence as a discipline. We do not claim historical precedent. We claim necessity.
+              </p>
+            </section>
+          </div>
+
+          {/* Right column - hero image */}
+          <div className="lg:col-span-4 h-full">
+            <div className="relative h-full w-full overflow-hidden">
+              <Image
+                src={heroImage}
+                alt="The House hero image"
+                className="w-full h-full object-cover object-center"
+                width={400}
+              />
+              {/* Dark overlay */}
+              <div className="absolute inset-0 bg-black opacity-40"></div>
+            </div>
+          </div>
         </div>
-      </section>
+
+        {/* Mobile/Tablet layout (below lg) */}
+        <div className="lg:hidden">
+          {/* Hero */}
+          <section className="pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-14 md:pb-16 px-3 sm:px-4 md:px-6 border-b border-border">
+            <div className="max-w-[1320px] mx-auto">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-widest mb-3 sm:mb-4">
+                THE HOUSE
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg font-body text-muted">
+                Legitimacy through vision. Mythology, not history.
+              </p>
+            </div>
+          </section>
+
+          {/* Origin */}
+          <section className="py-12 sm:py-16 md:py-20 px-3 sm:px-4 md:px-6 border-b border-border">
+            <div className="max-w-[1320px] mx-auto">
+              <h2 className="text-xl sm:text-2xl md:text-2xl font-heading tracking-wide mb-6 sm:mb-8 text-ivory">ORIGIN</h2>
+              <p className="text-xs sm:text-sm md:text-base font-body text-muted max-w-2xl leading-relaxed mb-4 sm:mb-6">
+                NIDALUM emerged from the convergence of three ancient practices: the preservation of sacred utterance, the transmission of literary knowledge, and the cultivation of silence as a discipline. We do not claim historical precedent. We claim necessity.
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
 
       {/* Axes */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-14 border-b border-border">
