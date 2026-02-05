@@ -56,7 +56,7 @@ export default function Header() {
         {/* Right: Institutional Stamp - Same horizontal line */}
         <div className="flex items-center border-l border-border pl-8 flex-shrink-0">
           <p className="text-[0.6rem] font-body text-muted tracking-[0.1em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.1em' }}>
-            NIDALUM MAISON
+            NIDALUM MUSIC PRODUCTION
           </p>
         </div>
       </nav>
@@ -102,7 +102,7 @@ export default function Header() {
 
         <div className="flex items-center border-l border-border pl-4 flex-shrink-0">
           <p className="text-[0.5rem] font-body text-muted tracking-[0.1em] uppercase whitespace-nowrap" style={{ letterSpacing: '0.1em' }}>
-            NIDALUM<br />MAISON
+            NIDALUM MUSIC<br />PRODUCTION
           </p>
         </div>
       </nav>
@@ -163,7 +163,7 @@ export default function Header() {
             </li>
             <li className="border-t border-border pt-3 mt-3">
               <p className="text-[0.5rem] font-body text-muted tracking-[0.1em] uppercase" style={{ letterSpacing: '0.1em' }}>
-                NIDALUM MAISON
+                NIDALUM MUSIC PRODUCTION
               </p>
             </li>
           </ul>
