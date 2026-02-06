@@ -631,6 +631,8 @@ export interface Portals {
   isPublished?: boolean;
   /** @wixFieldType text */
   description?: string;
+  /** @wixFieldType audio */
+  audio?: string;
 }
 
 
@@ -804,6 +806,8 @@ export interface SiteSettings {
   homePortals?: string;
   /** @wixFieldType text */
   headerStampText?: string;
+  /** @wixFieldType audio */
+  audio?: string;
 }
 
 
@@ -827,6 +831,10 @@ export interface SiteSettings {
   socialMediaLink?: string;
   /** @wixFieldType text */
   portals?: string;
+  /** @wixFieldType url */
+  globalAmbientAudio?: string;
+  /** @wixFieldType audio */
+  globalAmbientAudio1?: string;
 }
 
 

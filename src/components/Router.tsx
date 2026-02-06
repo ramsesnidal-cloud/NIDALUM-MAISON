@@ -31,82 +31,64 @@ function Layout() {
   );
 }
 
-// Pre-create JSX elements to avoid Babel plugin issues
-const layoutElement = <Layout />;
-const errorElement = <ErrorPage />;
-const homeElement = <HomePage />;
-const houseElement = <HousePage />;
-const literatureElement = <LiteraturePage />;
-const sacredMusicElement = <SacredMusicPage />;
-const artistsElement = <ArtistsPage />;
-const contactElement = <ContactPage />;
-const signUpElement = <SignUpPage />;
-const fragmentsElement = <FragmentsPage />;
-const imprintElement = <ImprintPage />;
-const privacyElement = <PrivacyPage />;
-// Perfume and Fashion elements hidden
-// const perfumeElement = <PerfumePage />;
-// const fashionElement = <NidalumFashionPage />;
-const notFoundElement = <Navigate to="/" replace />;
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: layoutElement,
-    errorElement: errorElement,
+    element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: homeElement,
+        element: <HomePage />,
       },
       {
         path: "house",
-        element: houseElement,
+        element: <HousePage />,
       },
       {
         path: "literature",
-        element: literatureElement,
+        element: <LiteraturePage />,
       },
       {
         path: "sacred",
-        element: sacredMusicElement,
+        element: <SacredMusicPage />,
       },
       {
         path: "artists",
-        element: artistsElement,
+        element: <ArtistsPage />,
       },
       {
         path: "contact",
-        element: contactElement,
+        element: <ContactPage />,
       },
       {
         path: "signup",
-        element: signUpElement,
+        element: <SignUpPage />,
       },
       {
         path: "fragments",
-        element: fragmentsElement,
+        element: <FragmentsPage />,
       },
       {
         path: "imprint",
-        element: imprintElement,
+        element: <ImprintPage />,
       },
       {
         path: "privacy",
-        element: privacyElement,
+        element: <PrivacyPage />,
       },
       // Perfume and Fashion routes hidden - will be re-enabled in 6 months
       // {
       //   path: "perfume",
-      //   element: perfumeElement,
+      //   element: <PerfumePage />,
       // },
       // {
       //   path: "fashion",
-      //   element: fashionElement,
+      //   element: <NidalumFashionPage />,
       // },
       {
         path: "*",
-        element: notFoundElement,
+        element: <Navigate to="/" replace />,
       },
     ],
   },
