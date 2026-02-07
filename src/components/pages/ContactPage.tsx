@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
+import emailjs from '@emailjs/browser';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,12 @@ export default function ContactPage() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init('hsSqsEUDWXNhgZ_BK');
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -20,29 +27,12 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
-    // ========== DIAGNOSTIC LOGGING ==========
-    console.log('=== CONTACT FORM SUBMISSION DIAGNOSTIC ===');
-    console.log('TIMESTAMP:', new Date().toISOString());
-    console.log('SERVICE USED: Wix CMS (BaseCrudService)');
-    console.log('COLLECTION: contactmessages');
-    console.log('DESTINATION EMAIL: contact@nidalumuniverse.com (stored in CMS, NOT sent via email service)');
-    console.log('FORM DATA:', {
-      name: formData.name,
-      email: formData.email,
-      message: formData.message.substring(0, 50) + '...',
-    });
-    console.log('NOTE: This form stores data in CMS database only. NO EMAIL SERVICE is configured.');
-    console.log('To receive emails, you need to:');
-    console.log('1. Set up an email service (EmailJS, Formspree, etc.)');
-    console.log('2. Configure it with Service ID, Template ID, and Public Key');
-    console.log('3. Update this component to send emails to contact@nidalumuniverse.com');
-    console.log('=========================================');
+    setIsLoading(true);
     
     try {
       const messageId = crypto.randomUUID();
-      console.log('CREATING MESSAGE:', messageId);
       
+      // Step 1: Save to Wix CMS as backup
       const payload = {
         _id: messageId,
         name: formData.name,
@@ -52,25 +42,29 @@ export default function ContactPage() {
         submissionDate: new Date(),
       };
       
-      console.log('PAYLOAD:', payload);
-      console.log('CALLING: BaseCrudService.create("contactmessages", payload)');
+      await BaseCrudService.create('contactmessages', payload);
       
-      const result = await BaseCrudService.create('contactmessages', payload);
+      // Step 2: Send email via EmailJS (only after successful CMS save)
+      await emailjs.send(
+        'service_e2vfstw',
+        'template_z5dlaqc',
+        {
+          to_email: 'contact@nidalumuniverse.com',
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        }
+      );
       
-      console.log('✓ SUCCESS: Message stored in CMS database');
-      console.log('RESULT:', result);
-      console.log('MESSAGE ID:', messageId);
-      console.log('⚠️  WARNING: Email NOT sent. Data only stored in CMS.');
-      
+      // Step 3: Show success message ONLY if email was sent successfully
       setSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setSubmitted(false), 3000);
     } catch (error) {
-      console.error('✗ ERROR: Failed to store message in CMS');
-      console.error('ERROR DETAILS:', error);
-      console.error('ERROR TYPE:', error instanceof Error ? error.message : 'Unknown error');
-      
+      console.error('Error:', error);
       setError('Failed to submit form. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,10 +96,10 @@ export default function ContactPage() {
           {submitted ? (
             <div className="text-center py-12">
               <p className="text-base sm:text-lg md:text-lg font-heading text-gold tracking-wide">
-                Received.
+                Message Sent.
               </p>
               <p className="text-xs sm:text-sm text-muted mt-2">
-                ⚠️ Your message has been stored but NO EMAIL was sent. Check browser console for details.
+                Thank you for reaching out. We'll be in touch soon.
               </p>
             </div>
           ) : (
@@ -158,9 +152,10 @@ export default function ContactPage() {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full px-6 sm:px-8 py-2 sm:py-3 border border-ivory text-ivory hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-300 font-body text-xs sm:text-sm md:text-sm tracking-wide"
+                disabled={isLoading}
+                className="w-full px-6 sm:px-8 py-2 sm:py-3 border border-ivory text-ivory hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-300 font-body text-xs sm:text-sm md:text-sm tracking-wide disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                SEND
+                {isLoading ? 'SENDING...' : 'SEND'}
               </button>
             </form>
           )}
