@@ -125,6 +125,41 @@ button:focus, a.button:focus {
   display: none;
 }
 
+/* Form Inputs and Textareas */
+input,
+textarea,
+select {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #FBBF24 !important;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #666666 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #C6A35B !important;
+  box-shadow: 0 0 0 2px rgba(198, 163, 91, 0.1);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: #0B0B0B !important;
+  color: #B8B2A6 !important;
+  cursor: not-allowed;
+}
+
 /* Accessibility */
 a:focus-visible {
   outline: 2px solid var(--accent-gold);
