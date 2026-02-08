@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { BaseCrudService } from '@/integrations';
-import emailjs from '@emailjs/browser';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -13,11 +12,6 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Initialize EmailJS
-  useEffect(() => {
-    emailjs.init('hsSqsEUDWXNhgZ_BK');
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -49,21 +43,7 @@ export default function ContactPage() {
       
       await BaseCrudService.create('contactmessages', payload);
       
-      // Step 2: Send email via EmailJS (only after successful CMS save)
-      console.log('Attempting to send...');
-      
-      await emailjs.send(
-        'service_e2vfstw',
-        'template_z5dlaqc',
-        {
-          to_email: 'contact@nidalumuniverse.com',
-          from_name: trimmedName,
-          from_email: trimmedEmail,
-          message: trimmedMessage,
-        }
-      );
-      
-      // Step 3: Show success message ONLY if email was sent successfully
+      // Step 2: Show success message
       setSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setSubmitted(false), 3000);
