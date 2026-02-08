@@ -32,27 +32,34 @@ export default function ContactPage() {
     try {
       const messageId = crypto.randomUUID();
       
+      // Trim input values
+      const trimmedName = formData.name.trim();
+      const trimmedEmail = formData.email.trim();
+      const trimmedMessage = formData.message.trim();
+      
       // Step 1: Save to Wix CMS as backup
       const payload = {
         _id: messageId,
-        name: formData.name,
-        email: formData.email,
+        name: trimmedName,
+        email: trimmedEmail,
         subject: 'Direct Contact',
-        message: formData.message,
+        message: trimmedMessage,
         submissionDate: new Date(),
       };
       
       await BaseCrudService.create('contactmessages', payload);
       
       // Step 2: Send email via EmailJS (only after successful CMS save)
+      console.log('Attempting to send...');
+      
       await emailjs.send(
         'service_e2vfstw',
         'template_z5dlaqc',
         {
           to_email: 'contact@nidalumuniverse.com',
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
+          from_name: trimmedName,
+          from_email: trimmedEmail,
+          message: trimmedMessage,
         }
       );
       
@@ -62,7 +69,8 @@ export default function ContactPage() {
       setTimeout(() => setSubmitted(false), 3000);
     } catch (error) {
       console.error('Error:', error);
-      setError('Failed to submit form. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      setError(`Failed to submit form: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
